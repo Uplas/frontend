@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Uplas Pricing</title>
+  <link rel="icon" href="c:\Users\pc\Downloads\uni plas_prev_ui.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="upricing.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="c:\Users\pc\Downloads\uni plas_prev_ui.ico" alt="Uplas Logo" class="logo-img">
+  </div>
+
+    <nav class="nav">
+      <a href="uhome.html" class="nav-link">Home</a>
+      <a href="#" class="nav-link active">Pricing</a>
+      <a href="#contact-section" class="nav-link">Contact</a>
+      <a href="ublog.html" class="nav-link">Blog</a>
+    </nav>
+    <button id="theme-toggle">Dark Mode</button>
+  </header>
+
+  <main class="main-content">
+    <section class="pricing-section">
+      <h1>Course Pricing</h1>
+      <p class="subtitle">Choose the plan that fits your learning journey</p>
+
+      <div class="pricing-cards">
+        <div class="card">
+          <h2>Free Access</h2>
+          <p class="description">Get started with our course materials</p>
+          <div class="price">$0</div>
+
+          <ul class="features">
+            <li><i class="fas fa-check"></i> Full course content access</li>
+            <li><i class="fas fa-check"></i> Text and image materials</li>
+            <li class="unavailable"><i class="fas fa-times"></i> No video content</li>
+          </ul>
+
+          <a href="uhome.html#signup-form"><button class="btn">Start Learning</button></a>
+        </div>
+
+        <div class="card featured">
+          <div class="featured-badge">Most Popular</div>
+          <h2>Premium Access</h2>
+          <p class="description">Pay per module or full course</p>
+          <div class="price">$1.49<span>/module</span></div>
+
+          <ul class="features">
+            <li><i class="fas fa-check"></i> Everything in Free</li>
+            <li><i class="fas fa-check"></i> Full video content</li>
+            <li><i class="fas fa-check"></i> Pay per module flexibility</li>
+          </ul>
+
+          <a href="payment-methods"><button class="btn btn-primary">Choose Plan</button></a>
+        </div>
+
+        <div class="card">
+          <h2>Enterprise</h2>
+          <p class="description">Custom solution for your organization</p>
+          <div class="price">Custom</div>
+
+          <ul class="features">
+            <li><i class="fas fa-check"></i> Everything in Premium</li>
+            <li><i class="fas fa-check"></i> Organization-wide access</li>
+            <li><i class="fas fa-check"></i> Custom integration</li>
+          </ul>
+
+          <button class="btn" onclick="scrollToContact()">Contact Sales</button>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="contact-section" class="contact-section">
+      <h2>Contact Us</h2>
+      <p class="section-description">We're here to help. Reach out with any questions about our courses or pricing.</p>
+      
+      <div class="contact-container">
+        <div class="contact-info">
+          <div class="contact-method">
+            <i class="fas fa-phone-alt"></i>
+            <h3>Phone</h3>
+            <p>+254 708 654 984</p>
+            <p class="small">Help phone support</p>
+          </div>
+          
+          <div class="contact-method">
+            <i class="fas fa-envelope"></i>
+            <h3>Email</h3>
+            <p>john@uplas.me</p>
+            <p class="small">Help email support</p>
+          </div>
+          
+          <div class="contact-method">
+            <i class="fas fa-clock"></i>
+            <h3>Hours</h3>
+            <p>Monday - Friday</p>
+            <p class="small">9:00 AM - 5:00 PM</p>
+          </div>
+        </div>
+
+        <form id="contactForm" class="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" name="phone">
+            </div>
+            
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <select id="subject" name="subject" required>
+                <option value="" disabled selected>Select a subject</option>
+                <option value="pricing">Pricing Inquiry</option>
+                <option value="technical">Technical Support</option>
+                <option value="enterprise">Enterprise Solutions</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group full-width">
+            <label for="message">Your Message</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+          </div>
+          
+          <div class="form-submit">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+        <div class="footer-left">
+            <h3>Contact Us</h3>
+            <p><i class="fas fa-phone"></i> +123 456 7890</p>
+            <p><i class="fas fa-envelope"></i> info@uplas.com</p>
+            <p><i class="fas fa-map-marker-alt"></i> 123 Uplas Street, AI City</p>
+            <p>© 2025 Uplas. All rights reserved.</p>
+        </div>
+        <div class="footer-right">
+            <h3>Follow Us</h3>
+            <div class="social-media">
+                <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+  <script src="upricing.js"></script>
+</body>
+</html>
+
+

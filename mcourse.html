@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI in Workplace: Learn with Uplas</title>
+    <link rel="icon" href="c:\Users\pc\Downloads\uni plas_prev_ui.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="uhome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Styles for course page content, mirroring FAQ */
+        .course-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark-text); /* Using CSS variable for consistency */
+            margin-bottom: 2rem;
+            padding-top: 2rem; /* Add some top padding */
+        }
+
+        .progress-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            color: var(--dark-text);
+            background-color: var(--light-bg); /* Using CSS variable for consistency */
+        }
+
+        .module-section {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 2rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .module-heading {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-text); /* Using CSS variable for consistency */
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .course-faq-item {
+            margin-bottom: 1.5rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            background-color: var(--light-bg); /* Using CSS variable for consistency */
+            transition: all 0.3s ease;
+        }
+
+        .course-faq-item:hover {
+            border-color: #00b4d8;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .course-faq-question {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--dark-text); /* Using CSS variable for consistency */
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+            transition: color 0.3s ease;
+        }
+
+        .course-faq-question:hover {
+            color: #00b4d8;
+        }
+
+        .topic-icons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .topic-icons a {
+            color: var(--dark-text); /* Using CSS variable for consistency */
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .topic-icons a:hover {
+            color: #00b4d8;
+        }
+
+        .faq-answer {
+            margin-top: 1rem;
+            font-weight: 400;
+            font-size: 1rem;
+            color: var(--dark-text); /* Using CSS variable for consistency */
+            text-align: left;
+            line-height: 1.6;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Dark Mode Styles for Course Page Content */
+        body.dark-mode .course-title,
+        body.dark-mode .module-heading,
+        body.dark-mode .course-faq-question,
+        body.dark-mode .faq-answer,
+        body.dark-mode .progress-container {
+            color: var(--light-text); /* Using CSS variable for consistency */
+        }
+
+        body.dark-mode .progress-container {
+            background-color: var(--dark-bg); /* Using CSS variable for consistency */
+            border-color: #ccc;
+        }
+
+        body.dark-mode .module-section {
+            /* Background might be handled by the general dark mode body style */
+        }
+
+        body.dark-mode .course-faq-item {
+            background-color: var(--dark-bg); /* Using CSS variable for consistency */
+            border-color: #ccc;
+        }
+
+        body.dark-mode .course-faq-item:hover {
+            border-color: #00b4d8;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode .topic-icons a {
+            color: var(--light-text); /* Using CSS variable for consistency */
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="c:\Users\pc\Downloads\uni plas_prev_ui.ico" alt="Uplas Logo" class="logo-img">
+        </div>
+        <nav class="nav">
+            <a href="uprojects.html" class="nav-link">Projects</a>
+            <a href="ucommunity.html" class="nav-link">Community</a>
+        </nav>
+        <button id="theme-toggle">Dark Mode</button>
+    </header>
+
+    <main class="main-content">
+        <h1 class="course-title">AI in Workplace: Blend with AI, improve productivity, efficiency and foster teamwork</h1>
+
+        <section class="progress-container">
+            <h2>Course Progress</h2>
+            <div class="progress-bar" id="course-progress-bar">0%</div>
+        </section>
+
+        <section class="module-section">
+            <h2 class="module-heading">Module 1: Deep Learning & Generative AI</h2>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Deep Learning Fundamentals
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Deep Learning Fundamentals"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Deep Learning Fundamentals"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Deep Learning Fundamentals will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    CNN (for images), RNNs (for sequences), transformers
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="CNN (for images), RNNs (for sequences), transformers"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="CNN (for images), RNNs (for sequences), transformers"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for CNN, RNNs, transformers will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Generative AI Basics
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Generative AI Basics"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Generative AI Basics"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Generative AI Basics will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Web Search AI generation (core images, code)
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Web Search AI generation (core images, code)"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Web Search AI generation (core images, code)"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Web Search AI generation will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Model Architecture
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Model Architecture"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Model Architecture"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Model Architecture will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    GANs: Generator vs. discriminator, training scheduling
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="GANs: Generator vs. discriminator, training scheduling"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="GANs: Generator vs. discriminator, training scheduling"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for GANs will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Transformers: Attention mechanisms, tokenization (BERT, GPT)
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Transformers: Attention mechanisms, tokenization (BERT, GPT)"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Transformers: Attention mechanisms, tokenization (BERT, GPT)"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Transformers will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Diffusion Models: Stable Diffusion (DALL·E, MidJourney)
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Diffusion Models: Stable Diffusion (DALL·E, MidJourney)"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Diffusion Models: Stable Diffusion (DALL·E, MidJourney)"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Diffusion Models will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Prompt Engineering
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Prompt Engineering"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Prompt Engineering"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Prompt Engineering will go here.</p>
+            </details>
+        </section>
+
+        <section class="module-section">
+            <h2 class="module-heading">Module 2: Data & Practical ML</h2>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Data Library
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Data Library"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Data Library"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Data Library will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Building Your First Model
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Building Your First Model"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Building Your First Model"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Building Your First Model will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Neural Networks
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Neural Networks"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Neural Networks"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Neural Networks will go here.</p>
+            </details>
+        </section>
+
+        <section class="module-section">
+            <h2 class="module-heading">Module 3: Real-World AI Deployment</h2>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Cloud Platforms
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Cloud Platforms"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Cloud Platforms"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Cloud Platforms will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    MLOps Basics
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="MLOps Basics"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="MLOps Basics"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for MLOps Basics will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Industry Case Studies
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Industry Case Studies"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Industry Case Studies"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Industry Case Studies will go here.</p>
+            </details>
+        </section>
+
+        <section class="module-section">
+            <h2 class="module-heading">Module 4: Ethics, Governance & Future Trends</h2>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Global AI Regulations
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Global AI Regulations"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Global AI Regulations"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Global AI Regulations will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Risk Management
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Risk Management"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Risk Management"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Risk Management will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    AI in Healthcare
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="AI in Healthcare"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="AI in Healthcare"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for AI in Healthcare will go here.</p>
+            </details>
+        </section>
+
+        <section class="module-section">
+            <h2 class="module-heading">Module 5: Advanced Applications & Specializations (Optional/Extra)</h2>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Customizing LLMs
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Customizing LLMs"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Customizing LLMs"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Customizing LLMs will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    Edge AI
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="Edge AI"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="Edge AI"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for Edge AI will go here.</p>
+            </details>
+            <details class="course-faq-item">
+                <summary class="course-faq-question">
+                    AI for Social Good
+                    <div class="topic-icons">
+                        <a href="#" title="Listen to audio" class="audio-trigger" data-topic="AI for Social Good"><i class="fas fa-volume-up"></i></a>
+                        <a href="#" title="Watch video" class="video-trigger" data-topic="AI for Social Good"><i class="fas fa-video"></i></a>
+                    </div>
+                </summary>
+                <p class="faq-answer">Content for AI for Social Good will go here.</p>
+            </details>
+        </section>
+
+        <div id="ai-nlp-integration" style="display: none;">
+            </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-left">
+            <div class="contact-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-map-marker-alt"></i> 123 AI Learning Street, Tech City</p>
+                <p><i class="fas fa-envelope"></i> info@uplas.com</p>
+                <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+            </div>
+            <div class="copyright-section">
+                &copy; 2025 Uplas. All rights reserved.
+            </div>
+        </div>
+        <div class="footer-right">
+            <div class="social-section">
+                <h3>Follow Us</h3>
+                <div class="social-media">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="uhome.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const audioTriggers = document.querySelectorAll('.audio-trigger');
+            const videoTriggers = document.querySelectorAll('.video-trigger');
+
+            audioTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const topic = this.getAttribute('data-topic');
+                    // In a real implementation, you would fetch or have the audio URL based on the topic
+                    const audioURL = 'your-audio-url.mp3'; // Replace with actual URL
+                    const summaryElement = this.closest('.course-faq-question');
+                    if (summaryElement) {
+                        // Remove any existing audio player
+                        const existingPlayer = summaryElement.nextElementSibling.querySelector('audio');
+                        if (existingPlayer) {
+                            existingPlayer.remove();
+                        }
+
+                        const audioPlayer = document.createElement('audio');
+                        audioPlayer.controls = true; // Show default controls for now, we'll customize later
+                        audioPlayer.src = audioURL;
+                        audioPlayer.style.width = '100%'; // Make it responsive within the answer area
+
+                        // Add custom controls (rewind, forward, speed) - This is a placeholder, actual implementation will be more complex
+                        const controlsDiv = document.createElement('div');
+                        controlsDiv.innerHTML = `
+                            <button>Rewind</button>
+                            <button>Play/Pause</button>
+                            <button>Forward</button>
+                            <select>
+                                <option value="1">Normal</option>
+                                <option value="1.5">1.5x</option>
+                                <option value="2">2x</option>
+                            </select>
+                        `;
+                        summaryElement.nextElementSibling.appendChild(audioPlayer);
+                        summaryElement.nextElementSibling.appendChild(controlsDiv);
+
+                        // Basic play/pause functionality (for demonstration)
+                        const playPauseButton = controlsDiv.querySelector('button:nth-child(2)');
+                        if (playPauseButton) {
+                            playPauseButton.addEventListener('click', () => {
+                                if (audioPlayer.paused) {
+                                    audioPlayer.play();
+                                    playPauseButton.textContent = 'Pause';
+                                } else {
+                                    audioPlayer.pause();
+                                    playPauseButton.textContent = 'Play';
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+
+            videoTriggers.forEach(trigger => {
+                trigger.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const topic = this.getAttribute('data-topic');
+                    // In a real implementation, you would fetch or have the video URL based on the topic
+                    const videoURL = 'your-video-url.mp4'; // Replace with actual URL
+                    const detailsElement = this.closest('.course-faq-item');
+                    const answerElement = detailsElement.querySelector('.faq-answer');
+
+                    // Remove any existing video player
+                    const existingPlayer = answerElement.querySelector('iframe');
+                    if (existingPlayer) {
+                        existingPlayer.remove();
+                    }
+
+                    const videoIframe = document.createElement('iframe');
+                    videoIframe.src = videoURL;
+                    videoIframe.width = '560'; // Example width, adjust as needed
+                    videoIframe.height = '315'; // Example height, adjust as needed
+                    videoIframe.allowFullscreen = true;
+                    videoIframe.style.border = 'none'; // Remove default iframe border
+
+                    answerElement.appendChild(videoIframe);
+                    detailsElement.style.borderBottom = 'none'; // Adjust border to appear expanded
+                });
+            });
+        });
+    </script>
+</body>
+</html>

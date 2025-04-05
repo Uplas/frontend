@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Chat</title>
+    <link rel="stylesheet" href="ucommunity.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="body">
+
+    <div class="community-unavailable-overlay">
+        <div class="community-unavailable-content">
+            <i class="fas fa-lock padlock-icon"></i>
+            <p>The community is currently unavailable and still in development.</p>
+            <p class="feature-suggestion-text">🚀 <span style="font-weight: bold;">Got ideas to make this community even better?</span> <a href="#" class="go-back-link" style="color: var(--primary-color); text-decoration: none; cursor: pointer;">Click here</a>, to suggest features and help us build what you want! Or else, <span id="go-back-alternative" class="go-back-link" style="color: var(--primary-color); text-decoration: none; cursor: pointer;">go back</span></p>
+        </div>
+    </div>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <a href="#" class="back-arrow"><i class="fas fa-arrow-left"></i></a>
+            <h2 class="community-title">Community Name</h2> </div>
+        <div class="messages-area" id="messages-area">
+            <div class="message received">
+                <div class="profile-avatar">A</div>
+                <div class="message-content-container">
+                    <span class="user-name">Alice</span>
+                    <div class="message-content">Hello everyone!</div>
+                </div>
+            </div>
+            <div class="message sent">
+                <div class="message-content-container">
+                    <div class="message-content">Hi! How's it going?</div>
+                </div>
+                <div class="profile-avatar">Y</div>
+            </div>
+            <div class="message received">
+                <div class="profile-avatar">B</div>
+                <div class="message-content-container">
+                    <span class="user-name">Bob</span>
+                    <div class="message-content">I'm doing great, thanks!</div>
+                </div>
+            </div>
+            <div class="message sent">
+                <div class="message-content-container">
+                    <div class="message-content">That's good to hear.</div>
+                </div>
+                <div class="profile-avatar">Y</div>
+            </div>
+            <div class="message received">
+                <div class="profile-avatar">C</div>
+                <div class="message-content-container">
+                    <span class="user-name">Charlie</span>
+                    <div class="message-content">Anyone working on the project?</div>
+                </div>
+            </div>
+            </div>
+        <div class="input-area">
+            <div class="input-actions">
+                <button title="Add Attachment"><i class="fas fa-paperclip"></i></button>
+                </div>
+            <input type="text" id="message-input" class="message-input" placeholder="Type your message...">
+            <button class="send-button"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+</body>
+
+<script src="ucommunity.js"></script>
+
+</html>

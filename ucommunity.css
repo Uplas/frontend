@@ -1,0 +1,374 @@
+/* community.css - Topnotch Styling for Hackathon Win! - Updated (Feature Suggestion Inside Overlay) */
+:root {
+    --primary-color: #00b4d8; /* Skyblue - Engaging and vibrant */
+    --secondary-color: #3d405b; /* Luxury black - For contrast and sophistication */
+    --light-bg: #f4f1de; /* Light cream - Soft and inviting in light mode */
+    --dark-bg: #282a36; /* Dracula background - Modern and sleek in dark mode */
+    --light-text: #282a36; /* Dracula foreground - Readable in light mode */
+    --dark-text: #f8f8f2; /* Dracula foreground - Readable in dark mode */
+    --accent-color: #ffb86c; /* Orange - For highlights and calls to action */
+    --message-received-bg: #e1f5fe; /* Light blue for received messages */
+    --message-sent-bg: #dcedc8; /* Light green for sent messages */
+    --dark-mode-message-received-bg: #44475a; /* Dark blue-grey */
+    --dark-mode-message-sent-bg: #2e8b57; /* Darker green */
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--light-bg);
+    color: var(--light-text);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow-x: hidden; /* Prevent horizontal scrollbar */
+    position: relative; /* For absolute positioning of back arrow */
+    align-items: center; /* Center content horizontally */
+}
+
+body.dark-mode {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+}
+
+.community-unavailable-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent black overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200; /* Ensure it's on top */
+}
+
+.community-unavailable-content {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    text-align: center;
+    max-width: 80%; /* Ensure it doesn't take up the whole screen on larger devices */
+}
+
+body.dark-mode .community-unavailable-content {
+    background-color: #333;
+    color: var(--dark-text);
+}
+
+.padlock-icon {
+    font-size: 4em;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+}
+
+.community-unavailable-content p {
+    font-size: 1.4em;
+    margin-top: 20px;
+}
+
+.feature-suggestion-text {
+    font-size: 1em; /* Adjust as needed */
+    margin-top: 20px; /* Add some spacing */
+}
+
+.chat-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 90%;
+    width: 600px; /* Adjust as needed */
+    margin: 20px auto;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: var(--light-bg); /* Ensure background for blur */
+    /* Add margin-top to push it below the overlay's visual content */
+    margin-top: calc(100vh + 50px); /* Adjust 50px as needed for spacing */
+}
+
+body.dark-mode .chat-container {
+    background-color: var(--dark-bg);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.chat-header {
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+}
+
+body.dark-mode .chat-header {
+    background-color: #333;
+    border-bottom-color: #555;
+}
+
+.back-arrow {
+    font-size: 1.5em;
+    color: var(--secondary-color);
+    text-decoration: none;
+    margin-right: 15px;
+    position: absolute; /* Ensure absolute positioning */
+    top: 20px;
+    left: 20px;
+    z-index: 100; /* Ensure it's above everything else */
+}
+
+body.dark-mode .back-arrow {
+    color: var(--accent-color);
+}
+
+.community-title {
+    font-size: 1.3em;
+    margin: 0;
+    color: var(--secondary-color);
+}
+
+body.dark-mode .community-title {
+    color: var(--accent-color);
+}
+
+.messages-area {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 60px; /* To accommodate the input area */
+}
+
+.message {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 10px;
+    clear: both; /* Prevent floating issues */
+}
+
+.message.received {
+    background-color: var(--message-received-bg);
+    color: var(--light-text);
+    align-self: flex-start;
+}
+
+body.dark-mode .message.received {
+    background-color: var(--dark-mode-message-received-bg);
+    color: var(--dark-text);
+}
+
+.message.sent {
+    background-color: var(--message-sent-bg);
+    color: var(--light-text);
+    align-self: flex-end;
+    flex-direction: row-reverse; /* Avatar on the right for sent messages */
+}
+
+body.dark-mode .message.sent {
+    background-color: var(--dark-mode-message-sent-bg);
+    color: var(--dark-text);
+}
+
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    color: var(--secondary-color);
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1em;
+    margin-right: 10px;
+    margin-left: 10px; /* For sent messages */
+}
+
+.message.sent .profile-avatar {
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+body.dark-mode .profile-avatar {
+    background-color: var(--primary-color);
+    color: var(--dark-text);
+}
+
+.user-name {
+    font-weight: bold;
+    color: var(--secondary-color);
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+
+body.dark-mode .user-name {
+    color: var(--accent-color);
+}
+
+.message-content {
+    font-size: 1em;
+    line-height: 1.4;
+    word-break: break-word;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background-color: inherit; /* Inherit background from parent message */
+}
+
+.input-area {
+    padding: 10px;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    position: fixed; /* Stick to the bottom */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box; /* Include padding and border in width */
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+body.dark-mode .input-area {
+    background-color: #333;
+    border-top-color: #555;
+}
+
+.input-actions {
+    margin-right: 15px;
+}
+
+.input-actions button {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    color: var(--primary-color);
+    cursor: pointer;
+    padding: 8px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.input-actions button:hover {
+    transform: scale(1.1);
+}
+
+body.dark-mode .input-actions button {
+    color: var(--accent-color);
+}
+
+.message-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-right: 15px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--light-text);
+    background-color: #fff;
+    font-size: 1em;
+}
+
+body.dark-mode .message-input {
+    color: var(--dark-text);
+    background-color: #44475a;
+    border-color: #555;
+}
+
+.send-button {
+    background-color: var(--primary-color);
+    color: var(--dark-text);
+    border: none;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.send-button i {
+    font-size: 1.2em;
+}
+
+.send-button:hover {
+    background-color: var(--accent-color);
+    color: var(--secondary-color);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .chat-container {
+        max-width: 95%;
+        width: 100%;
+        margin: 10px auto;
+        border-radius: 0;
+        margin-top: calc(100vh + 20px); /* Adjust for mobile */
+    }
+
+    .chat-header {
+        padding: 10px;
+    }
+
+    .community-title {
+        font-size: 1.1em;
+    }
+
+    .messages-area {
+        padding: 10px;
+        padding-bottom: 70px; /* Adjust for input area */
+    }
+
+    .message {
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+
+    .profile-avatar {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9em;
+        margin-right: 8px;
+        margin-left: 8px;
+    }
+
+    .user-name {
+        font-size: 0.8em;
+        margin-bottom: 3px;
+    }
+
+    .message-content {
+        font-size: 0.9em;
+        padding: 8px 12px;
+        border-radius: 8px;
+    }
+
+    .input-area {
+        padding: 10px;
+    }
+
+    .input-actions button {
+        font-size: 1.3em;
+        padding: 6px;
+    }
+
+    .message-input {
+        padding: 8px;
+        font-size: 0.9em;
+    }
+
+    .send-button {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+
+    .feature-suggestion-text { /* Ensure responsiveness */
+        font-size: 0.9em;
+        margin-top: 15px;
+    }
+}

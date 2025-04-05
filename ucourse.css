@@ -1,0 +1,660 @@
+/* ucourse.css - Updated to match homepage styles and refine WhatsApp */
+
+/* Use variables for consistent theming */
+:root {
+    --primary-color: #00b4d8; /* Skyblue */
+    --secondary-color: #3d405b; /* Luxury black */
+    --light-bg: #f4f1de; /* Light cream in light mode */
+    --dark-bg: #3d405b; /* Luxury black in dark mode */
+    --light-text: #3d405b; /* Luxury black in light mode */
+    --dark-text: #f4f1de; /* Light cream in dark mode */
+    --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --card-hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    --available-course-shadow: 0 4px 8px rgba(0, 180, 216, 0.3); /* Shadow for available courses */
+    --locked-course-bg: #f9f9f9; /* Light background for locked courses */
+    --locked-course-text: #aaa; /* Grey text for locked courses */
+    --locked-course-border: #eee; /* Light border for locked courses */
+    --dark-mode-course-bg: #2d2f3e; /* Dark background for course items in dark mode */
+    --dark-mode-locked-bg: #444; /* Darker background for locked courses in dark mode */
+    --dark-mode-locked-text: #888; /* Grey text for locked courses in dark mode */
+    --dark-mode-locked-border: #666; /* Dark border for locked courses in dark mode */
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--light-bg);
+    color: var(--light-text);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--light-bg);
+    padding: 0 1rem 0 0;
+    padding-left: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 80px; /* Match logo height */
+    overflow: hidden; /* Prevents logo from expanding header */
+    position: relative;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-left: 0;
+}
+
+.logo-img {
+    height: 180px; /* Match homepage logo size */
+    width: auto;
+    margin-bottom: -10px; /* Pulls logo down to fit in header */
+    margin-left: 0 !important; /* Force margin-left to 0 */
+    position: absolute;
+    left: 0 !important; /* Force left position to 0 */
+    z-index: 2; /* Add this - keeps logo above other elements */
+}
+
+.logo-text {
+    font-size: 1.6rem; /* Adjusted to match logo scale */
+    font-weight: 700;
+    color: var(--light-text);
+    margin-left: 5px; /* Space between logo and text */
+    line-height: 1; /* Prevents vertical misalignment */
+    transform: translateY(-2px); /* Fine-tune vertical alignment */
+}
+
+.nav {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-link {
+    font-weight: 600;
+    color: var(--light-text);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    background-color: var(--primary-color);
+}
+
+#theme-toggle {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    background-color: var(--secondary-color);
+    color: var(--dark-text);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    text-align: center;
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+.courses-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+.courses-container h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--light-text);
+    margin-bottom: 30px;
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+.search-bar {
+    margin-bottom: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+.search-bar input[type="text"] {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    font-size: 1rem;
+    width: 40%;
+    max-width: 300px;
+    border-right: none;
+    font-family: 'Poppins', sans-serif;
+}
+
+.search-bar button {
+    background-color: var(--primary-color);
+    color: var(--dark-text);
+    border: none;
+    padding: 12px 15px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    font-family: 'Poppins', sans-serif;
+}
+
+.search-bar button:hover {
+    background-color: darken(var(--primary-color), 10%);
+}
+
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.course-item {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    padding: 25px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    position: relative;
+    border: 1px solid #ddd;
+    font-family: 'Poppins', sans-serif;
+}
+
+.course-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-hover-shadow);
+}
+
+.course-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    transition: transform 0.3s ease-in-out;
+}
+
+.course-item h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--light-text);
+    margin-top: 0;
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+.course-item.available {
+    cursor: pointer;
+    border-color: var(--primary-color);
+}
+
+.course-item.available:hover {
+    box-shadow: var(--available-course-shadow);
+    transform: translateY(-7px);
+}
+
+.course-item.available:hover .course-icon {
+    transform: scale(1.2);
+    color: darken(var(--primary-color), 10%);
+}
+
+.course-item.locked {
+    background-color: var(--locked-course-bg);
+    color: var(--locked-course-text);
+    border: 1px solid var(--locked-course-border);
+    cursor: not-allowed;
+    opacity: 0.9;
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+.course-item.locked .course-icon {
+    color: var(--locked-course-text);
+}
+
+/* Add these styles to your ucourse.css */
+.whatsapp-chat-window {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1001; /* Higher than the main icon */
+    width: 300px;
+    height: 400px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    display: none; /* Initially hidden */
+}
+
+.whatsapp-chat-window iframe {
+    border: none;
+    width: 100%;
+    height: calc(100% - 30px); /* Adjust height for the close button */
+}
+
+#close-whatsapp-chat {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 0 0 10px 10px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+#close-whatsapp-chat:hover {
+    background-color: #d32f2f;
+}
+
+/* Style for the initially visible WhatsApp icon */
+.whatsapp-chat {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1000;
+    cursor: pointer; /* Changed to pointer for direct click */
+}
+
+.whatsapp-chat a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border-radius: 50%; /* Make it a circle */
+    background-color: transparent; /* Remove background */
+}
+
+.whatsapp-chat a:hover {
+    transform: scale(1.05);
+}
+
+.whatsapp-chat i {
+    margin-top: 5px; /* Adjust icon alignment */
+    color: #25d366; /* Set the WhatsApp icon color for light mode */
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+}
+
+body.dark-mode .header {
+    background-color: var(--dark-bg);
+}
+
+body.dark-mode .logo-text {
+    color: var(--dark-text);
+}
+
+body.dark-mode .nav-link {
+    color: var(--dark-text);
+}
+
+body.dark-mode #theme-toggle {
+    background-color: var(--dark-text); /* Light background for button in dark mode */
+    color: var(--dark-bg); /* Dark text on button in dark mode */
+}
+
+body.dark-mode .courses-container h1,
+body.dark-mode .course-item h3 {
+    color: var(--dark-text);
+}
+
+body.dark-mode .course-item {
+    background-color: var(--dark-mode-course-bg);
+    color: #ccc;
+    border: 1px solid #555;
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+body.dark-mode .course-item.available {
+    border-color: var(--primary-color);
+}
+
+body.dark-mode .course-item.available:hover {
+    box-shadow: 0 6px 12px rgba(0, 180, 216, 0.5);
+}
+
+body.dark-mode .course-item.locked {
+    background-color: var(--dark-mode-locked-bg);
+    color: var(--dark-mode-locked-text);
+    border: 1px solid var(--dark-mode-locked-border);
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+body.dark-mode .course-item.locked .course-icon {
+    color: var(--dark-mode-locked-text);
+}
+
+body.dark-mode .course-icon {
+    color: var(--primary-color);
+}
+
+body.dark-mode .footer {
+    background-color: #2d2f3e; /* Darker background for footer in dark mode */
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+body.dark-mode .footer .contact-section h3,
+body.dark-mode .footer .contact-section p,
+body.dark-mode .footer .copyright-section p,
+body.dark-mode .footer .social-section h3,
+body.dark-mode .footer .social-link {
+    color: var(--dark-text);
+}
+
+/* WhatsApp Chat Icon Styles */
+body.dark-mode .whatsapp-chat a i {
+    color: #25d366; /* Keep the same green color in dark mode */
+}
+
+/* Footer Styles - Corrected */
+.footer {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--secondary-color);
+    padding: 1.5rem; /* Reduced padding for a more compact footer */
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+    color: var(--dark-text); /* Ensure text color is set */
+}
+
+.footer-left {
+    flex: 1;
+    text-align: left;
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+.footer-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.contact-section {
+    text-align: left;
+    margin-bottom: 20px;
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+.contact-section h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--dark-text);
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+.contact-section p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: var(--dark-text);
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+.contact-section i {
+    margin-right: 5px;
+}
+
+.copyright-section {
+    text-align: left;
+    font-size: 0.9rem;
+    color: var(--dark-text);
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+.social-section {
+    text-align: left;
+    margin-top: auto; /* Push to the bottom */
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+.social-section h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--dark-text);
+    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+}
+
+.social-media {
+    display: flex;
+    gap: 10px;
+}
+
+.social-link {
+    color: var(--dark-text);
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.social-link:hover {
+    color: var(--primary-color);
+}
+
+/* Responsive Design - Enhanced for more phone sizes */
+@media screen and (max-width: 768px) {
+    .header {
+        padding: 0 1rem;
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+    }
+
+    .logo {
+        padding-left: 0;
+        margin-bottom: 10px;
+    }
+
+    .logo-img {
+        height: 120px;
+        position: static;
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    .logo-text {
+        text-align: center;
+    }
+
+    .nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .nav-link {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+        width: 80%;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .nav-link:last-child {
+        border-bottom: none;
+    }
+
+    #theme-toggle {
+        margin-top: 10px;
+    }
+
+    .courses-container {
+        padding: 1rem;
+    }
+
+    .courses-container h1 {
+        font-size: 2rem;
+    }
+
+    .search-bar input[type="text"] {
+        width: 70%;
+    }
+
+    .courses-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+    }
+
+    .course-item {
+        padding: 15px;
+        min-height: auto;
+    }
+
+    .course-item h3 {
+        font-size: 1.1rem;
+    }
+
+    .course-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+
+    .footer {
+        flex-direction: column;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .footer-left,
+    .footer-right {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .social-section {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .social-media {
+        justify-content: center;
+    }
+
+    .whatsapp-chat {
+        right: 15px;
+        bottom: 15px;
+    }
+
+    .whatsapp-chat a {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .logo-img {
+        height: 100px;
+    }
+
+    .nav-link {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    .courses-container h1 {
+        font-size: 1.8rem;
+    }
+
+    .search-bar input[type="text"] {
+        width: 80%;
+    }
+
+    .social-link {
+        font-size: 1.5rem;
+    }
+
+    .course-item {
+        padding: 10px;
+    }
+
+    .course-item h3 {
+        font-size: 1rem;
+    }
+
+    .course-icon {
+        font-size: 1.8rem;
+    }
+}
+
+/* Extra small screens */
+@media screen and (max-width: 375px) {
+    .logo-img {
+        height: 80px;
+    }
+
+    .nav-link {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.5rem;
+    }
+
+    .courses-container h1 {
+        font-size: 1.6rem;
+    }
+
+    .search-bar input[type="text"] {
+        width: 90%;
+    }
+
+    .course-item {
+        padding: 8px;
+    }
+
+    .course-item h3 {
+        font-size: 0.9rem;
+    }
+
+    .whatsapp-chat a {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+}

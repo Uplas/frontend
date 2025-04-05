@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Projects - Uplas. The Future is Here!</title>
+    <link rel="icon" href="placeholder_uplas_icon.ico" type="image/x-icon"> <link rel="stylesheet" href="uprojects.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="body">
+    <header class="header">
+        <nav class="navbar">
+            <div class="logo">
+                <img src="c:\Users\pc\Downloads\uni plas_prev_ui.ico" alt="Uplas Logo" class="logo-img"> 
+            </div>
+                <nav class="nav">
+                    <a href="ucourse.html" class="nav-link active">Courses</a>
+                    <a href="uprojects.html" class="nav-link">Projects</a>
+                    <a href="ucommunity.html" class="nav-link">Community</a>
+                </nav>
+            <button id="theme-toggle" class="theme-toggle">
+                Dark Mode
+            </button>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <aside class="left-sidebar">
+            <div class="sidebar-item" id="ai-tutor-icon">
+                <i class="fas fa-robot"></i>
+                <div class="tooltip">AI Tutor</div>
+            </div>
+            <div class="sidebar-item" id="ide-icon">
+                <i class="fas fa-code"></i>
+                <div class="tooltip">IDE</div>
+            </div>
+            <div class="sidebar-item" id="project-overview-icon">
+                <i class="fas fa-tasks"></i>
+                <div class="tooltip">Project Overview</div>
+            </div>
+            <div class="sidebar-item" id="resources-icon">
+                <i class="fas fa-book"></i>
+                <div class="tooltip">Resources</div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <section class="course-info">
+                <h1>AI in Workplace: Blend with AI, improve productivity, efficiency and foster teamwork</h1>
+                <p>Welcome to the projects page! Here, you'll find hands-on exercises to solidify your understanding of AI in the workplace. Engage with the AI Tutor for guidance, use the integrated IDE to practice coding, and track your project progress.</p>
+            </section>
+
+            <div id="ai-tutor-panel" class="feature-panel" style="display: none;">
+                <div class="panel-header">
+                    <div class="tutor-profile">
+                        <img src="placeholder-tutor.png" alt="AI Tutor" class="tutor-avatar">
+                        <span class="tutor-name">AI Tutor</span>
+                    </div>
+                    <div class="panel-controls">
+                        <button class="resize-handle">⇆</button>
+                        <button class="close-panel"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="panel-content chat-area">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message received">Hello! How can I assist you with your projects today?</div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="message-input" placeholder="Ask me anything...">
+                        <button id="send-button"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ide-panel" class="feature-panel" style="display: none;">
+                <div class="panel-header">
+                    <h3>Integrated Development Environment (IDE)</h3>
+                    <div class="panel-controls">
+                        <button class="resize-handle">⇆</button>
+                        <button class="close-panel"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="panel-content ide-area">
+                    <div class="code-editor">
+                        <textarea id="code-area" placeholder="Write your Python code here..."></textarea>
+                    </div>
+                    <div class="ide-controls">
+                        <button id="run-code"><i class="fas fa-play"></i> Run</button>
+                        <button id="save-code"><i class="fas fa-save"></i> Save</button>
+                        <div class="output-area">
+                            <pre id="output"></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="project-overview-panel" class="feature-panel" style="display: none;">
+                <div class="panel-header">
+                    <h3>Project Overview</h3>
+                    <div class="panel-controls">
+                        <button class="resize-handle">⇆</button>
+                        <button class="close-panel"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="panel-content project-overview-area">
+                    <ul>
+                        <li><strong>Project 1:</strong> Automating Email Responses with AI</li>
+                        <li><strong>Project 2:</strong> Building a Simple Chatbot for Team Communication</li>
+                        <li><strong>Project 3:</strong> Analyzing Workplace Data using AI</li>
+                        </ul>
+                    <p>Click on a project to view details and instructions.</p>
+                </div>
+            </div>
+
+            <div id="resources-panel" class="feature-panel" style="display: none;">
+                <div class="panel-header">
+                    <h3>Resources</h3>
+                    <div class="panel-controls">
+                        <button class="resize-handle">⇆</button>
+                        <button class="close-panel"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="panel-content resources-area">
+                    <ul>
+                        <li><a href="#" target="_blank">Python for AI Basics</a></li>
+                        <li><a href="#" target="_blank">Introduction to Natural Language Processing</a></li>
+                        <li><a href="#" target="_blank">Working with AI APIs</a></li>
+                        </ul>
+                    <p>These resources will help you with your projects.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-left">
+            <div class="contact-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-envelope"></i> info@uplas.com</p>
+                <p><i class="fas fa-phone"></i> +254 700 000 000</p>
+            </div>
+            <div class="copyright-section">
+                <p>&copy; 2025 Uplas. All rights reserved.</p>
+            </div>
+        </div>
+        <div class="footer-right">
+            <div class="social-section">
+                <h3>Follow Us</h3>
+                <div class="social-media">
+                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a> </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="uprojects.js"></script>
+</body>
+</html>

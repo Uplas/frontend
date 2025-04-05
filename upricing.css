@@ -1,0 +1,598 @@
+/* upricing.css */
+/* Consistent with home page styles */
+:root {
+  --primary-color: #00b4d8;
+  --secondary-color: #3d405b;
+  --light-bg: #f4f1de;
+  --dark-bg: #3d405b;
+  --light-text: #f4f1de;
+  --dark-text: #3d405b;
+  --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --card-hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--light-bg);
+  color: var(--dark-text);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-section h3,
+.contact-section p,
+.copyright-section,
+.social-section h3,
+.social-link,
+.nav-link,
+h1,
+h2,
+h3,
+label,
+.features li,
+.section-description {
+  color: var(--dark-text); /* Explicitly set text to dark */
+}
+
+/* upricing.css - Modified Header Styles */
+
+/* Adjust header to add spacing from the left */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f4f1de;
+  padding: 0 1rem 0 0;
+  padding-left: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 80px; /* Match logo height */
+  overflow: hidden; /* Prevents logo from expanding header */
+  position: relative;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: 0; 
+}
+
+.logo-img {
+  height: 180px; /* Your desired size */
+  width: auto;
+  margin-bottom: -10px; /* Pulls logo down to fit in header */
+  margin-left: 0 !important; /* Force margin-left to 0 */
+  position: absolute;
+  left: 0 !important; /* Force left position to 0 */
+  z-index: 2; /* Add this - keeps logo above other elements */
+}
+
+.logo-text {
+  font-size: 1.6rem; /* Adjusted to match logo scale */
+  font-weight: 700;
+  color: #3d405b;
+  margin-left: 5px; /* Space between logo and text */
+  line-height: 1; /* Prevents vertical misalignment */
+  transform: translateY(-2px); /* Fine-tune vertical alignment */
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+}
+
+/* ... (Rest of your CSS) ... */
+.nav-link {
+  font-weight: 600;
+  color: var(--dark-text);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2px;
+  background-color: var(--primary-color);
+}
+
+#theme-toggle {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  background-color: var(--secondary-color);
+  color: var(--light-text);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#theme-toggle:hover {
+  background-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+}
+
+.pricing-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.subtitle {
+  color: #666;
+  margin-bottom: 3rem;
+  font-size: 1.2rem;
+}
+
+.pricing-cards {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-bottom: 4rem;
+}
+
+.card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: var(--card-shadow);
+  text-align: center;
+  width: 300px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--card-hover-shadow);
+}
+
+.card.featured {
+  border: 2px solid var(--primary-color);
+}
+
+.featured-badge {
+  position: absolute;
+  top: -15px;
+  right: 20px;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.card h2 {
+  margin-bottom: 1rem;
+  color: var(--dark-text);
+}
+
+.card .description {
+  margin-bottom: 1.5rem;
+  color: #666;
+}
+
+.card .price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+}
+
+.card .price span {
+  font-size: 1rem;
+  color: #666;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.features li {
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.features li i.fa-check {
+  color: var(--primary-color);
+}
+
+.features li.unavailable {
+  color: #ccc;
+}
+
+.features li.unavailable i {
+  color: #ccc;
+}
+
+.btn {
+  background-color: var(--secondary-color);
+  color: var(--light-text);
+  padding: 12px 24px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+}
+
+.btn:hover {
+  background-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Contact Section */
+.contact-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 0;
+}
+
+/* Style for the "Contact Us" title */
+.contact-section h2 {
+  text-align: center; /* Center the text */
+  font-size: 2.5em; /* Increase font size by 25% (1em is the base size) */
+}
+
+/* Style for the description text below the title - Adjusted for visibility in light mode */
+.contact-section .section-description {
+  color: #333; /* Set a darker gray color for better visibility in light mode */
+  margin-bottom: 2rem; /* Add spacing below the description */
+  font-weight: bold; /* Make the text bold */
+  font-size: 1.1em; /* Slightly increase the font size */
+  text-align: center; /* Center the text */ /* Added this to match previous instructions */
+}
+
+.section-description {
+  color: #666;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.contact-container {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.contact-info {
+  flex: 1;
+  min-width: 300px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.contact-method {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+}
+
+.contact-method:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--card-hover-shadow);
+}
+
+.contact-method i {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.contact-method h3 {
+  margin: 0.5rem 0;
+  color: var(--dark-text);
+}
+
+.contact-method p {
+  margin: 0.2rem 0;
+  color: var(--dark-text);
+}
+
+.contact-method .small {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.contact-form {
+  flex: 2;
+  min-width: 300px;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: var(--card-shadow);
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  flex: 1;
+  margin-bottom: 1rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--dark-text);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 180, 216, 0.2);
+}
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 1em;
+}
+
+textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.form-submit {
+  text-align: right;
+}
+
+
+/* Footer Styles - Updated to match home page */
+.footer {
+  background-color: #2d2f3e; /* Dark background like contact form in dark mode (for light mode) */
+  color: #f4f1de;
+  padding: 20px 2rem; /* Adjust padding as needed */
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-left, .footer-right{
+    padding: 10px 0;
+}
+
+.footer-left h3,
+.footer-right h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: white; /* Make "Contact Us" and "Follow Us" white in light mode */
+}
+
+.footer-left p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.footer-left i {
+  margin-right: 5px;
+}
+
+.footer-right h3 {
+  text-align: right;
+}
+
+.social-media {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.social-link {
+  color: #f4f1de;
+  font-size: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+.social-link:hover {
+  color: var(--primary-color);
+}
+
+.footer-left p:last-child { /* Copyright text */
+  font-size: 0.8rem;
+  margin-top: 20px;
+}
+
+/* Dark Mode Footer Style */
+body.dark-mode .footer {
+  background-color: #2d2f3e; /* Dark background like contact form in dark mode for dark mode */
+  color: var(--light-text);
+}
+
+body.dark-mode .footer .social-link {
+  color: var(--light-text);
+}
+
+body.dark-mode .footer .social-link:hover {
+  color: var(--primary-color);
+}
+
+/* Specific style for contact info text in light mode */
+body:not(.dark-mode) .contact-info h3,
+body:not(.dark-mode) .contact-info p {
+    color: black;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+  background-color: var(--dark-bg);
+  color: var(--light-text);
+}
+
+body.dark-mode .header {
+  background-color: var(--dark-bg);
+}
+
+body.dark-mode .logo-text,
+body.dark-mode .nav-link,
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode p,
+body.dark-mode label,
+body.dark-mode .features li,
+body.dark-mode .copyright-section {
+  color: var(--light-text);
+}
+
+body.dark-mode .nav-link:hover,
+body.dark-mode .nav-link.active {
+  color: var(--primary-color);
+}
+
+body.dark-mode #theme-toggle {
+  background-color: var(--light-text);
+  color: var(--dark-text);
+}
+
+body.dark-mode #theme-toggle:hover {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+}
+
+body.dark-mode .card,
+body.dark-mode .contact-method,
+body.dark-mode .contact-form,
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background-color: #2d2f3e;
+  color: var(--light-text);
+  border-color: #555;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder {
+  color: #aaa;
+}
+
+body.dark-mode .section-description {
+  color: #aaa;
+}
+
+body.dark-mode .footer {
+  background-color: var(--dark-bg); /* Luxury black in dark mode */
+  color: var(--light-text);
+}
+
+body.dark-mode .footer .social-link {
+  color: var(--light-text);
+}
+
+body.dark-mode .footer .social-link:hover {
+  color: var(--primary-color);
+}
+
+
+
+
+
+/* Responsive Design - Based on Blog Page */
+@media screen and (max-width: 992px) {
+/* ... (Existing rules - no changes here) ... */
+  }
+  @media screen and (max-width: 768px) {
+/* Header Adjustments for Tablets - Vertical Alignment */
+.header{padding:0.5rem;flex-direction:column;align-items:center;}
+.logo{padding-left:0;margin-bottom:0.5rem;}
+.nav{gap:8px;flex-direction:column;align-items:center;margin-bottom:0.5rem;}
+.nav-link{padding:0.5rem 1rem;font-size:0.9rem;width:100%;text-align:center;}
+#theme-toggle{padding:8px 16px;font-size:0.9rem;margin-bottom:0.5rem;}
+/* Contact Form Adjustments for Tablets - Vertical Alignment */
+.contact-container{flex-direction:column;align-items:center;gap:1.5rem;}
+.contact-info,.contact-form{width:90%;margin-bottom:1.5rem;}
+.form-group{margin-bottom:0.8rem;}
+label{font-size:0.9rem;}
+input,select,textarea{padding:10px;font-size:0.9rem;}
+textarea{min-height:120px;}
+  }
+  @media screen and (max-width: 480px) {
+/* Header Adjustments for Mobile Phones - Vertical Alignment */
+.header{padding:0.5rem;flex-direction:column;align-items:center;height:auto;}
+.logo{padding-left:0;margin-bottom:0.5rem;}
+.logo-img{height:50px;}
+ .logo-text{font-size:1.2rem;}
+.nav{gap:6px;flex-direction:column;align-items:center;margin-bottom:0.5rem;}
+.nav-link{padding:0.6rem 1.2rem;font-size:1rem;width:100%;text-align:center;}
+#theme-toggle{padding:10px 20px;font-size:1rem;margin-bottom:0.5rem;}
+/* Contact Form Adjustments for Mobile Phones - Vertical Alignment */
+.contact-container{flex-direction:column;align-items:center;gap:1.2rem;}
+.contact-info,.contact-form{width:95%;margin-bottom:1.2rem;}
+.contact-method{padding:1.2rem;}
+.contact-method i{font-size:1.4rem;margin-bottom:0.7rem;}
+.contact-method h3{font-size:1.2rem;}
+.contact-method p{font-size:1rem;}
+.contact-method .small{font-size:0.8rem;}
+.form-group{margin-bottom:0.7rem;}
+label{font-size:0.9rem;}
+input,select,textarea{padding:10px;font-size:0.9rem;}
+textarea{min-height:110px;}
+.form-submit{text-align:center;}
+.form-submit .btn{width:95%;padding:12px 24px;font-size:1rem;}
+}

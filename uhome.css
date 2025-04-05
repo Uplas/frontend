@@ -1,0 +1,717 @@
+/* Light Mode (usually in your base styles or a light theme stylesheet) */
+:root {
+    --text-color: #333; /* Or any color that looks good on a light background */
+    --link-color: #007bff;
+}
+
+/* Dark Mode (usually in a dark theme stylesheet or within a .dark-mode class) */
+.dark-mode {
+    --text-color: #f8f9fa; /* White or a light color for dark background */
+    --link-color: #5bc0de; /* A suitable link color for dark mode */
+}
+
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f1de; /* Light cream in light mode */
+    color: #3d405b; /* Luxury black in light mode */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f4f1de;
+    padding: 0 1rem 0 0;
+    padding-left: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 80px; /* Match logo height */
+    overflow: hidden; /* Prevents logo from expanding header */
+    position: relative;
+}
+
+
+.logo {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding-left: 0;
+}
+
+.logo-img {
+    height: 180px; /* Your desired size */
+    width: auto;
+    margin-bottom: -10px; /* Pulls logo down to fit in header */
+    margin-left: 0 !important; /* Force margin-left to 0 */
+    position: absolute;
+    left: 0 !important; /* Force left position to 0 */
+    z-index: 2; /* Add this - keeps logo above other elements */
+}
+
+.logo-text {
+    font-size: 1.6rem; /* Adjusted to match logo scale */
+    font-weight: 700;
+    color: #3d405b;
+    margin-left: 5px; /* Space between logo and text */
+    line-height: 1; /* Prevents vertical misalignment */
+    transform: translateY(-2px); /* Fine-tune vertical alignment */
+}
+.nav {
+    display: flex;
+    gap: 5px;
+}
+
+/* ... (Rest of your CSS) ... */
+.nav-link {
+    font-weight: 600;
+    color: var(--dark-text);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    background-color: var(--primary-color);
+}
+
+#theme-toggle {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    background-color: #3d405b;
+    color: #f4f1de;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    padding: 2rem;
+    text-align: center;
+}
+
+.main-content h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 30px; /* Add margin below the main heading */
+    color: #3d405b; /* Luxury black in light mode */
+}
+
+.main-content h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 25px; /* Add margin below the subheading */
+    color: #3d405b; /* Luxury black in light mode */
+}
+
+.main-content p {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 20px; /* Add margin below the introductory paragraph */
+    color: #3d405b; /* Luxury black in light mode */
+}
+
+.video-container {
+    margin: 40px 0;
+}
+
+.mode-dependent-text {
+    text-align: center;
+    padding: 2rem;
+}
+
+.mode-text {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 25px; /* Add margin below the mode-dependent heading */
+}
+
+/* Light mode text color */
+.mode-text {
+    color: #3d405b; /* Luxury black in light mode */
+}
+
+/* Dark mode text color */
+body.dark-mode .mode-text {
+    color: #f4f1de; /* Light cream in dark mode */
+}
+
+/* Image and Description Section */
+.image-description-section {
+    display: flex;
+    align-items: flex-start; /* Align items to the top */
+    padding: 2rem;
+    /* Removed background-color: #3d405b; */
+    margin: 2rem;
+    min-height: 400px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.image-container {
+    flex: 1;
+    margin-right: 1rem;
+}
+
+.image {
+    max-width: 80%;  /* Reduced width by 20% */
+    height: auto;
+    max-height: 60vh; /* Reduced height by 40% */
+    border-radius: 10px;
+    object-fit: cover; /* Ensures image scales proportionally */
+}
+
+.description-container {
+    flex: 1; /* Take up the other half of the space */
+    text-align: left; /* Align text to the left */
+    padding-left: 1rem; /* add a small left padding */
+}
+
+.description-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #f4f1de; /* Light cream text on dark background */
+    margin-bottom: 1rem;
+}
+
+.description-text {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #f4f1de; /* Light cream text on dark background */
+    line-height: 1.6;
+    text-align: left; /* Align text to the left */
+}
+
+/* Dark Mode Styles for Image and Description Section */
+body.dark-mode .image-description-section {
+    /* Removed background-color: #f4f1de; */
+}
+
+body.dark-mode .description-heading,
+body.dark-mode .description-text {
+    color: #3d405b; /* Dark text on light background in dark mode */
+}
+body .description-heading,
+body .description-text{
+    color: #3d405b;
+}
+
+.cta-section {
+    margin: 40px 0;
+}
+
+.cta-section a {
+    color: #00b4d8; /* Skyblue */
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.cta-section a:hover {
+    text-decoration: underline;
+}
+
+/* Form Styles */
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #ffffff; /* White */
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.form-step {
+    display: none;
+}
+
+.form-step.active {
+    display: block;
+}
+
+label {
+    display: block;
+    text-align: left;
+    margin: 10px 0 5px;
+    font-weight: 500;
+    color: #3d405b; /* Luxury black in light mode */
+}
+
+input, select {
+    width: 80%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.phone-input-container {
+    display: flex;
+    width: 80%;
+}
+
+#country-code {
+    width: 30%;
+    margin-right: 10px;
+}
+
+#phone {
+    width: 70%;
+}
+
+input:focus, select:focus {
+    border-color: #00b4d8;
+    outline: none;
+}
+
+button.next-btn, button.submit-btn {
+    width: 50%;
+    padding: 10px;
+    border: none;
+    background-color: #3d405b; /* Luxury black */
+    color: #f4f1de; /* Light cream */
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button.next-btn:hover, button.submit-btn:hover {
+    background-color: #00b4d8; /* Skyblue */
+    transform: scale(1.05);
+}
+
+.toggle-link {
+    display: block;
+    margin-top: 15px;
+    color: #3d405b; /* Luxury black */
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.toggle-link:hover {
+    color: #00b4d8; /* Skyblue */
+}
+
+/* FAQ Section
+
+Styles */
+.faq-section {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 2rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.faq-heading {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #3d405b; /* Black in light mode */
+    margin-bottom: 2rem;
+}
+
+.faq-item {
+    margin-bottom: 1.5rem;
+    border: 1px solid #ddd; /* Subtle border for separation */
+    border-radius: 8px;
+    padding: 1rem;
+    /* removed background-color: #3d405b; */
+    transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+    border-color: #00b4d8; /* Skyblue on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.faq-question {
+    font-weight: 700; /* Bold for questions */
+    font-size: 1.1rem;
+    color: #f4f1de; /* Light cream text on dark background */
+    cursor: pointer;
+
+    transition: color 0.3s ease;
+}
+
+.faq-question:hover {
+    color: #00b4d8; /* Skyblue on hover */
+    text-align: left;
+}
+
+.faq-answer {
+    margin-top: 1rem;
+    font-weight: 400; /* Regular weight for answers */
+    font-size: 1rem;
+    color: #f4f1de; /* Light cream text on dark background */
+    text-align: left;
+    line-height: 1.6;
+    font-family: 'Poppins', sans-serif;
+}
+
+.faq-answer ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.faq-answer li {
+    margin-bottom: 0.5rem;
+}
+
+/* Dark Mode Styles for FAQ Section */
+body.dark-mode .faq-heading {
+    color: #f4f1de; /* Light cream in dark mode */
+}
+
+body.dark-mode .faq-item {
+    /*Removed background-color: #f4f1de; */
+    border-color: #ccc; /* Lighter border in dark mode */
+}
+
+body.dark-mode .faq-question {
+    color: #f4f1de; /* Light cream in dark mode */
+}
+
+body.dark-mode .faq-answer {
+    color: #f4f1de; /* Light cream in dark mode */
+}
+
+body.dark-mode .faq-item:hover {
+    border-color: #00b4d8; /* Skyblue on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+body .faq-heading{
+    color: #3d405b;
+}
+
+body .faq-question, body .faq-answer{
+    color: #3d405b;
+}
+
+/* Footer Styles */
+.footer {
+    display: flex;
+    justify-content: space-between;
+    background-color: #3d405b; /* Luxury black in light mode */
+    padding: 1.5rem; /* Reduced padding for a more compact footer */
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.footer-left {
+    flex: 1;
+}
+
+.footer-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}
+
+.contact-section {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.contact-section h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #f4f1de; /* Light cream in dark footer */
+}
+
+.contact-section p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #f4f1de; /* Light cream in dark footer */
+}
+
+.contact-section i {
+    margin-right: 5px;
+}
+
+.copyright-section {
+    text-align: left;
+    font-size: 0.9rem;
+    color: #f4f1de; /* Light cream in dark footer */
+}
+
+.social-section {
+    text-align: left; /* Align "Follow Us" to the left */
+}
+
+.social-section h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #f4f1de; /* Light cream in dark footer */
+}
+
+.social-media {
+    display: flex;
+    gap: 10px;
+}
+
+.social-link {
+    color: #f4f1de; /* Light cream in dark footer */
+    font-size: 1.5rem;
+    transition: color 0.3s ease;
+}
+
+.social-link:hover {
+    color: #00b4d8; /* Skyblue */
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+    background-color: #3d405b; /* Dark background in dark mode */
+    color: #f4f1de; /* Light text in dark mode */
+}
+
+body.dark-mode .header {
+    background-color: #3d405b; /* Dark background in dark mode */
+}
+
+body.dark-mode .logo-text {
+    color: #f4f1de; /* Light text in dark mode */
+}
+
+body.dark-mode .nav-link {
+    color: #f4f1de; /* Light text in dark mode */
+}
+
+body.dark-mode #theme-toggle {
+    background-color: #f4f1de; /* Light background for button in dark mode */
+    color: #3d405b; /* Dark text on button in dark mode */
+}
+
+body.dark-mode .main-content h1,
+body.dark-mode .main-content h2,
+body.dark-mode .main-content p {
+    color: #f4f1de; /* Light text in dark mode */
+}
+
+body.dark-mode .footer {
+    background-color: #2d2f3e; /* Darker background for footer in dark mode */
+}
+
+body.dark-mode label {
+    color: #f4f1de; /* Light text in dark mode */
+}
+
+body.dark-mode .form {
+    background-color: #2d2f3e; /* Darker background for form in dark mode */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode input,
+body.dark-mode select {
+    background-color: #3d405b;
+    color: #f4f1de;
+    border-color: #555;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode select::placeholder {
+    color: #ccc;
+}
+
+/* Responsive Header, Video, and Image Styles */
+
+/* Default styles for larger screens (desktops and above) */
+.header {
+    display: flex;
+    justify-content: space-between; /* Adjust as needed based on your layout */
+    align-items: center;
+    padding: 0 2rem; /* Adjust padding as needed */
+    height: 80px; /* Adjust height as needed */
+}
+
+.logo-img {
+    height: 150px; /* Adjust logo size */
+}
+
+.nav {
+    display: flex;
+    gap: 20px; /* Adjust spacing between nav items */
+}
+
+.nav-link {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    text-decoration: none;
+    color: #333; /* Adjust color */
+}
+
+#theme-toggle {
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+
+
+.image-container {
+    width: 100%; /* Make the image container take full width */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.image-description-section {
+    display: flex; /* For the image and text side-by-side layout */
+    align-items: center; /* Vertically align image and text */
+    flex-wrap: wrap; /* Allow content to wrap on smaller screens */
+    padding: 2rem; /* Adjust padding as needed */
+}
+
+.image-container,
+.image {
+    max-width: 50%; /* Adjust as needed for the image size in the section */
+    height: auto;
+    display: block; /* Remove any extra space below the image */
+    margin-right: 20px; /* Add some space between image and text */
+    margin-bottom: 20px; /* Add margin for stacking on smaller screens */
+}
+
+.description-container {
+    flex: 1; /* Allow the description to take remaining space */
+    padding-left: 20px; /* Add some space between text and image */
+}
+
+.image-description-section h2,
+.image-description-section p {
+    margin-bottom: 15px; /* Adjust spacing for text elements */
+}
+
+/* Styles for smaller screens (tablets and below) */
+@media screen and (max-width: 992px) {
+    .header {
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        height: auto;
+    }
+
+    .logo-img {
+        height: 120px;
+        margin-bottom: 10px;
+    }
+
+    .nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .nav-link {
+        padding: 0.5rem;
+        width: 80%;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .nav-link:last-child {
+        border-bottom: none;
+    }
+
+    #theme-toggle {
+        margin-top: 10px;
+        width: 80%;
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+
+    .image-description-section {
+        flex-direction: column; /* Stack image and description on smaller screens */
+        align-items: center;
+        text-align: center;
+        padding: 1.5rem;
+    }
+
+    .image-container,
+    .image {
+        max-width: 90%; /* Make the image take up more width on smaller screens */
+        margin-right: 0; /* Remove right margin when stacked */
+        margin-bottom: 20px; /* Keep bottom margin for spacing */
+    }
+
+    .description-container {
+        padding-left: 0; /* Remove left padding when stacked */
+        margin-top: 20px; /* Add space between image and description */
+    }
+}
+
+/* Further adjustments for very small screens (smartphones) */
+@media screen and (max-width: 480px) {
+    .logo-img {
+        height: 80px;
+    }
+
+    .nav-link {
+        font-size: 0.9rem;
+    }
+
+    #theme-toggle {
+        font-size: 0.8rem;
+    }
+
+    .image-description-section {
+        padding: 1rem;
+    }
+
+    .image-container,
+    .image {
+        max-width: 100%; /* Image takes full width on very small screens */
+    }
+}
+
+/* Adjustments for even smaller screens (smartwatches) if needed */
+@media screen and (max-width: 320px) {
+    .logo-img {
+        height: 60px;
+    }
+
+    .nav-link {
+        font-size: 0.7rem;
+    }
+
+    #theme-toggle {
+        font-size: 0.6rem;
+    }
+}
+
