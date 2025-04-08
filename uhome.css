@@ -584,7 +584,25 @@ body.dark-mode select::placeholder {
     cursor: pointer;
 }
 
+/* CSS for Responsive YouTube Embed */
+.video-responsive-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+  margin-bottom: 20px; /* Optional: Add some space below the video */
+}
 
+.video-responsive-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  border: none; /* Optional: Remove iframe border */
+}
 
 .image-container {
     width: 100%; /* Make the image container take full width */
@@ -656,6 +674,26 @@ body.dark-mode select::placeholder {
         font-size: 0.9rem;
     }
 
+    /* CSS for Responsive YouTube Embed */
+.video-responsive-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+  margin-bottom: 20px; /* Optional: Add some space below the video */
+}
+
+.video-responsive-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  border: none; /* Optional: Remove iframe border */
+}
+
     .image-description-section {
         flex-direction: column; /* Stack image and description on smaller screens */
         align-items: center;
@@ -690,6 +728,26 @@ body.dark-mode select::placeholder {
         font-size: 0.8rem;
     }
 
+    /* CSS for Responsive YouTube Embed */
+.video-responsive-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+  margin-bottom: 20px; /* Optional: Add some space below the video */
+}
+
+.video-responsive-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  border: none; /* Optional: Remove iframe border */
+}
+
     .image-description-section {
         padding: 1rem;
     }
@@ -713,5 +771,25 @@ body.dark-mode select::placeholder {
     #theme-toggle {
         font-size: 0.6rem;
     }
+}
+
+/* CSS for Responsive YouTube Embed */
+.video-responsive-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+  margin-bottom: 20px; /* Optional: Add some space below the video */
+}
+
+.video-responsive-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  border: none; /* Optional: Remove iframe border */
 }
 
