@@ -180,6 +180,43 @@ if (loginFormSubmit) {
 
         const email = emailInputLogin.value;
         const password = passwordInputLogin.value;
+        const apiLoginUrl = '/api/users/login/'; // Make sure this matches your urls.py
+
+        fetch(apiLoginUrl, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        // Add CSRF token header if using SessionAuthentication and CSRF protection
+        // 'X-CSRFToken': getCookie('csrftoken') // Function to get CSRF token from cookie
+    },
+    body: JSON.stringify({ username: email, password: password }) // SimpleJWT expects 'username' by default, even if it's an email
+})
+.then(response => {
+    if (!response.ok) {
+        // Handle failed login (e.g., show error message)
+        return response.json().then(errData => { throw new Error(errData.detail || 'Login failed') });
+    }
+    return response.json(); // Parse successful response JSON
+})
+.then(data => {
+    console.log('Login successful:', data);
+    // **IMPORTANT: Store tokens securely**
+    // localStorage is common but vulnerable to XSS. Consider sessionStorage or in-memory.
+    if (data.access) {
+        localStorage.setItem('accessToken', data.access);
+    }
+    if (data.refresh) {
+        localStorage.setItem('refreshToken', data.refresh);
+    }
+
+    alert('Login successful! Redirecting...');
+    window.location.href = 'ucourse.html'; // Redirect on success
+})
+.catch(error => {
+    console.error('Login Error:', error);
+    alert(`Login failed: ${error.message}`);
+});
+
 
         const loginData = {
             email: email,
