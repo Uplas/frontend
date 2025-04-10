@@ -90,6 +90,63 @@ document.addEventListener('DOMContentLoaded', function() {
         whatsappChatWindow.style.display = 'block'; // Show the chat window
     });
 
+    // Example function to fetch courses in ucourse.js
+
+function fetchCourses() {
+    const apiCoursesUrl = '/api/courses/';
+    const accessToken = localStorage.getItem('accessToken'); // Retrieve stored token
+
+    const headers = {
+        'Content-Type': 'application/json',
+    };
+    // Add Authorization header ONLY if the token exists (for protected endpoints)
+    if (accessToken) {
+         headers['Authorization'] = `Bearer ${accessToken}`;
+    }
+
+    fetch(apiCoursesUrl, { headers: headers })
+    .then(response => {
+        if (response.status === 401) { // Handle unauthorized (e.g., token expired)
+             console.error("Unauthorized. Token might be expired.");
+             // Redirect to login or attempt token refresh
+             // refreshToken(); // Implement a function to refresh the token
+             return; // Stop processing
+        }
+        if (!response.ok) {
+            throw new Error('Failed to fetch courses');
+        }
+        return response.json();
+    })
+    .then(courses => {
+        console.log('Courses received:', courses);
+        // --- Update your frontend UI ---
+        // Clear existing course list
+        // Loop through 'courses' array and create HTML elements to display them
+        // e.g., update the .courses-grid element
+        displayCourses(courses); // Call a function to render the courses
+    })
+    .catch(error => {
+        console.error('Fetch Courses Error:', error);
+        // Display an error message to the user
+    });
+}
+
+// Call fetchCourses when the page loads or as needed
+// fetchCourses(); 
+
+function displayCourses(courses) {
+     const grid = document.querySelector('.courses-grid');
+     if (!grid) return;
+     grid.innerHTML = ''; // Clear previous entries
+     courses.forEach(course => {
+          // Create HTML elements for each course based on your ucourse.html structure
+          // Add event listeners etc.
+          const courseDiv = document.createElement('div');
+          courseDiv.classList.add('course-item', 'available'); // Add 'locked' class based on data later
+          courseDiv.innerHTML = `
+              <i class="fas fa-play-circle course-icon"></i>
+              <h3><span class="math-inline">\{course\.title\}</h3\>
+
     closeChatButton.addEventListener('click', function() {
         whatsappChatWindow.style.display = 'none'; // Hide the chat window
     });
