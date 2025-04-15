@@ -174,3 +174,61 @@ async function getUserData() {
 
 // Call it when needed
 // getUserData();
+
+
+// Conceptual updates for ucommunity.js onmessage handler
+
+chatSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    console.log('Data received:', data);
+    
+    const messageType = data.type; // Get the message type
+
+    if (messageType === 'history') {
+        // Handle message history
+        console.log('Processing history...');
+        messagesArea.innerHTML = ''; // Clear existing messages before loading history
+        data.messages.forEach(msg => {
+            displayMessage(msg.username, msg.message, msg.timestamp, false); // isSent=false
+        });
+        messagesArea.scrollTop = messagesArea.scrollHeight; // Scroll to bottom after loading history
+
+    } else if (messageType === 'message') {
+        // Handle a regular incoming chat message
+        console.log('Processing incoming message...');
+        // Determine if it's from the current user based on username if needed
+        const isSentByCurrentUser = (data.username ===/* your logic to get current username */'You'); // Example check
+        displayMessage(data.username, data.message, data.timestamp, isSentByCurrentUser);
+        messagesArea.scrollTop = messagesArea.scrollHeight; // Scroll to bottom
+
+    } else if (messageType === 'error') {
+         // Handle error messages from the server
+         console.error('Server error message:', data.message);
+         alert(`Error: ${data.message}`); // Simple alert, improve UI later
+    } else {
+         console.warn('Unknown message type received:', messageType);
+    }
+};
+
+// --- Create a reusable function to display messages ---
+function displayMessage(username, messageContent, timestamp, isSent) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message', isSent ? 'sent' : 'received');
+    
+    // Format timestamp (requires a library like date-fns or Intl.DateTimeFormat)
+    const formattedTime = timestamp ? new Date(timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+
+    const userInitial = username ? username.charAt(0).toUpperCase() : '?';
+    // Adapt HTML structure EXACTLY to your ucommunity.html
+    messageDiv.innerHTML = `
+        ${!isSent ? `<div class="profile-avatar">${userInitial}</div>` : ''}
+        <div class="message-content-container">
+            ${!isSent ? `<span class="user-name">${username}</span>` : ''}
+            <div class="message-content">${messageContent}</div>
+            <span class="message-timestamp" style="font-size: 0.7em; color: grey; margin-left: 5px; margin-right: 5px;">${formattedTime}</span> 
+        </div>
+        ${isSent ? `<div class="profile-avatar">Y</div>` : ''} 
+    `; // 'Y' for 'You' needs better logic
+    messagesArea.appendChild(messageDiv);
+    
+}
