@@ -232,3 +232,55 @@ function displayMessage(username, messageContent, timestamp, isSent) {
     messagesArea.appendChild(messageDiv);
     
 }
+
+
+// Conceptual updates for ucommunity.js onmessage handler
+
+chatSocket.onmessage = function(e) {
+    const data = JSON.parse(e.data);
+    console.log('Data received:', data);
+    
+    const messageType = data.type; 
+
+    if (messageType === 'history') {
+        // ... (handle history as before) ...
+    } else if (messageType === 'message') {
+        // ... (handle incoming message as before) ...
+    } else if (messageType === 'user_list') {
+        // --- Handle updated online user list ---
+        console.log('Updating online users:', data.online_users);
+        updateOnlineUsersUI(data.online_users); // Call a function to update the UI
+        // --- End presence handling ---
+    } else if (messageType === 'error') {
+         // ... (handle error as before) ...
+    } else {
+         console.warn('Unknown message type received:', messageType);
+    }
+};
+
+// --- Add a function to update the online users UI ---
+function updateOnlineUsersUI(onlineUsernames) {
+    const onlineListElement = document.getElementById('online-users-list'); // Assume you have an element with this ID
+    if (onlineListElement) {
+        onlineListElement.innerHTML = ''; // Clear current list
+        onlineUsernames.forEach(username => {
+            const userElement = document.createElement('li');
+            // Add classes or styles as needed
+            userElement.textContent = username; 
+            onlineListElement.appendChild(userElement);
+        });
+    } else {
+         console.warn("Element with ID 'online-users-list' not found for presence update.");
+    }
+}
+
+// --- You also need an element in your ucommunity.html to display the list ---
+/* Example HTML somewhere in chat-container:
+<div class="online-users-panel"> 
+    <h4>Online Now</h4>
+    <ul id="online-users-list">
+        </ul>
+</div> 
+*/
+
+// ... (rest of your ucommunity.js code: displayMessage, connectWebSocket, etc.) ...
