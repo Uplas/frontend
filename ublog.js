@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.body;
     const themeToggle = document.getElementById('theme-toggle');
     const searchInput = document.getElementById('search-input');
-    const searchButton = document.getElementById('search-button'); // Keep reference if needed later
+    const searchButton = document.getElementById('search-button');
     const clearSearchButton = document.getElementById('clear-search-button');
     const postsContainer = document.getElementById('blog-posts');
     const blogPosts = postsContainer?.querySelectorAll('.blog-post-preview'); // Get initial posts
@@ -17,8 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const navToggle = document.querySelector('.nav__toggle');
     const navMenu = document.querySelector('.nav');
     const currentYearSpan = document.getElementById('current-year');
-    const noPostsMessageDiv = document.getElementById('no-posts-message');
-    const resetFiltersButton = document.getElementById('reset-filters-button');
 
 
     // --- State ---
@@ -38,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (themeText) {
             themeText.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
         }
-        // Icon visibility handled by CSS
     };
 
     /**
@@ -65,14 +62,134 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * Filters and displays blog posts based on search term and category.
-     * Shows a 'no results' message if applicable.
      */
     const filterAndDisplayPosts = () => {
         if (!blogPosts || blogPosts.length === 0) return;
 
         const searchTerm = currentSearchTerm.toLowerCase().trim();
-        const categoryFilter = currentFilter.toLowerCase();
-        let postsFound = false; // Flag to track if any posts are visible
+        const categoryFilter = currentFilter;
 
         blogPosts.forEach(post => {
             const title = post.querySelector('.post-preview__title')?.textContent.toLowerCase() || '';
+            const excerpt = post.querySelector('.post-preview__excerpt')?.textContent.toLowerCase() || '';
+            const author = post.querySelector('.post-preview__author')?.textContent.toLowerCase() || '';
+            const postCategory = post.dataset.category || ''; // Get category from data attribute
+
+            const matchesSearch = searchTerm === '' || title.includes(searchTerm) || excerpt.includes(searchTerm) || author.includes(searchTerm);
+            const matchesCategory = categoryFilter === 'all' || postCategory.toLowerCase() === categoryFilter.toLowerCase();
+
+            // Show post only if it matches both search and category filter
+            if (matchesSearch && matchesCategory) {
+                post.classList.remove('blog-post-preview--hidden');
+                // Use CSS for display changes if possible, fallback to style
+                // post.style.display = 'flex'; // Or 'block' or '' depending on CSS default
+            } else {
+                 post.classList.add('blog-post-preview--hidden');
+                // post.style.display = 'none';
+            }
+        });
+
+        // Toggle clear search button visibility
+        if(clearSearchButton) {
+            clearSearchButton.style.display = searchTerm ? 'inline-flex' : 'none';
+        }
+
+        // Update pagination if implemented dynamically
+        // updatePagination();
+    };
+
+
+    // --- Event Handlers ---
+
+    /**
+     * Handles search input changes.
+     */
+    const handleSearchInput = () => {
+        currentSearchTerm = searchInput?.value || '';
+        filterAndDisplayPosts();
+    };
+
+    /**
+     * Handles category filter button clicks.
+     * @param {Event} e - The click event.
+     */
+    const handleFilterClick = (e) => {
+        const clickedButton = e.target.closest('.filter-button');
+        if (!clickedButton || !filterButtonsContainer) return;
+
+        // Update active state
+        filterButtons.forEach(button => button.classList.remove('filter-button--active'));
+        clickedButton.classList.add('filter-button--active');
+
+        // Update filter state and re-filter posts
+        currentFilter = clickedButton.dataset.category || 'all';
+        filterAndDisplayPosts();
+    };
+
+     /**
+     * Clears the search input and re-filters posts.
+     */
+     const handleClearSearch = () => {
+         if(searchInput) {
+             searchInput.value = '';
+             currentSearchTerm = '';
+             filterAndDisplayPosts();
+             searchInput.focus(); // Focus back on input
+         }
+     };
+
+
+    // --- Event Listeners ---
+
+    // Theme Toggle
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const isDarkMode = body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode); // Consistent key
+            updateThemeButton(isDarkMode);
+        });
+    }
+
+    // Mobile Navigation Toggle
+    if (navToggle) {
+        navToggle.addEventListener('click', toggleMobileNav);
+    }
+
+    // Search Input (Real-time filtering)
+    if (searchInput) {
+        searchInput.addEventListener('input', handleSearchInput);
+    }
+
+    // Clear Search Button
+     if (clearSearchButton) {
+         clearSearchButton.addEventListener('click', handleClearSearch);
+     }
+
+    // Optional: Search Button (if real-time filtering is not desired)
+    // if (searchButton) {
+    //     searchButton.addEventListener('click', handleSearchInput);
+    // }
+    // Optional: Allow search on Enter key press
+    // if (searchInput) {
+    //     searchInput.addEventListener('keypress', (e) => {
+    //         if (e.key === 'Enter') {
+    //             handleSearchInput();
+    //         }
+    //     });
+    // }
+
+
+    // Category Filter Buttons
+    if (filterButtonsContainer) {
+        filterButtonsContainer.addEventListener('click', handleFilterClick);
+    }
+
+    // --- Initializations ---
+    applyTheme(); // Apply theme on load
+    filterAndDisplayPosts(); // Initial display based on default filters
+     if (currentYearSpan) {
+         currentYearSpan.textContent = new Date().getFullYear(); // Update copyright year
+    }
+
+
+}); // End DOMContentLoaded
