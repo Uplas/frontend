@@ -1,50 +1,78 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Dark Mode Toggle (Consistent with Homepage)
-    const themeToggle = document.getElementById('theme-toggle');
+// ublog.js - Standalone Blog Page Functionality
+
+'use strict';
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- Element Selectors ---
     const body = document.body;
-    const savedDarkMode = localStorage.getItem('darkMode'); // Using 'darkMode' key
-
-    if (savedDarkMode === 'true') {
-        body.classList.add('dark-mode');
-        themeToggle.textContent = 'Light Mode';
-        themeToggle.setAttribute('aria-label', 'Switch to Light Mode');
-    } else {
-        body.classList.remove('dark-mode');
-        themeToggle.textContent = 'Dark Mode';
-        themeToggle.setAttribute('aria-label', 'Switch to Dark Mode');
-    }
-
-    themeToggle.addEventListener('click', function() {
-        body.classList.toggle('dark-mode');
-        const isDarkMode = body.classList.contains('dark-mode');
-        themeToggle.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
-        themeToggle.setAttribute('aria-label', isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode');
-        localStorage.setItem('darkMode', isDarkMode); // Using 'darkMode' key
-    });
-
-    // Search Functionality
+    const themeToggle = document.getElementById('theme-toggle');
     const searchInput = document.getElementById('search-input');
-    const searchButton = document.getElementById('search-button');
-    const blogPosts = document.querySelectorAll('.blog-post-preview');
+    const searchButton = document.getElementById('search-button'); // Keep reference if needed later
+    const clearSearchButton = document.getElementById('clear-search-button');
+    const postsContainer = document.getElementById('blog-posts');
+    const blogPosts = postsContainer?.querySelectorAll('.blog-post-preview'); // Get initial posts
+    const filterButtonsContainer = document.querySelector('.blog-filters');
+    const filterButtons = filterButtonsContainer?.querySelectorAll('.filter-button');
+    const navToggle = document.querySelector('.nav__toggle');
+    const navMenu = document.querySelector('.nav');
+    const currentYearSpan = document.getElementById('current-year');
+    const noPostsMessageDiv = document.getElementById('no-posts-message');
+    const resetFiltersButton = document.getElementById('reset-filters-button');
 
-    function filterBlogPosts() {
-        const searchTerm = searchInput.value.toLowerCase();
+
+    // --- State ---
+    let currentFilter = 'all'; // Default filter
+    let currentSearchTerm = '';
+
+    // --- Utility Functions ---
+
+    /**
+     * Updates the theme toggle button appearance and ARIA attributes.
+     * @param {boolean} isDarkMode - Indicates if dark mode is active.
+     */
+    const updateThemeButton = (isDarkMode) => {
+        if (!themeToggle) return;
+        const themeText = themeToggle.querySelector('.theme-text');
+        themeToggle.setAttribute('aria-label', isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+        if (themeText) {
+            themeText.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
+        }
+        // Icon visibility handled by CSS
+    };
+
+    /**
+     * Applies the theme based on saved preference or system setting.
+     */
+    const applyTheme = () => {
+        const savedDarkMode = localStorage.getItem('darkMode'); // Use consistent key
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDarkMode = savedDarkMode === 'true' || (savedDarkMode === null && systemPrefersDark);
+        body.classList.toggle('dark-mode', isDarkMode);
+        updateThemeButton(isDarkMode);
+    };
+
+    /**
+     * Toggles the mobile navigation menu visibility.
+     */
+    const toggleMobileNav = () => {
+        if (!navMenu || !navToggle) return;
+        const isOpen = navMenu.classList.toggle('nav--open');
+        navToggle.setAttribute('aria-expanded', isOpen);
+        navToggle.querySelector('i').classList.toggle('fa-bars', !isOpen);
+        navToggle.querySelector('i').classList.toggle('fa-times', isOpen);
+    };
+
+    /**
+     * Filters and displays blog posts based on search term and category.
+     * Shows a 'no results' message if applicable.
+     */
+    const filterAndDisplayPosts = () => {
+        if (!blogPosts || blogPosts.length === 0) return;
+
+        const searchTerm = currentSearchTerm.toLowerCase().trim();
+        const categoryFilter = currentFilter.toLowerCase();
+        let postsFound = false; // Flag to track if any posts are visible
 
         blogPosts.forEach(post => {
-            const title = post.querySelector('h2').textContent.toLowerCase();
-            const content = post.querySelector('.post-excerpt').textContent.toLowerCase(); // Using the class
-
-            if (title.includes(searchTerm) || content.includes(searchTerm)) {
-                post.style.display = 'flex'; // Show the post if it matches
-            } else {
-                post.style.display = 'none'; // Hide the post if it doesn't match
-            }
-        });
-    }
-
-    // Event listener for input changes (real-time filtering)
-    searchInput.addEventListener('input', filterBlogPosts);
-
-    // Optional: Event listener for button click (if you want search only on click)
-    // searchButton.addEventListener('click', filterBlogPosts);
-});
+            const title = post.querySelector('.post-preview__title')?.textContent.toLowerCase() || '';
