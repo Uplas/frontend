@@ -2,180 +2,304 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Uplas Pricing</title>
-  <link rel="icon" href="images/uni plas_prev_ui.ico" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="upricing.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing & Plans | Uplas</title>
+    <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="uhome.css">
+    <link rel="stylesheet" href="x.css">
+     </head>
 
 <body>
-  <header class="header">
-    <div class="logo">
-      <img src="images/uni plas_prev_ui.ico" alt="Uplas Logo" class="logo-img">
-  </div>
 
-    <nav class="nav">
-      <a href="index.html" class="nav-link">Home</a>
-      <a href="upricing.html" class="nav-link active">Pricing</a>
-      <a href="#contact-section" class="nav-link">Contact</a>
-      <a href="ublog.html" class="nav-link">Blog</a>
-    </nav>
-    <button id="theme-toggle">Dark Mode</button>
-  </header>
+    <header class="header">
+        <a href="index.html" class="logo" aria-label="Uplas Homepage">
+            <img src="images/uni_plas_prev_ui.ico" alt="Uplas Logo" class="logo__img">
+        </a>
+        <nav class="nav" aria-label="Main Navigation">
+            <a href="index.html" class="nav__link">Home</a>
+            <a href="upricing.html" class="nav__link nav__link--active">Pricing</a>
+            <a href="#contact-section" class="nav__link">Contact</a>
+            <a href="ublog.html" class="nav__link">Blog</a>
+        </nav>
+         <button id="theme-toggle" class="button button--theme" aria-label="Switch to Dark Mode" aria-live="polite">
+            <i class="fas fa-moon theme-icon--dark"></i>
+            <i class="fas fa-sun theme-icon--light"></i>
+            <span class="theme-text">Dark Mode</span>
+        </button>
+         <button class="nav__toggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+        </button>
+    </header>
 
-  <main class="main-content">
-    <section class="pricing-section">
-      <h1>Course Pricing</h1>
-      <p class="subtitle">Choose the plan that fits your learning journey</p>
+    <main class="main-content">
 
-      <div class="pricing-cards">
-        <div class="card">
-          <h2>Free Access</h2>
-          <p class="description">Get started with our course materials</p>
-          <div class="price">$0</div>
+        <section class="pricing-section" aria-labelledby="pricing-heading">
+            <h1 id="pricing-heading" class="pricing__title">Choose Your Path to AI Mastery</h1>
+            <p class="pricing__subtitle">Flexible plans designed for every learner and organization.</p>
 
-          <ul class="features">
-            <li><i class="fas fa-check"></i> Full course content access</li>
-            <li><i class="fas fa-check"></i> Text and image materials</li>
-            <li class="unavailable"><i class="fas fa-times"></i> No video content</li>
-          </ul>
+            <div class="pricing-cards">
 
-          <a href="uhome.html#signup-form"><button class="btn">Start Learning</button></a>
-        </div>
+                <div class="card">
+                    <h2 class="card__title">Starter Access</h2>
+                    <p class="card__description">Explore core concepts and platform basics.</p>
+                    <div class="card__price">$0<span class="card__price-term">Always</span></div>
+                    <ul class="card__features">
+                        <li><i class="fas fa-check"></i> Access to Introductory Modules</li>
+                        <li><i class="fas fa-check"></i> Personalized Q&A (Limited)</li>
+                        <li><i class="fas fa-check"></i> Community Forum Access</li>
+                        <li class="feature--unavailable"><i class="fas fa-times"></i> Full Course Library</li>
+                        <li class="feature--unavailable"><i class="fas fa-times"></i> AI Tutor Support</li>
+                        <li class="feature--unavailable"><i class="fas fa-times"></i> Video & Audio Content</li>
+                        <li class="feature--unavailable"><i class="fas fa-times"></i> Real-World Projects</li>
+                    </ul>
+                    <a href="index.html#auth-section" class="button card__button">Get Started Free</a>
+                </div>
 
-        <div class="card featured">
-          <div class="featured-badge">Most Popular</div>
-          <h2>Premium Access</h2>
-          <p class="description">Pay per module or full course</p>
-          <div class="price">$1.49<span>/module</span></div>
-
-          <ul class="features">
-            <li><i class="fas fa-check"></i> Everything in Free</li>
-            <li><i class="fas fa-check"></i> Full video content</li>
-            <li><i class="fas fa-check"></i> Pay per module flexibility</li>
-          </ul>
-
-          <a href="payment-methods"><button class="btn btn-primary">Choose Plan</button></a>
-        </div>
-
-        <div class="card">
-          <h2>Enterprise</h2>
-          <p class="description">Custom solution for your organization</p>
-          <div class="price">Custom</div>
-
-          <ul class="features">
-            <li><i class="fas fa-check"></i> Everything in Premium</li>
-            <li><i class="fas fa-check"></i> Organization-wide access</li>
-            <li><i class="fas fa-check"></i> Custom integration</li>
-          </ul>
-
-          <button class="btn" onclick="scrollToContact()">Contact Sales</button>
-        </div>
-      </div>
-    </section>
+                 <div class="card card--featured">
+                    <div class="card__featured-badge">Most Popular</div>
+                    <h2 class="card__title">Premium Learning</h2>
+                    <p class="card__description">Unlock full courses and features flexibly.</p>
+                    <div class="card__price-options">
+                        <p>From <strong>$2 / Module</strong></p>
+                        <p>Or <strong>$14 / Course</strong></p>
+                    </div>
+                     <ul class="card__features">
+                        <li><i class="fas fa-check"></i> Everything in Starter</li>
+                        <li><i class="fas fa-check"></i> Full Course Library Access</li>
+                        <li><i class="fas fa-check"></i> Unlimited Personalized Q&A</li>
+                        <li><i class="fas fa-check"></i> Full AI Tutor Support</li>
+                        <li><i class="fas fa-check"></i> Video & Audio Content</li>
+                        <li><i class="fas fa-check"></i> AI-Generated Real-World Projects</li>
+                        <li><i class="fas fa-check"></i> Pay As You Learn Flexibility</li>
+                     </ul>
+                    <button class="button button--primary card__button" data-plan="premium">Choose Premium</button>
+                </div>
 
 
-    <section id="contact-section" class="contact-section">
-      <h2>Contact Us</h2>
-      <p class="section-description">We're here to help. Reach out with any questions about our courses or pricing.</p>
-      
-      <div class="contact-container">
-        <div class="contact-info">
-          <div class="contact-method">
-            <i class="fas fa-phone-alt"></i>
-            <h3>Phone</h3>
-            <p>+254 708 654 984</p>
-            <p class="small">Help phone support</p>
-          </div>
-          
-          <div class="contact-method">
-            <i class="fas fa-envelope"></i>
-            <h3>Email</h3>
-            <p>john@uplas.me</p>
-            <p class="small">Help email support</p>
-          </div>
-          
-          <div class="contact-method">
-            <i class="fas fa-clock"></i>
-            <h3>Hours</h3>
-            <p>Monday - Friday</p>
-            <p class="small">9:00 AM - 5:00 PM</p>
-          </div>
-        </div>
+                 <div class="card">
+                     <h2 class="card__title">Full Access</h2>
+                    <p class="card__description">Unlimited access to everything for a year.</p>
+                    <div class="card__price">$200<span class="card__price-term">/ year</span></div>
+                    <ul class="card__features">
+                        <li><i class="fas fa-check"></i> Everything in Premium</li>
+                         <li><i class="fas fa-check"></i> All Current & Future Courses</li>
+                         <li><i class="fas fa-check"></i> Priority Support</li>
+                         <li><i class="fas fa-check"></i> Early Access to New Features</li>
+                         <li><i class="fas fa-check"></i> Best Value for Continuous Learning</li>
+                    </ul>
+                     <button class="button card__button" data-plan="full-access">Get Full Access</button>
+                 </div>
 
-        <form id="contactForm" class="contact-form">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="name">Full Name</label>
-              <input type="text" id="name" name="name" required>
+
+                <div class="card">
+                    <h2 class="card__title">Enterprise</h2>
+                    <p class="card__description">Tailored AI upskilling for your entire team.</p>
+                    <div class="card__price">Custom</div>
+                    <ul class="card__features">
+                        <li><i class="fas fa-check"></i> All Full Access Features</li>
+                        <li><i class="fas fa-check"></i> Team Management & Reporting</li>
+                        <li><i class="fas fa-check"></i> Volume Discounts</li>
+                        <li><i class="fas fa-check"></i> Custom Content Integration (Optional)</li>
+                        <li><i class="fas fa-check"></i> Dedicated Account Manager</li>
+                    </ul>
+                    <button class="button card__button card__button--contact">Contact Sales</button>
+                </div>
+
             </div>
-            
-            <div class="form-group">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" name="email" required>
-            </div>
-          </div>
-          
-          <div class="form-row">
-            <div class="form-group">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" name="phone">
-            </div>
-            
-            <div class="form-group">
-              <label for="subject">Subject</label>
-              <select id="subject" name="subject" required>
-                <option value="" disabled selected>Select a subject</option>
-                <option value="pricing">Pricing Inquiry</option>
-                <option value="technical">Technical Support</option>
-                <option value="enterprise">Enterprise Solutions</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-          </div>
-          
-          <div class="form-group full-width">
-            <label for="message">Your Message</label>
-            <textarea id="message" name="message" rows="5" required></textarea>
-          </div>
-          
-          <div class="form-submit">
-            <button type="submit" class="btn btn-primary">
-              <i class="fas fa-paper-plane"></i> Send Message
-            </button>
-          </div>
-        </form>
-      </div>
-    </section>
-  </main>
+        </section>
 
-  <footer class="footer">
-    <div class="container">
-        <div class="footer-left">
-            <h3>Contact Us</h3>
-            <p><i class="fas fa-phone"></i> +123 456 7890</p>
-            <p><i class="fas fa-envelope"></i> info@uplas.com</p>
-            <p><i class="fas fa-map-marker-alt"></i> 123 Uplas Street, AI City</p>
-            <p>© 2025 Uplas. All rights reserved.</p>
-        </div>
-        <div class="footer-right">
-            <h3>Follow Us</h3>
-            <div class="social-media">
-                <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
-                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+         <section id="payment-section" class="payment-section payment-section--hidden" aria-labelledby="payment-heading">
+            <h2 id="payment-heading" class="payment__title">Complete Your Purchase</h2>
+            <p class="payment__subtitle">Securely complete your payment to unlock your selected plan.</p>
+
+            <form id="payment-form" class="payment-form" novalidate>
+                <div class="payment__plan-summary">
+                    <h3>Selected Plan: <span id="selected-plan-name"></span></h3>
+                    <p>Price: <strong id="selected-plan-price"></strong></p>
+                    <input type="hidden" id="selected-plan-id" name="planId">
+                </div>
+
+                <fieldset class="payment__methods">
+                    <legend class="payment__methods-legend">Choose Payment Method</legend>
+                    <div class="payment__method-options">
+                        <label class="payment__method-label">
+                            <input type="radio" name="paymentMethod" value="stripe" checked>
+                            <i class="fab fa-stripe"></i> Card (Stripe)
+                        </label>
+                        <label class="payment__method-label">
+                            <input type="radio" name="paymentMethod" value="paypal">
+                            <i class="fab fa-paypal"></i> PayPal
+                        </label>
+                         <label class="payment__method-label">
+                             <input type="radio" name="paymentMethod" value="flutterwave">
+                             <span class="payment-icon-placeholder">FW</span> Flutterwave
+                        </label>
+                         <label class="payment__method-label">
+                             <input type="radio" name="paymentMethod" value="mpesa">
+                             <span class="payment-icon-placeholder">MP</span> M-Pesa
+                        </label>
+                    </div>
+                </fieldset>
+
+                <div id="stripe-details" class="payment__details payment__details--active">
+                     <h4>Enter Card Details (via Stripe)</h4>
+                     <div id="card-element" class="payment__input-placeholder"></div>
+                     <div id="card-errors" role="alert" class="form__error-message"></div>
+                     <p class="payment__secure-note"><i class="fas fa-lock"></i> Secure payment powered by Stripe.</p>
+                </div>
+
+                <div id="paypal-details" class="payment__details">
+                     <h4>Redirecting to PayPal...</h4>
+                    <div id="paypal-button-container"></div>
+                     <p class="payment__secure-note"><i class="fas fa-lock"></i> You will be redirected to PayPal to complete your payment.</p>
+                </div>
+
+                <div id="flutterwave-details" class="payment__details">
+                    <h4>Pay with Flutterwave</h4>
+                     <p>You can pay using various methods via Flutterwave (Card, Bank Transfer, Mobile Money, etc.).</p>
+                     <button type="button" id="flutterwave-button" class="button button--secondary">Pay with Flutterwave</button>
+                      <p class="payment__secure-note"><i class="fas fa-lock"></i> Secure payment powered by Flutterwave.</p>
+                </div>
+
+
+                 <div id="mpesa-details" class="payment__details">
+                     <h4>Pay with M-Pesa</h4>
+                     <div class="form__group">
+                        <label for="mpesa-phone" class="form__label">M-Pesa Phone Number</label>
+                         <div class="phone-input-container">
+                            <span class="phone-prefix">+254</span> <input type="tel" id="mpesa-phone" name="mpesaPhone" class="form__input form__input--phone" placeholder="712 345 678" pattern="[0-9]{9,10}" required>
+                        </div>
+                         <span id="mpesa-error" class="form__error-message" aria-live="polite"></span>
+                         <small class="form__hint">Enter your phone number starting with 7 or 1. We'll initiate STK push.</small>
+                     </div>
+                     <p class="payment__secure-note"><i class="fas fa-lock"></i> Secure M-Pesa STK Push.</p>
+                 </div>
+
+                 <button type="submit" id="payment-submit-button" class="button button--primary payment__submit-button">
+                     <i class="fas fa-credit-card"></i> Complete Purchase
+                 </button>
+
+                <div id="payment-status" class="form__status" aria-live="assertive"></div>
+            </form>
+        </section>
+
+
+        <section id="contact-section" class="contact-section" aria-labelledby="contact-heading">
+            <h2 id="contact-heading" class="contact__title">Get In Touch</h2>
+            <p class="contact__subtitle">Have questions about plans, features, or enterprise solutions? We're here to help!</p>
+
+            <div class="contact-container">
+                <div class="contact-info">
+                     <h3 class="contact-info__heading">Contact Information</h3>
+                     <address class="contact-method">
+                        <i class="fas fa-phone-alt contact-method__icon"></i>
+                        <h4 class="contact-method__title">Phone</h4>
+                        <p><a href="tel:+254708654984" class="contact-method__link">+254 708 654 984</a></p>
+                        <p class="contact-method__note">Mon-Fri, 9am-5pm EAT</p>
+                    </address>
+                     <address class="contact-method">
+                        <i class="fas fa-envelope contact-method__icon"></i>
+                        <h4 class="contact-method__title">Email</h4>
+                        <p><a href="mailto:mugash042@gmail.com" class="contact-method__link">mugash042@gmail.com</a></p>
+                        <p class="contact-method__note">Response within 24 hours</p>
+                    </address>
+                    <address class="contact-method">
+                        <i class="fas fa-map-marker-alt contact-method__icon"></i>
+                        <h4 class="contact-method__title">Location</h4>
+                        <p>Kilifi, Kenya</p>
+                        <p class="contact-method__note">Reach out for partnerships</p>
+                     </address>
+                </div>
+
+                <form id="contact-form" class="contact-form" novalidate>
+                     <h3 class="contact-form__heading">Send Us a Message</h3>
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label for="contact-name" class="form__label">Full Name</label>
+                            <input type="text" id="contact-name" name="name" class="form__input" required>
+                            <span class="form__error-message" aria-live="polite"></span>
+                        </div>
+                        <div class="form__group">
+                            <label for="contact-email" class="form__label">Email Address</label>
+                            <input type="email" id="contact-email" name="email" class="form__input" required>
+                             <span class="form__error-message" aria-live="polite"></span>
+                        </div>
+                    </div>
+                     <div class="form__row">
+                         <div class="form__group">
+                            <label for="contact-phone" class="form__label">Phone Number (Optional)</label>
+                            <input type="tel" id="contact-phone" name="phone" class="form__input">
+                         </div>
+                         <div class="form__group">
+                            <label for="contact-subject" class="form__label">Subject</label>
+                            <select id="contact-subject" name="subject" class="form__select" required>
+                                <option value="" disabled selected>Select a subject...</option>
+                                <option value="pricing">Pricing Inquiry</option>
+                                <option value="premium">Premium Plan Question</option>
+                                 <option value="full-access">Full Access Plan Question</option>
+                                <option value="enterprise">Enterprise Solutions</option>
+                                 <option value="support">Technical Support</option>
+                                <option value="feedback">Feedback</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <span class="form__error-message" aria-live="polite"></span>
+                        </div>
+                    </div>
+                    <div class="form__group form__group--full-width">
+                        <label for="contact-message" class="form__label">Your Message</label>
+                        <textarea id="contact-message" name="message" rows="5" class="form__textarea" required></textarea>
+                         <span class="form__error-message" aria-live="polite"></span>
+                    </div>
+                    <div class="form__submit">
+                        <button type="submit" class="button button--primary contact-form__submit">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                    </div>
+                     <div id="contact-status" class="form__status" aria-live="assertive"></div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="footer__container">
+            <div class="footer__section footer__section--contact">
+                <h3 class="footer__heading">Contact Us</h3>
+                 <address class="footer__address">
+                    <p><i class="fas fa-phone footer__icon"></i> <a href="tel:+254708654984" class="footer__link">+254 708 654 984</a></p>
+                    <p><i class="fas fa-envelope footer__icon"></i> <a href="mailto:mugash042@gmail.com" class="footer__link">mugash042@gmail.com</a></p>
+                    <p><i class="fas fa-map-marker-alt footer__icon"></i> Kilifi, Kenya</p>
+                </address>
+            </div>
+            <div class="footer__section footer__section--social">
+                <h3 class="footer__heading">Follow Us</h3>
+                <div class="social-media">
+                    <a href="#" class="social-media__link" aria-label="Uplas on Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+             <div class="footer__section footer__section--links">
+                <h3 class="footer__heading">Quick Links</h3>
+                <ul class="footer__list">
+                    <li><a href="index.html" class="footer__link">Home</a></li>
+                    <li><a href="upricing.html" class="footer__link">Pricing</a></li>
+                    <li><a href="#contact-section" class="footer__link">Contact</a></li>
+                    <li><a href="ublog.html" class="footer__link">Blog</a></li>
+                    <li><a href="/terms" class="footer__link">Terms of Service</a></li>
+                     <li><a href="/privacy" class="footer__link">Privacy Policy</a></li>
+                </ul>
             </div>
         </div>
-    </div>
-</footer>
+         <div class="footer__bottom">
+            <p class="footer__copyright">© <span id="current-year"></span> Uplas. All rights reserved.</p> </div>
+    </footer>
 
-  <script src="apiUtils.js" defer></script> 
-  <script src="upricing.js"></script>
-</body>
+    <script src="x.js"></script>
+     </body>
 </html>
-
-
