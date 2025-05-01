@@ -8,7 +8,7 @@
     <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="ublog.css">
+    <link rel="stylesheet" href="x.css">
 </head>
 
 <body>
@@ -40,7 +40,7 @@
                  <p class="blog__subtitle">Explore the latest in AI trends, education, ethics, and how Uplas is shaping the future of learning.</p>
 
                  <div class="search-bar">
-                    <input type="search" id="search-input" class="search-bar__input" placeholder="Search articles by keyword, title, author..." aria-label="Search blog posts">
+                    <input type="search" id="search-input" class="search-bar__input" placeholder="Search articles..." aria-label="Search blog posts">
                     <button id="search-button" class="search-bar__button" aria-label="Search">
                         <i class="fas fa-search"></i>
                     </button>
@@ -54,15 +54,15 @@
                     <button class="filter-button" data-category="AI in Education">AI in Education</button>
                     <button class="filter-button" data-category="AI Trends">AI Trends</button>
                     <button class="filter-button" data-category="Ethics">Ethics</button>
-                    <button class="filter-button" data-category="Career">Career</button>
+                    <button class="filter-button" data-category="Uplas Updates">Uplas Updates</button>
                 </nav>
              </header>
 
             <div class="blog-posts-container" id="blog-posts">
-                <article class="blog-post-preview" data-category="AI in Education" data-author="Uplas Team">
+                <article class="blog-post-preview" data-category="AI in Education">
                     <a href="blog-post-1.html" class="post-link">
                         <div class="post-preview__image-container">
-                            <img src="images/placeholder_ai_education_thumb.jpg" alt="Abstract representation of interconnected nodes overlaying a classroom setting">
+                            <img src="images/placeholder_ai_education_thumb.jpg" alt="Abstract representation of AI enhancing education">
                         </div>
                         <div class="post-preview__content">
                              <header class="post-preview__header">
@@ -77,10 +77,10 @@
                     </a>
                 </article>
 
-                <article class="blog-post-preview" data-category="AI Trends" data-author="AI Analyst">
+                <article class="blog-post-preview" data-category="AI Trends">
                     <a href="blog-post-2.html" class="post-link">
                         <div class="post-preview__image-container">
-                            <img src="images/placeholder_ml_trends_thumb.jpg" alt="Futuristic graph showing upward trends in machine learning adoption">
+                            <img src="images/placeholder_ml_trends_thumb.jpg" alt="Graph showing upward trends in machine learning">
                         </div>
                         <div class="post-preview__content">
                              <header class="post-preview__header">
@@ -95,10 +95,10 @@
                     </a>
                 </article>
 
-                <article class="blog-post-preview" data-category="Ethics" data-author="Ethics Committee">
+                <article class="blog-post-preview" data-category="Ethics">
                     <a href="blog-post-3.html" class="post-link">
                         <div class="post-preview__image-container">
-                            <img src="images/placeholder_ethics_ai_thumb.jpg" alt="Stylized image of a scale balancing technology icons and ethical symbols">
+                            <img src="images/placeholder_ethics_ai_thumb.jpg" alt="Scale balancing technology and ethical considerations">
                         </div>
                         <div class="post-preview__content">
                             <header class="post-preview__header">
@@ -113,25 +113,19 @@
                     </a>
                 </article>
 
-
-                 <div id="no-posts-message" class="no-posts-message" style="display: none;">
-                     <p><i class="fas fa-info-circle"></i> No articles found matching your current search or filter.</p>
-                     <button id="reset-filters-button" class="button button--secondary">Reset Filters</button>
-                 </div>
+                 
 
             </div>
 
             <nav class="pagination" aria-label="Blog posts navigation">
                 <a href="#" class="pagination__link pagination__link--disabled" aria-label="Previous page" aria-disabled="true"><i class="fas fa-arrow-left"></i> Prev</a>
                 <a href="#" class="pagination__link pagination__link--active" aria-current="page">1</a>
-                <a href="#" class="pagination__link">2</a> 
+                <a href="#" class="pagination__link">2</a>
                 <a href="#" class="pagination__link">3</a>
                 <span class="pagination__ellipsis">&hellip;</span>
-                <a href="#" class="pagination__link pagination__link--disabled" aria-label="Next page" aria-disabled="true">Next <i class="fas fa-arrow-right"></i></a>
+                <a href="#" class="pagination__link">Next <i class="fas fa-arrow-right"></i></a>
             </nav>
-             <button id="load-more-button" class="button button--secondary blog__load-more">Load More Posts</button>
-
-        </section>
+             </section>
     </main>
 
     <footer class="footer">
@@ -170,7 +164,6 @@
         </div>
     </footer>
 
-    <script src="ublog.js"></script>
-
-</body>
+    <script src="x.js"></script>
+    </body>
 </html>
