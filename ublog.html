@@ -4,108 +4,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uplas Blog. The Future is Here!</title>
-    <link rel="icon" href="images/uni plas_prev_ui.ico" type="image/x-icon">
+    <title>Uplas Blog | AI Insights & Trends</title>
+    <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="uhome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="ublog.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
 <body>
     <header class="header">
-        <div class="logo">
-            <img src="images/uni plas_prev_ui.ico" alt="Uplas Logo" class="logo-img">
-        </div>
-        <nav class="nav">
-            <a href="index.html" class="nav-link">Home</a>
-            <a href="upricing.html" class="nav-link">Pricing</a>
-            <a href="upricing.html#contact-section" class="nav-link">Contact</a>
-            <a href="ublog.html" class="nav-link active">Blog</a>
+        <a href="index.html" class="logo" aria-label="Uplas Homepage">
+            <img src="images/uni_plas_prev_ui.ico" alt="Uplas Logo" class="logo__img">
+        </a>
+        <nav class="nav" aria-label="Main Navigation">
+            <a href="index.html" class="nav__link">Home</a>
+            <a href="upricing.html" class="nav__link">Pricing</a>
+            <a href="upricing.html#contact-section" class="nav__link">Contact</a>
+            <a href="ublog.html" class="nav__link nav__link--active">Blog</a> {/* Marked Active */}
         </nav>
-        <button id="theme-toggle" aria-label="Switch to Dark Mode">Dark Mode</button>
+        <button id="theme-toggle" class="button button--theme" aria-label="Switch to Dark Mode" aria-live="polite">
+            <i class="fas fa-moon theme-icon--dark"></i>
+            <i class="fas fa-sun theme-icon--light"></i>
+            <span class="theme-text">Dark Mode</span>
+        </button>
+        <button class="nav__toggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+        </button>
     </header>
 
     <main class="main-content">
-        <section class="blog-container">
-            <div class="search-bar">
-                <input type="text" id="search-input" placeholder="Search blog posts..." aria-label="Search blog posts">
-                <button id="search-button" aria-label="Search"><i class="fas fa-search"></i></button>
-            </div>
+        <section class="blog-container" aria-labelledby="blog-heading">
 
-            <h1>Our Latest Insights</h1>
+            <header class="blog-header">
+                 <h1 id="blog-heading" class="blog__main-title">Uplas AI Insights</h1>
+                 <p class="blog__subtitle">Explore the latest in AI trends, education, ethics, and how Uplas is shaping the future of learning.</p>
+
+                 <div class="search-bar">
+                    <input type="search" id="search-input" class="search-bar__input" placeholder="Search articles by keyword, title, author..." aria-label="Search blog posts">
+                    <button id="search-button" class="search-bar__button" aria-label="Search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                     <button id="clear-search-button" class="search-bar__button search-bar__button--clear" aria-label="Clear search" style="display: none;"> {/* Initially hidden */}
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <nav class="blog-filters" aria-label="Blog categories">
+                    <button class="filter-button filter-button--active" data-category="all">All Posts</button>
+                    <button class="filter-button" data-category="AI in Education">AI in Education</button>
+                    <button class="filter-button" data-category="AI Trends">AI Trends</button>
+                    <button class="filter-button" data-category="Ethics">Ethics</button>
+                    {/* Add more categories dynamically or statically */}
+                    {/* Example: <button class="filter-button" data-category="Career">Career</button> */}
+                </nav>
+             </header>
 
             <div class="blog-posts-container" id="blog-posts">
-                <article class="blog-post-preview">
+                {/* Add data-category attribute matching filter buttons */}
+                {/* Add data-author attribute for potential author filtering */}
+                <article class="blog-post-preview" data-category="AI in Education" data-author="Uplas Team">
                     <a href="blog-post-1.html" class="post-link">
-                        <div class="preview-image-container">
-                            <img src="placeholder_ai_education_thumb.jpg" alt="AI in Education Thumbnail">
+                        <div class="post-preview__image-container">
+                            {/* Use more descriptive alt text */}
+                            <img src="images/placeholder_ai_education_thumb.jpg" alt="Abstract representation of interconnected nodes overlaying a classroom setting">
                         </div>
-                        <div class="post-preview-content">
-                            <h2>The Transformative Power of AI in Education</h2>
-                            <p class="post-excerpt">Artificial intelligence (AI) is rapidly transforming various aspects of our lives, and education is no exception. From personalized learning experiences to automating administrative tasks, AI holds immense potential to revolutionize the way we teach and learn. At Uplas, we believe in harnessing this power to create a more effective and engaging future for education...</p>
-                            <span class="read-more">Read More <i class="fas fa-arrow-right"></i></span>
+                        <div class="post-preview__content">
+                             <header class="post-preview__header">
+                                <h2 class="post-preview__title">The Transformative Power of AI in Education</h2>
+                                <p class="post-preview__meta">
+                                    By <span class="post-preview__author">Uplas Team</span> | <time datetime="2025-04-28">April 28, 2025</time> | <span class="post-preview__category">AI in Education</span>
+                                 </p>
+                             </header>
+                            <p class="post-preview__excerpt">Artificial intelligence (AI) is rapidly transforming education. From personalized learning paths to automating grading, AI holds immense potential. At Uplas, we're harnessing this power...</p>
+                            <span class="post-preview__read-more">Read More <i class="fas fa-arrow-right"></i></span>
                         </div>
                     </a>
                 </article>
 
-                <article class="blog-post-preview">
+                <article class="blog-post-preview" data-category="AI Trends" data-author="AI Analyst">
                     <a href="blog-post-2.html" class="post-link">
-                        <div class="preview-image-container">
-                            <img src="placeholder_ml_trends_thumb.jpg" alt="Machine Learning Trends Thumbnail">
+                        <div class="post-preview__image-container">
+                            <img src="images/placeholder_ml_trends_thumb.jpg" alt="Futuristic graph showing upward trends in machine learning adoption">
                         </div>
-                        <div class="post-preview-content">
-                            <h2>Machine Learning Trends in 2025</h2>
-                            <p class="post-excerpt">Stay ahead of the curve with our analysis of the key trends shaping the field of machine learning this year. From advancements in deep learning to the increasing adoption of MLOps, we explore the forces driving innovation in this rapidly evolving domain...</p>
-                            <span class="read-more">Read More <i class="fas fa-arrow-right"></i></span>
+                        <div class="post-preview__content">
+                             <header class="post-preview__header">
+                                 <h2 class="post-preview__title">Machine Learning Trends Shaping 2025</h2>
+                                <p class="post-preview__meta">
+                                    By <span class="post-preview__author">AI Analyst</span> | <time datetime="2025-04-25">April 25, 2025</time> | <span class="post-preview__category">AI Trends</span>
+                                 </p>
+                            </header>
+                            <p class="post-preview__excerpt">Stay ahead with our analysis of key machine learning trends. From advancements in deep learning to the rise of MLOps, explore the forces driving innovation...</p>
+                            <span class="post-preview__read-more">Read More <i class="fas fa-arrow-right"></i></span>
                         </div>
                     </a>
                 </article>
 
-                <article class="blog-post-preview">
+                <article class="blog-post-preview" data-category="Ethics" data-author="Ethics Committee">
                     <a href="blog-post-3.html" class="post-link">
-                        <div class="preview-image-container">
-                            <img src="placeholder_ethics_ai_thumb.jpg" alt="Ethics in AI Thumbnail">
+                        <div class="post-preview__image-container">
+                            <img src="images/placeholder_ethics_ai_thumb.jpg" alt="Stylized image of a scale balancing technology icons and ethical symbols">
                         </div>
-                        <div class="post-preview-content">
-                            <h2>Ethical Considerations in AI Development</h2>
-                            <p class="post-excerpt">A discussion on the importance of ethics in the development and deployment of artificial intelligence technologies. As AI becomes more integrated into our daily lives, it is crucial to consider the ethical implications and ensure responsible innovation...</p>
-                            <span class="read-more">Read More <i class="fas fa-arrow-right"></i></span>
+                        <div class="post-preview__content">
+                            <header class="post-preview__header">
+                                <h2 class="post-preview__title">Navigating the Ethical Landscape of AI</h2>
+                                 <p class="post-preview__meta">
+                                    By <span class="post-preview__author">Ethics Committee</span> | <time datetime="2025-04-22">April 22, 2025</time> | <span class="post-preview__category">Ethics</span>
+                                 </p>
+                            </header>
+                            <p class="post-preview__excerpt">A crucial discussion on ethics in AI development. As AI integrates deeper into life, considering implications and ensuring responsible innovation is paramount...</p>
+                            <span class="post-preview__read-more">Read More <i class="fas fa-arrow-right"></i></span>
                         </div>
                     </a>
                 </article>
+
+                 {/* No Posts Found Message (Hidden initially) */}
+                 <div id="no-posts-message" class="no-posts-message" style="display: none;">
+                     <p><i class="fas fa-info-circle"></i> No articles found matching your current search or filter.</p>
+                     <button id="reset-filters-button" class="button button--secondary">Reset Filters</button>
+                 </div>
 
             </div>
+
+            <nav class="pagination" aria-label="Blog posts navigation">
+                 {/* JS might dynamically generate these links based on total posts/pages */}
+                <a href="#" class="pagination__link pagination__link--disabled" aria-label="Previous page" aria-disabled="true"><i class="fas fa-arrow-left"></i> Prev</a>
+                <a href="#" class="pagination__link pagination__link--active" aria-current="page">1</a>
+                {/* <a href="#" class="pagination__link">2</a> */}
+                {/* <a href="#" class="pagination__link">3</a> */}
+                {/* <span class="pagination__ellipsis">&hellip;</span> */}
+                <a href="#" class="pagination__link pagination__link--disabled" aria-label="Next page" aria-disabled="true">Next <i class="fas fa-arrow-right"></i></a>
+            </nav>
+             {/* OR Load More Button (Style provided in CSS) */}
+             {/* <button id="load-more-button" class="button button--secondary blog__load-more">Load More Posts</button> */}
+
         </section>
     </main>
 
     <footer class="footer">
-        <div class="footer-left">
-            <div class="contact-section">
-                <h3>Contact Us</h3>
-                <p><i class="fas fa-phone"></i> +123 456 7890</p>
-                <p><i class="fas fa-envelope"></i> info@uplas.com</p>
-                <p><i class="fas fa-map-marker-alt"></i> 123 Uplas Street, AI City</p>
+        <div class="footer__container">
+            <div class="footer__section footer__section--contact">
+                <h3 class="footer__heading">Contact Us</h3>
+                 <address class="footer__address">
+                    <p><i class="fas fa-phone footer__icon"></i> <a href="tel:+254708654984" class="footer__link">+254 708 654 984</a></p>
+                    <p><i class="fas fa-envelope footer__icon"></i> <a href="mailto:mugash042@gmail.com" class="footer__link">mugash042@gmail.com</a></p>
+                    <p><i class="fas fa-map-marker-alt footer__icon"></i> Kilifi, Kenya</p>
+                </address>
             </div>
-            <div class="copyright-section">
-                <p>&copy; 2025 Uplas. All rights reserved.</p>
-            </div>
-        </div>
-        <div class="footer-right">
-            <div class="social-section">
-                <h3>Follow Us</h3>
+            <div class="footer__section footer__section--social">
+                <h3 class="footer__heading">Follow Us</h3>
                 <div class="social-media">
-                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on Instagram"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
+             <div class="footer__section footer__section--links">
+                <h3 class="footer__heading">Quick Links</h3>
+                <ul class="footer__list">
+                    <li><a href="index.html" class="footer__link">Home</a></li>
+                    <li><a href="upricing.html" class="footer__link">Pricing</a></li>
+                    <li><a href="upricing.html#contact-section" class="footer__link">Contact</a></li>
+                    <li><a href="ublog.html" class="footer__link">Blog</a></li>
+                    <li><a href="/terms" class="footer__link">Terms of Service</a></li>
+                     <li><a href="/privacy" class="footer__link">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+         <div class="footer__bottom">
+            <p class="footer__copyright">© <span id="current-year"></span> Uplas. All rights reserved.</p>
         </div>
     </footer>
 
-    <script src="apiUtils.js" defer></script> 
     <script src="ublog.js"></script>
-</body>
 
+</body>
 </html>
