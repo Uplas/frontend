@@ -4,131 +4,195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uplas | Explore Our Courses</title>
-    <link rel="icon" href="images/uni plas_prev_ui.ico" type="image/x-icon">
-    <link rel="stylesheet" href="ucourse.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Uplas | Explore Our AI Courses</title>
+    <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="ucourse.css">
 </head>
 
 <body>
     <header class="header">
-        <div class="logo">
-            <img src="images/uni plas_prev_ui.ico" alt="Uplas Logo" class="logo-img">
-        </div>
-        <nav class="nav">
-            <a href="ucourse.html" class="nav-link active">Courses</a>
-            <a href="uprojects.html" class="nav-link">Projects</a>
-            <a href="ucommunity.html" class="nav-link">Community</a>
+        <a href="index.html" class="logo" aria-label="Uplas Homepage">
+            <img src="images/uni_plas_prev_ui.ico" alt="Uplas Logo" class="logo__img">
+        </a>
+        <nav class="nav" aria-label="Main Navigation">
+            <a href="ucourse.html" class="nav__link nav__link--active">Courses</a>
+            <a href="uprojects.html" class="nav__link">Projects</a>
+            <a href="ucommunity.html" class="nav__link">Community</a>
+            <a href="index.html" class="nav__link">Home</a>
         </nav>
-        <button id="theme-toggle">Dark Mode</button>
+        <button id="theme-toggle" class="button button--theme" aria-label="Switch to Dark Mode" aria-live="polite">
+            <i class="fas fa-moon theme-icon--dark"></i>
+            <i class="fas fa-sun theme-icon--light"></i>
+            <span class="theme-text">Dark Mode</span>
+        </button>
+        <button class="nav__toggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+            <i class="fas fa-bars"></i>
+        </button>
     </header>
 
+
     <main class="main-content">
-        <section class="courses-container">
-            <h1>Explore Our Courses</h1>
+        <section class="courses-container" aria-labelledby="courses-heading">
 
-            <div class="search-bar">
-                <input type="text" id="search-input" placeholder="Search courses...">
-                <button id="search-button"><i class="fas fa-search"></i></button>
-            </div>
+            <header class="courses-header">
+                <h1 id="courses-heading" class="courses__main-title">Explore AI Courses</h1>
+                <p class="courses__subtitle">Find the right path to enhance your AI skills, from foundational concepts to advanced applications.</p>
 
-            <div class="courses-grid">
-                <a href="mcourseD.html" style="text-decoration: none; color: inherit; display: block;">
-    <div class="course-item available">
-        <i class="fas fa-play-circle course-icon"></i>
-        <h3>AI in Workplace: Blend with AI, improve productivity, efficiency and foster teamwork</h3>
-    </div>
-</a>
-                <div class="course-item locked">
-                    <i class="fas fa-lock course-icon"></i>
-                    <h3>Course 2 - Coming Soon</h3>
-                </div>
-                <div class="course-item locked">
-                    <i class="fas fa-lock course-icon"></i>
-                    <h3>Course 3 - Coming Soon</h3>
-                </div>
-                <div class="course-item locked">
-                    <i class="fas fa-lock course-icon"></i>
-                    <h3>Course 4 - Coming Soon</h3>
-                </div>
-                <div class="course-item locked">
-                    <i class="fas fa-lock course-icon"></i>
-                    <h3>Course 5 - Coming Soon</h3>
-                </div>
-                <div class="course-item locked">
-                    <i class="fas fa-lock course-icon"></i>
-                    <h3>Course 6 - Coming Soon</h3>
-                </div>
-                <div class="course-item locked">
-                    <i class="fas fa-lock course-icon"></i>
-                    <h3>Course 7 - Coming Soon</h3>
-                </div>
-                <div class="course-item locked">
-                    <i class="fas fa-lock course-icon"></i>
-                    <h3>Course 8 - Coming Soon</h3>
-                </div>
-                <div class="course-item locked">
-                    <i class="fas fa-lock course-icon"></i>
-                    <h3>Course 9 - Coming Soon</h3>
-                </div>
-                <div class="course-item locked">
-                    <i class="fas fa-lock course-icon"></i>
-                    <h3>Course 10 - Coming Soon</h3>
-                </div>
-                <div class="course-item locked">
-                    <i class="fas fa-lock course-icon"></i>
-                    <h3>Course 11 - Coming Soon</h3>
-                </div>
-                <div class="course-item locked">
-                    <i class="fas fa-lock course-icon"></i>
-                    <h3>Course 12 - Coming Soon</h3>
-                </div>
-            </div>
+                 <div class="controls-bar">
+                     <div class="search-bar">
+                        <input type="search" id="search-input" class="search-bar__input" placeholder="Search courses (e.g., Python, Workplace AI)" aria-label="Search courses">
+                        <button id="search-button" class="search-bar__button" aria-label="Search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                         <button id="clear-search-button" class="search-bar__button search-bar__button--clear" aria-label="Clear search" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
 
-            <div class="whatsapp-chat">
-                <a id="whatsapp-link" href="#" target="_blank">
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-            </div>
+                    <div class="filter-controls">
+                         <div class="filter-group">
+                             <label for="category-filter" class="filter-label">Category:</label>
+                            <select id="category-filter" class="filter-select">
+                                <option value="all">All Categories</option>
+                                <option value="Foundations">AI Foundations</option>
+                                <option value="Applications">AI Applications</option>
+                                <option value="Workplace">AI in the Workplace</option>
+                                <option value="Development">AI Development</option>
+                            </select>
+                        </div>
+                         <div class="filter-group">
+                             <label for="difficulty-filter" class="filter-label">Difficulty:</label>
+                             <select id="difficulty-filter" class="filter-select">
+                                <option value="all">All Levels</option>
+                                <option value="Beginner">Beginner</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Advanced">Advanced</option>
+                            </select>
+                         </div>
+                    </div>
+                 </div>
+             </header>
+
+ 
+            <div class="courses-grid" id="courses-grid">
+                <article class="course-card course-card--available" data-category="Workplace" data-difficulty="Beginner">
+                    <a href="mcourseD.html?course=ai-in-workplace" class="course-card__link" aria-label="View course details: AI in Workplace">
+                        <div class="course-card__image-container">
+                            <img src="images/placeholder_workplace_ai.jpg" alt="Illustration of people collaborating with AI tools in an office." class="course-card__image">
+                             <span class="course-card__difficulty-badge">Beginner</span>
+                        </div>
+                        <div class="course-card__content">
+                            <h3 class="course-card__title">AI in Workplace: Blend, Improve, Collaborate</h3>
+                            <p class="course-card__description">Boost productivity, efficiency, and teamwork by integrating AI tools effectively into your daily workflow.</p>
+                            <div class="course-card__meta">
+                                <span><i class="fas fa-clock" aria-hidden="true"></i> Approx. 4 Hours</span>
+                                <span><i class="fas fa-layer-group" aria-hidden="true"></i> Workplace</span>
+                             </div>
+                            <span class="course-card__cta">View Details <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </article>
+
+
+                <article class="course-card course-card--locked" data-category="Foundations" data-difficulty="Beginner">
+                    <a href="mcourseD.html?course=python-foundations" class="course-card__link" aria-label="View course details: Python for AI">
+                         <div class="course-card__image-container">
+                            <img src="images/placeholder_python_ai.jpg" alt="Python logo intertwined with AI neural network graphic." class="course-card__image">
+                             <span class="course-card__difficulty-badge">Beginner</span>
             
-            <div id="whatsapp-chat-window" class="whatsapp-chat-window">
-                <iframe src="https://web.whatsapp.com/" style="border:none; width: 100%; height: 100%;"></iframe>
-                <button id="close-whatsapp-chat">Close</button>
+                             <div class="course-card__locked-overlay">
+                                 <i class="fas fa-lock"></i>
+                                 <span>Premium Access</span>
+                             </div>
+                        </div>
+                        <div class="course-card__content">
+                            <h3 class="course-card__title">Python Foundations for AI</h3>
+                            <p class="course-card__description">Master the essential Python programming skills needed to start your journey in AI and Machine Learning.</p>
+                             <div class="course-card__meta">
+                                 <span><i class="fas fa-clock" aria-hidden="true"></i> Approx. 10 Hours</span>
+                                 <span><i class="fas fa-layer-group" aria-hidden="true"></i> Foundations</span>
+                             </div>
+                            <span class="course-card__cta course-card__cta--locked">View Details <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                </article>
+
+                 <article class="course-card course-card--locked" data-category="Development" data-difficulty="Intermediate">
+                    <a href="mcourseD.html?course=building-chatbots" class="course-card__link" aria-label="View course details: Building Chatbots">
+                         <div class="course-card__image-container">
+                            <img src="images/placeholder_chatbot.jpg" alt="Abstract image of conversation bubbles and gears." class="course-card__image">
+                             <span class="course-card__difficulty-badge">Intermediate</span>
+                            <div class="course-card__locked-overlay">
+                                <i class="fas fa-lock"></i>
+                                <span>Premium Access</span>
+                            </div>
+                        </div>
+                        <div class="course-card__content">
+                            <h3 class="course-card__title">Building Conversational AI Chatbots</h3>
+                            <p class="course-card__description">Learn the techniques and tools to design, build, and deploy intelligent chatbots for various applications.</p>
+                            <div class="course-card__meta">
+                                <span><i class="fas fa-clock" aria-hidden="true"></i> Approx. 15 Hours</span>
+                                <span><i class="fas fa-layer-group" aria-hidden="true"></i> Development</span>
+                             </div>
+                            <span class="course-card__cta course-card__cta--locked">View Details <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </a>
+                 </article>
+
+ 
+                 <p id="no-courses-message" class="no-results-message" style="display: none;">No courses found matching your criteria.</p>
+
             </div>
 
         </section>
     </main>
 
-    <footer class="footer">
-        <div class="footer-left">
-            <div class="contact-section">
-                <h3>Contact Us</h3>
-                <p><i class="fas fa-envelope"></i> info@uplas.com</p>
-                <p><i class="fas fa-phone"></i> +254 700 000 000</p>
+
+     <footer class="footer">
+         <div class="footer__container">
+              <div class="footer__section footer__section--contact">
+                <h3 class="footer__heading">Contact Us</h3>
+                 <address class="footer__address">
+                    <p><i class="fas fa-phone footer__icon"></i> <a href="tel:+254708654984" class="footer__link">+254 708 654 984</a></p>
+                    <p><i class="fas fa-envelope footer__icon"></i> <a href="mailto:mugash042@gmail.com" class="footer__link">mugash042@gmail.com</a></p>
+                    <p><i class="fas fa-map-marker-alt footer__icon"></i> Kilifi, Kenya</p>
+                </address>
             </div>
-            <div class="copyright-section">
-                <p>&copy; 2025 Uplas. All rights reserved.</p>
-            </div>
-        </div>
-        <div class="footer-right">
-            <div class="social-section">
-                <h3>Follow Us</h3>
+             <div class="footer__section footer__section--social">
+                <h3 class="footer__heading">Follow Us</h3>
                 <div class="social-media">
-                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a> </div>
+                    <a href="#" class="social-media__link" aria-label="Uplas on Facebook"><i class="fab fa-facebook"></i></a>
+                    {/* ... other social links ... */}
+                    <a href="#" class="social-media__link" aria-label="Uplas on Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
             </div>
+              <div class="footer__section footer__section--links">
+                <h3 class="footer__heading">Quick Links</h3>
+                <ul class="footer__list">
+                    <li><a href="index.html" class="footer__link">Home</a></li>
+                    <li><a href="upricing.html" class="footer__link">Pricing</a></li>
+                    <li><a href="ublog.html" class="footer__link">Blog</a></li>
+                     <li><a href="ucourse.html" class="footer__link">Courses</a></li>
+                    <li><a href="/terms" class="footer__link">Terms of Service</a></li>
+                     <li><a href="/privacy" class="footer__link">Privacy Policy</a></li>
+                </ul>
+            </div>
+         </div>
+         <div class="footer__bottom">
+            <p class="footer__copyright">© <span id="current-year">2025</span> Uplas. All rights reserved.</p>
         </div>
     </footer>
 
-    <div id="whatsapp-chat" class="whatsapp-chat">
-        <a href="https://wa.me/YOUR_WHATSAPP_NUMBER?text=Hello%20Uplas%20team,%20I%20have%20a%20question%20about..." target="_blank" aria-label="Chat with us on WhatsApp">
+
+    <div id="whatsapp-chat" class="whatsapp-fab">
+        <a href="https://wa.me/254708654984?text=Hello%20Uplas%20team!" target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
             <i class="fab fa-whatsapp"></i>
         </a>
     </div>
 
-    <script src="apiUtils.js" defer></script> 
     <script src="ucourse.js"></script>
+
 </body>
 </html>
