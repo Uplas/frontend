@@ -1,660 +1,596 @@
-/* ucourse.css - Updated to match homepage styles and refine WhatsApp */
+/* ==========================================================================
+   ucourse.css - Standalone Stylesheet for Uplas Courses Listing Page
+   ========================================================================== */
 
-/* Use variables for consistent theming */
+/*------------------------------------*\
+  #ROOT VARIABLES & BASE STYLES (Copied & Consistent)
+\*------------------------------------*/
 :root {
-    --primary-color: #00b4d8; /* Skyblue */
-    --secondary-color: #3d405b; /* Luxury black */
-    --light-bg: #f4f1de; /* Light cream in light mode */
-    --dark-bg: #3d405b; /* Luxury black in dark mode */
-    --light-text: #3d405b; /* Luxury black in light mode */
-    --dark-text: #f4f1de; /* Light cream in dark mode */
-    --card-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    --card-hover-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    --available-course-shadow: 0 4px 8px rgba(0, 180, 216, 0.3); /* Shadow for available courses */
-    --locked-course-bg: #f9f9f9; /* Light background for locked courses */
-    --locked-course-text: #aaa; /* Grey text for locked courses */
-    --locked-course-border: #eee; /* Light border for locked courses */
-    --dark-mode-course-bg: #2d2f3e; /* Dark background for course items in dark mode */
-    --dark-mode-locked-bg: #444; /* Darker background for locked courses in dark mode */
-    --dark-mode-locked-text: #888; /* Grey text for locked courses in dark mode */
-    --dark-mode-locked-border: #666; /* Dark border for locked courses in dark mode */
+    /* Color Palette */
+    --color-primary: #00b4d8; --color-primary-dark: #0077b6;
+    --color-secondary: #3d405b; --color-accent: #f4a261;
+    --color-background-light: #f4f1de; --color-background-dark: #2d2f3e;
+    --color-text-light: #f8f9fa; --color-text-dark: #333;
+    --color-text-secondary-light: #adb5bd; --color-text-secondary-dark: #6c757d;
+    --color-error: #dc3545; --color-success: #28a745;
+    --color-border: #ccc; --color-border-dark: #555;
+    --color-white: #ffffff; --color-black: #000000;
+    --color-locked-overlay: rgba(50, 50, 70, 0.7);
+    --color-locked-icon: var(--color-text-light);
+
+    /* Typography */
+    --font-primary: 'Poppins', sans-serif; --font-size-base: 16px; --line-height-base: 1.6;
+
+    /* Spacing */
+    --spacing-xs: 0.25rem; --spacing-sm: 0.5rem; --spacing-md: 1rem;
+    --spacing-lg: 1.5rem; --spacing-xl: 2rem; --spacing-xxl: 3rem;
+
+    /* Borders & Shadows */
+    --border-radius-sm: 3px; --border-radius-md: 5px; --border-radius-lg: 10px;
+    --box-shadow-light: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --box-shadow-dark: 0 4px 8px rgba(0, 0, 0, 0.3);
+    --card-hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+
+    /* Transitions */
+    --transition-fast: 0.2s ease-in-out; --transition-medium: 0.3s ease-in-out;
+
+    /* Default Light Mode Variables */
+    --bg-color: var(--color-background-light);
+    --text-color: var(--color-text-dark);
+    --text-color-secondary: var(--color-text-secondary-dark);
+    --header-bg: var(--color-background-light);
+    --footer-bg: var(--color-secondary);
+    --footer-text-color: var(--color-text-light);
+    --form-bg: var(--color-white); /* For search/filter bg */
+    --form-border-color: var(--color-border);
+    --input-bg: var(--color-white);
+    --input-text-color: var(--color-text-dark);
+    --button-primary-bg: var(--color-secondary);
+    --button-primary-text: var(--color-text-light);
+    --button-primary-hover-bg: var(--color-primary);
+    --link-color: var(--color-primary);
+    --link-hover-color: var(--color-primary-dark);
+    --card-bg: var(--color-white); /* Course card bg */
+    --card-border-color: #e0e0e0;
+    --card-locked-bg: #f8f8f8;
+    --card-locked-text: #aaa;
 }
 
+/* Base Body Styles */
 body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--light-bg);
-    color: var(--light-text);
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+    font-family: var(--font-primary); background-color: var(--bg-color); color: var(--text-color);
+    margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column;
+    font-size: var(--font-size-base); line-height: var(--line-height-base);
+    transition: background-color var(--transition-medium), color var(--transition-medium);
 }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--light-bg);
-    padding: 0 1rem 0 0;
-    padding-left: 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    height: 80px; /* Match logo height */
-    overflow: hidden; /* Prevents logo from expanding header */
-    position: relative;
+/* Dark Mode Base Styles */
+body.dark-mode {
+    --bg-color: var(--color-background-dark); --text-color: var(--color-text-light);
+    --text-color-secondary: var(--color-text-secondary-light);
+    --header-bg: var(--color-background-dark); --footer-bg: #1a1a2e;
+    --footer-text-color: var(--color-text-light);
+    --form-bg: var(--color-secondary); --form-border-color: var(--color-border-dark);
+    --input-bg: #3d405b; --input-text-color: var(--color-text-light);
+    --button-primary-bg: var(--color-primary); --button-primary-text: var(--color-text-dark);
+    --button-primary-hover-bg: var(--color-primary-dark);
+    --link-color: var(--color-primary); --link-hover-color: #90e0ef;
+    --card-bg: var(--color-secondary);
+    --card-border-color: #444;
+    --card-locked-bg: #4a4a6a; /* Darker locked bg */
+    --card-locked-text: #999;
+    --color-locked-overlay: rgba(26, 26, 46, 0.8); /* Darker overlay */
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    padding-left: 0;
-}
+/* Basic Reset & Typography (Copied) */
+*, *::before, *::after { box-sizing: border-box; }
+img { max-width: 100%; height: auto; display: block; }
+h1, h2, h3, h4, h5, h6 { margin-top: 0; margin-bottom: var(--spacing-md); line-height: 1.2; font-weight: 700; color: inherit; }
+h1 { font-size: 2.5rem; } h2 { font-size: 2rem; } h3 { font-size: 1.5rem; }
+p { margin-top: 0; margin-bottom: var(--spacing-md); }
+a { color: var(--link-color); text-decoration: none; transition: color var(--transition-fast); }
+a:hover { color: var(--link-hover-color); text-decoration: none; }
+address { font-style: normal; }
+ul, ol { padding-left: var(--spacing-lg); margin-top: 0; margin-bottom: var(--spacing-md); }
+select, input, button, textarea { font-family: inherit; font-size: inherit; } /* Ensure form elements inherit font */
 
-.logo-img {
-    height: 180px; /* Match homepage logo size */
-    width: auto;
-    margin-bottom: -10px; /* Pulls logo down to fit in header */
-    margin-left: 0 !important; /* Force margin-left to 0 */
-    position: absolute;
-    left: 0 !important; /* Force left position to 0 */
-    z-index: 2; /* Add this - keeps logo above other elements */
-}
+/* Basic button style (Copied) */
+.button { padding: 12px var(--spacing-lg); border: none; border-radius: var(--border-radius-md); cursor: pointer; font-size: 1rem; font-weight: 600; transition: background-color var(--transition-fast), transform var(--transition-fast); display: inline-flex; align-items: center; justify-content: center; gap: var(--spacing-sm); }
+.button:hover { transform: translateY(-2px); }
+.button--primary { background-color: var(--button-primary-bg); color: var(--button-primary-text); }
+.button--primary:hover { background-color: var(--button-primary-hover-bg); }
+.button--secondary { background-color: transparent; color: var(--text-color-secondary); border: 1px solid var(--form-border-color); }
+body.dark-mode .button--secondary { border-color: var(--color-border-dark); }
+.button--secondary:hover { background-color: var(--bg-color); border-color: var(--text-color-secondary); }
 
-.logo-text {
-    font-size: 1.6rem; /* Adjusted to match logo scale */
-    font-weight: 700;
-    color: var(--light-text);
-    margin-left: 5px; /* Space between logo and text */
-    line-height: 1; /* Prevents vertical misalignment */
-    transform: translateY(-2px); /* Fine-tune vertical alignment */
-}
 
-.nav {
-    display: flex;
-    gap: 20px;
-}
+/*------------------------------------*\
+  #HEADER & FOOTER (Copied - Standalone)
+\*------------------------------------*/
+/* Header Styles */
+.header { display: flex; justify-content: space-between; align-items: center; background-color: var(--header-bg); padding: var(--spacing-sm) var(--spacing-xl); box-shadow: var(--box-shadow-light); height: 80px; position: sticky; top: 0; z-index: 1000; transition: background-color var(--transition-medium); }
+.logo { display: flex; align-items: center; height: 100%; text-decoration: none; }
+.logo__img { height: 60px; width: auto; margin-right: var(--spacing-sm); }
+.nav { display: flex; gap: var(--spacing-lg); }
+.nav__link { font-weight: 500; color: var(--text-color); text-decoration: none; padding: var(--spacing-sm) 0; position: relative; transition: color var(--transition-fast); }
+.nav__link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--color-primary); transform: scaleX(0); transform-origin: bottom right; transition: transform var(--transition-medium); }
+.nav__link:hover::after, .nav__link--active::after { transform: scaleX(1); transform-origin: bottom left; }
+.nav__link:hover, .nav__link--active { color: var(--color-primary); font-weight: 600; text-decoration: none; }
+.button--theme { background-color: transparent; color: var(--text-color); border: 1px solid var(--form-border-color); padding: var(--spacing-sm) var(--spacing-md); border-radius: var(--border-radius-md); cursor: pointer; display: flex; align-items: center; gap: var(--spacing-sm); transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast); }
+.button--theme:hover { background-color: var(--color-primary); color: var(--button-primary-text); border-color: var(--color-primary); }
+.theme-icon--light, body.dark-mode .theme-icon--dark { display: none; }
+body.dark-mode .theme-icon--light { display: inline-block; }
+.nav__toggle { display: none; background: none; border: none; color: var(--text-color); font-size: 1.5rem; cursor: pointer; padding: var(--spacing-sm); }
+/* Dark mode Header specific overrides */
+body.dark-mode .header { background-color: var(--header-bg); }
+body.dark-mode .nav__link { color: var(--text-color); }
+body.dark-mode .nav__link:hover, body.dark-mode .nav__link--active { color: var(--color-primary); }
+body.dark-mode .button--theme { color: var(--text-color); border-color: var(--form-border-color); }
+body.dark-mode .button--theme:hover { background-color: var(--color-primary); color: var(--button-primary-text); border-color: var(--color-primary); }
+body.dark-mode .nav__toggle { color: var(--text-color); }
 
-.nav-link {
-    font-weight: 600;
-    color: var(--light-text);
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    transition: all 0.3s ease;
-    position: relative;
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
-}
+/* Footer Styles */
+.footer { background-color: var(--footer-bg); color: var(--footer-text-color); padding: var(--spacing-xl) 0 var(--spacing-sm) 0; margin-top: var(--spacing-xxl); }
+.footer__container { max-width: 1200px; margin: 0 auto; padding: 0 var(--spacing-lg); display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-xl); text-align: left; }
+.footer__section { margin-bottom: var(--spacing-lg); }
+.footer__heading { font-size: 1.2rem; font-weight: 600; margin-bottom: var(--spacing-md); color: inherit; opacity: 0.9; }
+.footer__address p { margin: var(--spacing-sm) 0; font-size: 0.95rem; opacity: 0.8; }
+.footer__icon { margin-right: var(--spacing-sm); width: 1em; text-align: center; }
+.footer__link { color: inherit; text-decoration: none; transition: color var(--transition-fast), text-decoration var(--transition-fast); opacity: 0.8; }
+.footer__link:hover { color: var(--color-primary); text-decoration: underline; opacity: 1; }
+.footer__list { list-style: none; padding: 0; margin: 0; }
+.footer__list li { margin-bottom: var(--spacing-sm); }
+.social-media { display: flex; gap: var(--spacing-md); }
+.social-media__link { color: inherit; font-size: 1.5rem; transition: color var(--transition-fast), transform var(--transition-fast); opacity: 0.8; text-decoration: none; }
+.social-media__link:hover { color: var(--color-primary); transform: scale(1.1); opacity: 1; }
+.footer__bottom { text-align: center; margin-top: var(--spacing-xl); padding-top: var(--spacing-lg); border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.footer__copyright { font-size: 0.9rem; opacity: 0.7; margin: 0; }
+/* Dark Mode Footer Overrides */
+body.dark-mode .footer { background-color: var(--footer-bg); color: var(--footer-text-color); }
+body.dark-mode .footer__link { color: inherit; opacity: 0.8; }
+body.dark-mode .footer__link:hover { color: var(--color-primary); opacity: 1; }
+body.dark-mode .social-media__link { color: inherit; opacity: 0.8; }
+body.dark-mode .social-media__link:hover { color: var(--color-primary); opacity: 1; }
 
-.nav-link:hover,
-.nav-link.active {
-    color: var(--primary-color);
-    font-weight: 700;
-}
-
-.nav-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-    height: 2px;
-    background-color: var(--primary-color);
-}
-
-#theme-toggle {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 500;
-    background-color: var(--secondary-color);
-    color: var(--dark-text);
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
+/*------------------------------------*\
+  #MAIN CONTENT & COURSES CONTAINER
+\*------------------------------------*/
 .main-content {
     flex: 1;
-    padding: 2rem;
-    text-align: center;
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+    padding: var(--spacing-xl) var(--spacing-lg);
 }
 
 .courses-container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 2rem;
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+    max-width: 1400px; /* Wider container for courses */
+    margin: 0 auto;
 }
 
-.courses-container h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    color: var(--light-text);
-    margin-bottom: 30px;
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
-}
-
-.search-bar {
-    margin-bottom: 30px;
+.courses-header {
     text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.courses__main-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+.courses__subtitle {
+    font-size: 1.2rem;
+    color: var(--text-color-secondary);
+    max-width: 700px;
+    margin: 0 auto var(--spacing-xl) auto;
+}
+
+/*------------------------------------*\
+  #CONTROLS BAR (Search & Filter)
+\*------------------------------------*/
+.controls-bar {
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-lg);
+    justify-content: space-between;
     align-items: center;
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+    background-color: var(--form-bg);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-lg);
+    margin-bottom: var(--spacing-xxl);
+    box-shadow: var(--box-shadow-light);
+    border: 1px solid var(--form-border-color);
+}
+body.dark-mode .controls-bar {
+     background-color: var(--color-secondary);
+     border-color: var(--color-border-dark);
 }
 
-.search-bar input[type="text"] {
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px 0 0 5px;
-    font-size: 1rem;
-    width: 40%;
-    max-width: 300px;
-    border-right: none;
-    font-family: 'Poppins', sans-serif;
-}
 
-.search-bar button {
-    background-color: var(--primary-color);
-    color: var(--dark-text);
+.search-bar { /* Reusing search-bar class structure from blog */
+    display: flex;
+    flex-grow: 1; /* Allow search to take more space */
+    max-width: 500px;
+    border: 1px solid var(--form-border-color);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+}
+body.dark-mode .search-bar { border-color: var(--color-border-dark); }
+
+.search-bar__input {
+    padding: 10px var(--spacing-md); /* Slightly smaller padding */
     border: none;
-    padding: 12px 15px;
-    border-radius: 0 5px 5px 0;
+    font-size: 0.95rem;
+    flex-grow: 1;
+    outline: none;
+    background-color: var(--input-bg);
+    color: var(--input-text-color);
+}
+.search-bar__input::placeholder { color: var(--text-color-secondary); }
+body.dark-mode .search-bar__input::placeholder { color: var(--color-text-secondary-light); }
+
+.search-bar__button {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    padding: 10px var(--spacing-md);
     cursor: pointer;
     font-size: 1rem;
-    transition: background-color 0.3s ease;
-    font-family: 'Poppins', sans-serif;
+    transition: background-color var(--transition-fast);
+    flex-shrink: 0;
+}
+.search-bar__button:hover { background-color: var(--color-primary-dark); }
+.search-bar__button--clear { background-color: var(--color-text-secondary-dark); }
+.search-bar__button--clear:hover { background-color: var(--color-error); }
+body.dark-mode .search-bar__button--clear { background-color: var(--color-text-secondary-light); color: var(--color-text-dark); }
+body.dark-mode .search-bar__button--clear:hover { background-color: var(--color-error); color: var(--color-white); }
+
+.filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-lg);
+    align-items: center;
 }
 
-.search-bar button:hover {
-    background-color: darken(var(--primary-color), 10%);
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
 }
 
+.filter-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-color-secondary);
+    white-space: nowrap;
+}
+
+.filter-select {
+    padding: 8px var(--spacing-md);
+    border: 1px solid var(--form-border-color);
+    border-radius: var(--border-radius-md);
+    background-color: var(--input-bg);
+    color: var(--input-text-color);
+    font-size: 0.9rem;
+    cursor: pointer;
+    min-width: 150px; /* Minimum width */
+    /* Add custom select arrow */
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1em;
+    padding-right: 2.5rem;
+}
+body.dark-mode .filter-select {
+    border-color: var(--color-border-dark);
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23adb5bd' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+
+.filter-select:focus {
+     border-color: var(--color-primary);
+     outline: none;
+     box-shadow: 0 0 0 2px rgba(0, 180, 216, 0.2);
+}
+
+
+/*------------------------------------*\
+  #COURSES GRID & CARDS
+\*------------------------------------*/
 .courses-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 25px;
-    margin-top: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive grid */
+    gap: var(--spacing-xl);
 }
 
-.course-item {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: var(--card-shadow);
-    padding: 25px;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.course-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-light);
+    overflow: hidden;
+    transition: transform var(--transition-medium), box-shadow var(--transition-medium);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 180px;
-    position: relative;
-    border: 1px solid #ddd;
-    font-family: 'Poppins', sans-serif;
+    border: 1px solid var(--card-border-color);
 }
+body.dark-mode .course-card { border-color: var(--card-border-color); }
 
-.course-item:hover {
-    transform: translateY(-5px);
+
+.course-card__link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Make link fill card */
+}
+.course-card__link:hover { color: inherit; text-decoration: none; } /* Prevent text color change on hover */
+
+.course-card--available:hover {
+    transform: translateY(-5px) scale(1.02); /* Slightly lift and scale */
     box-shadow: var(--card-hover-shadow);
 }
-
-.course-icon {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
-    color: var(--primary-color);
-    transition: transform 0.3s ease-in-out;
+.course-card--locked:hover {
+    transform: translateY(-3px); /* Smaller lift for locked */
+    box-shadow: var(--box-shadow-light); /* Less prominent shadow */
 }
 
-.course-item h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--light-text);
-    margin-top: 0;
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
-}
 
-.course-item.available {
-    cursor: pointer;
-    border-color: var(--primary-color);
-}
-
-.course-item.available:hover {
-    box-shadow: var(--available-course-shadow);
-    transform: translateY(-7px);
-}
-
-.course-item.available:hover .course-icon {
-    transform: scale(1.2);
-    color: darken(var(--primary-color), 10%);
-}
-
-.course-item.locked {
-    background-color: var(--locked-course-bg);
-    color: var(--locked-course-text);
-    border: 1px solid var(--locked-course-border);
-    cursor: not-allowed;
-    opacity: 0.9;
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
-}
-
-.course-item.locked .course-icon {
-    color: var(--locked-course-text);
-}
-
-/* Add these styles to your ucourse.css */
-.whatsapp-chat-window {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 1001; /* Higher than the main icon */
-    width: 300px;
-    height: 400px;
-    background-color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
+.course-card__image-container {
+    width: 100%;
+    height: 180px; /* Consistent image height */
     overflow: hidden;
-    display: none; /* Initially hidden */
+    position: relative; /* For overlay and badge positioning */
+    background-color: #eee; /* Placeholder bg */
 }
+body.dark-mode .course-card__image-container { background-color: #444; }
 
-.whatsapp-chat-window iframe {
-    border: none;
+
+.course-card__image {
     width: 100%;
-    height: calc(100% - 30px); /* Adjust height for the close button */
-}
-
-#close-whatsapp-chat {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    text-align: center;
-    text-decoration: none;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 0 0 10px 10px;
-    width: 100%;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+    transition: transform 0.4s ease-out;
 }
-
-#close-whatsapp-chat:hover {
-    background-color: #d32f2f;
-}
-
-/* Style for the initially visible WhatsApp icon */
-.whatsapp-chat {
-    position: fixed;
-    right: 20px;
-    bottom: 20px;
-    z-index: 1000;
-    cursor: pointer; /* Changed to pointer for direct click */
-}
-
-.whatsapp-chat a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 60px;
-    height: 60px;
-    font-size: 2rem;
-    text-decoration: none;
-    transition: transform 0.2s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    border-radius: 50%; /* Make it a circle */
-    background-color: transparent; /* Remove background */
-}
-
-.whatsapp-chat a:hover {
+.course-card--available:hover .course-card__image {
     transform: scale(1.05);
 }
 
-.whatsapp-chat i {
-    margin-top: 5px; /* Adjust icon alignment */
-    color: #25d366; /* Set the WhatsApp icon color for light mode */
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+.course-card__difficulty-badge {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: var(--color-white);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-/* Dark Mode Styles */
-body.dark-mode {
-    background-color: var(--dark-bg);
-    color: var(--dark-text);
-}
-
-body.dark-mode .header {
-    background-color: var(--dark-bg);
-}
-
-body.dark-mode .logo-text {
-    color: var(--dark-text);
-}
-
-body.dark-mode .nav-link {
-    color: var(--dark-text);
-}
-
-body.dark-mode #theme-toggle {
-    background-color: var(--dark-text); /* Light background for button in dark mode */
-    color: var(--dark-bg); /* Dark text on button in dark mode */
-}
-
-body.dark-mode .courses-container h1,
-body.dark-mode .course-item h3 {
-    color: var(--dark-text);
-}
-
-body.dark-mode .course-item {
-    background-color: var(--dark-mode-course-bg);
-    color: #ccc;
-    border: 1px solid #555;
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
-}
-
-body.dark-mode .course-item.available {
-    border-color: var(--primary-color);
-}
-
-body.dark-mode .course-item.available:hover {
-    box-shadow: 0 6px 12px rgba(0, 180, 216, 0.5);
-}
-
-body.dark-mode .course-item.locked {
-    background-color: var(--dark-mode-locked-bg);
-    color: var(--dark-mode-locked-text);
-    border: 1px solid var(--dark-mode-locked-border);
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
-}
-
-body.dark-mode .course-item.locked .course-icon {
-    color: var(--dark-mode-locked-text);
-}
-
-body.dark-mode .course-icon {
-    color: var(--primary-color);
-}
-
-body.dark-mode .footer {
-    background-color: #2d2f3e; /* Darker background for footer in dark mode */
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
-}
-
-body.dark-mode .footer .contact-section h3,
-body.dark-mode .footer .contact-section p,
-body.dark-mode .footer .copyright-section p,
-body.dark-mode .footer .social-section h3,
-body.dark-mode .footer .social-link {
-    color: var(--dark-text);
-}
-
-/* WhatsApp Chat Icon Styles */
-body.dark-mode .whatsapp-chat a i {
-    color: #25d366; /* Keep the same green color in dark mode */
-}
-
-/* Footer Styles - Corrected */
-.footer {
-    display: flex;
-    justify-content: space-between;
-    background-color: var(--secondary-color);
-    padding: 1.5rem; /* Reduced padding for a more compact footer */
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
-    color: var(--dark-text); /* Ensure text color is set */
-}
-
-.footer-left {
-    flex: 1;
-    text-align: left;
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
-}
-
-.footer-right {
+.course-card__locked-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-locked-overlay);
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
-    align-items: flex-start;
+    justify-content: center;
+    align-items: center;
+    color: var(--color-locked-icon);
+    opacity: 0; /* Hidden initially */
+    transition: opacity var(--transition-medium);
+    pointer-events: none; /* Allow clicking link beneath */
+}
+.course-card--locked .course-card__locked-overlay {
+     opacity: 1; /* Show overlay on locked cards */
 }
 
-.contact-section {
-    text-align: left;
-    margin-bottom: 20px;
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
-}
 
-.contact-section h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: var(--dark-text);
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+.course-card__locked-overlay i {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
 }
-
-.contact-section p {
-    margin: 5px 0;
+.course-card__locked-overlay span {
     font-size: 0.9rem;
-    color: var(--dark-text);
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
+    font-weight: 500;
 }
 
-.contact-section i {
-    margin-right: 5px;
-}
-
-.copyright-section {
+.course-card__content {
+    padding: var(--spacing-lg);
     text-align: left;
-    font-size: 0.9rem;
-    color: var(--dark-text);
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
-}
-
-.social-section {
-    text-align: left;
-    margin-top: auto; /* Push to the bottom */
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
-}
-
-.social-section h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 10px;
-    color: var(--dark-text);
-    font-family: 'Poppins', sans-serif; /* Ensure Poppins */
-}
-
-.social-media {
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
-.social-link {
-    color: var(--dark-text);
-    font-size: 1.5rem;
-    transition: color 0.3s ease;
+.course-card__title {
+    font-size: 1.2rem; /* Adjusted size */
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.3;
+    /* Limit title lines (optional) */
+    /* display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden; */
+}
+.course-card--available:hover .course-card__title {
+    color: var(--link-hover-color);
 }
 
-.social-link:hover {
-    color: var(--primary-color);
+.course-card__description {
+    font-size: 0.9rem;
+    color: var(--text-color-secondary);
+    line-height: 1.5;
+    margin-bottom: var(--spacing-md);
+    flex-grow: 1; /* Push meta/cta down */
+     /* Limit description lines */
+     display: -webkit-box;
+    -webkit-line-clamp: 3; /* Show 3 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: calc(1.5 * 3em); /* Reserve space */
 }
 
-/* Responsive Design - Enhanced for more phone sizes */
-@media screen and (max-width: 768px) {
-    .header {
-        padding: 0 1rem;
-        flex-direction: column;
-        align-items: center;
-        height: auto;
-    }
-
-    .logo {
-        padding-left: 0;
-        margin-bottom: 10px;
-    }
-
-    .logo-img {
-        height: 120px;
-        position: static;
-        margin-left: auto !important;
-        margin-right: auto !important;
-    }
-
-    .logo-text {
-        text-align: center;
-    }
-
-    .nav {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .nav-link {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.9rem;
-        width: 80%;
-        text-align: center;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .nav-link:last-child {
-        border-bottom: none;
-    }
-
-    #theme-toggle {
-        margin-top: 10px;
-    }
-
-    .courses-container {
-        padding: 1rem;
-    }
-
-    .courses-container h1 {
-        font-size: 2rem;
-    }
-
-    .search-bar input[type="text"] {
-        width: 70%;
-    }
-
-    .courses-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 15px;
-    }
-
-    .course-item {
-        padding: 15px;
-        min-height: auto;
-    }
-
-    .course-item h3 {
-        font-size: 1.1rem;
-    }
-
-    .course-icon {
-        font-size: 2rem;
-        margin-bottom: 10px;
-    }
-
-    .footer {
-        flex-direction: column;
-        text-align: center;
-        padding: 1rem;
-    }
-
-    .footer-left,
-    .footer-right {
-        width: 100%;
-        text-align: center;
-        margin-bottom: 10px;
-    }
-
-    .social-section {
-        text-align: center;
-        margin-top: 10px;
-    }
-
-    .social-media {
-        justify-content: center;
-    }
-
-    .whatsapp-chat {
-        right: 15px;
-        bottom: 15px;
-    }
-
-    .whatsapp-chat a {
-        width: 50px;
-        height: 50px;
-        font-size: 1.5rem;
-    }
+.course-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    font-size: 0.8rem;
+    color: var(--text-color-secondary);
+    margin-bottom: var(--spacing-md);
+}
+.course-card__meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+.course-card__meta i {
+    color: var(--text-color-secondary); /* Match text color */
 }
 
+.course-card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: var(--link-color);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: auto; /* Push to bottom */
+    transition: color var(--transition-fast), transform var(--transition-fast);
+}
+.course-card__cta i { transition: transform var(--transition-fast); }
+
+.course-card--available:hover .course-card__cta {
+    color: var(--link-hover-color);
+    transform: translateX(3px);
+}
+.course-card--available:hover .course-card__cta i {
+     transform: translateX(2px);
+}
+
+
+.course-card__cta--locked {
+    color: var(--text-color-secondary); /* Muted color */
+    cursor: pointer; /* Indicate it's clickable (to go to pricing) */
+}
+.course-card--locked:hover .course-card__cta--locked {
+    color: var(--link-hover-color); /* Highlight on hover */
+}
+
+/* Hidden state for filtering */
+.course-card--hidden {
+    display: none;
+}
+
+.no-results-message {
+    grid-column: 1 / -1; /* Span full grid width */
+    text-align: center;
+    color: var(--text-color-secondary);
+    padding: var(--spacing-xxl) 0;
+    font-style: italic;
+}
+
+/*------------------------------------*\
+  #WHATSAPP FAB (Floating Action Button)
+\*------------------------------------*/
+.whatsapp-fab {
+    position: fixed;
+    right: var(--spacing-lg);
+    bottom: var(--spacing-lg);
+    z-index: 1000;
+}
+
+.whatsapp-fab a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 55px; /* Slightly smaller */
+    height: 55px;
+    background-color: #25D366; /* WhatsApp Green */
+    color: var(--color-white);
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 1.8rem; /* Adjust icon size */
+    text-decoration: none;
+    transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.whatsapp-fab a:hover {
+    transform: scale(1.05);
+    background-color: #1DA851; /* Darker green */
+}
+
+/*------------------------------------*\
+  #RESPONSIVENESS (Standalone Course Page)
+\*------------------------------------*/
+
+/* Medium Screens */
+@media screen and (min-width: 768px) {
+    .main-content { padding: var(--spacing-xl); }
+    .courses__main-title { font-size: 3rem; }
+    .controls-bar { flex-direction: row; align-items: center; }
+    .search-bar { max-width: 400px; } /* Adjust max-width */
+    .footer__container { padding: 0 var(--spacing-xl); }
+}
+
+/* Smaller Screens (Copied from Header/Footer + Course specific) */
+@media screen and (max-width: 992px) {
+    .nav { display: none; position: absolute; top: 80px; left: 0; width: 100%; background-color: var(--header-bg); flex-direction: column; align-items: center; padding: var(--spacing-md) 0; box-shadow: var(--box-shadow-light); gap: 0; }
+    .nav--open { display: flex; }
+    .nav__link { padding: var(--spacing-md) var(--spacing-xl); width: 100%; text-align: center; border-bottom: 1px solid var(--form-border-color); }
+    .nav__link:last-child { border-bottom: none; }
+    .nav__link::after { display: none; }
+    .nav__link--active { background-color: rgba(0, 180, 216, 0.1); }
+    .nav__toggle { display: block; }
+    .button--theme { margin-left: auto; }
+}
+
+/* Small Screens */
+@media screen and (max-width: 767px) {
+     h1 { font-size: 2.2rem; } h2 { font-size: 1.8rem; } h3 { font-size: 1.3rem; } /* Adjust card title */
+    .header { padding: var(--spacing-sm) var(--spacing-md); }
+    .logo__img { height: 50px; }
+    .main-content { padding: var(--spacing-lg) var(--spacing-md); }
+
+    .courses__main-title { font-size: 2.2rem; }
+    .courses__subtitle { font-size: 1.1rem; }
+
+    .controls-bar { flex-direction: column; gap: var(--spacing-md); padding: var(--spacing-sm); }
+    .search-bar { width: 100%; max-width: none; }
+    .filter-controls { width: 100%; justify-content: space-around; gap: var(--spacing-md); }
+    .filter-group { flex-grow: 1; } /* Allow filters to take space */
+    .filter-select { width: 100%; } /* Full width selects */
+
+    .courses-grid { grid-template-columns: 1fr; gap: var(--spacing-lg); }
+    .course-card__image-container { height: 200px; }
+
+    .footer__container { grid-template-columns: 1fr; text-align: center; }
+    .footer__address, .social-media, .footer__list { justify-content: center; text-align: center; }
+    .footer__heading { text-align: center; }
+    .social-media { justify-content: center; }
+
+    .whatsapp-fab { right: var(--spacing-md); bottom: var(--spacing-md); }
+    .whatsapp-fab a { width: 50px; height: 50px; font-size: 1.6rem; }
+}
+
+/* Very Small Screens */
 @media screen and (max-width: 480px) {
-    .logo-img {
-        height: 100px;
-    }
+     h1 { font-size: 1.8rem; } h2 { font-size: 1.5rem; } h3 { font-size: 1.2rem; }
+    .button--theme .theme-text { display: none; }
+    .button--theme { padding: var(--spacing-sm); }
 
-    .nav-link {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.6rem;
-    }
+    .courses__main-title { font-size: 2rem; }
+    .courses__subtitle { font-size: 1rem; }
+    .filter-controls { flex-direction: column; align-items: stretch; }
 
-    .courses-container h1 {
-        font-size: 1.8rem;
-    }
-
-    .search-bar input[type="text"] {
-        width: 80%;
-    }
-
-    .social-link {
-        font-size: 1.5rem;
-    }
-
-    .course-item {
-        padding: 10px;
-    }
-
-    .course-item h3 {
-        font-size: 1rem;
-    }
-
-    .course-icon {
-        font-size: 1.8rem;
-    }
-}
-
-/* Extra small screens */
-@media screen and (max-width: 375px) {
-    .logo-img {
-        height: 80px;
-    }
-
-    .nav-link {
-        font-size: 0.75rem;
-        padding: 0.3rem 0.5rem;
-    }
-
-    .courses-container h1 {
-        font-size: 1.6rem;
-    }
-
-    .search-bar input[type="text"] {
-        width: 90%;
-    }
-
-    .course-item {
-        padding: 8px;
-    }
-
-    .course-item h3 {
-        font-size: 0.9rem;
-    }
-
-    .whatsapp-chat a {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
-    }
+    .course-card__title { font-size: 1.1rem; }
+    .course-card__description { font-size: 0.85rem; -webkit-line-clamp: 2; min-height: calc(1.5 * 2em); }
+    .course-card__meta { font-size: 0.75rem; gap: var(--spacing-sm); }
+    .course-card__cta { font-size: 0.85rem; }
 }
