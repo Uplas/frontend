@@ -1,171 +1,187 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Theme Toggle Functionality (Existing Code)
-    const themeToggle = document.getElementById('theme-toggle');
+/ ucourse.js - Courses Listing Page Functionality
+
+'use strict';
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // --- Element Selectors ---
     const body = document.body;
-    const currentTheme = localStorage.getItem('theme');
+    const themeToggle = document.getElementById('theme-toggle');
+    const searchInput = document.getElementById('search-input');
+    const clearSearchButton = document.getElementById('clear-search-button');
+    const categoryFilter = document.getElementById('category-filter');
+    const difficultyFilter = document.getElementById('difficulty-filter');
+    const coursesGrid = document.getElementById('courses-grid');
+    const courseCards = coursesGrid?.querySelectorAll('.course-card'); // Get initial cards
+    const noCoursesMessage = document.getElementById('no-courses-message');
+    const navToggle = document.querySelector('.nav__toggle');
+    const navMenu = document.querySelector('.nav');
+    const currentYearSpan = document.getElementById('current-year');
+    const whatsappFab = document.getElementById('whatsapp-chat'); // FAB container
 
-    if (currentTheme === 'dark') {
-        body.classList.add('dark-mode');
-        themeToggle.textContent = 'Light Mode';
-    }
+    // --- State ---
+    let currentSearchTerm = '';
+    let currentCategory = 'all';
+    let currentDifficulty = 'all';
 
-    themeToggle.addEventListener('click', function() {
-        body.classList.toggle('dark-mode');
-        const isDarkMode = body.classList.contains('dark-mode');
-        themeToggle.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
-        localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
-    });
+    // --- Utility Functions ---
 
-    // Enhanced Search Functionality (Existing Code)
-    const searchInput = document.querySelector('.search-bar input[type="text"]');
-    const courseItems = document.querySelectorAll('.course-item');
+    /**
+     * Updates the theme toggle button appearance and ARIA attributes.
+     */
+    const updateThemeButton = (isDarkMode) => {
+        if (!themeToggle) return;
+        const themeText = themeToggle.querySelector('.theme-text');
+        themeToggle.setAttribute('aria-label', isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+        if (themeText) {
+            themeText.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
+        }
+    };
 
-    if (searchInput) {
-        searchInput.addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            courseItems.forEach(item => {
-                const courseTitle = item.querySelector('h3').textContent.toLowerCase();
-                if (courseTitle.includes(searchTerm)) {
-                    item.style.display = 'flex'; // Show the course item
-                } else {
-                    item.style.display = 'none'; // Hide the course item
-                }
-            });
-        });
-    }
+    /**
+     * Applies the theme based on saved preference or system setting.
+     */
+    const applyTheme = () => {
+        const savedDarkMode = localStorage.getItem('darkMode'); // Consistent key
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDarkMode = savedDarkMode === 'true' || (savedDarkMode === null && systemPrefersDark);
+        body.classList.toggle('dark-mode', isDarkMode);
+        updateThemeButton(isDarkMode);
+    };
 
-    // Click Handling for Course Items (Existing Code)
-    courseItems.forEach(item => {
-        item.addEventListener('click', function() {
-            if (this.classList.contains('available')) {
-                const courseTitle = this.querySelector('h3').textContent;
-                alert(`Navigating to course: ${courseTitle}`); // In a real application, this would be a navigation to the course page
-            } else if (this.classList.contains('locked')) {
-                alert('This course is currently locked. Please check the requirements to unlock it.'); // Provide feedback for locked courses
+     /**
+      * Toggles the mobile navigation menu visibility.
+      */
+      const toggleMobileNav = () => {
+         if (!navMenu || !navToggle) return;
+         const isOpen = navMenu.classList.toggle('nav--open');
+         navToggle.setAttribute('aria-expanded', isOpen);
+         navToggle.querySelector('i').classList.toggle('fa-bars', !isOpen);
+         navToggle.querySelector('i').classList.toggle('fa-times', isOpen);
+     };
+
+    /**
+     * Filters and displays course cards based on current filters and search term.
+     */
+    const filterAndDisplayCourses = () => {
+        if (!courseCards || courseCards.length === 0) return;
+        let coursesFound = false;
+
+        const searchTerm = currentSearchTerm.toLowerCase().trim();
+
+        courseCards.forEach(card => {
+            const title = card.querySelector('.course-card__title')?.textContent.toLowerCase() || '';
+            const description = card.querySelector('.course-card__description')?.textContent.toLowerCase() || '';
+            const category = card.dataset.category || 'all';
+            const difficulty = card.dataset.difficulty || 'all';
+
+            const matchesSearch = searchTerm === '' || title.includes(searchTerm) || description.includes(searchTerm);
+            const matchesCategory = currentCategory === 'all' || category.toLowerCase() === currentCategory.toLowerCase();
+            const matchesDifficulty = currentDifficulty === 'all' || difficulty.toLowerCase() === currentDifficulty.toLowerCase();
+
+            if (matchesSearch && matchesCategory && matchesDifficulty) {
+                card.classList.remove('course-card--hidden');
+                coursesFound = true;
+            } else {
+                card.classList.add('course-card--hidden');
             }
         });
-    });
 
-    // Make WhatsApp Chat Icon Draggable
-    const whatsappChat = document.getElementById('whatsapp-chat');
-    let isDragging = false;
-    let offsetX, offsetY;
+        // Show or hide the 'no results' message
+        if (noCoursesMessage) {
+            noCoursesMessage.style.display = coursesFound ? 'none' : 'block';
+        }
 
-    if (whatsappChat) {
-        whatsappChat.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            whatsappChat.style.cursor = 'grabbing';
-            offsetX = e.clientX - whatsappChat.getBoundingClientRect().left;
-            offsetY = e.clientY - whatsappChat.getBoundingClientRect().top;
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-
-            whatsappChat.style.left = e.clientX - offsetX + 'px';
-            whatsappChat.style.top = e.clientY - offsetY + 'px';
-        });
-
-        document.addEventListener('mouseup', () => {
-            if (!isDragging) return;
-            isDragging = false;
-            whatsappChat.style.cursor = 'grab';
-        });
-
-        // Prevent default drag behavior on the anchor tag inside
-        whatsappChat.querySelector('a').addEventListener('dragstart', (e) => {
-            e.preventDefault();
-        });
-    }
-});
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    const whatsappLink = document.getElementById('whatsapp-link');
-    const whatsappChatWindow = document.getElementById('whatsapp-chat-window');
-    const closeChatButton = document.getElementById('close-whatsapp-chat');
-
-    whatsappLink.addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent the default link behavior
-        whatsappChatWindow.style.display = 'block'; // Show the chat window
-    });
-
-    // Example function to fetch courses in ucourse.js
-
-function fetchCourses() {
-    const apiCoursesUrl = '/api/courses/';
-    const accessToken = localStorage.getItem('accessToken'); // Retrieve stored token
-
-    const headers = {
-        'Content-Type': 'application/json',
+        // Toggle clear search button visibility
+        if(clearSearchButton) {
+            clearSearchButton.style.display = searchTerm ? 'inline-flex' : 'none';
+        }
     };
-    // Add Authorization header ONLY if the token exists (for protected endpoints)
-    if (accessToken) {
-         headers['Authorization'] = `Bearer ${accessToken}`;
+
+
+    // --- Event Handlers ---
+
+    /**
+     * Handles search input changes.
+     */
+    const handleSearchInput = () => {
+        currentSearchTerm = searchInput?.value || '';
+        filterAndDisplayCourses();
+    };
+
+    /**
+     * Handles filter select changes.
+     */
+    const handleFilterChange = () => {
+        currentCategory = categoryFilter?.value || 'all';
+        currentDifficulty = difficultyFilter?.value || 'all';
+        filterAndDisplayCourses();
+    };
+
+     /**
+     * Clears the search input and re-filters.
+     */
+     const handleClearSearch = () => {
+         if(searchInput) {
+             searchInput.value = '';
+             currentSearchTerm = '';
+             filterAndDisplayCourses();
+             searchInput.focus();
+         }
+     };
+
+    // --- Event Listeners ---
+
+    // Theme Toggle
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const isDarkMode = body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+            updateThemeButton(isDarkMode);
+        });
     }
 
-    fetch(apiCoursesUrl, { headers: headers })
-    .then(response => {
-        if (response.status === 401) { // Handle unauthorized (e.g., token expired)
-             console.error("Unauthorized. Token might be expired.");
-             // Redirect to login or attempt token refresh
-             // refreshToken(); // Implement a function to refresh the token
-             return; // Stop processing
-        }
-        if (!response.ok) {
-            throw new Error('Failed to fetch courses');
-        }
-        return response.json();
-    })
-    .then(courses => {
-        console.log('Courses received:', courses);
-        // --- Update your frontend UI ---
-        // Clear existing course list
-        // Loop through 'courses' array and create HTML elements to display them
-        // e.g., update the .courses-grid element
-        displayCourses(courses); // Call a function to render the courses
-    })
-    .catch(error => {
-        console.error('Fetch Courses Error:', error);
-        // Display an error message to the user
-    });
-}
-
-// Call fetchCourses when the page loads or as needed
-// fetchCourses(); 
-
-function displayCourses(courses) {
-     const grid = document.querySelector('.courses-grid');
-     if (!grid) return;
-     grid.innerHTML = ''; // Clear previous entries
-     courses.forEach(course => {
-          // Create HTML elements for each course based on your ucourse.html structure
-          // Add event listeners etc.
-          const courseDiv = document.createElement('div');
-          courseDiv.classList.add('course-item', 'available'); // Add 'locked' class based on data later
-          courseDiv.innerHTML = `
-              <i class="fas fa-play-circle course-icon"></i>
-              <h3><span class="math-inline">\{course\.title\}</h3\>
-
-    closeChatButton.addEventListener('click', function() {
-        whatsappChatWindow.style.display = 'none'; // Hide the chat window
-    });
-});
-
-
-// Example inside uprojects.js or another script
-
-async function getUserData() {
-    try {
-        // Use the utility function for authenticated endpoints
-        const userData = await fetchAuthenticated('/api/users/profile/'); 
-        console.log("User profile data:", userData);
-        // Update UI with user data
-    } catch (error) {
-        console.error("Failed to fetch user profile:", error);
-        // Handle error (e.g., show message, redirect to login if needed)
+    // Mobile Navigation Toggle
+    if (navToggle) {
+        navToggle.addEventListener('click', toggleMobileNav);
     }
-}
 
-// Call it when needed
-// getUserData();
+    // Search Input
+    if (searchInput) {
+        searchInput.addEventListener('input', handleSearchInput);
+    }
+
+     // Clear Search Button
+     if (clearSearchButton) {
+         clearSearchButton.addEventListener('click', handleClearSearch);
+     }
+
+    // Filter Selects
+    if (categoryFilter) {
+        categoryFilter.addEventListener('change', handleFilterChange);
+    }
+    if (difficultyFilter) {
+        difficultyFilter.addEventListener('change', handleFilterChange);
+    }
+
+    // Optional: Add interaction for locked cards (Example: alert)
+    coursesGrid?.addEventListener('click', (e) => {
+        const lockedCardLink = e.target.closest('.course-card--locked .course-card__link');
+        if (lockedCardLink) {
+            e.preventDefault(); // Prevent navigation
+            alert('This course requires Premium Access. Please visit our Pricing page to upgrade!');
+            // Or redirect: window.location.href = 'upricing.html';
+        }
+    });
+
+
+    // --- Initializations ---
+    applyTheme();
+    filterAndDisplayCourses(); // Initial display
+    if (currentYearSpan) {
+        currentYearSpan.textContent = new Date().getFullYear();
+    }
+    // Ensure WhatsApp FAB is visible (handled by CSS, no JS needed unless toggling)
+
+
+}); // End DOMContentLoaded
