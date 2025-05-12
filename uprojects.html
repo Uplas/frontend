@@ -3,162 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Projects - Uplas. The Future is Here!</title>
-    <link rel="icon" href="images/uni plas_prev_ui.ico" type="image/x-icon"> <link rel="stylesheet" href="uprojects.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Your AI Projects Dashboard | Uplas - Build the Future</title>
+    <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="uprojects.css">
 </head>
-<body class="body">
-    <header class="header">
-        <nav class="navbar">
-            <div class="logo">
-                <img src="images/uni plas_prev_ui.ico" alt="Uplas Logo" class="logo-img"> 
+<body class="light-mode"> <header class="header" id="page-header">
+        <div class="container header__container">
+            <a href="index.html" class="logo" aria-label="Uplas Homepage">
+                <img src="images/uni_plas_prev_ui.ico" alt="Uplas Platform Logo" class="logo__img">
+            </a>
+            <nav class="nav" id="main-navigation" aria-label="Main site navigation">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="index.html" class="nav__link">Home</a></li>
+                    <li class="nav__item"><a href="ucourses_list.html" class="nav__link">Courses</a></li>
+                    <li class="nav__item"><a href="uprojects.html" class="nav__link" aria-current="page">My Projects</a></li> 
+                    <li class="nav__item"><a href="ucommunity.html" class="nav__link">Community</a></li>
+                    <li class="nav__item"><a href="upricing.html" class="nav__link">Pricing</a></li>
+                    <li class="nav__item"><a href="ublog.html" class="nav__link">Blog</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <button id="theme-toggle" class="button button--theme" aria-label="Switch color theme" aria-live="polite" title="Toggle theme">
+                    <i class="fas fa-moon theme-icon theme-icon--dark" aria-hidden="true"></i>
+                    <i class="fas fa-sun theme-icon theme-icon--light" aria-hidden="true"></i>
+                    <span class="sr-only">Toggle Dark/Light Mode</span>
+                </button>
+               
             </div>
-                <nav class="nav">
-                    <a href="ucourse.html" class="nav-link active">Courses</a>
-                    <a href="uprojects.html" class="nav-link">Projects</a>
-                    <a href="ucommunity.html" class="nav-link">Community</a>
-                </nav>
-            <button id="theme-toggle" class="theme-toggle">
-                Dark Mode
+            <button class="nav__toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-navigation">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+                <span class="sr-only">Menu</span>
             </button>
-        </nav>
+        </div>
     </header>
 
-    <div class="page-container">
-        <aside class="left-sidebar">
-            <div class="sidebar-item" id="ai-tutor-icon">
-                <i class="fas fa-robot"></i>
-                <div class="tooltip">AI Tutor</div>
-            </div>
-            <div class="sidebar-item" id="ide-icon">
-                <i class="fas fa-code"></i>
-                <div class="tooltip">IDE</div>
-            </div>
-            <div class="sidebar-item" id="project-overview-icon">
-                <i class="fas fa-tasks"></i>
-                <div class="tooltip">Project Overview</div>
-            </div>
-            <div class="sidebar-item" id="resources-icon">
-                <i class="fas fa-book"></i>
-                <div class="tooltip">Resources</div>
-            </div>
+    <div class="page-container uprojects-page-container">
+        <aside class="left-sidebar" id="uprojects-sidebar">
+            <h2 class="left-sidebar__title">Project Tools</h2>
+            <button class="sidebar-item active" id="project-dashboard-icon" data-panel-id="project-dashboard-panel" aria-label="Project Dashboard" title="Project Dashboard">
+                <i class="fas fa-tachometer-alt sidebar-item__icon" aria-hidden="true"></i>
+                <span class="sidebar-item__text">Dashboard</span>
+            </button>
+            <button class="sidebar-item" id="ai-tutor-icon" data-panel-id="ai-tutor-panel" aria-label="AI Tutor Assist" title="AI Tutor Assist">
+                <i class="fas fa-robot sidebar-item__icon" aria-hidden="true"></i>
+                <span class="sidebar-item__text">AI Tutor</span>
+            </button>
+            <button class="sidebar-item" id="ide-icon" data-panel-id="ide-panel" aria-label="Integrated Development Environment" title="Launch Cloud IDE">
+                <i class="fas fa-code sidebar-item__icon" aria-hidden="true"></i>
+                <span class="sidebar-item__text">Cloud IDE</span>
+            </button>
+            <button class="sidebar-item" id="resources-icon" data-panel-id="resources-panel" aria-label="Project Resources" title="Project Resources">
+                <i class="fas fa-book-open sidebar-item__icon" aria-hidden="true"></i>
+                <span class="sidebar-item__text">Resources</span>
+            </button>
+            <button class="sidebar-item" id="version-control-icon" data-panel-id="version-control-panel" aria-label="Version Control (e.g., Git)" title="Version Control">
+                <i class="fab fa-git-alt sidebar-item__icon" aria-hidden="true"></i>
+                <span class="sidebar-item__text">Git Hub</span>
+            </button>
+            <button class="sidebar-item" id="collaboration-icon" data-panel-id="collaboration-panel" aria-label="Collaboration Tools" title="Team Collaboration">
+                <i class="fas fa-users sidebar-item__icon" aria-hidden="true"></i>
+                <span class="sidebar-item__text">Team Hub</span>
+            </button>
         </aside>
 
-        <main class="main-content">
-            <section class="course-info">
-                <h1>AI in Workplace: Blend with AI, improve productivity, efficiency and foster teamwork</h1>
-                <p>Welcome to the projects page! Here, you'll find hands-on exercises to solidify your understanding of AI in the workplace. Engage with the AI Tutor for guidance, use the integrated IDE to practice coding, and track your project progress.</p>
-            </section>
-
-            <div id="ai-tutor-panel" class="feature-panel" style="display: none;">
-                <div class="panel-header">
-                    <div class="tutor-profile">
-                        <img src="placeholder-tutor.png" alt="AI Tutor" class="tutor-avatar">
-                        <span class="tutor-name">AI Tutor</span>
-                    </div>
-                    <div class="panel-controls">
-                        <button class="resize-handle">⇆</button>
-                        <button class="close-panel"><i class="fas fa-times"></i></button>
-                    </div>
-                </div>
-                <div class="panel-content chat-area">
-                    <div class="chat-messages" id="chat-messages">
-                        <div class="message received">Hello! How can I assist you with your projects today?</div>
-                    </div>
-                    <div class="chat-input">
-                        <input type="text" id="message-input" placeholder="Ask me anything...">
-                        <button id="send-button"><i class="fas fa-paper-plane"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="ide-panel" class="feature-panel" style="display: none;">
-                <div class="panel-header">
-                    <h3>Integrated Development Environment (IDE)</h3>
-                    <div class="panel-controls">
-                        <button class="resize-handle">⇆</button>
-                        <button class="close-panel"><i class="fas fa-times"></i></button>
-                    </div>
-                </div>
-                <div class="panel-content ide-area">
-                    <div class="code-editor">
-                        <textarea id="code-area" placeholder="Write your Python code here..."></textarea>
-                    </div>
-                    <div class="ide-controls">
-                        <button id="run-code"><i class="fas fa-play"></i> Run</button>
-                        <button id="save-code"><i class="fas fa-save"></i> Save</button>
-                        <div class="output-area">
-                            <pre id="output"></pre>
+        <main class="main-content uprojects-main-content" id="uprojects-main-area">
+            <section id="project-dashboard-panel" class="feature-panel active-panel" data-panel-content="project-dashboard-panel" aria-labelledby="project-dashboard-title">
+                <header class="feature-panel__header">
+                    <h1 id="project-dashboard-title" class="feature-panel__title">
+                        <i class="fas fa-stream" aria-hidden="true"></i> Your AI Project Launchpad
+                    </h1>
+                    <p class="feature-panel__subtitle">Track your progress, manage your creations, and access all the tools you need to bring your AI visions to life.</p>
+                </header>
+                <div class="feature-panel__content">
+                    <div class="project-stats-overview">
+                        <div class="stat-card">
+                            <h3 class="stat-card__title">Projects Started</h3>
+                            <p class="stat-card__value" id="projects-started-count">3</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 class="stat-card__title">Projects Completed</h3>
+                            <p class="stat-card__value" id="projects-completed-count">1</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 class="stat-card__title">Overall Progress</h3>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" id="overall-progress-bar" style="width: 45%;" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">45%</div>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="project-list-header">
+                        <h2 class="section-title section-title--sub">Current Projects</h2>
+                        <button class="button button--primary button--small" id="create-new-project-btn">
+                            <i class="fas fa-plus-circle" aria-hidden="true"></i> Start New Project
+                        </button>
+                    </div>
+                    <div class="project-list-container" id="project-list-container">
+                        <article class="project-card project-card--in-progress" data-project-id="proj001">
+                            <div class="project-card__header">
+                                <h3 class="project-card__title">AI-Powered Email Categorizer</h3>
+                                <span class="badge badge--status-inprogress">In Progress</span>
+                            </div>
+                            <p class="project-card__description">Develop a machine learning model to automatically categorize incoming emails into predefined folders like 'Urgent', 'Work', 'Personal'.</p>
+                            <div class="project-card__meta">
+                                <span><i class="fas fa-calendar-alt"></i> Due: May 30, 2025</span>
+                                <span><i class="fas fa-tasks"></i> 3/5 Tasks Completed</span>
+                            </div>
+                            <div class="project-card__progress">
+                                <div class="progress-bar-container--small">
+                                    <div class="progress-bar--small" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">60%</div>
+                                </div>
+                            </div>
+                            <div class="project-card__actions">
+                                <a href="uprojects_detail_example.html?id=proj001" class="button button--secondary button--extra-small">View Details</a>
+                                <button class="button button--primary button--extra-small launch-ide-btn" data-project-id="proj001">
+                                    <i class="fas fa-code"></i> Open in IDE
+                                </button>
+                            </div>
+                        </article>
+                                  </div>
+                </div>
+            </section>
+
+            <div id="ai-tutor-panel" class="feature-panel draggable-resizable-panel" data-panel-content="ai-tutor-panel" hidden aria-labelledby="ai-tutor-title">
+                <header class="feature-panel__header panel-drag-handle">
+                    <h2 id="ai-tutor-title" class="feature-panel__title"><i class="fas fa-robot" aria-hidden="true"></i> AI Project Assistant</h2>
+                    <div class="panel-controls">
+                        <button class="panel-control-btn minimize-panel-btn" aria-label="Minimize Panel" title="Minimize"><i class="fas fa-window-minimize"></i></button>
+                        <button class="panel-control-btn maximize-panel-btn" aria-label="Maximize Panel" title="Maximize"><i class="fas fa-expand-alt"></i></button>
+                        <button class="panel-control-btn close-panel-btn" data-panel-id="ai-tutor-panel" aria-label="Close AI Tutor" title="Close"><i class="fas fa-times"></i></button>
+                    </div>
+                </header>
+                <div class="feature-panel__content chat-area">
+                    <div class="chat-messages" id="chat-messages-ai-tutor">
+                        <div class="message message--assistant">
+                            <img src="images/ai_tutor_avatar.png" alt="AI Tutor Avatar" class="message__avatar">
+                            <div class="message__bubble">Hello! I'm your AI Project Assistant. How can I help you overcome challenges or brainstorm ideas for your current project?</div>
+                        </div>
+                    </div>
+                    <form class="chat-input-form" id="ai-tutor-input-form">
+                        <textarea id="ai-tutor-message-input" class="chat-input__textarea" placeholder="Ask about your project, debug code, or get creative insights..." aria-label="Your message to AI Tutor"></textarea>
+                        <button type="submit" class="button button--primary chat-input__send-btn" aria-label="Send message">
+                            <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
 
-            <div id="project-overview-panel" class="feature-panel" style="display: none;">
-                <div class="panel-header">
-                    <h3>Project Overview</h3>
+            <div id="ide-panel" class="feature-panel draggable-resizable-panel" data-panel-content="ide-panel" hidden aria-labelledby="ide-title">
+                <header class="feature-panel__header panel-drag-handle">
+                    <h2 id="ide-title" class="feature-panel__title"><i class="fas fa-terminal" aria-hidden="true"></i> Uplas Cloud IDE</h2>
                     <div class="panel-controls">
-                        <button class="resize-handle">⇆</button>
-                        <button class="close-panel"><i class="fas fa-times"></i></button>
+                        <button class="panel-control-btn minimize-panel-btn" aria-label="Minimize Panel" title="Minimize"><i class="fas fa-window-minimize"></i></button>
+                        <button class="panel-control-btn maximize-panel-btn" aria-label="Maximize Panel" title="Maximize"><i class="fas fa-expand-alt"></i></button>
+                        <button class="panel-control-btn close-panel-btn" data-panel-id="ide-panel" aria-label="Close IDE" title="Close"><i class="fas fa-times"></i></button>
                     </div>
-                </div>
-                <div class="panel-content project-overview-area">
-                    <ul>
-                        <li><strong>Project 1:</strong> Automating Email Responses with AI</li>
-                        <li><strong>Project 2:</strong> Building a Simple Chatbot for Team Communication</li>
-                        <li><strong>Project 3:</strong> Analyzing Workplace Data using AI</li>
-                        </ul>
-                    <p>Click on a project to view details and instructions.</p>
+                </header>
+                <div class="feature-panel__content ide-area">
+                    <div class="ide-toolbar">
+                        <select id="ide-file-selector" aria-label="Select file to edit">
+                            <option value="main.py">main.py</option>
+                            <option value="utils.py">utils.py</option>
+                            <option value="data/dataset.csv">data/dataset.csv</option>
+                        </select>
+                        <button id="ide-run-code-btn" class="button button--success button--extra-small"><i class="fas fa-play"></i> Run</button>
+                        <button id="ide-save-code-btn" class="button button--secondary button--extra-small"><i class="fas fa-save"></i> Save</button>
+                        <button id="ide-format-code-btn" class="button button--secondary button--extra-small"><i class="fas fa-align-left"></i> Format</button>
+                    </div>
+                    <div class="ide-editor-container">
+                        <textarea id="ide-code-area" class="code-editor-textarea" placeholder="Your Python code for the project appears here..." aria-label="Code editor"></textarea>
+                    </div>
+                    <div class="ide-output-terminal">
+                        <h3 class="ide-output-terminal__title">Output / Terminal</h3>
+                        <pre id="ide-output-area" class="ide-output-terminal__content" aria-live="polite"></pre>
+                    </div>
                 </div>
             </div>
 
-            <div id="resources-panel" class="feature-panel" style="display: none;">
-                <div class="panel-header">
-                    <h3>Resources</h3>
+            <div id="resources-panel" class="feature-panel draggable-resizable-panel" data-panel-content="resources-panel" hidden aria-labelledby="resources-title">
+                <header class="feature-panel__header panel-drag-handle">
+                     <h2 id="resources-title" class="feature-panel__title"><i class="fas fa-book-reader" aria-hidden="true"></i> Project Resources & Cheatsheets</h2>
                     <div class="panel-controls">
-                        <button class="resize-handle">⇆</button>
-                        <button class="close-panel"><i class="fas fa-times"></i></button>
+                        <button class="panel-control-btn minimize-panel-btn" aria-label="Minimize Panel" title="Minimize"><i class="fas fa-window-minimize"></i></button>
+                        <button class="panel-control-btn maximize-panel-btn" aria-label="Maximize Panel" title="Maximize"><i class="fas fa-expand-alt"></i></button>
+                        <button class="panel-control-btn close-panel-btn" data-panel-id="resources-panel" aria-label="Close Resources" title="Close"><i class="fas fa-times"></i></button>
                     </div>
-                </div>
-                <div class="panel-content resources-area">
-                    <ul>
-                        <li><a href="#" target="_blank">Python for AI Basics</a></li>
-                        <li><a href="#" target="_blank">Introduction to Natural Language Processing</a></li>
-                        <li><a href="#" target="_blank">Working with AI APIs</a></li>
-                        </ul>
-                    <p>These resources will help you with your projects.</p>
+                </header>
+                <div class="feature-panel__content resources-area">
+                    <p>Access key documentation, code snippets, and helpful links relevant to your current project stage.</p>
+                    <ul class="resource-list">
+                        <li><a href="#" target="_blank" rel="noopener noreferrer" class="resource-list__link"><i class="fab fa-python resource-list__icon"></i> Python for AI: Advanced Techniques</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer" class="resource-list__link"><i class="fas fa-brain resource-list__icon"></i> Deep Learning Cheatsheet (TensorFlow & PyTorch)</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer" class="resource-list__link"><i class="fas fa-database resource-list__icon"></i> Working with Large Datasets: Best Practices</a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer" class="resource-list__link"><i class="fas fa-shield-alt resource-list__icon"></i> Ethical Considerations in AI Project Development</a></li>
+                    </ul>
                 </div>
             </div>
+
+            
+            <div id="version-control-panel" class="feature-panel draggable-resizable-panel" data-panel-content="version-control-panel" hidden aria-labelledby="version-control-title">
+                 <header class="feature-panel__header panel-drag-handle">
+                    <h2 id="version-control-title" class="feature-panel__title"><i class="fab fa-git-alt" aria-hidden="true"></i> Version Control Hub (Git)</h2>
+                    <div class="panel-controls">
+                        <button class="panel-control-btn minimize-panel-btn" aria-label="Minimize Panel" title="Minimize"><i class="fas fa-window-minimize"></i></button>
+                        <button class="panel-control-btn maximize-panel-btn" aria-label="Maximize Panel" title="Maximize"><i class="fas fa-expand-alt"></i></button>
+                        <button class="panel-control-btn close-panel-btn" data-panel-id="version-control-panel" aria-label="Close Version Control" title="Close"><i class="fas fa-times"></i></button>
+                    </div>
+                </header>
+                <div class="feature-panel__content">
+                    <p>Connect your Uplas projects to GitHub or your preferred Git provider. Track changes, collaborate on branches, and manage your codebase effectively.</p>
+                   
+                    <button class="button button--secondary"><i class="fab fa-github"></i> Connect to GitHub</button>
+                </div>
+            </div>
+
+            <div id="collaboration-panel" class="feature-panel draggable-resizable-panel" data-panel-content="collaboration-panel" hidden aria-labelledby="collaboration-title">
+                 <header class="feature-panel__header panel-drag-handle">
+                    <h2 id="collaboration-title" class="feature-panel__title"><i class="fas fa-users-cog" aria-hidden="true"></i> Team Collaboration Space</h2>
+                    <div class="panel-controls">
+                        <button class="panel-control-btn minimize-panel-btn" aria-label="Minimize Panel" title="Minimize"><i class="fas fa-window-minimize"></i></button>
+                        <button class="panel-control-btn maximize-panel-btn" aria-label="Maximize Panel" title="Maximize"><i class="fas fa-expand-alt"></i></button>
+                        <button class="panel-control-btn close-panel-btn" data-panel-id="collaboration-panel" aria-label="Close Collaboration Space" title="Close"><i class="fas fa-times"></i></button>
+                    </div>
+                </header>
+                <div class="feature-panel__content">
+                    <p>If your project involves teamwork, this space allows you to communicate with team members, share files, and track shared tasks.</p>
+                </div>
+            </div>
+
         </main>
     </div>
 
-    <footer class="footer">
-        <div class="footer-left">
-            <div class="contact-section">
-                <h3>Contact Us</h3>
-                <p><i class="fas fa-envelope"></i> info@uplas.com</p>
-                <p><i class="fas fa-phone"></i> +254 700 000 000</p>
+    <footer class="footer" id="page-footer" role="contentinfo">
+        <div class="footer__container container">
+            <div class="footer__section footer__section--contact">
+                <h3 class="footer__heading">Get in Touch</h3>
+                <address class="footer__address">
+                    <p><i class="fas fa-phone footer__icon" aria-hidden="true"></i> <a href="tel:+254708654984" class="footer__link">+254 708 654 984</a></p>
+                    <p><i class="fas fa-envelope footer__icon" aria-hidden="true"></i> <a href="mailto:support@uplas.com" class="footer__link">support@uplas.com</a></p>
+                    <p><i class="fas fa-map-marker-alt footer__icon" aria-hidden="true"></i> Uplas Towers, Kilifi, Kenya</p>
+                </address>
             </div>
-            <div class="copyright-section">
-                <p>&copy; 2025 Uplas. All rights reserved.</p>
+            <div class="footer__section footer__section--social">
+                <h3 class="footer__heading">Connect With Us</h3>
+                <div class="social-media">
+                    <a href="#" class="social-media__link" aria-label="Uplas on Facebook" title="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on Twitter" title="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on LinkedIn" title="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on Instagram" title="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                </div>
+            </div>
+            <div class="footer__section footer__section--links">
+                <h3 class="footer__heading">Explore Uplas</h3>
+                <ul class="footer__list">
+                    <li><a href="index.html" class="footer__link">Home</a></li>
+                    <li><a href="ucourses_list.html" class="footer__link">All Courses</a></li>
+                    <li><a href="upricing.html" class="footer__link">Pricing Plans</a></li>
+                    <li><a href="ublog.html" class="footer__link">AI Insights Blog</a></li>
+                    <li><a href="/about" class="footer__link">About Uplas</a></li>
+                </ul>
+            </div>
+             <div class="footer__section footer__section--legal">
+                <h3 class="footer__heading">Legal & Support</h3>
+                <ul class="footer__list">
+                    <li><a href="/terms" class="footer__link">Terms of Service</a></li>
+                    <li><a href="/privacy" class="footer__link">Privacy Policy</a></li>
+                    <li><a href="/cookies" class="footer__link">Cookie Policy</a></li>
+                    <li><a href="upricing.html#contact-section" class="footer__link">Help Center</a></li>
+                </ul>
             </div>
         </div>
-        <div class="footer-right">
-            <div class="social-section">
-                <h3>Follow Us</h3>
-                <div class="social-media">
-                    <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a> </div>
-            </div>
+        <div class="footer__bottom">
+            <p class="footer__copyright">&copy; <span id="current-year-footer">2025</span> Uplas EdTech Solutions Ltd. All rights reserved. Empowering the next generation of AI innovators.</p>
         </div>
     </footer>
 
-    <script src="apiUtils.js" defer></script> 
+    <script src="apiUtils.js" defer></script>
     <script src="uprojects.js"></script>
 </body>
 </html>
