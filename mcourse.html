@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en"> <head>
     <meta charset="UTF-8">
@@ -29,8 +30,7 @@
                 <ul class="nav__list">
                     <li class="nav__item"><a href="index.html" class="nav__link" data-translate-key="nav_home">Home</a></li>
                     <li class="nav__item"><a href="ucourses_list.html" class="nav__link" data-translate-key="nav_courses">Courses</a></li>
-                    {/* */}
-                    <li class="nav__item"><a href="#" class="nav__link nav__link--active" aria-current="page" data-translate-key="nav_learning_session">Learning Session</a></li>
+                    <li class="nav__item"><a href="mcourse.html" class="nav__link nav__link--active" aria-current="page" data-translate-key="nav_learning_session">Learning Session</a></li>
                     <li class="nav__item"><a href="uprojects.html" class="nav__link" data-translate-key="nav_projects">My Projects</a></li>
                     <li class="nav__item"><a href="ucommunity.html" class="nav__link" data-translate-key="nav_community">Community</a></li>
                 </ul>
@@ -46,16 +46,19 @@
                             <option value="fr">Français (FR)</option>
                         </select>
                     </div>
-                    {/* Currency selector might be less relevant on an active learning page unless showing unlockable content costs */}
                 </div>
                 <button id="theme-toggle" class="button button--theme" aria-label="Switch color theme" title="Toggle theme">
                     <i class="fas fa-moon theme-icon theme-icon--dark" aria-hidden="true"></i>
                     <i class="fas fa-sun theme-icon theme-icon--light" aria-hidden="true" style="display:none;"></i>
                     <span class="sr-only" data-translate-key="toggle_theme_sr">Toggle Dark/Light Mode</span>
                 </button>
-                {/* User Profile/Avatar Placeholder */}
+                
                 <div class="user-profile-placeholder-header" id="user-avatar-header">
-                    <button class="user-avatar-button-header" aria-label="User menu">JD</button>
+                    <button class="user-avatar-button-header" aria-label="User menu">
+                        
+                        JD
+                    </button>
+                    
                 </div>
             </div>
             <button class="nav__toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-navigation">
@@ -71,38 +74,41 @@
                 <div class="sidebar-section">
                     <h3 class="sidebar-title" data-translate-key="mcourse_sidebar_course_nav">Course Navigation</h3>
                     <nav id="course-module-topic-nav" class="module-topic-nav">
-                        {/* Dynamically populated by JS based on current course */}
+                      
                         <div class="module-group">
-                            <button class="module-title-btn" aria-expanded="true" aria-controls="module-1-topics">Module 1: AI Fundamentals</button>
-                            <ul id="module-1-topics" class="topic-list-nav">
-                                <li><a href="#" class="topic-link-nav active" data-topic-id="1.1">1.1 What is AI?</a></li>
-                                <li><a href="#" class="topic-link-nav" data-topic-id="1.2">1.2 Types of AI</a></li>
+                            <button class="module-title-btn" aria-expanded="true" aria-controls="module-1-topics-nav" data-translate-key="mcourse_module1_title_placeholder">Module 1: AI Fundamentals</button>
+                            <ul id="module-1-topics-nav" class="topic-list-nav">
+                                <li><a href="#" class="topic-link-nav active" data-topic-id="1.1" data-course-id="adv_ai" data-translate-key="mcourse_topic1.1_title_placeholder">1.1 What is AI?</a></li>
+                                <li><a href="#" class="topic-link-nav" data-topic-id="1.2" data-course-id="adv_ai" data-translate-key="mcourse_topic1.2_title_placeholder">1.2 Types of AI</a></li>
+                                <li><a href="#" class="topic-link-nav completed" data-topic-id="1.3" data-course-id="adv_ai" data-translate-key="mcourse_topic1.3_title_placeholder">1.3 History of AI <i class="fas fa-check-circle topic-status-icon"></i></a></li>
                             </ul>
                         </div>
                         <div class="module-group">
-                            <button class="module-title-btn" aria-expanded="false" aria-controls="module-2-topics">Module 2: Machine Learning Basics</button>
-                            <ul id="module-2-topics" class="topic-list-nav" hidden>
-                                <li><a href="#" class="topic-link-nav" data-topic-id="2.1">2.1 Supervised Learning</a></li>
+                            <button class="module-title-btn" aria-expanded="false" aria-controls="module-2-topics-nav" data-translate-key="mcourse_module2_title_placeholder">Module 2: Machine Learning Basics</button>
+                            <ul id="module-2-topics-nav" class="topic-list-nav" hidden>
+                                <li><a href="#" class="topic-link-nav" data-topic-id="2.1" data-course-id="adv_ai" data-translate-key="mcourse_topic2.1_title_placeholder">2.1 Supervised Learning</a></li>
+                                <li><a href="#" class="topic-link-nav locked" data-topic-id="2.2" data-course-id="adv_ai" data-translate-key="mcourse_topic2.2_title_placeholder">2.2 Unsupervised Learning <i class="fas fa-lock topic-status-icon"></i></a></li>
                             </ul>
                         </div>
+                       
                     </nav>
                 </div>
                 <div class="sidebar-section">
                     <h3 class="sidebar-title" data-translate-key="mcourse_sidebar_progress">Your Progress</h3>
                     <div class="progress-overview-simple">
-                        <p data-translate-key="mcourse_topic_completion">Topic Completion: <span id="topic-progress-percentage">0%</span></p>
+                        <p><span data-translate-key="mcourse_topic_completion">Topic Completion:</span> <strong id="topic-progress-percentage">0%</strong></p>
                         <div class="progress-bar-container small-progress">
-                            <div class="progress-bar-fill" id="topic-progress-bar" style="width: 0%;"></div>
+                            <div class="progress-bar-fill" id="topic-progress-bar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
-                        <p data-translate-key="mcourse_xp_points">XP Points: <span id="user-xp-points">0</span></p>
-                        <p data-translate-key="mcourse_badges_earned">Badges: <span id="user-badges-count">0</span></p>
+                        <p><span data-translate-key="mcourse_xp_points">XP Points:</span> <strong id="user-xp-points">0</strong></p>
+                        <p><span data-translate-key="mcourse_badges_earned">Badges:</span> <strong id="user-badges-count">0</strong></p>
                     </div>
                 </div>
             </aside>
 
-            <section class="learning-interaction-area" aria-labelledby="current-topic-title">
+            <section class="learning-interaction-area" aria-labelledby="current-topic-title-main">
                 <header class="topic-header-main">
-                    <h2 id="current-topic-title" class="current-topic-title-text">1.1 What is AI?</h2>
+                    <h2 id="current-topic-title-main" class="current-topic-title-text" data-translate-key="mcourse_topic_default_title">1.1 What is AI?</h2>
                     <div class="topic-actions">
                         <button class="topic-action-btn" id="bookmark-topic-btn" aria-label="Bookmark this topic" title="Bookmark topic">
                             <i class="far fa-bookmark"></i> <span data-translate-key="button_bookmark">Bookmark</span>
@@ -113,10 +119,11 @@
                     </div>
                 </header>
 
-                <div class="qna-content-area" id="qna-content-area">
-                    {/* AI Questions and User Answers will be appended here by JS */}
-                    <div class="ai-question-bubble">
-                        <p id="ai-question-text" data-translate-key="mcourse_ai_question_placeholder">Welcome! Let's start with a basic question: Can you define Artificial Intelligence in your own words?</p>
+                <div class="qna-content-area" id="qna-content-area" role="log" aria-live="polite">
+                 
+                    <div class="message-bubble ai-question-bubble">
+                        
+                        <p id="ai-initial-message-text" data-translate-key="mcourse_ai_welcome_question">Welcome! Let's start with a basic question: Can you define Artificial Intelligence in your own words?</p>
                     </div>
                 </div>
 
@@ -131,28 +138,32 @@
                             <option value="nova" data-translate-key="tts_voice_nova">Nova (Bright)</option>
                             <option value="shimmer" data-translate-key="tts_voice_shimmer">Shimmer (Warm)</option>
                         </select>
-                        <button id="play-tts-btn" class="button button--secondary button--small" aria-label="Play current content as audio" title="Listen to content">
+                        <button id="play-tts-btn" class="button button--secondary button--small media-control-button" aria-label="Play current content as audio" title="Listen to content">
                             <i class="fas fa-play"></i> <span data-translate-key="button_listen">Listen</span>
                         </button>
-                        <div id="audio-player-container" class="audio-player-container-inline"></div>
+                        <div id="audio-player-container" class="audio-player-container-inline">
+                        </div>
                     </div>
                     <div class="ttv-controls">
-                        <button id="generate-ttv-btn" class="button button--secondary button--small" aria-label="Generate video for this content" title="Watch video explanation">
+                        <button id="generate-ttv-btn" class="button button--secondary button--small media-control-button" aria-label="Generate video for this content" title="Watch video explanation">
                             <i class="fas fa-video"></i> <span data-translate-key="button_watch_video">Watch Video</span>
                         </button>
                     </div>
                 </div>
                 <div id="ttv-player-container" class="video-player-wrapper" style="display: none;">
-                    {/* Video player will be injected here */}
+
                 </div>
 
                 <form id="user-answer-form" class="user-input-form">
                     <label for="user-answer-input" class="sr-only" data-translate-key="sr_your_answer">Your Answer</label>
-                    <textarea id="user-answer-input" class="form__textarea" rows="3" placeholder="Type your answer or question here..." required data-translate-key="mcourse_answer_placeholder"></textarea>
-                    <button type="submit" class="button button--primary" id="submit-answer-btn">
-                        <i class="fas fa-paper-plane"></i> <span data-translate-key="button_submit_answer">Submit Answer</span>
+                    <textarea id="user-answer-input" class="form__textarea" rows="3" placeholder="Type your answer or ask a question..." required data-translate-key="mcourse_answer_placeholder"></textarea>
+                    <button type="submit" class="button button--primary" id="submit-answer-btn" aria-label="Submit your answer">
+                        <i class="fas fa-paper-plane"></i> <span data-translate-key="button_submit_answer">Submit</span>
                     </button>
                 </form>
+                 <div id="answer-feedback-area" class="answer-feedback-display" aria-live="assertive">
+                   
+                 </div>
             </section>
 
             <aside class="learning-sidebar learning-sidebar--right">
@@ -168,20 +179,24 @@
                 <div class="sidebar-section">
                     <h3 class="sidebar-title" data-translate-key="mcourse_sidebar_resources">Topic Resources</h3>
                     <ul id="topic-resources-list" class="resource-list-sidebar">
-                        {/* Dynamically populated by JS */}
+                      
                         <li><a href="#" target="_blank" rel="noopener noreferrer"><i class="fas fa-link"></i> <span data-translate-key="mcourse_resource_placeholder1">Key Definitions PDF</span></a></li>
                         <li><a href="#" target="_blank" rel="noopener noreferrer"><i class="fas fa-book-open"></i> <span data-translate-key="mcourse_resource_placeholder2">Further Reading Chapter</span></a></li>
                     </ul>
                 </div>
-                {/* AI Tutor Chat Window (Initially Hidden or as a Modal) */}
-                <div id="ai-tutor-chat-modal" class="modal-overlay" hidden>
+
+                
+                <div id="ai-tutor-chat-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="ai-tutor-modal-title" hidden>
                     <div class="modal__content ai-tutor-modal__content">
-                        <button class="modal__close-button" id="close-ai-tutor-modal-btn">&times;</button>
-                        <h4 data-translate-key="ai_tutor_chat_title">AI Tutor Chat</h4>
-                        <div id="ai-tutor-messages" class="ai-tutor-messages-area"></div>
+                        <button class="modal__close-button" id="close-ai-tutor-modal-btn" aria-label="Close AI Tutor chat">&times;</button>
+                        <h4 id="ai-tutor-modal-title" class="modal__title" data-translate-key="ai_tutor_chat_title">AI Tutor Chat</h4>
+                        <div id="ai-tutor-messages" class="ai-tutor-messages-area" role="log" aria-live="polite">
+                           ]
+                        </div>
                         <form id="ai-tutor-input-form" class="ai-tutor-input-area">
-                            <input type="text" id="ai-tutor-message-input" placeholder="Ask a question..." required>
-                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                            <label for="ai-tutor-message-input" class="sr-only" data-translate-key="sr_ai_tutor_ask_question">Ask a question</label>
+                            <input type="text" id="ai-tutor-message-input" class="form__input" placeholder="Ask a question about the topic..." required data-translate-key="ai_tutor_input_placeholder">
+                            <button type="submit" class="button button--primary" aria-label="Send message to AI Tutor"><i class="fas fa-paper-plane"></i></button>
                         </form>
                     </div>
                 </div>
@@ -191,6 +206,7 @@
 
     <footer class="footer" id="page-footer" role="contentinfo">
         <div class="footer__container container">
+            {/* Standard Footer Content - ensure data-translate-key attributes are present */}
             <div class="footer__section footer__section--contact">
                 <h3 class="footer__heading" data-translate-key="footer_contact_us">Get in Touch</h3>
                 <address class="footer__address">
@@ -199,34 +215,7 @@
                     <p><i class="fas fa-map-marker-alt footer__icon" aria-hidden="true"></i> <span data-translate-key="footer_location">Uplas Towers, Kilifi, Kenya</span></p>
                 </address>
             </div>
-            <div class="footer__section footer__section--social">
-                <h3 class="footer__heading" data-translate-key="footer_follow_us">Connect With Us</h3>
-                <div class="social-media">
-                    <a href="#" class="social-media__link" aria-label="Uplas on Facebook" title="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
-                    <a href="#" class="social-media__link" aria-label="Uplas on Twitter" title="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-                    <a href="#" class="social-media__link" aria-label="Uplas on LinkedIn" title="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
-                    <a href="#" class="social-media__link" aria-label="Uplas on Instagram" title="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                </div>
-            </div>
-            <div class="footer__section footer__section--links">
-                <h3 class="footer__heading" data-translate-key="footer_explore_uplas">Explore Uplas</h3>
-                <ul class="footer__list">
-                    <li><a href="index.html" class="footer__link" data-translate-key="nav_home">Home</a></li>
-                    <li><a href="ucourses_list.html" class="footer__link" data-translate-key="nav_courses_all">All Courses</a></li>
-                    <li><a href="upricing.html" class="footer__link" data-translate-key="nav_pricing_plans">Pricing Plans</a></li>
-                    <li><a href="ublog.html" class="footer__link" data-translate-key="nav_blog_insights">AI Insights Blog</a></li>
-                    <li><a href="/about" class="footer__link" data-translate-key="nav_about">About Uplas</a></li>
-                </ul>
-            </div>
-             <div class="footer__section footer__section--legal">
-                <h3 class="footer__heading" data-translate-key="footer_legal_support">Legal & Support</h3>
-                <ul class="footer__list">
-                    <li><a href="/terms" class="footer__link" data-translate-key="footer_terms">Terms of Service</a></li>
-                    <li><a href="/privacy" class="footer__link" data-translate-key="footer_privacy">Privacy Policy</a></li>
-                    <li><a href="/cookies" class="footer__link" data-translate-key="footer_cookies">Cookie Policy</a></li>
-                    <li><a href="upricing.html#contact-section" class="footer__link" data-translate-key="footer_help">Help Center</a></li>
-                </ul>
-            </div>
+            {/* ... other footer sections ... */}
         </div>
         <div class="footer__bottom">
             <p class="footer__copyright" data-translate-key="footer_copyright_dynamic">© <span id="current-year-footer">{currentYear}</span> Uplas EdTech Solutions Ltd. All rights reserved. Empowering the next generation of AI innovators.</p>
