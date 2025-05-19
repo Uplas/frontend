@@ -46,7 +46,7 @@
                             <option value="fr">Français (FR)</option>
                         </select>
                     </div>
-                    {/* Currency selector may not be primary on a blog listing page */}
+                    {/* Currency selector is less critical on a blog listing page */}
                 </div>
                 <button id="theme-toggle" class="button button--theme" aria-label="Switch color theme" title="Toggle theme">
                     <i class="fas fa-moon theme-icon theme-icon--dark" aria-hidden="true"></i>
@@ -95,18 +95,16 @@
                 </header>
 
                 <div class="blog-posts-container" id="blog-posts-grid">
-                    {/* Blog post previews will be injected here by JavaScript or hardcoded */}
-                    {/* Example Post Preview 1 */}
                     <article class="blog-post-preview" data-category="AI in Education" data-tags="personalized learning, edtech, future of education">
                         <a href="blog-post-detail.html?slug=transformative-power-ai-education" class="post-link">
                             <div class="post-preview__image-container">
-                                <img src="https://placehold.co/600x400/00b4d8/FFFFFF?text=AI+Education&font=poppins" alt="Abstract representation of AI enhancing education with interconnected nodes and learning paths.">
+                                <img src="https://placehold.co/600x400/00b4d8/FFFFFF?text=AI+Education&font=poppins" alt="Abstract representation of AI enhancing education with interconnected nodes and learning paths." class="post-preview__image">
                             </div>
                             <div class="post-preview__content">
                                 <header class="post-preview__header">
                                     <h2 class="post-preview__title" data-translate-key="ublog_post1_title">The Transformative Power of AI in Education</h2>
                                     <p class="post-preview__meta">
-                                        <span data-translate-key="by_author">By</span> <span class="post-preview__author">Uplas Team</span> | <time datetime="2025-05-15">May 15, 2025</time> | <span class="post-preview__category" data-translate-key="ublog_filter_ai_education">AI in Education</span>
+                                        <span data-translate-key="by_author">By</span> <span class="post-preview__author">Uplas Team</span> | <time datetime="2025-05-15">May 15, 2025</time> | <span class="post-preview__category" data-translate-key="ublog_filter_ai_education_badge">AI in Education</span>
                                     </p>
                                 </header>
                                 <p class="post-preview__excerpt" data-translate-key="ublog_post1_excerpt">Artificial intelligence is rapidly reshaping the educational landscape. From personalized learning paths to intelligent tutoring systems, AI offers immense potential to enhance teaching and learning experiences. Discover how Uplas is at the forefront...</p>
@@ -115,17 +113,17 @@
                         </a>
                     </article>
 
-                    {/* Example Post Preview 2 */}
+                  
                     <article class="blog-post-preview" data-category="AI Trends" data-tags="machine learning, deep learning, MLOps, future tech">
                         <a href="blog-post-detail.html?slug=ml-trends-2025" class="post-link">
                             <div class="post-preview__image-container">
-                                <img src="https://placehold.co/600x400/3d405b/FFFFFF?text=ML+Trends&font=poppins" alt="Futuristic graph showing upward trends in machine learning adoption and capabilities.">
+                                <img src="https://placehold.co/600x400/3d405b/FFFFFF?text=ML+Trends&font=poppins" alt="Futuristic graph showing upward trends in machine learning adoption and capabilities." class="post-preview__image">
                             </div>
                             <div class="post-preview__content">
                                 <header class="post-preview__header">
                                     <h2 class="post-preview__title" data-translate-key="ublog_post2_title">Top Machine Learning Trends Shaping 2025 and Beyond</h2>
                                     <p class="post-preview__meta">
-                                        <span data-translate-key="by_author">By</span> <span class="post-preview__author">Dr. AI Visionary</span> | <time datetime="2025-05-10">May 10, 2025</time> | <span class="post-preview__category" data-translate-key="ublog_filter_ai_trends">AI Trends</span>
+                                        <span data-translate-key="by_author">By</span> <span class="post-preview__author">Dr. AI Visionary</span> | <time datetime="2025-05-10">May 10, 2025</time> | <span class="post-preview__category" data-translate-key="ublog_filter_ai_trends_badge">AI Trends</span>
                                     </p>
                                 </header>
                                 <p class="post-preview__excerpt" data-translate-key="ublog_post2_excerpt">Stay ahead of the curve with our in-depth analysis of key machine learning trends. From advancements in Large Language Models (LLMs) to the critical rise of MLOps and responsible AI, explore the forces driving innovation...</p>
@@ -134,17 +132,17 @@
                         </a>
                     </article>
 
-                     {/* Example Post Preview 3 */}
+                     
                     <article class="blog-post-preview" data-category="Tutorials" data-tags="python, getting started, AI programming, beginner">
                         <a href="blog-post-detail.html?slug=getting-started-python-ai" class="post-link">
                             <div class="post-preview__image-container">
-                                <img src="https://placehold.co/600x400/f4a261/000000?text=Python+Tutorial&font=poppins" alt="Python logo with code snippets in the background, representing a tutorial.">
+                                <img src="https://placehold.co/600x400/f4a261/000000?text=Python+Tutorial&font=poppins" alt="Python logo with code snippets in the background, representing a tutorial." class="post-preview__image">
                             </div>
                             <div class="post-preview__content">
                                 <header class="post-preview__header">
                                     <h2 class="post-preview__title" data-translate-key="ublog_post3_title">Getting Started with Python for AI: A Beginner's Guide</h2>
                                     <p class="post-preview__meta">
-                                        <span data-translate-key="by_author">By</span> <span class="post-preview__author">Uplas Learning Team</span> | <time datetime="2025-05-05">May 05, 2025</time> | <span class="post-preview__category" data-translate-key="ublog_filter_tutorials">Tutorials & Guides</span>
+                                        <span data-translate-key="by_author">By</span> <span class="post-preview__author">Uplas Learning Team</span> | <time datetime="2025-05-05">May 05, 2025</time> | <span class="post-preview__category" data-translate-key="ublog_filter_tutorials_badge">Tutorials & Guides</span>
                                     </p>
                                 </header>
                                 <p class="post-preview__excerpt" data-translate-key="ublog_post3_excerpt">New to AI programming? Python is the language of choice for many AI and Machine Learning tasks. This guide will walk you through setting up your environment and writing your first AI-related Python scripts...</p>
@@ -152,7 +150,6 @@
                             </div>
                         </a>
                     </article>
-                    {/* Add more posts as needed */}
                 </div>
                 <p id="no-posts-message" class="no-results-message" style="display: none;" data-translate-key="ublog_no_posts_message">No articles found matching your criteria. Please try a different search or filter.</p>
 
@@ -168,7 +165,7 @@
         </section>
     </main>
 
-    <footer class="footer" id="page-footer" role="contentinfo">
+   <footer class="footer" id="page-footer" role="contentinfo">
         <div class="footer__container container">
             <div class="footer__section footer__section--contact">
                 <h3 class="footer__heading" data-translate-key="footer_contact_us">Get in Touch</h3>
