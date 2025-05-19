@@ -1,74 +1,234 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"> <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community. Engage. Network.</title>
-    <link rel="icon" href="images/uni plas_prev_ui.ico" type="image/x-icon">
-    <link rel="stylesheet" href="ucommunity.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title data-translate-key="ucommunity_page_title">Uplas Community | Connect, Learn & Innovate with AI Peers</title>
+    <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/ucommunity.css">
+
+    <meta name="description" content="Join the Uplas AI Community. Discuss tech breakthroughs, network with professionals in your industry, join groups, and collaborate on AI projects.">
+    <meta name="theme-color" content="#00b4d8">
 </head>
-<body class="body">
+<body class="light-mode">
 
-    <div class="community-unavailable-overlay">
-        <div class="community-unavailable-content">
-            <i class="fas fa-lock padlock-icon"></i>
-            <p>The community is currently unavailable and still in development.</p>
-            <p class="feature-suggestion-text">🚀 <span style="font-weight: bold;">Got ideas to make this community even better?</span> <a href="#" class="go-back-link" style="color: var(--primary-color); text-decoration: none; cursor: pointer;">Click here</a>, to suggest features and help us build what you want! Or else, <span id="go-back-alternative" class="go-back-link" style="color: var(--primary-color); text-decoration: none; cursor: pointer;">go back</span></p>
+    <header class="header" id="page-header">
+        <div class="container header__container">
+            <a href="index.html" class="logo" aria-label="Uplas Homepage">
+                <img src="images/uni_plas_prev_ui.ico" alt="Uplas Platform Logo" class="logo__img">
+            </a>
+            <nav class="nav" id="main-navigation" aria-label="Main site navigation">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="index.html" class="nav__link" data-translate-key="nav_home">Home</a></li>
+                    <li class="nav__item"><a href="ucourses_list.html" class="nav__link" data-translate-key="nav_courses">Courses</a></li>
+                    <li class="nav__item"><a href="uprojects.html" class="nav__link" data-translate-key="nav_projects">My Projects</a></li>
+                    <li class="nav__item"><a href="ucommunity.html" class="nav__link nav__link--active" aria-current="page" data-translate-key="nav_community">Community</a></li>
+                    <li class="nav__item"><a href="upricing.html" class="nav__link" data-translate-key="nav_pricing">Pricing</a></li>
+                    <li class="nav__item"><a href="ublog.html" class="nav__link" data-translate-key="nav_blog">Blog</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="language-currency-selectors">
+                    <div class="select-wrapper">
+                        <label for="language-selector" class="sr-only" data-translate-key="sr_select_language">Select Language</label>
+                        <i class="fas fa-globe selector-icon"></i>
+                        <select id="language-selector" class="header-select" title="Select Language">
+                            <option value="en">English (EN)</option>
+                            <option value="es">Español (ES)</option>
+                            <option value="fr">Français (FR)</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="theme-toggle" class="button button--theme" aria-label="Switch color theme" title="Toggle theme">
+                    <i class="fas fa-moon theme-icon theme-icon--dark" aria-hidden="true"></i>
+                    <i class="fas fa-sun theme-icon theme-icon--light" aria-hidden="true" style="display:none;"></i>
+                    <span class="sr-only" data-translate-key="toggle_theme_sr">Toggle Dark/Light Mode</span>
+                </button>
+                <div class="user-profile-placeholder-header" id="user-avatar-header">
+                    <button class="user-avatar-button-header" aria-label="User menu">JD</button>
+                </div>
+            </div>
+            <button class="nav__toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-navigation">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+                <span class="sr-only" data-translate-key="toggle_navigation_sr">Menu</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="community-main-content" id="main-content-area">
+        <div class="container community-container">
+            <aside class="community-sidebar community-sidebar--left">
+                <div class="sidebar-section create-post-widget">
+                    <button class="button button--primary button--full-width" id="create-post-btn-sidebar">
+                        <i class="fas fa-plus-circle"></i> <span data-translate-key="ucommunity_button_create_post">Create Post</span>
+                    </button>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title" data-translate-key="ucommunity_sidebar_feed_title">My Feed</h3>
+                    <nav class="sidebar-nav" id="feed-filter-nav">
+                        <a href="#" class="sidebar-link active" data-filter="all"><i class="fas fa-globe-americas"></i> <span data-translate-key="ucommunity_feed_all_posts">All Posts</span></a>
+                        <a href="#" class="sidebar-link" data-filter="personalized"><i class="fas fa-user-astronaut"></i> <span data-translate-key="ucommunity_feed_for_you">For You</span></a>
+                        <a href="#" class="sidebar-link" data-filter="following"><i class="fas fa-user-friends"></i> <span data-translate-key="ucommunity_feed_following">Following</span></a>
+                    </nav>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title" data-translate-key="ucommunity_sidebar_categories_title">Categories</h3>
+                    <nav class="sidebar-nav" id="category-filter-list">
+                        <a href="#" class="sidebar-link" data-category-id="all-categories" data-category-name="All Categories"><i class="fas fa-stream"></i> <span data-translate-key="ucommunity_category_all">All Categories</span></a>
+                        <p class="loading-message" data-translate-key="ucommunity_loading_categories">Loading categories...</p>
+                    </nav>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title" data-translate-key="ucommunity_sidebar_groups_title">Industry Groups</h3>
+                    <nav class="sidebar-nav" id="group-list">
+                         <p class="loading-message" data-translate-key="ucommunity_loading_groups">Loading groups...</p>
+                    </nav>
+                    <button class="button button--secondary button--small button--full-width" id="manage-groups-btn" style="margin-top: var(--spacing-sm);">
+                        <i class="fas fa-users-cog"></i> <span data-translate-key="ucommunity_button_manage_groups">Manage Groups</span>
+                    </button>
+                </div>
+            </aside>
+
+            <section class="community-feed-area" aria-labelledby="feed-main-title">
+                <header class="feed-header">
+                    <h2 id="feed-main-title" class="feed-area-title" data-translate-key="ucommunity_feed_area_title">Latest Discussions & Breakthroughs</h2>
+                    <div class="feed-sort-options">
+                        <label for="sort-posts-select" class="sr-only" data-translate-key="sr_sort_posts">Sort posts by</label>
+                        <select id="sort-posts-select" class="form__select form__select--compact" title="Sort posts">
+                            <option value="latest" data-translate-key="ucommunity_sort_latest">Latest</option>
+                            <option value="trending" data-translate-key="ucommunity_sort_trending">Trending</option>
+                            <option value="top" data-translate-key="ucommunity_sort_top">Top Voted</option>
+                        </select>
+                    </div>
+                </header>
+
+                <div class="post-list" id="post-list-container">
+                    <p class="loading-message" id="posts-loading-message" data-translate-key="ucommunity_loading_posts">Loading posts...</p>
+                </div>
+                <button class="button button--secondary button--full-width" id="load-more-posts-btn" style="display:none; margin-top: var(--spacing-lg);">
+                    <i class="fas fa-sync-alt"></i> <span data-translate-key="ucommunity_button_load_more">Load More Posts</span>
+                </button>
+            </section>
+
+            <aside class="community-sidebar community-sidebar--right">
+                <div class="sidebar-section user-profile-summary-widget" id="user-profile-summary-community">
+                    <h3 class="sidebar-title" data-translate-key="ucommunity_sidebar_my_profile">My Profile</h3>
+                    <div class="user-avatar-large-placeholder" id="community-user-avatar">U</div>
+                    <p class="user-name-display-sidebar" id="community-user-name">User Name</p>
+                    <p class="user-career-display-sidebar" id="community-user-career">Selected Career/Industry</p>
+                    <a href="#settings" class="button button--secondary button--extra-small button--full-width" id="edit-profile-community-btn">
+                        <i class="fas fa-cog"></i> <span data-translate-key="ucommunity_button_edit_profile">Edit Profile / Settings</span>
+                    </a>
+                </div>
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title" data-translate-key="ucommunity_sidebar_trending_tags">Trending Tags</h3>
+                    <div class="tag-list" id="trending-tags-list">
+                        <a href="#" class="tag">#GenAI</a>
+                        <a href="#" class="tag">#LLMs</a>
+                    </div>
+                </div>
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title" data-translate-key="ucommunity_sidebar_suggested_groups">Suggested Groups</h3>
+                    <ul class="suggested-list" id="suggested-groups-list">
+                        
+                        <li><a href="#">AI in Healthcare Innovators</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="footer" id="page-footer" role="contentinfo">
+      
+    </footer>
+
+    <div id="career-selection-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="career-modal-title" hidden>
+        <div class="modal__content community-modal__content">
+            
+            <h2 id="career-modal-title" class="modal__title" data-translate-key="ucommunity_career_modal_title">Personalize Your Community!</h2>
+            <p data-translate-key="ucommunity_career_modal_desc">To help us tailor your feed and connect you with relevant content and groups, please select your primary career interest or industry.</p>
+            <form id="career-selection-form">
+                <div class="form__group">
+                    <label for="career-interest-select" class="form__label" data-translate-key="ucommunity_career_modal_label_field">Your Primary Field:</label>
+                    <select id="career-interest-select" name="careerInterest" class="form__select" required>
+                        <option value="" disabled selected data-translate-key="ucommunity_career_modal_select_placeholder">Choose your field...</option>
+                        <option value="software-engineering" data-translate-key="career_software_eng">Software Engineering</option>
+                        <option value="data-science-analytics" data-translate-key="career_data_science">Data Science & Analytics</option>
+                        <option value="ai-machine-learning" data-translate-key="career_ai_ml">AI/Machine Learning Engineering</option>
+                        <option value="product-management-tech" data-translate-key="career_product_mgmt">Product Management (Tech)</option>
+                        <option value="ux-ui-design-tech" data-translate-key="career_ux_ui">UX/UI Design (Tech)</option>
+                        <option value="cybersecurity" data-translate-key="career_cybersecurity">Cybersecurity</option>
+                        <option value="cloud-devops" data-translate-key="career_cloud_devops">Cloud Computing & DevOps</option>
+                        <option value="digital-marketing-tech" data-translate-key="career_digital_marketing">Digital Marketing (Tech Focus)</option>
+                        <option value="it-support-networking" data-translate-key="career_it_support">IT Support & Networking</option>
+                        <option value="student-researcher-tech" data-translate-key="career_student_researcher">Student / Researcher in Tech</option>
+                        <option value="other-tech" data-translate-key="career_other_tech">Other Tech Field</option>
+                    </select>
+                    <span class="form__error-message" aria-live="polite"></span>
+                </div>
+                <div class="form__group form__group--hidden" id="other-career-group">
+                    <label for="other-career-input" class="form__label" data-translate-key="ucommunity_career_modal_label_specify">Please Specify:</label>
+                    <input type="text" id="other-career-input" name="otherCareer" class="form__input" placeholder="Your specific tech field">
+                </div>
+                <button type="submit" class="button button--primary button--full-width" data-translate-key="ucommunity_career_modal_button_save">Save Preference & Enter Community</button>
+            </form>
         </div>
     </div>
 
-    <div class="chat-container">
-        <div class="chat-header">
-            <a href="#" class="back-arrow"><i class="fas fa-arrow-left"></i></a>
-            <h2 class="community-title">Community Name</h2> </div>
-        <div class="messages-area" id="messages-area">
-            <div class="message received">
-                <div class="profile-avatar">A</div>
-                <div class="message-content-container">
-                    <span class="user-name">Alice</span>
-                    <div class="message-content">Hello everyone!</div>
+    <div id="create-post-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="create-post-modal-title" hidden>
+        <div class="modal__content community-modal__content community-modal__content--large">
+            <button class="modal__close-button" id="close-create-post-modal-btn" aria-label="Close create post dialog" title="Close"><i class="fas fa-times"></i></button>
+            <h2 id="create-post-modal-title" class="modal__title" data-translate-key="ucommunity_create_post_modal_title">Create New Post</h2>
+            <form id="create-post-form" novalidate>
+                <div class="form__group">
+                    <label for="post-title-input" class="form__label" data-translate-key="ucommunity_post_form_label_title">Title</label>
+                    <input type="text" id="post-title-input" name="postTitle" class="form__input" required placeholder="A catchy and descriptive title for your post">
+                    <span class="form__error-message" aria-live="polite"></span>
                 </div>
-            </div>
-            <div class="message sent">
-                <div class="message-content-container">
-                    <div class="message-content">Hi! How's it going?</div>
+                <div class="form__group">
+                    <label for="post-content-textarea" class="form__label" data-translate-key="ucommunity_post_form_label_content">Content (Markdown supported)</label>
+                    <textarea id="post-content-textarea" name="postContent" class="form__textarea" rows="10" required placeholder="Share your thoughts, questions, or breakthroughs... Explain your topic clearly."></textarea>
+                    <span class="form__error-message" aria-live="polite"></span>
                 </div>
-                <div class="profile-avatar">Y</div>
-            </div>
-            <div class="message received">
-                <div class="profile-avatar">B</div>
-                <div class="message-content-container">
-                    <span class="user-name">Bob</span>
-                    <div class="message-content">I'm doing great, thanks!</div>
+                <div class="form__row">
+                    <div class="form__group">
+                        <label for="post-category-select" class="form__label" data-translate-key="ucommunity_post_form_label_category">Category</label>
+                        <select id="post-category-select" name="postCategory" class="form__select" required>
+                            <option value="" disabled selected data-translate-key="ucommunity_post_form_select_category">Select a category...</option>
+                            
+                        </select>
+                        <span class="form__error-message" aria-live="polite"></span>
+                    </div>
+                    <div class="form__group">
+                        <label for="post-tags-input" class="form__label" data-translate-key="ucommunity_post_form_label_tags">Tags (comma-separated, optional)</label>
+                        <input type="text" id="post-tags-input" name="postTags" class="form__input" placeholder="e.g., #AI, #Innovation, #Learning">
+                    </div>
                 </div>
-            </div>
-            <div class="message sent">
-                <div class="message-content-container">
-                    <div class="message-content">That's good to hear.</div>
+                
+                    <div class="form__group">
+                    <label for="post-attachment" class="form__label">Attachment (Optional)</label>
+                    <input type="file" id="post-attachment" name="postAttachment" class="form__input">
                 </div>
-                <div class="profile-avatar">Y</div>
-            </div>
-            <div class="message received">
-                <div class="profile-avatar">C</div>
-                <div class="message-content-container">
-                    <span class="user-name">Charlie</span>
-                    <div class="message-content">Anyone working on the project?</div>
-                </div>
-            </div>
-            </div>
-        <div class="input-area">
-            <div class="input-actions">
-                <button title="Add Attachment"><i class="fas fa-paperclip"></i></button>
-                </div>
-            <input type="text" id="message-input" class="message-input" placeholder="Type your message...">
-            <button class="send-button"><i class="fas fa-paper-plane"></i></button>
+                <button type="submit" class="button button--primary button--full-width" id="publish-post-submit-btn" data-translate-key="ucommunity_post_form_button_publish">Publish Post</button>
+                <div id="create-post-status" class="form__status" aria-live="assertive"></div>
+            </form>
         </div>
     </div>
 
+
+    <script src="js/global.js"></script>
+    <script src="js/apiUtils.js"></script>
+    <script src="js/ucommunity.js"></script>
 </body>
-
-    <script src="apiUtils.js" defer></script>
-    <script src="ucommunity.js"></script>
-
 </html>
