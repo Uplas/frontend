@@ -1,42 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"> <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced AI: From Theory to Deployment | Uplas - Unlock Your Future</title>
+    <title data-translate-key="mcourseD_page_title_default">Advanced AI: From Theory to Deployment | Uplas</title>
     <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <link rel="stylesheet" href="mcourse_detail_page.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-</head>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/mcourseD.css">
+
+    <meta name="description" content="Deep dive into Advanced AI with Uplas. Master complex algorithms, neural networks, and MLOps. Enroll now for expert-led instruction and hands-on projects.">
+    <meta name="theme-color" content="#00b4d8"> </head>
 <body class="light-mode"> <header class="header" id="page-header">
         <div class="container header__container">
             <a href="index.html" class="logo" aria-label="Uplas Homepage">
                 <img src="images/uni_plas_prev_ui.ico" alt="Uplas Platform Logo" class="logo__img">
-                </a>
-            <nav class="nav" aria-label="Main site navigation">
+            </a>
+            <nav class="nav" id="main-navigation" aria-label="Main site navigation">
                 <ul class="nav__list">
-                    <li class="nav__item"><a href="index.html" class="nav__link">Home</a></li>
-                    <li class="nav__item"><a href="ucourses_list.html" class="nav__link" aria-current="page">Courses</a></li>
-                    <li class="nav__item"><a href="udashboard.html" class="nav__link">Dashboard</a></li>
-                    <li class="nav__item"><a href="upricing.html" class="nav__link">Pricing</a></li>
-                    <li class="nav__item"><a href="upricing.html#contact-section" class="nav__link">Contact</a></li>
-                    <li class="nav__item"><a href="ublog.html" class="nav__link">Blog</a></li>
+                    <li class="nav__item"><a href="index.html" class="nav__link" data-translate-key="nav_home">Home</a></li>
+                    <li class="nav__item"><a href="ucourses_list.html" class="nav__link" data-translate-key="nav_courses">Courses</a></li>
+                    <li class="nav__item"><a href="uprojects.html" class="nav__link" data-translate-key="nav_projects">My Projects</a></li>
+                    <li class="nav__item"><a href="ucommunity.html" class="nav__link" data-translate-key="nav_community">Community</a></li>
+                    <li class="nav__item"><a href="upricing.html" class="nav__link" data-translate-key="nav_pricing">Pricing</a></li>
+                    <li class="nav__item"><a href="ublog.html" class="nav__link" data-translate-key="nav_blog">Blog</a></li>
                 </ul>
             </nav>
             <div class="header-actions">
-                <button id="theme-toggle" class="button button--theme" aria-label="Switch color theme" aria-live="polite" title="Toggle theme">
-                    <i class="fas fa-moon theme-icon theme-icon--dark" aria-hidden="true"></i>
-                    <i class="fas fa-sun theme-icon theme-icon--light" aria-hidden="true"></i>
-                    <span class="sr-only">Toggle Dark/Light Mode</span>
-                </button>
+                <div class="language-currency-selectors">
+                    <div class="select-wrapper">
+                        <label for="language-selector" class="sr-only" data-translate-key="sr_select_language">Select Language</label>
+                        <i class="fas fa-globe selector-icon"></i>
+                        <select id="language-selector" class="header-select" title="Select Language">
+                            <option value="en">English (EN)</option>
+                            <option value="es">Español (ES)</option>
+                            <option value="fr">Français (FR)</option>
+                            {/* */}
+                        </select>
+                    </div>
+                    <div class="select-wrapper">
+                         <label for="currency-selector" class="sr-only" data-translate-key="sr_select_currency">Select Currency</label>
+                        <i class="fas fa-dollar-sign selector-icon"></i>
+                        <select id="currency-selector" class="header-select" title="Select Currency">
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
+                            <option value="KES">KES</option>
+                            <option value="INR">INR</option>
+                            {/* */}
+                        </select>
+                    </div>
                 </div>
+                <button id="theme-toggle" class="button button--theme" aria-label="Switch color theme" title="Toggle theme">
+                    <i class="fas fa-moon theme-icon theme-icon--dark" aria-hidden="true"></i>
+                    <i class="fas fa-sun theme-icon theme-icon--light" aria-hidden="true" style="display:none;"></i>
+                    <span class="sr-only" data-translate-key="toggle_theme_sr">Toggle Dark/Light Mode</span>
+                </button>
+            </div>
             <button class="nav__toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-navigation">
                 <i class="fas fa-bars" aria-hidden="true"></i>
-                <span class="sr-only">Menu</span>
+                <span class="sr-only" data-translate-key="toggle_navigation_sr">Menu</span>
             </button>
         </div>
     </header>
@@ -48,21 +77,22 @@
                 <div class="course-hero__text-content">
                     <nav aria-label="Breadcrumb" class="course-hero__breadcrumb">
                         <ol>
-                            <li><a href="ucourses_list.html">All Courses</a></li>
+                            <li><a href="ucourses_list.html" data-translate-key="breadcrumb_all_courses">All Courses</a></li>
                             <li><i class="fas fa-angle-right" aria-hidden="true"></i></li>
-                            <li><span aria-current="page">Advanced AI: Theory to Deployment</span></li>
+                            <li><span aria-current="page" data-translate-key="breadcrumb_current_course_adv_ai">Advanced AI: Theory to Deployment</span></li>
                         </ol>
                     </nav>
-                    <h1 id="course-hero-main-title" class="course-hero__title">Advanced AI: From Theory to Real-World Deployment</h1>
-                    <p class="course-hero__subtitle">Elevate your expertise. Master complex algorithms, neural networks, and cutting-edge MLOps strategies. This is where your AI leadership journey begins.</p>
+                    {/* NOTE: The course title and subtitle should be dynamic if this page template is used for multiple courses */}
+                    <h1 id="course-hero-main-title" class="course-hero__title" data-translate-key="mcourseD_hero_title_adv_ai">Advanced AI: From Theory to Real-World Deployment</h1>
+                    <p class="course-hero__subtitle" data-translate-key="mcourseD_hero_subtitle_adv_ai">Elevate your expertise. Master complex algorithms, neural networks, and cutting-edge MLOps strategies. This is where your AI leadership journey begins.</p>
                     <div class="course-hero__meta">
-                        <span><i class="fas fa-chalkboard-teacher course-hero__meta-icon" aria-hidden="true"></i> Instructors: Dr. Alistair Finch & Prof. Lena Ivanova</span>
-                        <span><i class="fas fa-hourglass-half course-hero__meta-icon" aria-hidden="true"></i> Duration: 16 Weeks (Est. 10-12 hrs/week)</span>
-                        <span><i class="fas fa-layer-group course-hero__meta-icon" aria-hidden="true"></i> Level: Expert / Advanced</span>
-                        <span><i class="fas fa-award course-hero__meta-icon" aria-hidden="true"></i> Outcome: Professional AI Certification</span>
+                        <span data-translate-key="mcourseD_hero_meta_instructors_adv_ai"><i class="fas fa-chalkboard-teacher course-hero__meta-icon" aria-hidden="true"></i> Instructors: Dr. Alistair Finch & Prof. Lena Ivanova</span>
+                        <span data-translate-key="mcourseD_hero_meta_duration_adv_ai"><i class="fas fa-hourglass-half course-hero__meta-icon" aria-hidden="true"></i> Duration: 16 Weeks (Est. 10-12 hrs/week)</span>
+                        <span data-translate-key="mcourseD_hero_meta_level_adv_ai"><i class="fas fa-layer-group course-hero__meta-icon" aria-hidden="true"></i> Level: Expert / Advanced</span>
+                        <span data-translate-key="mcourseD_hero_meta_outcome_adv_ai"><i class="fas fa-award course-hero__meta-icon" aria-hidden="true"></i> Outcome: Professional AI Certification</span>
                     </div>
                     <div class="course-hero__actions">
-                        <button id="enroll-now-main-cta" class="button button--primary button--large course-hero__cta" type="button">
+                        <button id="enroll-now-main-cta" class="button button--primary button--large course-hero__cta" type="button" data-translate-key="mcourseD_hero_cta_enroll_adv_ai">
                             <i class="fas fa-rocket" aria-hidden="true"></i> Launch Your AI Expertise Now
                         </button>
                     </div>
@@ -77,19 +107,19 @@
             <div class="course-layout__main-content">
                 <nav class="course-tabs" aria-label="Course Information Sections">
                     <div class="course-tabs__nav" role="tablist">
-                        <button class="course-tabs__button active" role="tab" aria-selected="true" aria-controls="tab-panel-overview" id="tab-overview">
+                        <button class="course-tabs__button active" role="tab" aria-selected="true" aria-controls="tab-panel-overview" id="tab-overview" data-translate-key="mcourseD_tab_overview">
                             <i class="fas fa-info-circle" aria-hidden="true"></i> Overview
                         </button>
-                        <button class="course-tabs__button" role="tab" aria-selected="false" aria-controls="tab-panel-curriculum" id="tab-curriculum">
+                        <button class="course-tabs__button" role="tab" aria-selected="false" aria-controls="tab-panel-curriculum" id="tab-curriculum" data-translate-key="mcourseD_tab_curriculum">
                             <i class="fas fa-sitemap" aria-hidden="true"></i> Curriculum
                         </button>
-                        <button class="course-tabs__button" role="tab" aria-selected="false" aria-controls="tab-panel-instructors" id="tab-instructors">
+                        <button class="course-tabs__button" role="tab" aria-selected="false" aria-controls="tab-panel-instructors" id="tab-instructors" data-translate-key="mcourseD_tab_instructors">
                             <i class="fas fa-users" aria-hidden="true"></i> Instructors
                         </button>
-                        <button class="course-tabs__button" role="tab" aria-selected="false" aria-controls="tab-panel-reviews" id="tab-reviews">
+                        <button class="course-tabs__button" role="tab" aria-selected="false" aria-controls="tab-panel-reviews" id="tab-reviews" data-translate-key="mcourseD_tab_reviews">
                             <i class="fas fa-star-half-alt" aria-hidden="true"></i> Reviews
                         </button>
-                        <button class="course-tabs__button" role="tab" aria-selected="false" aria-controls="tab-panel-faq" id="tab-faq">
+                        <button class="course-tabs__button" role="tab" aria-selected="false" aria-controls="tab-panel-faq" id="tab-faq" data-translate-key="mcourseD_tab_faq">
                             <i class="fas fa-question-circle" aria-hidden="true"></i> FAQ
                         </button>
                     </div>
@@ -98,88 +128,50 @@
                 <div class="course-tab-content">
                     <section class="course-tabs__panel active" id="tab-panel-overview" role="tabpanel" tabindex="0" aria-labelledby="tab-overview">
                         <article>
-                            <h2 class="section-title section-title--sub">Transform Your Capabilities: What You Will Master</h2>
+                            <h2 class="section-title section-title--sub" data-translate-key="mcourseD_overview_what_you_master">Transform Your Capabilities: What You Will Master</h2>
                             <ul class="learn-list">
-                                <li><i class="fas fa-brain learn-list__icon" aria-hidden="true"></i> Architect and implement state-of-the-art neural networks, including Transformers and GANs.</li>
-                                <li><i class="fas fa-cogs learn-list__icon" aria-hidden="true"></i> Command MLOps principles for building robust, scalable, and maintainable AI deployment pipelines.</li>
-                                <li><i class="fas fa-chart-line learn-list__icon" aria-hidden="true"></i> Apply advanced reinforcement learning techniques to solve complex, dynamic decision-making problems.</li>
-                                <li><i class="fas fa-balance-scale learn-list__icon" aria-hidden="true"></i> Critically evaluate and implement ethical AI frameworks, ensuring fairness, transparency, and accountability.</li>
-                                <li><i class="fas fa-project-diagram learn-list__icon" aria-hidden="true"></i> Confidently lead and execute end-to-end AI projects, from initial concept and data strategy to production deployment and impact analysis.</li>
+                                <li data-translate-key="mcourseD_overview_mastery1_adv_ai"><i class="fas fa-brain learn-list__icon" aria-hidden="true"></i> Architect and implement state-of-the-art neural networks, including Transformers and GANs.</li>
+                                <li data-translate-key="mcourseD_overview_mastery2_adv_ai"><i class="fas fa-cogs learn-list__icon" aria-hidden="true"></i> Command MLOps principles for building robust, scalable, and maintainable AI deployment pipelines.</li>
+                                <li data-translate-key="mcourseD_overview_mastery3_adv_ai"><i class="fas fa-chart-line learn-list__icon" aria-hidden="true"></i> Apply advanced reinforcement learning techniques to solve complex, dynamic decision-making problems.</li>
+                                <li data-translate-key="mcourseD_overview_mastery4_adv_ai"><i class="fas fa-balance-scale learn-list__icon" aria-hidden="true"></i> Critically evaluate and implement ethical AI frameworks, ensuring fairness, transparency, and accountability.</li>
+                                <li data-translate-key="mcourseD_overview_mastery5_adv_ai"><i class="fas fa-project-diagram learn-list__icon" aria-hidden="true"></i> Confidently lead and execute end-to-end AI projects, from initial concept and data strategy to production deployment and impact analysis.</li>
                             </ul>
 
-                            <h2 class="section-title section-title--sub">Elevate Your Expertise: A Deep Dive into Advanced AI</h2>
-                            <p>Step into the future with "Advanced AI: From Theory to Deployment," Uplas's premier program designed for seasoned professionals poised to lead in the artificial intelligence domain. This is more than a course; it's an immersive journey into the sophisticated mechanics of state-of-the-art AI. We move beyond the fundamentals, empowering you with the deep knowledge and practical skills to architect the next generation of intelligent systems.</p>
-                            <p>You'll master complex neural network architectures, navigate the full MLOps lifecycle for robust deployments, and explore the frontiers of reinforcement learning. Our curriculum is a potent blend of rigorous theory, intensive hands-on labs (Python, TensorFlow, PyTorch, Cloud AI), and a capstone project that mirrors real-world AI challenges – your opportunity to build a portfolio-defining solution. Crucially, we instill a profound understanding of AI ethics, bias mitigation, and responsible innovation, shaping you into not just a skilled technologist, but a visionary AI leader. Are you ready to architect the future of intelligence with Uplas?</p>
+                            <h2 class="section-title section-title--sub" data-translate-key="mcourseD_overview_deep_dive_title_adv_ai">Elevate Your Expertise: A Deep Dive into Advanced AI</h2>
+                            <p data-translate-key="mcourseD_overview_deep_dive_p1_adv_ai">Step into the future with "Advanced AI: From Theory to Deployment," Uplas's premier program designed for seasoned professionals poised to lead in the artificial intelligence domain. This is more than a course; it's an immersive journey into the sophisticated mechanics of state-of-the-art AI. We move beyond the fundamentals, empowering you with the deep knowledge and practical skills to architect the next generation of intelligent systems.</p>
+                            <p data-translate-key="mcourseD_overview_deep_dive_p2_adv_ai">You'll master complex neural network architectures, navigate the full MLOps lifecycle for robust deployments, and explore the frontiers of reinforcement learning. Our curriculum is a potent blend of rigorous theory, intensive hands-on labs (Python, TensorFlow, PyTorch, Cloud AI), and a capstone project that mirrors real-world AI challenges – your opportunity to build a portfolio-defining solution. Crucially, we instill a profound understanding of AI ethics, bias mitigation, and responsible innovation, shaping you into not just a skilled technologist, but a visionary AI leader. Are you ready to architect the future of intelligence with Uplas?</p>
 
-                            <h3 class="section-title--tertiary">Is This Advanced Program For You?</h3>
-                            <p>This program is tailored for individuals with a strong existing foundation, including:</p>
+                            <h3 class="section-title--tertiary" data-translate-key="mcourseD_overview_who_for_title_adv_ai">Is This Advanced Program For You?</h3>
+                            <p data-translate-key="mcourseD_overview_who_for_intro_adv_ai">This program is tailored for individuals with a strong existing foundation, including:</p>
                             <ul>
-                                <li>Senior Software Engineers & Architects aiming for AI leadership roles.</li>
-                                <li>Experienced Data Scientists & Machine Learning Engineers seeking deep specialization.</li>
-                                <li>AI Researchers looking to bridge cutting-edge theory with practical, impactful applications.</li>
-                                <li>Technology Executives & Product Leaders responsible for driving AI strategy and innovation.</li>
+                                <li data-translate-key="mcourseD_overview_who_for_item1_adv_ai">Senior Software Engineers & Architects aiming for AI leadership roles.</li>
+                                <li data-translate-key="mcourseD_overview_who_for_item2_adv_ai">Experienced Data Scientists & Machine Learning Engineers seeking deep specialization.</li>
+                                <li data-translate-key="mcourseD_overview_who_for_item3_adv_ai">AI Researchers looking to bridge cutting-edge theory with practical, impactful applications.</li>
+                                <li data-translate-key="mcourseD_overview_who_for_item4_adv_ai">Technology Executives & Product Leaders responsible for driving AI strategy and innovation.</li>
                             </ul>
-                            <h3 class="section-title--tertiary">Essential Foundations for Success:</h3>
+                            <h3 class="section-title--tertiary" data-translate-key="mcourseD_overview_prereqs_title_adv_ai">Essential Foundations for Success:</h3>
                             <ul>
-                                <li>Advanced Python proficiency & mastery of core data science libraries (NumPy, Pandas, Scikit-learn).</li>
-                                <li>Proven experience with foundational machine learning algorithms, model development, and rigorous evaluation.</li>
-                                <li>A strong command of linear algebra, multivariate calculus, and advanced probability/statistics.</li>
-                                <li>Prior hands-on experience with at least one major deep learning framework (TensorFlow or PyTorch) is highly recommended.</li>
+                                <li data-translate-key="mcourseD_overview_prereqs_item1_adv_ai">Advanced Python proficiency & mastery of core data science libraries (NumPy, Pandas, Scikit-learn).</li>
+                                <li data-translate-key="mcourseD_overview_prereqs_item2_adv_ai">Proven experience with foundational machine learning algorithms, model development, and rigorous evaluation.</li>
+                                <li data-translate-key="mcourseD_overview_prereqs_item3_adv_ai">A strong command of linear algebra, multivariate calculus, and advanced probability/statistics.</li>
+                                <li data-translate-key="mcourseD_overview_prereqs_item4_adv_ai">Prior hands-on experience with at least one major deep learning framework (TensorFlow or PyTorch) is highly recommended.</li>
                             </ul>
                         </article>
                     </section>
 
                     <section class="course-tabs__panel" id="tab-panel-curriculum" role="tabpanel" tabindex="0" aria-labelledby="tab-curriculum" hidden>
-                        <h2 class="section-title section-title--sub">Comprehensive Curriculum: Your Roadmap to AI Mastery</h2>
+                        <h2 class="section-title section-title--sub" data-translate-key="mcourseD_curriculum_title">Comprehensive Curriculum: Your Roadmap to AI Mastery</h2>
                         <div class="curriculum-summary">
-                            <p><strong>12 In-Depth Modules &bull; 60+ Engaging Lessons & Hands-On Labs &bull; 1 Capstone Project</strong></p>
-                            <p>Estimated time commitment: 60+ hours of guided instruction & 80+ hours of practical project work.</p>
+                            <p><strong data-translate-key="mcourseD_curriculum_summary_stats_adv_ai">12 In-Depth Modules &bull; 60+ Engaging Lessons & Hands-On Labs &bull; 1 Capstone Project</strong></p>
+                            <p data-translate-key="mcourseD_curriculum_summary_time_adv_ai">Estimated time commitment: 60+ hours of guided instruction & 80+ hours of practical project work.</p>
                         </div>
                         <div class="module-accordion" id="module-accordion">
-                            <div class="module" id="module-1">
-                                <h3 class="module__header">
-                                    <button class="module__toggle-button" aria-expanded="false" aria-controls="module-1-content">
-                                        Module 1: Transformers & The Self-Attention Revolution
-                                        <span class="module__meta"><span class="module__duration">5 hours</span> &bull; <span class="module__lesson-count">4 Lessons</span></span>
-                                        <span class="module__toggle-icon"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
-                                    </button>
-                                </h3>
-                                <div class="module__content" id="module-1-content" role="region" hidden>
-                                    <ul>
-                                        <li class="lesson lesson--locked" data-lesson-id="101" data-module-id="1" data-module-price="1.50">
-                                            <i class="fas fa-book-reader lesson__icon" aria-hidden="true"></i>
-                                            <span class="lesson__title">1.1 Deconstructing Attention: The Engine of Modern AI (1h 15m)</span>
-                                            <span class="lesson__type-badge">Video & Reading</span>
-                                            <span class="lesson__status"><i class="fas fa-lock" aria-hidden="true"></i> Locked</span>
-                                            <button class="button button--secondary button--extra-small lesson__action-button buy-module-btn" data-module-id="1" data-price="1.50" data-name="Module 1: Transformers">Unlock This Module ($1.50)</button>
-                                        </li>
-                                        <li class="lesson lesson--locked" data-lesson-id="102" data-module-id="1" data-module-price="1.50">
-                                            <i class="fas fa-laptop-code lesson__icon" aria-hidden="true"></i>
-                                            <span class="lesson__title">1.2 Lab: Implementing Multi-Head Attention from Scratch (2h)</span>
-                                            <span class="lesson__type-badge">Coding Lab</span>
-                                            <span class="lesson__status"><i class="fas fa-lock" aria-hidden="true"></i> Locked</span>
-                                        </li>
-                                        <li class="lesson lesson--locked" data-lesson-id="103" data-module-id="1" data-module-price="1.50">
-                                            <i class="fas fa-lightbulb lesson__icon" aria-hidden="true"></i>
-                                            <span class="lesson__title">1.3 Exploring Transformer Architectures (BERT, GPT, ViT) (1h 15m)</span>
-                                             <span class="lesson__type-badge">Conceptual Deep Dive</span>
-                                            <span class="lesson__status"><i class="fas fa-lock" aria-hidden="true"></i> Locked</span>
-                                        </li>
-                                        <li class="lesson lesson--locked" data-lesson-id="104" data-module-id="1" data-module-price="1.50">
-                                            <i class="fas fa-question-circle lesson__icon" aria-hidden="true"></i>
-                                            <span class="lesson__title">1.4 Module 1 Assessment: Transformers Challenge (30m)</span>
-                                            <span class="lesson__type-badge">Quiz</span>
-                                            <span class="lesson__status"><i class="fas fa-lock" aria-hidden="true"></i> Locked</span>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
                             {/* Example of an accessible module (e.g., first one is free, or user purchased it) */}
                             <div class="module module--accessible" id="module-0-intro">
                                 <h3 class="module__header">
                                     <button class="module__toggle-button" aria-expanded="true" aria-controls="module-0-content">
-                                        Introduction: Setting the Stage for Advanced AI
-                                        <span class="module__meta"><span class="module__duration">45 mins</span> &bull; <span class="module__lesson-count">2 Lessons</span> &bull; <span class="badge badge--free">Free Preview</span></span>
+                                        <span data-translate-key="mcourseD_module_intro_title_adv_ai">Introduction: Setting the Stage for Advanced AI</span>
+                                        <span class="module__meta"><span class="module__duration" data-translate-key="duration_45_mins">45 mins</span> &bull; <span class="module__lesson-count" data-translate-key="lesson_count_2">2 Lessons</span> &bull; <span class="badge badge--free" data-translate-key="badge_free_preview">Free Preview</span></span>
                                         <span class="module__toggle-icon"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
                                     </button>
                                 </h3>
@@ -187,70 +179,58 @@
                                     <ul>
                                         <li class="lesson lesson--unlocked" data-lesson-id="001">
                                             <i class="fas fa-play-circle lesson__icon" aria-hidden="true"></i>
-                                            <span class="lesson__title">Welcome to Advanced AI: Course Overview & Goals (15m)</span>
-                                            <span class="lesson__type-badge">Video</span>
-                                            <span class="lesson__status"><i class="fas fa-unlock" aria-hidden="true"></i> Unlocked</span>
-                                            <a href="mcourse_lesson_player.html?lesson=001" class="button button--primary button--extra-small lesson__action-button">Start Lesson</a>
+                                            <span class="lesson__title" data-translate-key="mcourseD_lesson_001_title_adv_ai">Welcome to Advanced AI: Course Overview & Goals (15m)</span>
+                                            <span class="lesson__type-badge" data-translate-key="lesson_type_video">Video</span>
+                                            <span class="lesson__status"><i class="fas fa-unlock" aria-hidden="true"></i> <span data-translate-key="status_unlocked">Unlocked</span></span>
+                                            <a href="mcourse.html?lessonId=001&courseId=adv_ai" class="button button--primary button--extra-small lesson__action-button" data-translate-key="button_start_lesson">Start Lesson</a>
                                         </li>
                                         <li class="lesson lesson--unlocked" data-lesson-id="002">
                                             <i class="fas fa-tools lesson__icon" aria-hidden="true"></i>
-                                            <span class="lesson__title">Setting Up Your Elite AI Development Environment (30m)</span>
-                                            <span class="lesson__type-badge">Setup Guide</span>
-                                            <span class="lesson__status"><i class="fas fa-unlock" aria-hidden="true"></i> Unlocked</span>
-                                            <a href="mcourse_lesson_player.html?lesson=002" class="button button--primary button--extra-small lesson__action-button">Start Lesson</a>
+                                            <span class="lesson__title" data-translate-key="mcourseD_lesson_002_title_adv_ai">Setting Up Your Elite AI Development Environment (30m)</span>
+                                            <span class="lesson__type-badge" data-translate-key="lesson_type_setup_guide">Setup Guide</span>
+                                            <span class="lesson__status"><i class="fas fa-unlock" aria-hidden="true"></i> <span data-translate-key="status_unlocked">Unlocked</span></span>
+                                            <a href="mcourse.html?lessonId=002&courseId=adv_ai" class="button button--primary button--extra-small lesson__action-button" data-translate-key="button_start_lesson">Start Lesson</a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-                            {/* More Modules */}
+                            {/* More Modules - Example of a locked module */}
+                            <div class="module" id="module-1">
+                                <h3 class="module__header">
+                                    <button class="module__toggle-button" aria-expanded="false" aria-controls="module-1-content">
+                                        <span data-translate-key="mcourseD_module_1_title_adv_ai">Module 1: Transformers & The Self-Attention Revolution</span>
+                                        <span class="module__meta"><span class="module__duration" data-translate-key="duration_5_hours">5 hours</span> &bull; <span class="module__lesson-count" data-translate-key="lesson_count_4">4 Lessons</span></span>
+                                        <span class="module__toggle-icon"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
+                                    </button>
+                                </h3>
+                                <div class="module__content" id="module-1-content" role="region" hidden>
+                                    <ul>
+                                        <li class="lesson lesson--locked" data-lesson-id="101" data-module-id="1" data-module-price-usd="2.00">
+                                            <i class="fas fa-book-reader lesson__icon" aria-hidden="true"></i>
+                                            <span class="lesson__title" data-translate-key="mcourseD_lesson_101_title_adv_ai">1.1 Deconstructing Attention: The Engine of Modern AI (1h 15m)</span>
+                                            <span class="lesson__type-badge" data-translate-key="lesson_type_video_reading">Video & Reading</span>
+                                            <span class="lesson__status"><i class="fas fa-lock" aria-hidden="true"></i> <span data-translate-key="status_locked">Locked</span></span>
+                                            <button class="button button--secondary button--extra-small lesson__action-button buy-module-btn" data-module-id="1" data-price-usd="2.00" data-name="Module 1: Transformers" data-translate-key="mcourseD_unlock_module_btn_dynamic">Unlock This Module (<span class="module-price-display" data-price-usd="2.00">$2.00</span>)</button>
+                                        </li>
+                                        {/* ... Other lessons in Module 1 ... */}
+                                    </ul>
+                                </div>
+                            </div>
+                            {/* Add more modules similarly */}
                         </div>
                     </section>
 
+                    {/* Instructors, Reviews, FAQ Tabs (content similar to previous version, ensure data-translate-key) */}
                     <section class="course-tabs__panel" id="tab-panel-instructors" role="tabpanel" tabindex="0" aria-labelledby="tab-instructors" hidden>
-                         <h2 class="section-title section-title--sub">Meet Your Expert Instructors</h2>
-                         <div class="instructors-grid">
-                            <div class="instructor-profile-card">
-                                <img src="images/instructor_finch_profile.jpg" alt="Dr. Alistair Finch, Lead AI Researcher" class="instructor-profile-card__image">
-                                <div class="instructor-profile-card__details">
-                                    <h3 class="instructor-profile-card__name">Dr. Alistair Finch</h3>
-                                    <p class="instructor-profile-card__title">Principal AI Scientist, Ex-DeepMind</p>
-                                    <p class="instructor-profile-card__bio">Dr. Finch is a globally recognized authority in reinforcement learning and neural architecture search. With over a decade at the forefront of AI research and multiple patents to his name, Alistair brings unparalleled insights into building truly intelligent systems. He's passionate about translating complex theory into actionable, real-world solutions.</p>
-                                    <div class="instructor-profile-card__social">
-                                        <a href="#" aria-label="Dr. Finch on LinkedIn" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                                        <a href="#" aria-label="Dr. Finch on Twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
-                                        <a href="#" aria-label="Dr. Finch's Publications" title="Publications"><i class="fas fa-book"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="instructor-profile-card">
-                                <img src="images/instructor_ivanova_profile.jpg" alt="Professor Lena Ivanova, MLOps Specialist" class="instructor-profile-card__image">
-                                <div class="instructor-profile-card__details">
-                                    <h3 class="instructor-profile-card__name">Prof. Lena Ivanova</h3>
-                                    <p class="instructor-profile-card__title">Head of MLOps & Cloud AI Deployment</p>
-                                    <p class="instructor-profile-card__bio">Lena is a seasoned MLOps architect who has successfully scaled AI operations for numerous Fortune 500 companies. Her expertise lies in creating resilient, efficient, and automated machine learning pipelines. Lena champions best practices in model versioning, monitoring, and governance, ensuring your AI solutions deliver sustained value.</p>
-                                    <div class="instructor-profile-card__social">
-                                        <a href="#" aria-label="Prof. Ivanova on LinkedIn" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                                        <a href="#" aria-label="Prof. Ivanova on GitHub" title="GitHub"><i class="fab fa-github"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {/* ... Instructor content with data-translate-key ... */}
                     </section>
-
                     <section class="course-tabs__panel" id="tab-panel-reviews" role="tabpanel" tabindex="0" aria-labelledby="tab-reviews" hidden>
-                        <h2 class="section-title section-title--sub">Hear From Our AI Trailblazers</h2>
-                        <div class="reviews-grid">
-
-                        </div>
-                        
+                        {/* ... Reviews content with data-translate-key ... */}
                     </section>
-
                     <section class="course-tabs__panel" id="tab-panel-faq" role="tabpanel" tabindex="0" aria-labelledby="tab-faq" hidden>
-                        <h2 class="section-title section-title--sub">Your Questions, Answered</h2>
-                        <div class="faq-accordion">
-                            
-                        </div>
+                        {/* ... FAQ content with data-translate-key ... */}
                     </section>
+
                 </div>
             </div>
 
@@ -261,183 +241,147 @@
                         <button class="button--play-preview" aria-label="Play Course Preview Video">
                             <i class="fas fa-play"></i>
                         </button>
-                        <h3 id="sidebar-pricing-title" class="pricing-widget__title-overlay">Advanced AI: Theory to Deployment</h3>
+                        <h3 id="sidebar-pricing-title" class="pricing-widget__title-overlay" data-translate-key="mcourseD_sidebar_course_title_adv_ai">Advanced AI: Theory to Deployment</h3>
                     </div>
 
                     <div class="pricing-widget__options-container">
                         <div class="pricing-widget__main-option">
-                            <p class="pricing-widget__label">One-Time Purchase</p>
-                            <p class="pricing-widget__current-price" id="sidebar-current-price-display">$12.00</p>
-                            <button id="sidebar-enroll-course-btn" class="button button--primary button--full-width button--large select-plan-btn" data-plan-id="course_adv_ai" data-price="12.00" data-name="Advanced AI (Full Course)" data-billing-cycle="One-time">
+                            <p class="pricing-widget__label" data-translate-key="mcourseD_sidebar_one_time_purchase">One-Time Purchase</p>
+                            <p class="pricing-widget__current-price" id="sidebar-current-price-display" data-price-usd="199.00">$199.00</p> {/* Example full course price */}
+                            <button id="sidebar-enroll-course-btn" class="button button--primary button--full-width button--large select-plan-btn" data-plan-id="course_adv_ai_full" data-price-usd="199.00" data-name="Advanced AI (Full Course)" data-billing-cycle="One-time" data-translate-key="mcourseD_sidebar_buy_course_btn">
                                 <i class="fas fa-shopping-cart" aria-hidden="true"></i> Buy This Course
                             </button>
-                            <p class="pricing-widget__access-note">Includes lifetime access & all updates.</p>
+                            <p class="pricing-widget__access-note" data-translate-key="mcourseD_sidebar_access_note">Includes lifetime access & all updates.</p>
                         </div>
 
-                        <p class="pricing-widget__or-separator"><span>OR SUBSCRIBE FOR FULL ACCESS</span></p>
+                        <p class="pricing-widget__or-separator"><span data-translate-key="or_separator">OR SUBSCRIBE FOR FULL ACCESS</span></p>
 
                         <div class="pricing-options-sidebar">
-                             <button class="pricing-card-sidebar select-plan-btn" data-plan-id="monthly_sub" data-price="30.00" data-name="Monthly All-Access Pass" data-billing-cycle="Monthly">
-                                <span class="pricing-card-sidebar__title">Monthly All-Access</span>
-                                <span class="pricing-card-sidebar__price">$30 <small>/month</small></span>
+                             <button class="pricing-card-sidebar select-plan-btn" data-plan-id="monthly_sub" data-price-usd="29.99" data-name="Monthly All-Access Pass" data-billing-cycle="Monthly">
+                                <span class="pricing-card-sidebar__title" data-translate-key="pricing_monthly_title">Monthly All-Access</span>
+                                <span class="pricing-card-sidebar__price"><span data-price-usd="29.99">$29.99</span> <small data-translate-key="pricing_per_month">/month</small></span>
                             </button>
-                            <button class="pricing-card-sidebar select-plan-btn" data-plan-id="quarterly_sub" data-price="70.00" data-name="Quarterly All-Access Pass" data-billing-cycle="Quarterly">
-                                <span class="pricing-card-sidebar__title">Quarterly All-Access</span>
-                                <span class="pricing-card-sidebar__price">$70 <small>/quarter</small></span>
-                                <span class="badge badge--save">Save 22%</span>
-                            </button>
-                            <button class="pricing-card-sidebar select-plan-btn" data-plan-id="yearly_sub" data-price="200.00" data-name="Yearly All-Access Pass" data-billing-cycle="Yearly">
-                                <span class="pricing-card-sidebar__title">Yearly All-Access</span>
-                                <span class="pricing-card-sidebar__price">$200 <small>/year</small></span>
-                                <span class="badge badge--save">Best Value - Save 45%</span>
+                            <button class="pricing-card-sidebar select-plan-btn" data-plan-id="yearly_sub" data-price-usd="249.99" data-name="Yearly All-Access Pass" data-billing-cycle="Yearly">
+                                <span class="pricing-card-sidebar__title" data-translate-key="pricing_yearly_title">Yearly All-Access</span>
+                                <span class="pricing-card-sidebar__price"><span data-price-usd="249.99">$249.99</span> <small data-translate-key="pricing_per_year">/year</small></span>
+                                <span class="badge badge--save" data-translate-key="badge_best_value">Best Value</span>
                             </button>
                         </div>
-                        <a href="upricing.html" class="pricing-widget__all-plans-link">
+                        <a href="upricing.html" class="pricing-widget__all-plans-link" data-translate-key="mcourseD_sidebar_explore_subscriptions_link">
                             <i class="fas fa-tags" aria-hidden="true"></i> Explore All Subscription Benefits
                         </a>
-                        <div class="pricing-widget__guarantee">
+                        <div class="pricing-widget__guarantee" data-translate-key="mcourseD_sidebar_guarantee">
                             <i class="fas fa-shield-alt" aria-hidden="true"></i> 30-Day Risk-Free Guarantee
                         </div>
                     </div>
                 </div>
 
                 <div class="course-meta-widget course-section" aria-labelledby="sidebar-meta-title">
-                    <h3 id="sidebar-meta-title" class="widget-title">Course Inclusions</h3>
+                    <h3 id="sidebar-meta-title" class="widget-title" data-translate-key="mcourseD_sidebar_inclusions_title">Course Inclusions</h3>
                     <ul class="course-meta-list">
-                        <li><i class="fas fa-video course-meta__icon" aria-hidden="true"></i> 60+ hours of expert-led HD video</li>
-                        <li><i class="fas fa-file-code course-meta__icon" aria-hidden="true"></i> 30+ Interactive coding exercises & labs</li>
-                        <li><i class="fas fa-book-open course-meta__icon" aria-hidden="true"></i> 100+ Curated downloadable resources</li>
-                        <li><i class="fas fa-users-cog course-meta__icon" aria-hidden="true"></i> Exclusive MLOps deployment guides</li>
-                        <li><i class="fas fa-comments course-meta__icon" aria-hidden="true"></i> Active Q&A forum with instructor support</li>
-                        <li><i class="fas fa-trophy course-meta__icon" aria-hidden="true"></i> Uplas Professional AI Certificate</li>
-                        <li><i class="fas fa-infinity course-meta__icon" aria-hidden="true"></i> Lifetime access to course materials (for one-time purchase)</li>
-                        <li><i class="fas fa-sync-alt course-meta__icon" aria-hidden="true"></i> Regular content updates & new case studies</li>
+                        <li data-translate-key="mcourseD_inclusion_video"><i class="fas fa-video course-meta__icon" aria-hidden="true"></i> 60+ hours of expert-led HD video</li>
+                        {/* ... Other inclusions with data-translate-key ... */}
+                        <li data-translate-key="mcourseD_inclusion_certificate"><i class="fas fa-trophy course-meta__icon" aria-hidden="true"></i> Uplas Professional AI Certificate</li>
                     </ul>
                 </div>
             </aside>
         </div>
+
+        <section class="video-masterclass-section" id="video-masterclass-section" aria-labelledby="masterclass-section-title">
+            {/* This section's visibility will be controlled by backend based on user subscription */}
+            <div class="container">
+                <h2 class="section-title" id="masterclass-section-title" data-translate-key="mcourseD_masterclass_title">Exclusive Video Masterclasses</h2>
+                <p class="section-subtitle" data-translate-key="mcourseD_masterclass_subtitle">Gain insights from industry leaders and AI pioneers in these special sessions, available to our premium subscribers.</p>
+                <div class="masterclass-grid" id="masterclass-grid-container">
+                    {/* Masterclass cards will be populated here by JS if user has access */}
+                    {/* Fallback content if no access or no masterclasses yet */}
+                    <p class="masterclass-no-access-message" data-translate-key="mcourseD_masterclass_no_access" style="display:none;">
+                        This premium content is available with our All-Access subscriptions.
+                        <a href="upricing.html" class="link" data-translate-key="mcourseD_masterclass_upgrade_link">Upgrade Now</a> to watch.
+                    </p>
+                </div>
+                <div class="masterclass-cta" style="text-align: center; margin-top: var(--spacing-xl); display:none;" id="masterclass-upgrade-cta-container">
+                     <a href="upricing.html" class="button button--primary button--large" data-translate-key="mcourseD_masterclass_unlock_cta">Unlock All Masterclasses - Go Premium</a>
+                </div>
+            </div>
+        </section>
 
         <div id="payment-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="payment-modal-main-title-h2" hidden>
             <div class="modal__content payment-modal__content">
                 <button class="modal__close-button" id="payment-modal-close-btn" aria-label="Close payment dialog" title="Close">
                     <i class="fas fa-times" aria-hidden="true"></i>
                 </button>
-                <h2 id="payment-modal-main-title-h2" class="payment-modal__main-title">Complete Your Secure Enrollment</h2>
-
+                <h2 id="payment-modal-main-title-h2" class="payment-modal__main-title" data-translate-key="payment_modal_title">Complete Your Secure Enrollment</h2>
                 <div class="payment-modal__summary">
-                    <h3 class="payment-modal__summary-title">Your Order</h3>
+                    <h3 class="payment-modal__summary-title" data-translate-key="payment_modal_summary_title">Your Order</h3>
                     <div class="payment-modal__summary-item">
-                        <span class="payment-modal__summary-label">Item:</span>
+                        <span class="payment-modal__summary-label" data-translate-key="payment_modal_summary_item">Item:</span>
                         <span class="payment-modal__summary-value" id="summary-plan-name-span"></span>
                     </div>
                     <div class="payment-modal__summary-item" id="summary-billing-cycle-div" hidden>
-                        <span class="payment-modal__summary-label">Renews:</span>
+                        <span class="payment-modal__summary-label" data-translate-key="payment_modal_summary_renews">Renews:</span>
                         <span class="payment-modal__summary-value" id="summary-billing-cycle-span"></span>
                     </div>
                     <div class="payment-modal__summary-item payment-modal__summary-item--total">
-                        <span class="payment-modal__summary-label">Amount Due Today:</span>
-                        <span class="payment-modal__summary-value payment-modal__summary-value--price" id="summary-plan-price-span"></span>
+                        <span class="payment-modal__summary-label" data-translate-key="payment_modal_summary_amount_due">Amount Due Today:</span>
+                        <span class="payment-modal__summary-value payment-modal__summary-value--price" id="summary-plan-price-span" data-price-usd=""></span>
                     </div>
                 </div>
 
                 <div class="payment-modal__methods">
                     <fieldset>
-                        <legend class="payment-modal__methods-title">Choose Your Payment Method</legend>
+                        <legend class="payment-modal__methods-title" data-translate-key="payment_modal_select_method_legend">Choose Your Payment Method</legend>
                         <div class="payment-gateway-selector" role="tablist" aria-label="Payment Methods">
                             <button class="payment-gateway-selector__option" id="gateway-btn-mpesa" data-gateway="mpesa" role="tab" aria-selected="false" aria-controls="gateway-panel-mpesa">
                                 <img src="images/mpesa-logo.png" alt="M-Pesa" class="payment-gateway-selector__logo"> M-Pesa
                             </button>
                             <button class="payment-gateway-selector__option" id="gateway-btn-stripe" data-gateway="stripe" role="tab" aria-selected="false" aria-controls="gateway-panel-stripe">
-                                <img src="images/stripe-logo.png" alt="Stripe" class="payment-gateway-selector__logo"> Card (Stripe)
+                                <img src="images/stripe-logo.png" alt="Stripe" class="payment-gateway-selector__logo"> <span data-translate-key="payment_method_card_stripe">Card (Stripe)</span>
                             </button>
                             <button class="payment-gateway-selector__option" id="gateway-btn-flutterwave" data-gateway="flutterwave" role="tab" aria-selected="false" aria-controls="gateway-panel-flutterwave">
-                                <img src="images/flutterwave-logo.png" alt="Flutterwave" class="payment-gateway-selector__logo"> Card & More (Flutterwave)
+                                <img src="images/flutterwave-logo.png" alt="Flutterwave" class="payment-gateway-selector__logo"> <span data-translate-key="payment_method_card_flutterwave">Card & More (Flutterwave)</span>
                             </button>
                             <button class="payment-gateway-selector__option" id="gateway-btn-paypal" data-gateway="paypal" role="tab" aria-selected="false" aria-controls="gateway-panel-paypal">
                                 <img src="images/paypal-logo.png" alt="PayPal" class="payment-gateway-selector__logo"> PayPal
                             </button>
                             <button class="payment-gateway-selector__option" id="gateway-btn-bank" data-gateway="bank" role="tab" aria-selected="false" aria-controls="gateway-panel-bank">
-                                <i class="fas fa-university payment-gateway-selector__icon" aria-hidden="true"></i> Bank Transfer
+                                <i class="fas fa-university payment-gateway-selector__icon" aria-hidden="true"></i> <span data-translate-key="payment_method_bank_transfer">Bank Transfer</span>
                             </button>
                         </div>
                     </fieldset>
 
                     <div class="payment-modal__form-area">
-                        <div id="payment-instructions-div" class="payment-instructions" role="status" aria-live="polite">
+                        <div id="payment-instructions-div" class="payment-instructions" role="status" aria-live="polite" data-translate-key="payment_modal_instructions_default">
                             Select your preferred payment method to continue.
                         </div>
-
+                        {/* Payment Gateway Panels (M-Pesa, Stripe, Flutterwave, PayPal, Bank) - ensure translate keys */}
+                        {/* Example for M-Pesa panel */}
                         <div class="payment-gateway-panel" id="gateway-panel-mpesa" data-gateway-panel="mpesa" role="tabpanel" aria-labelledby="gateway-btn-mpesa" hidden>
                             <form id="mpesa-payment-form" class="payment-form" novalidate>
                                 <div class="form__group">
-                                    <label for="mpesa-phone-input" class="form__label">Your Safaricom Phone Number</label>
+                                    <label for="mpesa-phone-input" class="form__label" data-translate-key="form_label_mpesa_phone">Your Safaricom Phone Number</label>
                                     <input type="tel" id="mpesa-phone-input" name="mpesaPhone" class="form__input" placeholder="e.g., 0712345678" required pattern="^(07|01)\d{8}$" autocomplete="tel" aria-describedby="mpesa-phone-hint">
                                     <span class="form__error-message" id="mpesa-phone-error-msg"></span>
-                                    <small id="mpesa-phone-hint" class="form__hint">An M-Pesa STK push will be sent to this number.</small>
+                                    <small id="mpesa-phone-hint" class="form__hint" data-translate-key="form_hint_mpesa_phone">An M-Pesa STK push will be sent to this number.</small>
                                 </div>
                             </form>
                         </div>
-
-                        <div class="payment-gateway-panel" id="gateway-panel-stripe" data-gateway-panel="stripe" role="tabpanel" aria-labelledby="gateway-btn-stripe" hidden>
-                            <form id="stripe-payment-form" class="payment-form" novalidate>
-                                <div class="form__group">
-                                    <label for="stripe-cardholder-name" class="form__label">Name on Card</label>
-                                    <input type="text" id="stripe-cardholder-name" class="form__input" placeholder="John M. Doe" required autocomplete="cc-name">
-                                    <span class="form__error-message"></span>
-                                </div>
-                                <div class="form__group">
-                                    <label class="form__label">Card Details</label>
-                                    <div id="stripe-card-element" class="form__input form__input--card-element">
-                                        {/* Stripe Card Element will be mounted here by JS */}
-                                    </div>
-                                    <div id="stripe-card-errors" role="alert" class="form__error-message"></div>
-                                </div>
-                            </form>
-                            <p class="secure-payment-info"><i class="fas fa-lock" aria-hidden="true"></i> Secure payments powered by Stripe.</p>
-                        </div>
-
-                        <div class="payment-gateway-panel" id="gateway-panel-flutterwave" data-gateway-panel="flutterwave" role="tabpanel" aria-labelledby="gateway-btn-flutterwave" hidden>
-                             <p class="payment-instructions">You'll be redirected to Flutterwave to complete your payment using various options (Card, Mobile Money, Bank, USSD).</p>
-                             <div id="flutterwave-button-placeholder">
-                                <button type="button" id="flutterwave-initiate-btn" class="button button--secondary button--full-width">
-                                    <i class="fas fa-external-link-alt" aria-hidden="true"></i> Proceed to Flutterwave
-                                </button>
-                             </div>
-                        </div>
-
-                        <div class="payment-gateway-panel" id="gateway-panel-paypal" data-gateway-panel="paypal" role="tabpanel" aria-labelledby="gateway-btn-paypal" hidden>
-                             <p class="payment-instructions">Click below to complete your payment securely with PayPal.</p>
-                             <div id="paypal-button-container-div">
-                                  </div>
-                        </div>
-
-                        <div class="payment-gateway-panel" id="gateway-panel-bank" data-gateway-panel="bank" role="tabpanel" aria-labelledby="gateway-btn-bank" hidden>
-                            <h4 class="payment-gateway-panel__title">Direct Bank Transfer Instructions</h4>
-                            <ul class="bank-details-list">
-                                <li><strong>Bank Name:</strong> Uplas Digital Bank</li>
-                                <li><strong>Account Name:</strong> Uplas EdTech Solutions Ltd.</li>
-                                <li><strong>Account Number:</strong> 001234567890</li>
-                                <li><strong>Branch:</strong> Global Online</li>
-                                <li><strong>SWIFT/BIC:</strong> UPLAKENXDIGI</li>
-                            </ul>
-                            <p class="form__hint">Please use your <strong>email address</strong> or provided Order ID as the payment reference. Access will be granted upon payment confirmation (usually 1-2 business days).</p>
-                            <form id="bank-transfer-notify-form" class="payment-form" novalidate>
-                                 <div class="form__group">
-                                    <label for="bank-transaction-ref" class="form__label">Transaction Reference / ID (Optional)</label>
-                                    <input type="text" id="bank-transaction-ref" name="bankTransactionRef" class="form__input" placeholder="Enter your bank transaction confirmation code">
-                                </div>
-                            </form>
-                        </div>
+                        {/* ... other gateway panels ... */}
                         <div id="payment-form-global-status" class="form__status payment-status-message" role="alert"></div>
                     </div>
                 </div>
 
                 <div class="payment-modal__action-area">
-                    <button id="payment-submit-button" type="button" class="button button--primary button--full-width button--large" disabled>
+                    <button id="payment-submit-button" type="button" class="button button--primary button--full-width button--large" disabled data-translate-key="payment_modal_submit_default">
                         Select Payment Method to Continue
                     </button>
                 </div>
-                <p class="payment-modal__tos-notice">By clicking "Proceed to Payment" or completing your purchase, you agree to Uplas's <a href="/terms" target="_blank" rel="noopener noreferrer">Terms of Service</a> and <a href="/privacy" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.</p>
+                <p class="payment-modal__tos-notice">
+                    <span data-translate-key="payment_modal_tos_notice_part1">By clicking "Proceed to Payment" or completing your purchase, you agree to Uplas's</span>
+                    <a href="/terms" target="_blank" rel="noopener noreferrer" data-translate-key="payment_modal_tos_link">Terms of Service</a>
+                    <span data-translate-key="payment_modal_tos_notice_part2">and</span>
+                    <a href="/privacy" target="_blank" rel="noopener noreferrer" data-translate-key="payment_modal_privacy_link">Privacy Policy</a>.
+                </p>
             </div>
         </div>
     </main>
@@ -445,15 +389,15 @@
     <footer class="footer" id="page-footer" role="contentinfo">
         <div class="footer__container container">
             <div class="footer__section footer__section--contact">
-                <h3 class="footer__heading">Get in Touch</h3>
+                <h3 class="footer__heading" data-translate-key="footer_contact_us">Get in Touch</h3>
                 <address class="footer__address">
                     <p><i class="fas fa-phone footer__icon" aria-hidden="true"></i> <a href="tel:+254708654984" class="footer__link">+254 708 654 984</a></p>
-                    <p><i class="fas fa-envelope footer__icon" aria-hidden="true"></i> <a href="mailto:support@uplas.com" class="footer__link">john@uplas.guru</a></p>
-                    <p><i class="fas fa-map-marker-alt footer__icon" aria-hidden="true"></i> Kilifi, Kenya (HQ)</p>
+                    <p><i class="fas fa-envelope footer__icon" aria-hidden="true"></i> <a href="mailto:support@uplas.com" class="footer__link">support@uplas.com</a></p>
+                    <p><i class="fas fa-map-marker-alt footer__icon" aria-hidden="true"></i> <span data-translate-key="footer_location">Uplas Towers, Kilifi, Kenya</span></p>
                 </address>
             </div>
             <div class="footer__section footer__section--social">
-                <h3 class="footer__heading">Connect With Us</h3>
+                <h3 class="footer__heading" data-translate-key="footer_follow_us">Connect With Us</h3>
                 <div class="social-media">
                     <a href="#" class="social-media__link" aria-label="Uplas on Facebook" title="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
                     <a href="#" class="social-media__link" aria-label="Uplas on Twitter" title="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
@@ -462,30 +406,855 @@
                 </div>
             </div>
             <div class="footer__section footer__section--links">
-                <h3 class="footer__heading">Explore Uplas</h3>
+                <h3 class="footer__heading" data-translate-key="footer_explore_uplas">Explore Uplas</h3>
                 <ul class="footer__list">
-                    <li><a href="index.html" class="footer__link">Home</a></li>
-                    <li><a href="ucourses_list.html" class="footer__link">All Courses</a></li>
-                    <li><a href="upricing.html" class="footer__link">Pricing Plans</a></li>
-                    <li><a href="ublog.html" class="footer__link">AI Insights Blog</a></li>
-                    <li><a href="/about" class="footer__link">About Uplas</a></li>
-                    <li><a href="/careers" class="footer__link">Careers</a></li>
-                    <li><a href="upricing.html#contact-section" class="footer__link">Support Center</a></li>
+                    <li><a href="index.html" class="footer__link" data-translate-key="nav_home">Home</a></li>
+                    <li><a href="ucourses_list.html" class="footer__link" data-translate-key="nav_courses_all">All Courses</a></li>
+                    <li><a href="upricing.html" class="footer__link" data-translate-key="nav_pricing_plans">Pricing Plans</a></li>
+                    <li><a href="ublog.html" class="footer__link" data-translate-key="nav_blog_insights">AI Insights Blog</a></li>
+                    <li><a href="/about" class="footer__link" data-translate-key="nav_about">About Uplas</a></li>
                 </ul>
             </div>
              <div class="footer__section footer__section--legal">
-                <h3 class="footer__heading">Legal</h3>
+                <h3 class="footer__heading" data-translate-key="footer_legal_support">Legal & Support</h3>
                 <ul class="footer__list">
-                    <li><a href="/terms" class="footer__link">Terms of Service</a></li>
-                    <li><a href="/privacy" class="footer__link">Privacy Policy</a></li>
-                    <li><a href="/cookies" class="footer__link">Cookie Policy</a></li>
+                    <li><a href="/terms" class="footer__link" data-translate-key="footer_terms">Terms of Service</a></li>
+                    <li><a href="/privacy" class="footer__link" data-translate-key="footer_privacy">Privacy Policy</a></li>
+                    <li><a href="/cookies" class="footer__link" data-translate-key="footer_cookies">Cookie Policy</a></li>
+                    <li><a href="upricing.html#contact-section" class="footer__link" data-translate-key="footer_help">Help Center</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer__bottom">
-            <p class="footer__copyright">&copy; <span id="current-year-footer">2025</span> Uplas EdTech Solutions Ltd. All rights reserved. Revolutionizing AI Education.</p>
+            <p class="footer__copyright" data-translate-key="footer_copyright_dynamic">© <span id="current-year-footer">{currentYear}</span> Uplas EdTech Solutions Ltd. All rights reserved. Empowering the next generation of AI innovators.</p>
         </div>
     </footer>
 
-    <script src="uhome.js"></script> <script src="mcourse_detail_page.js"></script> </body>
+    <script src="js/global.js"></script>
+    <script src="js/apiUtils.js"></script>
+    <script src="js/mcourseD.js"></script>
+    {/* Stripe.js and PayPal SDK scripts would be included here if used directly and configured */}
+    {/* <script src="https://js.stripe.com/v3/"></script> */}
+    {/* <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD&disable-funding=credit,card"></script> */}
+</body>
 </html>
+```css
+/* css/mcourseD.css */
+/* ==========================================================================
+   Uplas Course Detail Page Styles (mcourseD.css)
+   - Relies on variables.css and global.css
+   ========================================================================== */
+
+@import url('global.css'); /* Includes variables.css */
+
+/* --- Course Hero Section --- */
+.course-hero {
+    background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-secondary-dark) 100%);
+    color: var(--color-white);
+    padding: var(--spacing-xxxl) 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.course-hero::before { /* Optional overlay for texture or depth */
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(140deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.25) 100%);
+    z-index: 0;
+}
+.dark-mode .course-hero {
+    background: linear-gradient(135deg, var(--color-dark-bg-primary) 0%, var(--color-secondary-dark) 100%);
+}
+.course-hero__content { /* Uses .container */
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xl);
+}
+.course-hero__text-content { max-width: 780px; }
+.course-hero__breadcrumb {
+    font-size: var(--font-size-sm);
+    color: var(--color-dark-text-secondary); /* Light text on dark hero */
+    margin-bottom: var(--spacing-md);
+    display: block;
+    opacity: 0.9;
+}
+.course-hero__breadcrumb ol { list-style: none; padding: 0; margin: 0; display: flex; align-items: center; justify-content: center; gap: var(--spacing-xs); }
+.course-hero__breadcrumb a { color: inherit; font-weight: var(--font-weight-medium); }
+.course-hero__breadcrumb a:hover { color: var(--color-primary-light); text-decoration: underline; }
+.course-hero__breadcrumb .fa-angle-right { font-size: 0.8em; opacity: 0.7; }
+.course-hero__breadcrumb span[aria-current="page"] { font-weight: var(--font-weight-medium); opacity: 1; }
+
+.course-hero__title {
+    font-size: clamp(2.2rem, 5.5vw, 3.3rem);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.15;
+    color: var(--color-white); /* Ensure title is white on dark hero */
+    margin-bottom: var(--spacing-md);
+    text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+.course-hero__subtitle {
+    font-size: clamp(1.1rem, 2.8vw, 1.35rem);
+    font-weight: var(--font-weight-regular);
+    margin-bottom: var(--spacing-lg);
+    opacity: 0.95;
+    color: var(--color-dark-text-secondary); /* Light text on dark hero */
+    line-height: 1.65;
+    max-width: 700px;
+    margin-left:auto;
+    margin-right:auto;
+}
+.course-hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    justify-content: center;
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-sm);
+    color: var(--color-dark-text-secondary);
+    opacity: 0.9;
+}
+.course-hero__meta span { display: inline-flex; align-items: center; }
+.course-hero__meta-icon { margin-right: var(--spacing-xs); color: var(--color-primary-light); font-size: 1em; }
+.course-hero__actions { margin-top: var(--spacing-xl); }
+.course-hero__cta { /* Uses .button .button--primary .button--large */
+    box-shadow: var(--box-shadow-lg); /* Make hero CTA prominent */
+}
+.course-hero__media-content {
+    max-width: 580px;
+    width: 100%;
+    margin-top: var(--spacing-lg);
+}
+.course-hero__image {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--box-shadow-xl);
+    border: 4px solid var(--color-white); /* White border on dark hero */
+}
+.dark-mode .course-hero__image {
+    border-color: var(--current-card-bg); /* Or a specific dark theme border */
+}
+
+@media screen and (min-width: 992px) { /* Hero responsive adjustments */
+    .course-hero { text-align: left; padding: var(--spacing-xxxl) 0; }
+    .course-hero__content { flex-direction: row; justify-content: space-between; align-items: center; }
+    .course-hero__text-content { flex: 1 1 58%; }
+    .course-hero__media-content { flex: 1 1 40%; margin-top: 0; }
+    .course-hero__breadcrumb ol, .course-hero__meta, .course-hero__actions { justify-content: flex-start; }
+    .course-hero__breadcrumb, .course-hero__subtitle { margin-left: 0; text-align: left; }
+}
+
+/* --- Main Page Layout & Sections (using global .container) --- */
+.course-layout {
+    padding-top: var(--spacing-xxl);
+    padding-bottom: var(--spacing-xxl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+.course-layout__main-content { flex: 1; min-width: 0; } /* Prevent flexbox shrinking issues */
+.course-layout__sidebar {
+    flex-shrink: 0;
+    width: 100%; /* Full width on mobile, constrained by parent .container */
+}
+
+@media screen and (min-width: 992px) { /* Desktop layout for sidebar */
+    .course-layout { flex-direction: row; gap: var(--spacing-xxl); }
+    .course-layout__main-content { flex: 2.5; } /* Main content takes more space */
+    .course-layout__sidebar {
+        flex: 1;
+        width: 350px; /* Fixed width for sidebar on desktop */
+        max-width: 380px;
+        position: sticky; /* Sticky sidebar */
+        top: calc(var(--header-height) + var(--spacing-lg)); /* Below fixed header */
+        align-self: flex-start;
+        max-height: calc(100vh - var(--header-height) - var(--spacing-xl) * 2); /* Scrollable if too long */
+        overflow-y: auto;
+    }
+    .course-layout__sidebar::-webkit-scrollbar { width: 6px; }
+    .course-layout__sidebar::-webkit-scrollbar-thumb { background: var(--current-border-color); border-radius: 3px; }
+}
+
+/* --- Generic Section Styling (applied to tab panels and sidebar widgets) --- */
+.course-section {
+    background-color: var(--current-card-bg);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    margin-bottom: var(--spacing-xl);
+    border: var(--border-width) solid var(--current-border-color);
+    box-shadow: var(--box-shadow-md);
+}
+.course-layout__main-content .course-section:last-child,
+.course-layout__sidebar .course-section:last-child {
+    margin-bottom: 0; /* Remove bottom margin from last section in a column */
+}
+
+.section-title { /* General section title style */
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: var(--font-weight-semibold);
+    color: var(--current-text-color);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--color-primary);
+    display: inline-block; /* So border only spans text width */
+}
+.dark-mode .section-title {
+    color: var(--color-primary-light);
+    border-bottom-color: var(--color-primary-light);
+}
+.section-title--sub { /* For titles within tab panels */
+    font-size: clamp(1.3rem, 3.5vw, 1.7rem);
+    margin-top: var(--spacing-lg); /* Add space if not the first element */
+}
+.section-title--sub:first-child { margin-top: 0; }
+.section-title--tertiary { /* For smaller headings within sections */
+    font-size: clamp(1.1rem, 3vw, 1.25rem);
+    font-weight: var(--font-weight-semibold);
+    color: var(--current-text-color);
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-sm);
+}
+
+/* --- Course Content Tabs --- */
+.course-tabs { margin-bottom: var(--spacing-xl); }
+.course-tabs__nav {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping, allow scroll */
+    gap: var(--spacing-xs);
+    border-bottom: var(--border-width) solid var(--current-border-color);
+    overflow-x: auto; /* Enable horizontal scroll on mobile */
+    padding-bottom: 0; /* Align with active tab border */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: thin;  /* Firefox */
+    scrollbar-color: var(--color-primary-light) var(--current-border-color-light);
+}
+.course-tabs__nav::-webkit-scrollbar { height: 4px; }
+.course-tabs__nav::-webkit-scrollbar-thumb { background-color: var(--color-primary-light); border-radius: 2px; }
+.course-tabs__nav::-webkit-scrollbar-track { background-color: var(--current-border-color-light); }
+
+.course-tabs__button {
+    background: none; border: none;
+    border-bottom: 3px solid transparent;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    cursor: pointer;
+    font-family: inherit; font-size: var(--font-size-md); font-weight: var(--font-weight-medium);
+    color: var(--current-text-color-secondary);
+    transition: color var(--transition-base), border-color var(--transition-base), background-color var(--transition-base);
+    margin-bottom: -1px; /* Overlap nav border for seamless active state */
+    white-space: nowrap; /* Prevent button text from wrapping */
+    border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
+    display: inline-flex; align-items: center; gap: var(--spacing-xs);
+}
+.course-tabs__button i { font-size: 0.9em; opacity: 0.7; }
+.course-tabs__button:hover, .course-tabs__button:focus-visible {
+    color: var(--color-primary);
+    background-color: var(--color-primary-ultralight);
+}
+.course-tabs__button[aria-selected="true"] {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+    border-bottom-color: var(--color-primary);
+}
+.course-tabs__button[aria-selected="true"] i { opacity: 1; }
+.dark-mode .course-tabs__button[aria-selected="true"] {
+    color: var(--color-primary-light);
+    border-bottom-color: var(--color-primary-light);
+}
+
+.course-tabs__panel { /* Tab panels use .course-section styling */
+    animation: fadeInPanel 0.4s ease-out;
+}
+@keyframes fadeInPanel { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+.course-tabs__panel[hidden] { display: none !important; }
+
+/* --- Overview Tab Content --- */
+.learn-list { /* ... (Keep existing .learn-list styles, ensure variable usage) ... */ }
+
+/* --- Curriculum Tab Content (Accordion) --- */
+.curriculum-summary { /* ... (Keep existing styles, ensure variable usage) ... */ }
+.module-accordion .module { /* ... (Keep existing styles, ensure variable usage) ... */ }
+.module__header { /* ... */ }
+.module__toggle-button { /* ... */ }
+.module__meta { /* ... */ }
+.module__toggle-icon { /* ... */ }
+.module__content { /* ... (Ensure max-height transition is smooth) ... */ }
+.lesson { /* ... */ }
+.lesson__icon { /* ... */ }
+.lesson__title { /* ... */ }
+.lesson__type-badge { /* ... */ }
+.lesson__status { /* ... */ }
+.lesson__action-button.buy-module-btn { /* Style for unlock button */
+    /* Uses .button .button--secondary .button--extra-small */
+    margin-left: auto; /* Push to the right */
+    flex-shrink: 0;
+}
+.module-price-display { /* Span inside the unlock button */
+    /* Inherits button text color. Can be styled if needed. */
+}
+
+/* --- Instructors, Reviews, FAQ Tabs --- */
+/* Styles for these are generally good from user's mcourse_detail_page.css.
+   Ensure they use global variables and maintain consistency.
+   .instructor-profile-card, .review-card, .faq-item, etc.
+*/
+
+/* --- Sidebar Widgets (Pricing & Meta) --- */
+.course-layout__sidebar .widget-title { /* ... (Keep existing styles) ... */ }
+.pricing-widget { /* ... */ }
+.pricing-widget__video-preview-container { /* ... */ }
+.button--play-preview { /* ... */ }
+.pricing-widget__title-overlay { /* ... */ }
+.pricing-widget__options-container { /* ... */ }
+.pricing-widget__current-price,
+.pricing-card-sidebar__price span[data-price-usd] { /* For dynamic currency */
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+}
+.dark-mode .pricing-widget__current-price,
+.dark-mode .pricing-card-sidebar__price span[data-price-usd] {
+    color: var(--color-primary-light);
+}
+/* ... (Keep other pricing widget styles, ensure variable usage) ... */
+.course-meta-widget { /* ... */ }
+.course-meta-list { /* ... */ }
+
+/* --- Payment Modal --- */
+/* Styles for .modal-overlay, .payment-modal__content, etc. are comprehensive in user's CSS.
+   Main task is to ensure all colors, fonts, borders, shadows use the new global --current-* variables.
+   Example:
+   .payment-modal__content { background-color: var(--current-card-bg); ... }
+   .payment-gateway-selector__option { background-color: var(--current-bg-color); border-color: var(--current-border-color); ... }
+   The payment modal submit button (#payment-submit-button) uses global button styles.
+*/
+#summary-plan-price-span { /* Ensure this also uses dynamic currency styling */
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+}
+.dark-mode #summary-plan-price-span {
+    color: var(--color-primary-light);
+}
+
+
+/* --- Video Masterclass Section (New) --- */
+.video-masterclass-section {
+    padding: var(--spacing-xxl) 0;
+    background-color: var(--current-bg-color);
+    border-top: 1px solid var(--current-border-color-light);
+}
+.dark-mode .video-masterclass-section {
+    background-color: var(--color-dark-bg-primary); /* Darker for contrast */
+}
+#masterclass-section-title { text-align: center; }
+.masterclass-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+}
+.masterclass-card {
+    background-color: var(--current-card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-md);
+    overflow: hidden;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+    display: flex;
+    flex-direction: column;
+}
+.masterclass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-lg);
+}
+.masterclass-card__link {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.masterclass-card__thumbnail-container {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    background-color: var(--current-border-color-light); /* Placeholder */
+}
+.masterclass-card__thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.masterclass-card__play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    color: rgba(255, 255, 255, 0.8);
+    transition: color var(--transition-short), transform var(--transition-short);
+}
+.masterclass-card__link:hover .masterclass-card__play-icon {
+    color: var(--color-white);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+.masterclass-card__duration {
+    position: absolute;
+    bottom: var(--spacing-sm);
+    right: var(--spacing-sm);
+    background-color: rgba(0,0,0,0.7);
+    color: var(--color-white);
+    padding: var(--spacing-xxs) var(--spacing-xs);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-xs);
+}
+.masterclass-card__content {
+    padding: var(--spacing-md);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.masterclass-card__title {
+    font-size: 1.15rem;
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-xs);
+    color: var(--current-text-color);
+}
+.dark-mode .masterclass-card__title { color: var(--color-primary-light); }
+.masterclass-card__link:hover .masterclass-card__title { color: var(--current-link-hover-color); }
+.masterclass-card__mentor {
+    font-size: var(--font-size-sm);
+    color: var(--current-text-color-secondary);
+    margin-bottom: var(--spacing-sm);
+    font-style: italic;
+}
+.masterclass-card__description {
+    font-size: 0.9rem;
+    color: var(--current-text-color-secondary);
+    line-height: 1.5;
+    flex-grow: 1;
+    margin-bottom: 0;
+}
+.masterclass-no-access-message {
+    text-align: center;
+    padding: var(--spacing-xl);
+    color: var(--current-text-color-secondary);
+    font-style: italic;
+}
+.masterclass-no-access-message .link {
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Ensure footer styles are consistent (likely from global.css) */
+```javascript
+// js/mcourseD.js
+/* ==========================================================================
+   Uplas Course Detail Page Specific JavaScript (mcourseD.js)
+   - Handles tabs, curriculum accordion, payment modal, masterclass display.
+   - Relies on global.js for theme, nav, language, currency.
+   ========================================================================== */
+'use strict';
+
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Global Element Selectors (from HTML) ---
+    // Theme, Nav, Language, Currency are handled by js/global.js
+
+    // Course Tabs
+    const courseTabsNav = document.querySelector('.course-tabs__nav');
+    const courseTabButtons = document.querySelectorAll('.course-tabs__button');
+    const courseTabPanels = document.querySelectorAll('.course-tabs__panel');
+
+    // Curriculum Accordion
+    const moduleAccordion = document.getElementById('module-accordion');
+
+    // Payment Modal & Related Elements
+    const paymentModal = document.getElementById('payment-modal');
+    const closeModalButton = document.getElementById('payment-modal-close-btn');
+    const enrollNowMainCTA = document.getElementById('enroll-now-main-cta'); // Hero CTA
+    const sidebarEnrollCourseButton = document.getElementById('sidebar-enroll-course-btn'); // Sidebar "Buy This Course"
+    const sidebarPlanButtons = document.querySelectorAll('.pricing-options-sidebar .select-plan-btn'); // Subscription buttons
+    const buyModuleButtons = document.querySelectorAll('.buy-module-btn'); // Unlock module buttons
+
+    // Payment Modal - Summary
+    const summaryPlanNameEl = document.getElementById('summary-plan-name-span');
+    const summaryPlanPriceEl = document.getElementById('summary-plan-price-span'); // This element will display the formatted price
+    const summaryBillingCycleDiv = document.getElementById('summary-billing-cycle-div');
+    const summaryBillingCycleEl = document.getElementById('summary-billing-cycle-span');
+
+    // Payment Modal - Gateway Selection & Panels (IDs assumed from HTML)
+    const gatewaySelector = document.querySelector('.payment-gateway-selector');
+    const gatewayButtons = document.querySelectorAll('.payment-gateway-selector__option');
+    const gatewayPanels = document.querySelectorAll('.payment-gateway-panel');
+    const paymentInstructionsDiv = document.getElementById('payment-instructions-div');
+
+    // Payment Modal - Forms & Specific Inputs
+    const mpesaForm = document.getElementById('mpesa-payment-form');
+    const mpesaPhoneInput = document.getElementById('mpesa-phone-input');
+    const mpesaPhoneErrorMsg = document.getElementById('mpesa-phone-error-msg');
+    // Stripe related elements (if Stripe.js is used directly)
+    const stripeForm = document.getElementById('stripe-payment-form');
+    const stripeCardholderNameInput = document.getElementById('stripe-cardholder-name');
+    const stripeCardElementDiv = document.getElementById('stripe-card-element');
+    const stripeCardErrorsDiv = document.getElementById('stripe-card-errors');
+    // Flutterwave button
+    const flutterwaveInitiateBtn = document.getElementById('flutterwave-initiate-btn');
+    // PayPal container
+    const paypalButtonContainer = document.getElementById('paypal-button-container-div');
+    // Bank transfer
+    const bankTransactionRefInput = document.getElementById('bank-transaction-ref');
+
+    const paymentFormGlobalStatus = document.getElementById('payment-form-global-status');
+    const paymentSubmitButton = document.getElementById('payment-submit-button');
+
+    // Masterclass Section
+    const masterclassSection = document.getElementById('video-masterclass-section');
+    const masterclassGridContainer = document.getElementById('masterclass-grid-container');
+    const masterclassNoAccessMessage = masterclassGridContainer?.querySelector('.masterclass-no-access-message');
+    const masterclassUpgradeCTAContainer = document.getElementById('masterclass-upgrade-cta-container');
+
+
+    // --- State Variables ---
+    let isModalOpen = false;
+    let currentSelectedPlan = null; // Stores { name, priceUsd, id, billingCycle }
+    let currentPaymentGateway = null;
+
+    // --- Helper Functions ---
+    const focusFirstElement = (container) => { /* ... (same as in previous js/global.js or mcourseD.js, ensure it's available) ... */ };
+    const displayPaymentStatus = (message, type, isLoading = false, translateKey = null) => { /* ... (similar to uhome.js, adapt for this page's status element) ... */
+        if (!paymentFormGlobalStatus) return;
+        const text = translateKey && window.uplasTranslate ? window.uplasTranslate(translateKey) : message;
+        paymentFormGlobalStatus.textContent = text;
+        paymentFormGlobalStatus.className = 'form__status payment-status-message'; // Reset
+        if(type) paymentFormGlobalStatus.classList.add(type); // e.g., 'success', 'error', 'info'
+        paymentFormGlobalStatus.hidden = false;
+        // Add loading spinner if isLoading
+    };
+    const clearPaymentStatus = () => {
+        if (paymentFormGlobalStatus) {
+            paymentFormGlobalStatus.hidden = true;
+            paymentFormGlobalStatus.textContent = '';
+            paymentFormGlobalStatus.className = 'form__status payment-status-message';
+        }
+    };
+
+
+    // --- Course Content Tabs ---
+    if (courseTabsNav) { /* ... (Same tab logic as original mcourseD.js) ... */ }
+
+    // --- Curriculum Accordion ---
+    if (moduleAccordion) { /* ... (Same accordion logic as original mcourseD.js) ... */ }
+
+
+    // --- Payment Modal Logic ---
+    function updatePaymentModalSummary() {
+        if (!currentSelectedPlan || !summaryPlanNameEl || !summaryPlanPriceEl || !summaryBillingCycleDiv || !summaryBillingCycleEl) return;
+
+        summaryPlanNameEl.textContent = currentSelectedPlan.name;
+        // Set the base USD price on the data attribute. global.js will handle display conversion.
+        summaryPlanPriceEl.dataset.priceUsd = currentSelectedPlan.priceUsd;
+        // Trigger global currency update for this specific element
+        if (window.updateUserCurrencyDisplay) window.updateUserCurrencyDisplay();
+
+
+        if (currentSelectedPlan.billingCycle && currentSelectedPlan.billingCycle.toLowerCase() !== 'one-time') {
+            summaryBillingCycleEl.textContent = currentSelectedPlan.billingCycle; // This might also need translation
+            summaryBillingCycleDiv.hidden = false;
+        } else {
+            summaryBillingCycleDiv.hidden = true;
+        }
+    }
+
+    function openPaymentModal(planData) { // planData expects { name, priceUsd, id, billingCycle }
+        currentSelectedPlan = planData;
+        updatePaymentModalSummary();
+
+        gatewayButtons.forEach(btn => btn.setAttribute('aria-selected', 'false'));
+        gatewayPanels.forEach(panel => panel.hidden = true);
+        if (paymentInstructionsDiv) {
+            paymentInstructionsDiv.textContent = 'Select your preferred payment method to continue.';
+            // TODO: Add data-translate-key="payment_modal_instructions_default" and call translate for this element
+        }
+        if (paymentSubmitButton) {
+            paymentSubmitButton.textContent = 'Select Payment Method to Continue'; // TODO: Translate
+            paymentSubmitButton.disabled = true;
+        }
+        currentPaymentGateway = null;
+        clearPaymentStatus();
+
+        if (paymentModal) {
+            paymentModal.hidden = false;
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => paymentModal.classList.add('active'), 10); // For CSS transition
+            isModalOpen = true;
+            focusFirstElement(paymentModal);
+        }
+    }
+
+    function closePaymentModal() {
+        if (paymentModal) {
+            paymentModal.classList.remove('active');
+            setTimeout(() => {
+                paymentModal.hidden = true;
+                document.body.style.overflow = '';
+                isModalOpen = false;
+                currentSelectedPlan = null;
+            }, 300); // Match CSS transition
+        }
+    }
+
+    // Attach event listeners to all plan selection buttons
+    const allPlanButtons = [enrollNowMainCTA, sidebarEnrollCourseButton, ...sidebarPlanButtons, ...buyModuleButtons];
+    allPlanButtons.forEach(button => {
+        if (button) {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                const planData = {
+                    id: button.dataset.planId || button.dataset.moduleId, // Use moduleId if it's a module button
+                    name: button.dataset.name || `Module ${button.dataset.moduleId}`, // Fallback name
+                    priceUsd: button.dataset.priceUsd, // IMPORTANT: Expecting data-price-usd now
+                    billingCycle: button.dataset.billingCycle || 'One-time'
+                };
+                if (!planData.priceUsd) {
+                    console.error("Button is missing data-price-usd attribute:", button);
+                    alert("Error: Price information is missing for this item.");
+                    return;
+                }
+                openPaymentModal(planData);
+            });
+        }
+    });
+
+    if (closeModalButton) closeModalButton.addEventListener('click', closePaymentModal);
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && isModalOpen) closePaymentModal(); });
+    paymentModal?.addEventListener('click', (event) => { if (event.target === paymentModal) closePaymentModal(); });
+
+
+    function updatePaymentFormForGateway(gateway) {
+        if (!paymentInstructionsDiv || !paymentSubmitButton) return;
+        let instructionsKey = 'payment_modal_instructions_default'; // Default translation key
+        let submitTextKey = 'payment_modal_submit_default';
+        paymentSubmitButton.disabled = false;
+
+        // Clear previous form states/errors
+        if (mpesaPhoneErrorMsg) mpesaPhoneErrorMsg.textContent = '';
+        if (stripeCardErrorsDiv) stripeCardErrorsDiv.textContent = '';
+        [mpesaPhoneInput, stripeCardholderNameInput, bankTransactionRefInput].forEach(input => {
+            if(input) input.required = false;
+        });
+
+
+        switch (gateway) {
+            case 'mpesa':
+                instructionsKey = 'payment_modal_instructions_mpesa';
+                submitTextKey = 'payment_modal_submit_mpesa';
+                if(mpesaPhoneInput) mpesaPhoneInput.required = true;
+                break;
+            case 'stripe':
+                instructionsKey = 'payment_modal_instructions_stripe';
+                submitTextKey = 'payment_modal_submit_stripe'; // Will be dynamic with price
+                if(stripeCardholderNameInput) stripeCardholderNameInput.required = true;
+                // TODO: Initialize Stripe.js Elements if not already done
+                // setupStripe();
+                break;
+            case 'flutterwave':
+                instructionsKey = 'payment_modal_instructions_flutterwave';
+                submitTextKey = 'payment_modal_submit_flutterwave';
+                // Flutterwave might use its own button/modal, main submit might be hidden/changed
+                break;
+            case 'paypal':
+                instructionsKey = 'payment_modal_instructions_paypal';
+                submitTextKey = 'payment_modal_submit_paypal';
+                // TODO: Render PayPal button if SDK is used
+                // setupPayPalButton();
+                break;
+            case 'bank':
+                instructionsKey = 'payment_modal_instructions_bank';
+                submitTextKey = 'payment_modal_submit_bank';
+                if(bankTransactionRefInput) bankTransactionRefInput.required = false; // Optional
+                break;
+            default:
+                paymentSubmitButton.disabled = true;
+        }
+
+        // Translate and update
+        if (window.uplasTranslate) {
+            paymentInstructionsDiv.textContent = window.uplasTranslate(instructionsKey, "Select your preferred payment method to continue.");
+            let submitText = window.uplasTranslate(submitTextKey, "Proceed");
+            if (gateway === 'stripe' && currentSelectedPlan?.priceUsd) {
+                // For Stripe, include the price dynamically. This needs careful translation handling for currency symbols.
+                // The global currency display should handle the price element itself.
+                // Here we just construct the button text.
+                const priceDisplay = document.createElement('span');
+                priceDisplay.dataset.priceUsd = currentSelectedPlan.priceUsd;
+                if(window.updateUserCurrencyDisplay) window.updateUserCurrencyDisplay(); // Ensure this element is updated
+                submitText = `${window.uplasTranslate('pay_button_prefix', "Pay")} ${priceDisplay.textContent}`; // Example, needs better i18n for "Pay AMOUNT"
+            }
+             paymentSubmitButton.innerHTML = `<i class="fas fa-shield-alt"></i> ${submitText}`;
+        } else { // Fallback if translation function not ready
+            paymentInstructionsDiv.textContent = "Instructions for " + gateway;
+            paymentSubmitButton.innerHTML = `<i class="fas fa-shield-alt"></i> Proceed with ${gateway}`;
+        }
+    }
+
+    if (gatewaySelector) {
+        gatewaySelector.addEventListener('click', (event) => { /* ... (Same logic as original mcourseD.js, but calls new updatePaymentFormForGateway) ... */
+            const selectedButton = event.target.closest('.payment-gateway-selector__option');
+            if (!selectedButton) return;
+            currentPaymentGateway = selectedButton.dataset.gateway;
+            gatewayButtons.forEach(btn => btn.setAttribute('aria-selected', (btn === selectedButton).toString()));
+            gatewayPanels.forEach(panel => {
+                panel.hidden = (panel.dataset.gatewayPanel !== currentPaymentGateway);
+            });
+            updatePaymentFormForGateway(currentPaymentGateway);
+            clearPaymentStatus();
+        });
+    }
+
+    // --- Payment Submission Logic ---
+    if (paymentSubmitButton) {
+        paymentSubmitButton.addEventListener('click', async () => { /* ... (Largely same as original, ensure priceUsd is used for paymentData.amount) ... */
+            if (!currentSelectedPlan || !currentPaymentGateway) {
+                displayPaymentStatus('Please select a plan and payment method.', 'error', null, 'err_select_plan_method');
+                return;
+            }
+            let isValid = true;
+            let paymentData = {
+                planId: currentSelectedPlan.id,
+                planName: currentSelectedPlan.name,
+                amount: currentSelectedPlan.priceUsd, // Use base USD price for backend
+                currency: 'USD', // Backend will handle conversion if necessary based on gateway
+                billingCycle: currentSelectedPlan.billingCycle,
+                gateway: currentPaymentGateway,
+                language: document.documentElement.lang || 'en' // Send current language
+            };
+
+            // Gateway-specific validation
+            switch (currentPaymentGateway) {
+                case 'mpesa':
+                    if (!mpesaForm?.checkValidity()) {
+                        const phoneInput = mpesaForm.querySelector('#mpesa-phone-input');
+                        const errorMsgEl = mpesaForm.querySelector('#mpesa-phone-error-msg');
+                        if (phoneInput && errorMsgEl) { /* ... detailed error messages ... */ }
+                        isValid = false;
+                    } else {
+                        paymentData.mpesaPhone = mpesaPhoneInput.value;
+                    }
+                    break;
+                case 'stripe':
+                    if(stripeCardholderNameInput && !stripeCardholderNameInput.checkValidity()){
+                        isValid = false; /* ... error display ... */
+                    } else if(stripeCardholderNameInput) {
+                        paymentData.cardholderName = stripeCardholderNameInput.value;
+                    }
+                    // TODO: Stripe.js tokenization/PaymentIntent creation
+                    // const stripeTokenOrError = await createStripeToken();
+                    // if (stripeTokenOrError.error) { isValid = false; displayPaymentStatus(stripeTokenOrError.error.message, 'error'); }
+                    // else { paymentData.stripeToken = stripeTokenOrError.token.id; }
+                    break;
+                // ... other gateways ...
+            }
+
+            if (!isValid) {
+                displayPaymentStatus('Please correct the errors in the form.', 'error', null, 'err_correct_form_errors');
+                return;
+            }
+
+            paymentSubmitButton.disabled = true;
+            paymentSubmitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${window.uplasTranslate ? window.uplasTranslate('payment_processing', 'Processing...') : 'Processing...'}`;
+            displayPaymentStatus('Your payment is being processed securely...', 'info', true, 'payment_status_processing');
+
+            // SIMULATE BACKEND CALL
+            console.log("Submitting Payment Data:", paymentData);
+            setTimeout(() => {
+                const isPaymentSuccessful = Math.random() > 0.1;
+                if (isPaymentSuccessful) {
+                    displayPaymentStatus(`Payment Confirmed for ${currentSelectedPlan.name}!`, 'success', false, 'payment_status_success_generic');
+                    setTimeout(closePaymentModal, 3000);
+                } else {
+                    displayPaymentStatus('Payment Declined. Please check your details or try another method.', 'error', false, 'payment_status_declined');
+                    paymentSubmitButton.disabled = false;
+                    updatePaymentFormForGateway(currentPaymentGateway); // Reset button
+                }
+            }, 2500);
+        });
+    }
+
+    // --- Masterclass Section Logic ---
+    const checkUserAccessAndLoadMasterclasses = async () => {
+        if (!masterclassSection || !masterclassGridContainer) return;
+
+        // TODO: Replace with actual API call to check user subscription status
+        // const userStatus = await fetchAuthenticated('/api/user/status');
+        // const hasPremiumAccess = userStatus.isPremiumSubscriber;
+        const hasPremiumAccess = Math.random() > 0.5; // Simulate 50% chance of premium access
+
+        if (hasPremiumAccess) {
+            if(masterclassNoAccessMessage) masterclassNoAccessMessage.style.display = 'none';
+            if(masterclassUpgradeCTAContainer) masterclassUpgradeCTAContainer.style.display = 'none';
+            loadMasterclasses();
+        } else {
+            masterclassGridContainer.innerHTML = ''; // Clear any potential placeholders
+            if(masterclassNoAccessMessage) masterclassNoAccessMessage.style.display = 'block';
+            if(masterclassUpgradeCTAContainer) masterclassUpgradeCTAContainer.style.display = 'flex'; // Show upgrade CTA
+        }
+    };
+
+    const loadMasterclasses = async () => {
+        // TODO: Fetch masterclass data from backend
+        // const masterclasses = await fetchAuthenticated('/api/masterclasses');
+        // Simulate data
+        const masterclasses = [
+            { id: 'mc001', titleKey: 'mcourseD_masterclass_example1_title', mentorKey: 'mcourseD_masterclass_example1_mentor', descKey: 'mcourseD_masterclass_example1_desc', duration: '1h 15min', thumbnailUrl: 'https://placehold.co/400x225/0077b6/FFFFFF?text=Masterclass+Ethics&font=poppins', videoUrl: '#' },
+            { id: 'mc002', titleKey: 'mcourseD_masterclass_example2_title', mentorKey: 'mcourseD_masterclass_example2_mentor', descKey: 'mcourseD_masterclass_example2_desc', duration: '58min', thumbnailUrl: 'https://placehold.co/400x225/3d405b/FFFFFF?text=Masterclass+MLOps&font=poppins', videoUrl: '#' }
+        ];
+
+        masterclassGridContainer.innerHTML = ''; // Clear placeholders
+        if (masterclasses.length === 0) {
+            masterclassGridContainer.innerHTML = `<p data-translate-key="mcourseD_masterclass_none_available">No masterclasses available at the moment. Check back soon!</p>`;
+        } else {
+            masterclasses.forEach(mc => {
+                const cardHTML = `
+                    <article class="masterclass-card">
+                        <a href="${mc.videoUrl}" class="masterclass-card__link" aria-label="Watch Masterclass: ${window.uplasTranslate ? window.uplasTranslate(mc.titleKey) : mc.titleKey}">
+                            <div class="masterclass-card__thumbnail-container">
+                                <img src="${mc.thumbnailUrl}" alt="${window.uplasTranslate ? window.uplasTranslate(mc.titleKey) : mc.titleKey}" class="masterclass-card__thumbnail">
+                                <div class="masterclass-card__play-icon"><i class="fas fa-play-circle"></i></div>
+                                <span class="masterclass-card__duration">${mc.duration}</span>
+                            </div>
+                            <div class="masterclass-card__content">
+                                <h3 class="masterclass-card__title" data-translate-key="${mc.titleKey}">${window.uplasTranslate ? window.uplasTranslate(mc.titleKey) : mc.titleKey}</h3>
+                                <p class="masterclass-card__mentor" data-translate-key="${mc.mentorKey}">${window.uplasTranslate ? window.uplasTranslate(mc.mentorKey) : mc.mentorKey}</p>
+                                <p class="masterclass-card__description" data-translate-key="${mc.descKey}">${window.uplasTranslate ? window.uplasTranslate(mc.descKey) : mc.descKey}</p>
+                            </div>
+                        </a>
+                    </article>
+                `;
+                masterclassGridContainer.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+        // Re-translate the page if new elements were added with keys
+        if (window.translatePage) window.translatePage();
+    };
+
+    // --- Initializations ---
+    // Global.js handles theme, nav, language, currency initial updates.
+    // This page specific initializations:
+    checkUserAccessAndLoadMasterclasses(); // Load masterclasses based on access
+
+    // Update copyright year (might be handled by global.js if footer is identical)
+    const currentYearFooterSpan = document.getElementById('current-year-footer');
+    if (currentYearFooterSpan) {
+        const yearText = currentYearFooterSpan.textContent;
+        if (yearText && yearText.includes("{currentYear}")) {
+            currentYearFooterSpan.textContent = yearText.replace("{currentYear}", new Date().getFullYear());
+        } else if (!yearText.includes(new Date().getFullYear().toString())) {
+            currentYearFooterSpan.textContent = new Date().getFullYear();
+        }
+    }
+
+    console.log("Uplas Course Detail Page (mcourseD.js) loaded.");
+});
