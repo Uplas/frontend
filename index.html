@@ -1,270 +1,401 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
+<html lang="en"> <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Uplas | Master AI, Secure Your Future.</title>
-    <link rel="icon" href="images/uni plas_prev_ui.ico"type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="uhome.css">
-</head>
+    <title data-translate-key="site_title">Uplas | Master AI, Secure Your Future.</title>
+    <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon">
 
-<body>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <header class="header">
-        <a href="index.html" class="logo" aria-label="Uplas Homepage">
-            <img src="images/uni plas_prev_ui.ico" alt="Uplas Logo" class="logo__img">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/uhome.css">
+
+    <meta name="description" data-translate-key="site_description" content="Uplas empowers Professionals and Students to Upskill or Reskill with Personalized AI Learning. Master AI with our unique Q&A model and secure your place in the future workforce.">
+    <meta name="keywords" data-translate-key="site_keywords" content="AI learning, artificial intelligence, upskill, reskill, personalized learning, AI courses, AI projects, AI tutor">
+    <meta name="theme-color" content="#00b4d8"> </head>
+<body class="light-mode"> <header class="header" id="page-header">
+        <div class="container header__container">
+            <a href="index.html" class="logo" aria-label="Uplas Homepage">
+                <img src="images/uni_plas_prev_ui.ico" alt="Uplas Platform Logo" class="logo__img">
             </a>
-        <nav class="nav" aria-label="Main Navigation">
-            <a href="index.html" class="nav__link nav__link--active">Home</a>
-            <a href="upricing.html" class="nav__link">Pricing</a>
-            <a href="upricing.html#contact-section" class="nav__link">Contact</a>
-            <a href="ublog.html" class="nav__link">Blog</a>
-        </nav>
-        <button id="theme-toggle" class="button button--theme" aria-label="Switch to Dark Mode" aria-live="polite">
-            <i class="fas fa-moon theme-icon--dark"></i>
-            <i class="fas fa-sun theme-icon--light"></i>
-            <span class="theme-text">Dark Mode</span>
-        </button>
-         <button class="nav__toggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
-            <i class="fas fa-bars"></i>
-        </button>
+            <nav class="nav" id="main-navigation" aria-label="Main site navigation">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="index.html" class="nav__link nav__link--active" aria-current="page" data-translate-key="nav_home">Home</a></li>
+                    <li class="nav__item"><a href="ucourses_list.html" class="nav__link" data-translate-key="nav_courses">Courses</a></li>
+                    <li class="nav__item"><a href="upricing.html" class="nav__link" data-translate-key="nav_pricing">Pricing</a></li>
+                    <li class="nav__item"><a href="ublog.html" class="nav__link" data-translate-key="nav_blog">Blog</a></li>
+                    <li class="nav__item"><a href="ucommunity.html" class="nav__link" data-translate-key="nav_community">Community</a></li>
+                    <li class="nav__item"><a href="#auth-section" class="nav__link nav__link--cta" data-translate-key="nav_login_signup">Login/Sign Up</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="language-currency-selectors">
+                    <div class="select-wrapper">
+                        <label for="language-selector" class="sr-only" data-translate-key="sr_select_language">Select Language</label>
+                        <i class="fas fa-globe selector-icon"></i>
+                        <select id="language-selector" class="header-select" title="Select Language">
+                            <option value="en">English (EN)</option>
+                            <option value="es">Español (ES)</option>
+                            <option value="fr">Français (FR)</option>
+                            {/* */}
+                        </select>
+                    </div>
+                    <div class="select-wrapper">
+                         <label for="currency-selector" class="sr-only" data-translate-key="sr_select_currency">Select Currency</label>
+                        <i class="fas fa-dollar-sign selector-icon"></i>
+                        <select id="currency-selector" class="header-select" title="Select Currency">
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="GBP">GBP</option>
+                            <option value="KES">KES</option>
+                            <option value="INR">INR</option>
+                            {/* */}
+                        </select>
+                    </div>
+                </div>
+                <button id="theme-toggle" class="button button--theme" aria-label="Switch color theme" title="Toggle theme">
+                    <i class="fas fa-moon theme-icon theme-icon--dark" aria-hidden="true"></i>
+                    <i class="fas fa-sun theme-icon theme-icon--light" aria-hidden="true" style="display:none;"></i>
+                    <span class="sr-only" data-translate-key="toggle_theme_sr">Toggle Dark/Light Mode</span>
+                </button>
+                {/* Placeholder for user avatar - to be shown when user is logged in */}
+                <div class="user-profile-placeholder-header" id="user-avatar-header" style="display: none;">
+                    <button class="user-avatar-button-header" aria-label="User menu">
+                        {/* JS can update this with user initials or image */}
+                        JD
+                    </button>
+                    {/* Dropdown menu for profile/logout can be added here */}
+                </div>
+            </div>
+            <button class="nav__toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-navigation">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+                <span class="sr-only" data-translate-key="toggle_navigation_sr">Menu</span>
+            </button>
+        </div>
     </header>
 
     <main class="main-content">
 
         <section class="hero-section">
-            <h1 class="hero__title">The AI Revolution is Here. Are You Ready?</h1>
-            <h2 class="hero__subtitle">Uplas empowers Professionals and Students to Upskill or Reskill with Personalized AI Learning.</h2>
-            <p class="hero__text">Don't get left behind. Master AI with our unique Q&A model and secure your place in the future workforce. Watch the quick demo.</p>
-            <div class="video-container video-responsive-container">
-                 <iframe width="560" height="315" src="https://www.youtube.com/embed/AI-Training-Demo" title="Uplas Quick Demo Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
-        </section>
-
-         <section class="value-prop-section">
-            <h2 class="value-prop__title">Unlock Your AI Potential with Uplas</h2>
-            <p class="value-prop__text">We guide your journey from beginner concepts to building advanced AI like chatbots, tailored to your pace and goals.</p>
-        </section>
-
-        <section class="feature-section image-description-section">
-            <div class="image-description__image-container">
-                <img src="placeholder-human-ai-collaboration.jpg" alt="Professional collaborating with AI technology on a futuristic interface." class="image-description__image">
-            </div>
-            <div class="image-description__description-container">
-                <h2 class="image-description__heading">Don't Fear AI – Master It.</h2>
-                <p class="image-description__text">
-                    AI isn't just coming; it's integrating into every workflow. Repetitive tasks are being automated, demanding new skills focused on strategic oversight and collaboration *with* AI. The future belongs to those who understand how to leverage AI tools – guiding their output, refining their results, and applying human insight where it matters most. Uplas teaches you exactly that: how to become the human expert steering the AI engine.
-                </p>
-            </div>
-        </section>
-
-        <section class="cta-section" id="auth-section">
-            <h2 class="cta__title">Ready to Start Your AI Journey?</h2>
-            <p class="cta__text">Join Uplas today. Create an account or log in to access your personalized learning path.</p>
-            <div class="cta__links">
-                <a href="#signup-form" id="signup-link" class="cta__link cta__link--primary">Get Started - Sign Up</a>
-                <span class="cta__separator">or</span>
-                <a href="#login-form" id="login-link" class="cta__link cta__link--secondary">Already have an account? Login</a>
-            </div>
-        </section>
-
-        <div class="form-container">
-            <form id="signup-form" class="form form--hidden" novalidate>
-                <h3 class="form__title">Create Your Uplas Account</h3>
-                <div class="form-step form-step--active" data-step="1">
-                    <div class="form__group">
-                        <label for="full-name" class="form__label">Full Name</label>
-                        <input type="text" id="full-name" name="fullName" class="form__input" placeholder="Enter your full name" pattern="[A-Za-z ]{2,}" title="Please enter a valid name (at least 2 characters, letters only)" required>
-                        <span class="form__error-message" aria-live="polite"></span>
-                    </div>
-                    <button type="button" class="button form__button form__button--next">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-                <div class="form-step" data-step="2">
-                     <div class="form__group">
-                        <label for="email" class="form__label">Email</label>
-                        <input type="email" id="email" name="email" class="form__input" placeholder="Enter your email" required>
-                         <span class="form__error-message" aria-live="polite"></span>
-                    </div>
-                     <div class="form__button-group">
-                        <button type="button" class="button form__button form__button--prev"><i class="fas fa-arrow-left"></i> Previous</button>
-                        <button type="button" class="button form__button form__button--next">Next <i class="fas fa-arrow-right"></i></button>
+            <div class="container hero-section__container">
+                <div class="hero-section__text-content">
+                    <h1 class="hero-section__title" data-translate-key="hero_title">The AI Revolution is Here. Are You Ready?</h1>
+                    <p class="hero-section__subtitle" data-translate-key="hero_subtitle">Uplas empowers Professionals and Students to Upskill or Reskill with Personalized AI Learning. Master AI with our unique Q&A model and secure your place in the future workforce.</p>
+                    <div class="hero-section__cta-group">
+                        <a href="#auth-section" class="button button--primary button--large hero-section__cta" data-translate-key="get_started_free_cta">Get Started Free</a>
+                        <a href="upricing.html" class="button button--secondary button--large hero-section__cta" data-translate-key="explore_plans_cta">Explore Plans</a>
                     </div>
                 </div>
-                 <div class="form-step" data-step="3">
-                    <div class="form__group">
-                        <label for="organization" class="form__label">Organization/College/School/Business</label>
-                        <input type="text" id="organization" name="organization" class="form__input" placeholder="Enter your organization name" required>
-                         <span class="form__error-message" aria-live="polite"></span>
-                    </div>
-                    <div class="form__group">
-                        <label for="industry" class="form__label">Industry</label>
-                        <select id="industry" name="industry" class="form__select" required>
-                            <option value="">Select your industry</option>
-                            <option value="Technology">Technology</option>
-                            <option value="Healthcare">Healthcare</option>
-                            <option value="Finance">Finance</option>
-                            <option value="Education">Education</option>
-                            <option value="Manufacturing">Manufacturing</option>
-                            <option value="Other">Other</option>
-                        </select>
-                         <span class="form__error-message" aria-live="polite"></span>
-                    </div>
-                     <div class="form__group form__group--hidden" id="other-industry-group">
-                        <label for="other-industry" class="form__label">Please Specify Industry</label>
-                        <input type="text" id="other-industry" name="otherIndustry" class="form__input" placeholder="Specify your industry">
-                         <span class="form__error-message" aria-live="polite"></span>
-                    </div>
-                     <div class="form__button-group">
-                        <button type="button" class="button form__button form__button--prev"><i class="fas fa-arrow-left"></i> Previous</button>
-                        <button type="button" class="button form__button form__button--next">Next <i class="fas fa-arrow-right"></i></button>
+                <div class="hero-section__media-content">
+                    <div class="video-responsive-container">
+                        {/* Replace with your actual demo video embed or a compelling static image/animation */}
+                        <img src="images/uplas_hero_placeholder.png" alt="Abstract representation of AI learning and innovation, showing diverse individuals interacting with technology." style="width:100%; height:100%; object-fit:cover; border-radius: var(--border-radius-lg);" data-translate-key="hero_image_alt_attr">
+                        {/* Example YouTube Embed:
+                        <iframe
+                            src="https://www.youtube-nocookie.com/embed/YOUR_YOUTUBE_VIDEO_ID"
+                            title="Uplas Platform Quick Demo"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                        </iframe>
+                        */}
                     </div>
                 </div>
-                <div class="form-step" data-step="4">
-                     <div class="form__group">
-                        <label for="profession" class="form__label">Current/Future Profession</label>
-                        <input type="text" id="profession" name="profession" class="form__input" placeholder="e.g., Software Engineer, Marketing Manager" required>
-                         <span class="form__error-message" aria-live="polite"></span>
+            </div>
+        </section>
+
+        <section class="benefits-section">
+            <div class="container">
+                <h2 class="section-title" data-translate-key="benefits_title">Why Uplas is Your Key to AI Mastery</h2>
+                <p class="section-subtitle" data-translate-key="benefits_subtitle">Unlock unparalleled advantages and accelerate your AI journey with our cutting-edge platform.</p>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <img src="https://placehold.co/120x120/00b4d8/FFFFFF?text=🧠&font=poppins" alt="Personalized Learning Icon" class="benefit-item__icon" data-translate-alt-key="benefit1_icon_alt">
+                        <h3 class="benefit-item__title" data-translate-key="benefit1_title">Hyper-Personalized Learning Paths</h3>
+                        <p data-translate-key="benefit1_desc">Our AI tailors questions and content to your unique skill level and learning pace, ensuring you grasp concepts effectively and efficiently. No more one-size-fits-all.</p>
                     </div>
-                    <div class="form__group">
-                        <label for="phone" class="form__label">Phone Number (for WhatsApp Verification)</label>
-                        <div class="phone-input-container">
-                            <select id="country-code" name="countryCode" class="form__select form__select--country-code" required>
-                                </select>
-                            <input type="tel" id="phone" name="phone" class="form__input form__input--phone" placeholder="Enter phone number" pattern="[0-9]{7,15}" title="Please enter a valid phone number (digits only)" required>
+                    <div class="benefit-item">
+                        <img src="https://placehold.co/120x120/3d405b/FFFFFF?text=💡&font=poppins" alt="AI Tutor Icon" class="benefit-item__icon" data-translate-alt-key="benefit2_icon_alt">
+                        <h3 class="benefit-item__title" data-translate-key="benefit2_title">24/7 AI Tutor Support</h3>
+                        <p data-translate-key="benefit2_desc">Never get stuck. Our intelligent AI Tutor provides instant answers, explanations, and guidance whenever you need it, day or night.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <img src="https://placehold.co/120x120/f4a261/FFFFFF?text=💼&font=poppins" alt="Real-World Projects Icon" class="benefit-item__icon" data-translate-alt-key="benefit3_icon_alt">
+                        <h3 class="benefit-item__title" data-translate-key="benefit3_title">Portfolio-Ready AI Projects</h3>
+                        <p data-translate-key="benefit3_desc">Move beyond theory. Apply your skills by building AI-generated, real-world projects that showcase your capabilities to potential employers.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <img src="https://placehold.co/120x120/0077b6/FFFFFF?text=🗣️&font=poppins" alt="Multi-Format Content Icon" class="benefit-item__icon" data-translate-alt-key="benefit4_icon_alt">
+                        <h3 class="benefit-item__title" data-translate-key="benefit4_title">Flexible Learning Formats</h3>
+                        <p data-translate-key="benefit4_desc">Learn your way. Instantly convert answers and explanations into audio summaries or video walkthroughs with our integrated TTS and TTV technology.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <img src="https://placehold.co/120x120/28a745/FFFFFF?text=🌍&font=poppins" alt="Global Community Icon" class="benefit-item__icon" data-translate-alt-key="benefit5_icon_alt">
+                        <h3 class="benefit-item__title" data-translate-key="benefit5_title">Thriving Global Community</h3>
+                        <p data-translate-key="benefit5_desc">Connect with fellow learners, mentors, and industry experts. Share insights, collaborate on projects, and network for future opportunities.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <img src="https://placehold.co/120x120/e76f51/FFFFFF?text=🏆&font=poppins" alt="Career Advancement Icon" class="benefit-item__icon" data-translate-alt-key="benefit6_icon_alt">
+                        <h3 class="benefit-item__title" data-translate-key="benefit6_title">Future-Proof Your Career</h3>
+                        <p data-translate-key="benefit6_desc">Equip yourself with the most in-demand AI skills. Upskill for your current role or reskill for the AI-driven job market of tomorrow.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="feature-highlight-section" id="course-description-image-section">
+            <div class="container feature-highlight__container">
+                <div class="feature-highlight__image-container">
+                    <img src="images/course_description_placeholder.png" alt="A student engaging with an Uplas AI course module on a tablet, with data visualizations and code snippets in the background, highlighting the practical nature of the courses." class="feature-highlight__image" data-translate-alt-key="course_desc_image_alt">
+                </div>
+                <div class="feature-highlight__text-content">
+                    <h2 class="section-title section-title--left-align" data-translate-key="course_desc_title">Dive Deep into Practical AI Applications</h2>
+                    <p data-translate-key="course_desc_text">Our courses are meticulously designed to bridge the gap between theoretical knowledge and practical, real-world application. From understanding the core concepts of machine learning to deploying complex AI models, Uplas provides a hands-on, interactive learning experience. Each module is crafted to build upon the last, ensuring a comprehensive understanding that you can immediately apply to solve challenging problems and innovate in your field.</p>
+                    <a href="ucourses_list.html" class="button button--primary" data-translate-key="explore_our_courses_cta">Explore Our Courses</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="auth-section" id="auth-section">
+            <div class="container auth-section__container">
+                <div class="auth-toggle-buttons">
+                    <button class="auth-toggle-button active" data-form="signup-form" data-translate-key="signup_tab">Sign Up</button>
+                    <button class="auth-toggle-button" data-form="login-form" data-translate-key="login_tab">Login</button>
+                </div>
+
+                <div class="form-wrapper">
+                    <form id="signup-form" class="form form--active" novalidate>
+                        <h3 class="form__title" data-translate-key="signup_form_title">Create Your Uplas Account</h3>
+                        
+                        <div class="form-step form-step--active" data-step="1">
+                            <p class="form__step-indicator" data-translate-key="signup_step1_indicator">Step 1 of 5: Basic Information</p>
+                            <div class="form__group">
+                                <label for="signup-full-name" class="form__label" data-translate-key="form_label_fullname">Full Name</label>
+                                <input type="text" id="signup-full-name" name="fullName" class="form__input" placeholder="e.g., Jane Doe" pattern="[A-Za-zÀ-ÖØ-öø-ÿ ]{2,}" title="Please enter a valid name (at least 2 characters, letters and spaces only)" required data-translate-placeholder-key="form_placeholder_fullname">
+                                <span class="form__error-message" aria-live="polite"></span>
+                            </div>
+                            <button type="button" class="button button--primary form__button form__button--next" data-translate-key="form_button_next">Next <i class="fas fa-arrow-right"></i></button>
                         </div>
-                         <span class="form__error-message phone-error-message" aria-live="polite"></span>
-                    </div>
-                     <div class="form__button-group">
-                        <button type="button" class="button form__button form__button--prev"><i class="fas fa-arrow-left"></i> Previous</button>
-                        <button type="button" class="button form__button form__button--next">Next <i class="fas fa-arrow-right"></i></button>
-                    </div>
-                </div>
-                 <div class="form-step" data-step="5">
-                    <div class="form__group">
-                        <label for="password" class="form__label">Create Password</label>
-                        <input type="password" id="password" name="password" class="form__input" placeholder="Create a strong password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$" title="Password must be at least 8 characters and include uppercase, lowercase, number and special character" required>
-                         <span class="form__error-message" aria-live="polite"></span>
-                         <small class="form__hint">Min. 8 characters, incl. Upper, Lower, Number, Special Symbol.</small>
-                    </div>
-                     <div class="form__group">
-                        <label for="confirm-password" class="form__label">Confirm Password</label>
-                        <input type="password" id="confirm-password" class="form__input" placeholder="Confirm your password" required>
-                        <span class="form__error-message" id="password-mismatch" aria-live="polite"></span>
-                    </div>
-                    <div class="form__button-group">
-                        <button type="button" class="button form__button form__button--prev"><i class="fas fa-arrow-left"></i> Previous</button>
-                        <button type="submit" class="button form__button form__button--submit">Sign Up</button>
-                    </div>
-                </div>
-                 <div id="signup-status" class="form__status" aria-live="assertive"></div>
-            </form>
 
-            <form id="login-form" class="form form--hidden" novalidate>
-                <h3 class="form__title">Login to Your Uplas Account</h3>
-                 <div class="form__group">
-                    <label for="login-email" class="form__label">Email</label>
-                    <input type="email" id="login-email" name="email" class="form__input" placeholder="Enter your email" required>
-                     <span class="form__error-message" aria-live="polite"></span>
-                </div>
-                <div class="form__group">
-                    <label for="login-password" class="form__label">Password</label>
-                    <input type="password" id="login-password" name="password" class="form__input" placeholder="Enter your password" required>
-                     <span class="form__error-message" aria-live="polite"></span>
-                </div>
-                 <button type="submit" class="button form__button form__button--submit">Login</button>
-                 <div id="login-status" class="form__status" aria-live="assertive"></div>
-            </form>
-        </div>
+                        {/* Step 2: Contact Details */}
+                        <div class="form-step" data-step="2">
+                            <p class="form__step-indicator" data-translate-key="signup_step2_indicator">Step 2 of 5: Contact Details</p>
+                            <div class="form__group">
+                                <label for="signup-email" class="form__label" data-translate-key="form_label_email">Email Address</label>
+                                <input type="email" id="signup-email" name="email" class="form__input" placeholder="you@example.com" required data-translate-placeholder-key="form_placeholder_email">
+                                <span class="form__error-message" aria-live="polite"></span>
+                            </div>
+                            <div class="form__button-group">
+                                <button type="button" class="button button--secondary form__button form__button--prev" data-translate-key="form_button_prev"><i class="fas fa-arrow-left"></i> Previous</button>
+                                <button type="button" class="button button--primary form__button form__button--next" data-translate-key="form_button_next">Next <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
 
+                        {/* Step 3: Professional Background */}
+                        <div class="form-step" data-step="3">
+                            <p class="form__step-indicator" data-translate-key="signup_step3_indicator">Step 3 of 5: Professional Background</p>
+                            <div class="form__group">
+                                <label for="signup-organization" class="form__label" data-translate-key="form_label_organization">Organization/College/School (Optional)</label>
+                                <input type="text" id="signup-organization" name="organization" class="form__input" placeholder="e.g., Acme Corp, Tech University" data-translate-placeholder-key="form_placeholder_organization">
+                            </div>
+                            <div class="form__group">
+                                <label for="signup-industry" class="form__label" data-translate-key="form_label_industry">Primary Industry/Field of Study</label>
+                                <select id="signup-industry" name="industry" class="form__select" required>
+                                    <option value="" disabled selected data-translate-key="form_select_industry_placeholder">Select your primary industry...</option>
+                                    <option value="Technology" data-translate-key="industry_technology">Technology</option>
+                                    <option value="Healthcare" data-translate-key="industry_healthcare">Healthcare</option>
+                                    <option value="Finance & Banking" data-translate-key="industry_finance">Finance & Banking</option>
+                                    <option value="Education" data-translate-key="industry_education">Education</option>
+                                    <option value="Manufacturing & Engineering" data-translate-key="industry_manufacturing">Manufacturing & Engineering</option>
+                                    <option value="Retail & E-commerce" data-translate-key="industry_retail">Retail & E-commerce</option>
+                                    <option value="Marketing & Advertising" data-translate-key="industry_marketing">Marketing & Advertising</option>
+                                    <option value="Arts & Entertainment" data-translate-key="industry_arts">Arts & Entertainment</option>
+                                    <option value="Student" data-translate-key="industry_student">Student (General)</option>
+                                    <option value="Other" data-translate-key="industry_other">Other</option>
+                                </select>
+                                <span class="form__error-message" aria-live="polite"></span>
+                            </div>
+                            <div class="form__group form__group--hidden" id="signup-other-industry-group">
+                                <label for="signup-other-industry" class="form__label" data-translate-key="form_label_specify_industry">Please Specify Your Industry</label>
+                                <input type="text" id="signup-other-industry" name="otherIndustry" class="form__input" placeholder="e.g., Renewable Energy" data-translate-placeholder-key="form_placeholder_specify_industry">
+                                <span class="form__error-message" aria-live="polite"></span>
+                            </div>
+                            <div class="form__button-group">
+                                <button type="button" class="button button--secondary form__button form__button--prev" data-translate-key="form_button_prev"><i class="fas fa-arrow-left"></i> Previous</button>
+                                <button type="button" class="button button--primary form__button form__button--next" data-translate-key="form_button_next">Next <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        {/* Step 4: Career Goals & Verification */}
+                        <div class="form-step" data-step="4">
+                            <p class="form__step-indicator" data-translate-key="signup_step4_indicator">Step 4 of 5: Career Goals & Verification</p>
+                            <div class="form__group">
+                                <label for="signup-profession" class="form__label" data-translate-key="form_label_profession">Current or Target Profession</label>
+                                <input type="text" id="signup-profession" name="profession" class="form__input" placeholder="e.g., AI Specialist, Data Analyst" required data-translate-placeholder-key="form_placeholder_profession">
+                                <span class="form__error-message" aria-live="polite"></span>
+                            </div>
+                            <div class="form__group">
+                                <label for="signup-phone" class="form__label" data-translate-key="form_label_phone_whatsapp">Phone Number (for WhatsApp Verification)</label>
+                                <div class="phone-input-container">
+                                    <select id="signup-country-code" name="countryCode" class="form__select form__select--country-code" required>
+                                        {/* Options populated by JS */}
+                                    </select>
+                                    <input type="tel" id="signup-phone" name="phone" class="form__input form__input--phone" placeholder="e.g., 712345678" pattern="[0-9]{7,15}" title="Please enter a valid phone number (digits only, without country code)" required data-translate-placeholder-key="form_placeholder_phone">
+                                </div>
+                                <span class="form__error-message phone-error-message" aria-live="polite"></span>
+                            </div>
+                            <div class="form__button-group">
+                                <button type="button" class="button button--secondary form__button form__button--prev" data-translate-key="form_button_prev"><i class="fas fa-arrow-left"></i> Previous</button>
+                                <button type="button" class="button button--primary form__button form__button--next" data-translate-key="form_button_next">Next <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        {/* Step 5: Secure Account */}
+                        <div class="form-step" data-step="5">
+                            <p class="form__step-indicator" data-translate-key="signup_step5_indicator">Step 5 of 5: Secure Your Account</p>
+                            <div class="form__group">
+                                <label for="signup-password" class="form__label" data-translate-key="form_label_create_password">Create Password</label>
+                                <input type="password" id="signup-password" name="password" class="form__input" placeholder="Choose a strong password" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':\\|,.<>\/?]).{8,}$" title="Password must be at least 8 characters and include uppercase, lowercase, number, and special character." required data-translate-placeholder-key="form_placeholder_create_password">
+                                <span class="form__error-message" aria-live="polite"></span>
+                                <small class="form__hint" data-translate-key="form_hint_password">Min. 8 characters, with uppercase, lowercase, number, and special symbol.</small>
+                            </div>
+                            <div class="form__group">
+                                <label for="signup-confirm-password" class="form__label" data-translate-key="form_label_confirm_password">Confirm Password</label>
+                                <input type="password" id="signup-confirm-password" name="confirmPassword" class="form__input" placeholder="Re-enter your password" required data-translate-placeholder-key="form_placeholder_confirm_password">
+                                <span class="form__error-message" id="signup-password-mismatch" aria-live="polite"></span>
+                            </div>
+                            <div class="form__group form__group--checkbox">
+                                <input type="checkbox" id="signup-terms" name="terms" required>
+                                <label for="signup-terms" class="form__label--checkbox">
+                                    <span data-translate-key="form_label_terms_agree">I agree to the Uplas</span>
+                                    <a href="/terms" target="_blank" data-translate-key="form_label_terms_link">Terms of Service</a>
+                                    <span data-translate-key="form_label_terms_and">and</span>
+                                    <a href="/privacy" target="_blank" data-translate-key="form_label_privacy_link">Privacy Policy</a>.
+                                </label>
+                                <span class="form__error-message" aria-live="polite"></span>
+                            </div>
+                            <div class="form__button-group">
+                                <button type="button" class="button button--secondary form__button form__button--prev" data-translate-key="form_button_prev"><i class="fas fa-arrow-left"></i> Previous</button>
+                                <button type="submit" class="button button--primary form__button form__button--submit" data-translate-key="form_button_create_account">Create Account</button>
+                            </div>
+                        </div>
+                        <div id="signup-status" class="form__status" aria-live="assertive"></div>
+                    </form>
+
+                    <form id="login-form" class="form" novalidate>
+                        <h3 class="form__title" data-translate-key="login_form_title">Welcome Back to Uplas!</h3>
+                        <div class="form__group">
+                            <label for="login-email" class="form__label" data-translate-key="form_label_email">Email Address</label>
+                            <input type="email" id="login-email" name="email" class="form__input" placeholder="you@example.com" required data-translate-placeholder-key="form_placeholder_email">
+                            <span class="form__error-message" aria-live="polite"></span>
+                        </div>
+                        <div class="form__group">
+                            <label for="login-password" class="form__label" data-translate-key="form_label_password">Password</label>
+                            <input type="password" id="login-password" name="password" class="form__input" placeholder="Enter your password" required data-translate-placeholder-key="form_placeholder_password">
+                            <span class="form__error-message" aria-live="polite"></span>
+                        </div>
+                        <div class="form__group form__group--subtle-text">
+                            <a href="#forgot-password" class="form__link" data-translate-key="form_link_forgot_password">Forgot password?</a>
+                        </div>
+                        <button type="submit" class="button button--primary form__button form__button--submit" data-translate-key="form_button_login">Login</button>
+                        <div id="login-status" class="form__status" aria-live="assertive"></div>
+                    </form>
+                </div>
+            </div>
+        </section>
 
         <section class="faq-section">
-            <h2 class="faq__heading">Frequently Asked Questions</h2>
-            <p class="faq__intro">Have questions? We've got answers. If you don't see yours here, feel free to <a href="upricing.html#contact-section" class="faq__contact-link">contact our team</a>.</p>
-
-            <details class="faq-item">
-                <summary class="faq-item__question">Will AI take my job?</summary>
-                <div class="faq-item__answer">
-                    <p>It's a valid concern! While AI automates some tasks, it primarily *changes* jobs, creating new roles and demanding new skills. AI excels at processing data, but lacks human creativity, critical thinking, and empathy. The key isn't fearing replacement, but learning to collaborate with AI – letting it handle the repetitive work so you can focus on higher-value tasks. Uplas teaches you how.</p>
+             <div class="container">
+                <h2 class="section-title" data-translate-key="faq_title">Frequently Asked Questions</h2>
+                <p class="section-subtitle" data-translate-key="faq_subtitle_contact_link_html">Have questions? We've got answers. If you don't see yours here, feel free to <a href="upricing.html#contact-section" class="link">contact our team</a>.</p>
+                <div class="faq-accordion">
+                    <details class="faq-item">
+                        <summary class="faq-item__question" data-translate-key="faq1_question">Will AI take my job?</summary>
+                        <div class="faq-item__answer">
+                            <p data-translate-key="faq1_answer">It's a valid concern! While AI automates some tasks, it primarily *changes* jobs, creating new roles and demanding new skills. AI excels at processing data, but lacks human creativity, critical thinking, and empathy. The key isn't fearing replacement, but learning to collaborate with AI – letting it handle the repetitive work so you can focus on higher-value tasks. Uplas teaches you how.</p>
+                        </div>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-item__question" data-translate-key="faq2_question">Why do I need to learn AI?</summary>
+                        <div class="faq-item__answer">
+                            <p data-translate-key="faq2_answer">AI is becoming fundamental across industries – from healthcare and finance to marketing and education. Understanding AI helps you leverage powerful tools to boost productivity, gain deeper insights from data, make better decisions, and ultimately become more valuable in your role. Staying current with AI is becoming essential for career growth and security.</p>
+                        </div>
+                    </details>
+                    <details class="faq-item">
+                        <summary class="faq-item__question" data-translate-key="faq3_question">What makes Uplas different?</summary>
+                         <div class="faq-item__answer">
+                            <ul>
+                                <li data-translate-key="faq3_answer_item1"><strong>Personalized Q&A Model:</strong> Learn through dynamic questions and answers tailored to your progress, not static videos.</li>
+                                <li data-translate-key="faq3_answer_item2"><strong>AI Tutor Support:</strong> Get instant guidance and clarification whenever you're stuck.</li>
+                                 <li data-translate-key="faq3_answer_item3"><strong>AI-Generated Real-World Projects:</strong> Apply your knowledge by building practical, portfolio-ready projects.</li>
+                                 <li data-translate-key="faq3_answer_item4"><strong>Text-to-Audio/Video:</strong> Absorb information in the format that suits you best.</li>
+                                <li data-translate-key="faq3_answer_item5"><strong>Vibrant Community:</strong> Connect, collaborate, and learn with peers and mentors.</li>
+                                <li data-translate-key="faq3_answer_item6"><strong>Affordable & Flexible:</strong> Accessible pricing options to fit your budget.</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="faq-item">
+                         <summary class="faq-item__question" data-translate-key="faq4_question">Do I need tech experience to start?</summary>
+                         <div class="faq-item__answer">
+                             <p data-translate-key="faq4_answer">No! Uplas is designed for everyone, from absolute beginners to those looking to advance their skills. We start with the fundamentals (like Python programming, if needed) and guide you progressively towards advanced concepts like building AI chatbots.</p>
+                         </div>
+                     </details>
                 </div>
-            </details>
-
-            <details class="faq-item">
-                <summary class="faq-item__question">Why do I need to learn AI?</summary>
-                <div class="faq-item__answer">
-                    <p>AI is becoming fundamental across industries – from healthcare and finance to marketing and education. Understanding AI helps you leverage powerful tools to boost productivity, gain deeper insights from data, make better decisions, and ultimately become more valuable in your role. Staying current with AI is becoming essential for career growth and security.</p>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                <summary class="faq-item__question">What makes Uplas different?</summary>
-                 <div class="faq-item__answer">
-                    <ul>
-                        <li><strong>Personalized Q&A Model:</strong> Learn through dynamic questions and answers tailored to your progress, not static videos.</li>
-                        <li><strong>AI Tutor Support:</strong> Get instant guidance and clarification whenever you're stuck.</li>
-                         <li><strong>Real-World AI Projects:</strong> Apply your knowledge by building practical, portfolio-ready projects generated by AI.</li>
-                         <li><strong>Text-to-Audio/Video:</strong> Absorb information in the format that suits you best.</li>
-                        <li><strong>Vibrant Community:</strong> Connect, collaborate, and learn with peers and mentors.</li>
-                        <li><strong>Affordable & Flexible:</strong> Accessible pricing options to fit your budget.</li>
-                    </ul>
-                </div>
-            </details>
-
-            <details class="faq-item">
-                 <summary class="faq-item__question">Do I need tech experience?</summary>
-                 <div class="faq-item__answer">
-                     <p>No! Uplas is designed for everyone, from absolute beginners to those looking to advance their skills. We start with the fundamentals (like Python programming, if needed) and guide you progressively towards advanced concepts like building AI chatbots.</p>
-                 </div>
-             </details>
-
-              <details class="faq-item">
-                 <summary class="faq-item__question">How does Uplas keep content current?</summary>
-                <div class="faq-item__answer">
-                     <p>The AI field evolves rapidly! Our platform leverages AI to help keep content updated. Plus, our active community and expert team continuously share the latest trends, tools, and insights, ensuring your learning stays relevant.</p>
-                 </div>
-             </details>
-
-             </section>
-
+            </div>
+        </section>
     </main>
 
-    <footer class="footer">
-        <div class="footer__container">
-            <div class="footer__section footer__section--contact">
-                <h3 class="footer__heading">Contact Us</h3>
+    <footer class="footer" id="page-footer">
+        <div class="footer__container container">
+             <div class="footer__section footer__section--contact">
+                <h3 class="footer__heading" data-translate-key="footer_contact_us">Get in Touch</h3>
                  <address class="footer__address">
-                    <p><i class="fas fa-phone footer__icon"></i> <a href="tel:+254708654984" class="footer__link">+254 708 654 984</a></p> <p><i class="fas fa-envelope footer__icon"></i> <a href="mailto:mugash042@gmail.com" class="footer__link">mugash042@gmail.com</a></p> <p><i class="fas fa-map-marker-alt footer__icon"></i> Kilifi, Kenya</p> </address>
+                    <p><i class="fas fa-phone footer__icon" aria-hidden="true"></i> <a href="tel:+254708654984" class="footer__link">+254 708 654 984</a></p>
+                    <p><i class="fas fa-envelope footer__icon" aria-hidden="true"></i> <a href="mailto:support@uplas.com" class="footer__link">support@uplas.com</a></p>
+                    <p><i class="fas fa-map-marker-alt footer__icon" aria-hidden="true"></i> <span data-translate-key="footer_location">Uplas Towers, Kilifi, Kenya</span></p>
+                </address>
             </div>
-
-            <div class="footer__section footer__section--social">
-                <h3 class="footer__heading">Follow Us</h3>
+             <div class="footer__section footer__section--social">
+                <h3 class="footer__heading" data-translate-key="footer_follow_us">Connect With Us</h3>
                 <div class="social-media">
-                    <a href="#" class="social-media__link" aria-label="Uplas on Facebook"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="social-media__link" aria-label="Uplas on Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-media__link" aria-label="Uplas on LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" class="social-media__link" aria-label="Uplas on Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on Facebook" title="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on Twitter" title="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on LinkedIn" title="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on Instagram" title="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
                 </div>
             </div>
-
-             <div class="footer__section footer__section--links">
-                <h3 class="footer__heading">Quick Links</h3>
+            <div class="footer__section footer__section--links">
+                <h3 class="footer__heading" data-translate-key="footer_explore_uplas">Explore Uplas</h3>
                 <ul class="footer__list">
-                    <li><a href="index.html" class="footer__link">Home</a></li>
-                    <li><a href="upricing.html" class="footer__link">Pricing</a></li>
-                    <li><a href="upricing.html#contact-section" class="footer__link">Contact</a></li>
-                    <li><a href="ublog.html" class="footer__link">Blog</a></li>
-                    <li><a href="#" class="footer__link">Terms of Service</a></li>
-                     <li><a href="#" class="footer__link">Privacy Policy</a></li>
+                    <li><a href="index.html" class="footer__link" data-translate-key="nav_home">Home</a></li>
+                    <li><a href="ucourses_list.html" class="footer__link" data-translate-key="nav_courses_all">All Courses</a></li>
+                    <li><a href="upricing.html" class="footer__link" data-translate-key="nav_pricing_plans">Pricing Plans</a></li>
+                    <li><a href="ublog.html" class="footer__link" data-translate-key="nav_blog_insights">AI Insights Blog</a></li>
+                    <li><a href="/about" class="footer__link" data-translate-key="nav_about">About Uplas</a></li>
+                </ul>
+            </div>
+             <div class="footer__section footer__section--legal">
+                <h3 class="footer__heading" data-translate-key="footer_legal_support">Legal & Support</h3>
+                 <ul class="footer__list">
+                    <li><a href="/terms" class="footer__link" data-translate-key="footer_terms">Terms of Service</a></li>
+                    <li><a href="/privacy" class="footer__link" data-translate-key="footer_privacy">Privacy Policy</a></li>
+                    <li><a href="/cookies" class="footer__link" data-translate-key="footer_cookies">Cookie Policy</a></li>
+                    <li><a href="upricing.html#contact-section" class="footer__link" data-translate-key="footer_help">Help Center</a></li>
                 </ul>
             </div>
         </div>
-         <div class="footer__bottom">
-            <p class="footer__copyright">&copy; 2025 Uplas. All rights reserved.</p>
+        <div class="footer__bottom">
+            <p class="footer__copyright" data-translate-key="footer_copyright_dynamic">© <span id="current-year-footer">{currentYear}</span> Uplas EdTech Solutions Ltd. All rights reserved. Empowering the next generation of AI innovators.</p>
         </div>
     </footer>
 
-    <script src="uhome.js"></script>
-    </body>
+    <script src="js/global.js"></script>
+    <script src="js/apiUtils.js"></script>
+    <script src="js/uhome.js"></script>
+</body>
 </html>
