@@ -1,4 +1,3 @@
-```css
 /* css/mcourse.css */
 /* ==========================================================================
    Uplas Interactive Learning Page Styles (mcourse.css)
@@ -9,19 +8,22 @@
 
 /* --- Main Layout: Learning Environment Grid --- */
 .mcourse-main-content {
-    padding-top: var(--spacing-lg); /* Space below fixed header */
+    padding-top: var(--spacing-lg);
     padding-bottom: var(--spacing-lg);
-    flex-grow: 1; /* Ensure it takes available height */
+    flex-grow: 1;
+    display: flex; /* Ensure main content can grow to fill viewport */
 }
 
 .learning-environment-grid {
     display: grid;
-    grid-template-columns: 2fr 5fr 2.5fr; /* Sidebar - Main - Sidebar */
+    grid-template-columns: 260px 1fr 300px; /* Sidebar - Main - Sidebar */
     gap: var(--spacing-lg);
-    height: calc(100vh - var(--header-height) - (var(--spacing-lg) * 2)); /* Full viewport height minus header and padding */
-    max-width: 1800px; /* Allow wider layout for learning */
-    margin: 0 auto;
-    padding: 0 var(--container-padding-x);
+    /* Full viewport height minus header and page padding */
+    height: calc(100vh - var(--header-height) - (var(--spacing-lg) * 2));
+    width: 100%; /* Take full width of parent */
+    max-width: 1800px; /* Optional: Max width for very large screens */
+    margin: 0 auto; /* Center if max-width is applied */
+    padding: 0 var(--container-padding-x); /* Use global container padding */
 }
 
 .learning-sidebar {
@@ -29,24 +31,15 @@
     padding: var(--spacing-lg);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--box-shadow-sm);
-    overflow-y: auto; /* Scrollable if content exceeds height */
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: var(--spacing-lg);
+    border: 1px solid var(--current-border-color-light);
 }
 
-.learning-sidebar--left {
-    /* Specific styles for left sidebar if any */
-}
-.learning-sidebar--right {
-    /* Specific styles for right sidebar if any */
-}
-
-.sidebar-section {
-    /* Styles for individual sections within sidebars */
-}
 .sidebar-title {
-    font-size: 1.05rem; /* Slightly smaller than main section titles */
+    font-size: 1.05rem;
     font-weight: var(--font-weight-semibold);
     color: var(--current-text-color);
     margin-bottom: var(--spacing-md);
@@ -67,14 +60,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background: none; /* Ensure no button default bg */
+    border: none; /* Ensure no button default border */
 }
 .module-topic-nav .module-title-btn:hover {
     color: var(--current-link-hover-color);
 }
 .module-topic-nav .topic-list-nav {
     list-style: none;
-    padding-left: var(--spacing-md); /* Indent topics */
+    padding-left: var(--spacing-md);
     margin-top: var(--spacing-xs);
+    border-left: 2px solid var(--current-border-color-light);
 }
 .module-topic-nav .topic-link-nav {
     display: block;
@@ -82,6 +78,7 @@
     font-size: var(--font-size-sm);
     color: var(--current-text-color-secondary);
     border-radius: var(--border-radius-sm);
+    position: relative; /* For status icons */
 }
 .module-topic-nav .topic-link-nav:hover,
 .module-topic-nav .topic-link-nav.active {
@@ -92,6 +89,13 @@
 .dark-mode .module-topic-nav .topic-link-nav.active {
     color: var(--color-primary-light);
 }
+.topic-status-icon {
+    margin-left: var(--spacing-xs);
+    font-size: 0.9em;
+}
+.topic-link-nav.completed .topic-status-icon { color: var(--color-success); }
+.topic-link-nav.locked .topic-status-icon { color: var(--current-text-color-secondary); opacity: 0.7; }
+
 
 /* Progress Overview in Left Sidebar */
 .progress-overview-simple p {
@@ -99,14 +103,19 @@
     margin-bottom: var(--spacing-xs);
     color: var(--current-text-color-secondary);
 }
-.progress-overview-simple p span {
+.progress-overview-simple p strong {
     font-weight: var(--font-weight-semibold);
     color: var(--current-text-color);
 }
 .progress-bar-container.small-progress {
     height: 8px;
     margin-bottom: var(--spacing-sm);
+    background-color: var(--current-border-color-light);
 }
+.progress-bar-container.small-progress .progress-bar-fill {
+    background-color: var(--color-primary);
+}
+
 
 /* --- Main Learning Interaction Area --- */
 .learning-interaction-area {
@@ -117,6 +126,7 @@
     display: flex;
     flex-direction: column;
     height: 100%; /* Fill the grid cell height */
+    border: 1px solid var(--current-border-color);
 }
 
 .topic-header-main {
@@ -126,11 +136,15 @@
     margin-bottom: var(--spacing-md);
     padding-bottom: var(--spacing-md);
     border-bottom: 1px solid var(--current-border-color-light);
+    flex-shrink: 0; /* Prevent header from shrinking */
 }
 .current-topic-title-text {
     font-size: var(--font-size-xl);
     margin-bottom: 0;
+    color: var(--current-text-color);
 }
+.dark-mode .current-topic-title-text { color: var(--color-primary-light); }
+
 .topic-actions { display: flex; gap: var(--spacing-sm); }
 .topic-action-btn { /* Uses .button styles implicitly if classes are added */
     font-size: var(--font-size-sm);
@@ -138,13 +152,15 @@
     padding: var(--spacing-xs) var(--spacing-sm);
     border: 1px solid var(--current-border-color);
     border-radius: var(--border-radius-md);
+    background-color: var(--current-card-bg); /* Match card bg */
 }
 .topic-action-btn:hover {
     color: var(--current-link-hover-color);
     border-color: var(--current-link-hover-color);
     background-color: var(--color-primary-ultralight);
 }
-.topic-action-btn .fa-bookmark.fas { /* For liked state */
+.topic-action-btn.active .fa-bookmark { /* For bookmarked state */
+    font-weight: 900; /* Solid icon */
     color: var(--color-accent);
 }
 
@@ -153,39 +169,49 @@
 .qna-content-area {
     flex-grow: 1;
     overflow-y: auto;
-    padding: var(--spacing-sm) 0;
+    padding: var(--spacing-md); /* Padding around messages */
     margin-bottom: var(--spacing-md);
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
+    background-color: var(--current-bg-color); /* Slightly different background for chat area */
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--current-border-color-light);
 }
-.ai-question-bubble, .user-answer-bubble {
+.dark-mode .qna-content-area {
+    background-color: var(--color-dark-bg-secondary);
+}
+
+.message-bubble { /* Common style for both AI and User */
     padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--border-radius-lg);
     max-width: 80%;
     line-height: 1.5;
     box-shadow: var(--box-shadow-xs);
+    word-wrap: break-word; /* Ensure long words break */
 }
+.message-bubble p:last-child { margin-bottom: 0; }
+
 .ai-question-bubble {
     background-color: var(--color-primary-ultralight);
-    color: var(--current-text-color); /* Ensure readability */
+    color: var(--current-text-color);
     align-self: flex-start;
-    border-bottom-left-radius: var(--border-radius-sm); /* Bubble tail effect */
+    border-bottom-left-radius: var(--border-radius-sm);
 }
 .dark-mode .ai-question-bubble {
     background-color: var(--color-secondary-light);
     color: var(--color-dark-text-primary);
 }
 .user-answer-bubble {
-    background-color: var(--color-success-light); /* Or a neutral user color */
+    background-color: var(--color-success-light); /* Using success light for user answers */
     color: var(--current-text-color);
     align-self: flex-end;
     border-bottom-right-radius: var(--border-radius-sm);
 }
 .dark-mode .user-answer-bubble {
-    background-color: var(--color-primary-dark);
+    background-color: var(--color-primary-dark); /* Or a distinct user color for dark mode */
+    color: var(--color-dark-text-primary);
 }
-.ai-question-bubble p, .user-answer-bubble p { margin-bottom: 0; }
 
 /* Media Controls (TTS, TTV) */
 .media-controls-area {
@@ -196,7 +222,8 @@
     border-top: 1px solid var(--current-border-color-light);
     margin-top: var(--spacing-sm);
     flex-wrap: wrap;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-md);
+    flex-shrink: 0; /* Prevent controls from shrinking */
 }
 .tts-controls, .ttv-controls {
     display: flex;
@@ -204,22 +231,27 @@
     gap: var(--spacing-sm);
 }
 .form__select--compact { /* For TTS voice select */
-    padding-top: var(--spacing-xs);
-    padding-bottom: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
     font-size: var(--font-size-xs);
-    min-width: 120px;
-    height: auto; /* Let content define height */
+    min-width: 130px; /* Give it some space */
+    height: auto;
+    background-color: var(--current-input-bg); /* ensure consistent input bg */
 }
-.audio-player-container-inline {
-    /* Styles for an inline audio player if needed, or it'll be a standard <audio> tag */
+.media-control-button { /* Common class for Listen/Watch Video buttons */
+    /* Uses .button .button--secondary .button--small */
+}
+.audio-player-container-inline audio {
+    max-width: 200px; /* Constrain inline player width */
+    height: 30px; /* Compact height */
 }
 .video-player-wrapper {
     margin-top: var(--spacing-md);
     border-radius: var(--border-radius-md);
     overflow: hidden;
     box-shadow: var(--box-shadow-sm);
-    background-color: var(--color-black); /* Placeholder for video */
-    aspect-ratio: 16 / 9; /* Maintain aspect ratio */
+    background-color: var(--color-black);
+    aspect-ratio: 16 / 9;
+    border: 1px solid var(--current-border-color);
 }
 .video-player-wrapper iframe,
 .video-player-wrapper video {
@@ -236,33 +268,47 @@
     margin-top: var(--spacing-md);
     padding-top: var(--spacing-md);
     border-top: 1px solid var(--current-border-color-light);
+    flex-shrink: 0; /* Prevent form from shrinking */
 }
 .user-input-form textarea {
     flex-grow: 1;
-    min-height: 40px; /* Start small, can grow */
+    min-height: 44px; /* Match button height approx */
+    max-height: 150px; /* Allow some growth */
     resize: vertical;
 }
-.user-input-form button { /* Submit button */
+.user-input-form button#submit-answer-btn { /* Submit button */
     flex-shrink: 0;
+    padding: var(--spacing-sm); /* Make it a bit squarer for icon */
+}
+.answer-feedback-display {
+    font-size: var(--font-size-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    margin-top: var(--spacing-xs);
+    border-radius: var(--border-radius-sm);
+    display: none; /* Hidden by default, shown by JS */
+}
+.answer-feedback-display.feedback-correct {
+    background-color: var(--color-success-light);
+    color: var(--color-success);
+    border: 1px solid var(--color-success);
+}
+.answer-feedback-display.feedback-incorrect {
+    background-color: var(--color-error-light);
+    color: var(--color-error);
+    border: 1px solid var(--color-error);
 }
 
+
 /* --- Right Sidebar: AI Tutor, Resources --- */
-.ai-tutor-panel-preview {
-    text-align: center;
-}
+.ai-tutor-panel-preview { text-align: center; }
 .ai-tutor-quick-help-text p {
     font-size: var(--font-size-sm);
     color: var(--current-text-color-secondary);
     margin-bottom: var(--spacing-sm);
 }
-#open-ai-tutor-btn { /* Uses .button .button--secondary .button--full-width */
-    font-size: var(--font-size-sm);
-}
+#open-ai-tutor-btn { font-size: var(--font-size-sm); }
 
-.resource-list-sidebar {
-    list-style: none;
-    padding-left: 0;
-}
+.resource-list-sidebar { list-style: none; padding-left: 0; }
 .resource-list-sidebar li a {
     display: flex;
     align-items: center;
@@ -270,19 +316,21 @@
     font-size: var(--font-size-sm);
     color: var(--current-link-color);
     padding: var(--spacing-xs) 0;
+    border-radius: var(--border-radius-sm);
+    transition: color var(--transition-short), background-color var(--transition-short);
 }
 .resource-list-sidebar li a:hover {
     color: var(--current-link-hover-color);
+    background-color: var(--color-primary-ultralight);
+    padding-left: var(--spacing-xs); /* Indent on hover */
 }
-.resource-list-sidebar li i {
-    width: 16px; text-align: center;
-    opacity: 0.7;
-}
+.resource-list-sidebar li i { width: 16px; text-align: center; opacity: 0.7; }
 
-/* AI Tutor Modal (Basic - can be styled more like a chat window) */
-#ai-tutor-chat-modal .modal__content {
-    max-width: 450px; /* Smaller modal for chat */
-    height: 70vh;
+/* AI Tutor Modal (using global modal styles, with specifics) */
+#ai-tutor-chat-modal .modal__content.ai-tutor-modal__content {
+    max-width: 480px;
+    height: 75vh; /* Taller for chat */
+    max-height: 600px;
     display: flex;
     flex-direction: column;
 }
@@ -294,19 +342,41 @@
     padding: var(--spacing-sm);
     margin-bottom: var(--spacing-sm);
     background-color: var(--current-bg-color);
-}
-.ai-tutor-input-area {
     display: flex;
+    flex-direction: column;
     gap: var(--spacing-sm);
 }
-#ai-tutor-input-area input { flex-grow: 1; }
-#ai-tutor-input-area button { padding: var(--spacing-sm); /* Adjust for icon button */ }
+/* Styling for messages within AI tutor modal (can reuse .message-bubble styles or create specific ones) */
+.tutor-message {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-md);
+    max-width: 90%;
+    line-height: 1.4;
+    font-size: var(--font-size-sm);
+}
+.user-tutor-message {
+    background-color: var(--color-primary-ultralight);
+    align-self: flex-end;
+    border-bottom-right-radius: var(--border-radius-sm);
+}
+.ai-tutor-message {
+    background-color: var(--current-border-color-light);
+    align-self: flex-start;
+    border-bottom-left-radius: var(--border-radius-sm);
+}
+.dark-mode .user-tutor-message { background-color: var(--color-primary-dark); }
+.dark-mode .ai-tutor-message { background-color: var(--color-dark-bg-input); }
+
+.ai-tutor-input-area { display: flex; gap: var(--spacing-sm); }
+.ai-tutor-input-area input { flex-grow: 1; }
+.ai-tutor-input-area button { padding: var(--spacing-sm); }
 
 
 /* --- Responsive Adjustments for mcourse.css --- */
 @media (max-width: 1200px) {
     .learning-environment-grid {
-        grid-template-columns: 2fr 5fr; /* Collapse right sidebar first */
+        grid-template-columns: 220px 1fr; /* Collapse right sidebar first */
+        gap: var(--spacing-md);
     }
     .learning-sidebar--right { display: none; }
 }
@@ -315,13 +385,21 @@
     .learning-environment-grid {
         grid-template-columns: 1fr; /* Stack main content and left sidebar */
         height: auto; /* Allow content to define height */
+        padding: 0; /* Remove grid padding, rely on main-content padding */
     }
     .learning-sidebar--left {
-        order: 2; /* Move sidebar below main content on mobile */
-        max-height: 300px; /* Limit height when stacked */
+        order: 2;
+        max-height: none; /* Allow full scroll */
         margin-top: var(--spacing-lg);
+        width: 100%; /* Take full width when stacked */
+        border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg); /* Adjust rounding */
     }
-    .learning-interaction-area { order: 1; }
+    .learning-interaction-area {
+        order: 1;
+        height: auto; /* Allow it to grow */
+        min-height: 70vh; /* Ensure decent height */
+        border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    }
     .media-controls-area { flex-direction: column; align-items: stretch; }
     .tts-controls, .ttv-controls { width: 100%; justify-content: space-between; }
 }
@@ -331,17 +409,20 @@
         padding-top: var(--spacing-sm);
         padding-bottom: var(--spacing-sm);
     }
-    .learning-environment-grid {
-        gap: var(--spacing-md);
-        padding: 0 var(--spacing-xs); /* Reduce padding for grid itself */
-    }
     .learning-sidebar, .learning-interaction-area {
         padding: var(--spacing-md);
     }
     .current-topic-title-text { font-size: var(--font-size-lg); }
-    .topic-actions .topic-action-btn span { display: none; } /* Show only icons on mobile */
+    .topic-actions .topic-action-btn span { display: none; }
     .topic-actions .topic-action-btn { padding: var(--spacing-xs); }
-    .ai-question-bubble, .user-answer-bubble { max-width: 95%; }
-    .user-input-form textarea { rows: 2; }
+    .message-bubble { max-width: 95%; }
+    .user-input-form textarea { rows: 2; font-size: var(--font-size-sm); }
+    .user-input-form button#submit-answer-btn { font-size: var(--font-size-sm); }
+    .form__select--compact { min-width: 100px; }
 }
-
+@media (max-width: 480px) {
+    .module-topic-nav .topic-list-nav { padding-left: var(--spacing-sm); }
+    .tts-controls, .ttv-controls { flex-direction: column; align-items: stretch; }
+    .tts-controls .form__select--compact { width: 100%; margin-bottom: var(--spacing-xs); }
+    .media-control-button { width: 100%; }
+}
