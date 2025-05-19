@@ -1,1 +1,347 @@
+```css
+/* css/mcourse.css */
+/* ==========================================================================
+   Uplas Interactive Learning Page Styles (mcourse.css)
+   - Relies on variables.css and global.css
+   ========================================================================== */
+
+@import url('global.css');
+
+/* --- Main Layout: Learning Environment Grid --- */
+.mcourse-main-content {
+    padding-top: var(--spacing-lg); /* Space below fixed header */
+    padding-bottom: var(--spacing-lg);
+    flex-grow: 1; /* Ensure it takes available height */
+}
+
+.learning-environment-grid {
+    display: grid;
+    grid-template-columns: 2fr 5fr 2.5fr; /* Sidebar - Main - Sidebar */
+    gap: var(--spacing-lg);
+    height: calc(100vh - var(--header-height) - (var(--spacing-lg) * 2)); /* Full viewport height minus header and padding */
+    max-width: 1800px; /* Allow wider layout for learning */
+    margin: 0 auto;
+    padding: 0 var(--container-padding-x);
+}
+
+.learning-sidebar {
+    background-color: var(--current-card-bg);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-sm);
+    overflow-y: auto; /* Scrollable if content exceeds height */
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.learning-sidebar--left {
+    /* Specific styles for left sidebar if any */
+}
+.learning-sidebar--right {
+    /* Specific styles for right sidebar if any */
+}
+
+.sidebar-section {
+    /* Styles for individual sections within sidebars */
+}
+.sidebar-title {
+    font-size: 1.05rem; /* Slightly smaller than main section titles */
+    font-weight: var(--font-weight-semibold);
+    color: var(--current-text-color);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 1px solid var(--current-border-color-light);
+}
+
+/* Course Navigation in Left Sidebar */
+.module-topic-nav .module-group {
+    margin-bottom: var(--spacing-md);
+}
+.module-topic-nav .module-title-btn {
+    font-weight: var(--font-weight-medium);
+    color: var(--current-text-color);
+    padding: var(--spacing-xs) 0;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.module-topic-nav .module-title-btn:hover {
+    color: var(--current-link-hover-color);
+}
+.module-topic-nav .topic-list-nav {
+    list-style: none;
+    padding-left: var(--spacing-md); /* Indent topics */
+    margin-top: var(--spacing-xs);
+}
+.module-topic-nav .topic-link-nav {
+    display: block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    color: var(--current-text-color-secondary);
+    border-radius: var(--border-radius-sm);
+}
+.module-topic-nav .topic-link-nav:hover,
+.module-topic-nav .topic-link-nav.active {
+    background-color: var(--color-primary-ultralight);
+    color: var(--color-primary-dark);
+    font-weight: var(--font-weight-medium);
+}
+.dark-mode .module-topic-nav .topic-link-nav.active {
+    color: var(--color-primary-light);
+}
+
+/* Progress Overview in Left Sidebar */
+.progress-overview-simple p {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-xs);
+    color: var(--current-text-color-secondary);
+}
+.progress-overview-simple p span {
+    font-weight: var(--font-weight-semibold);
+    color: var(--current-text-color);
+}
+.progress-bar-container.small-progress {
+    height: 8px;
+    margin-bottom: var(--spacing-sm);
+}
+
+/* --- Main Learning Interaction Area --- */
+.learning-interaction-area {
+    background-color: var(--current-card-bg);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-md);
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Fill the grid cell height */
+}
+
+.topic-header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--current-border-color-light);
+}
+.current-topic-title-text {
+    font-size: var(--font-size-xl);
+    margin-bottom: 0;
+}
+.topic-actions { display: flex; gap: var(--spacing-sm); }
+.topic-action-btn { /* Uses .button styles implicitly if classes are added */
+    font-size: var(--font-size-sm);
+    color: var(--current-text-color-secondary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--current-border-color);
+    border-radius: var(--border-radius-md);
+}
+.topic-action-btn:hover {
+    color: var(--current-link-hover-color);
+    border-color: var(--current-link-hover-color);
+    background-color: var(--color-primary-ultralight);
+}
+.topic-action-btn .fa-bookmark.fas { /* For liked state */
+    color: var(--color-accent);
+}
+
+
+/* Q&A Content Area */
+.qna-content-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: var(--spacing-sm) 0;
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+.ai-question-bubble, .user-answer-bubble {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-lg);
+    max-width: 80%;
+    line-height: 1.5;
+    box-shadow: var(--box-shadow-xs);
+}
+.ai-question-bubble {
+    background-color: var(--color-primary-ultralight);
+    color: var(--current-text-color); /* Ensure readability */
+    align-self: flex-start;
+    border-bottom-left-radius: var(--border-radius-sm); /* Bubble tail effect */
+}
+.dark-mode .ai-question-bubble {
+    background-color: var(--color-secondary-light);
+    color: var(--color-dark-text-primary);
+}
+.user-answer-bubble {
+    background-color: var(--color-success-light); /* Or a neutral user color */
+    color: var(--current-text-color);
+    align-self: flex-end;
+    border-bottom-right-radius: var(--border-radius-sm);
+}
+.dark-mode .user-answer-bubble {
+    background-color: var(--color-primary-dark);
+}
+.ai-question-bubble p, .user-answer-bubble p { margin-bottom: 0; }
+
+/* Media Controls (TTS, TTV) */
+.media-controls-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) 0;
+    border-top: 1px solid var(--current-border-color-light);
+    margin-top: var(--spacing-sm);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+.tts-controls, .ttv-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+.form__select--compact { /* For TTS voice select */
+    padding-top: var(--spacing-xs);
+    padding-bottom: var(--spacing-xs);
+    font-size: var(--font-size-xs);
+    min-width: 120px;
+    height: auto; /* Let content define height */
+}
+.audio-player-container-inline {
+    /* Styles for an inline audio player if needed, or it'll be a standard <audio> tag */
+}
+.video-player-wrapper {
+    margin-top: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    box-shadow: var(--box-shadow-sm);
+    background-color: var(--color-black); /* Placeholder for video */
+    aspect-ratio: 16 / 9; /* Maintain aspect ratio */
+}
+.video-player-wrapper iframe,
+.video-player-wrapper video {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+
+/* User Input Form */
+.user-input-form {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--current-border-color-light);
+}
+.user-input-form textarea {
+    flex-grow: 1;
+    min-height: 40px; /* Start small, can grow */
+    resize: vertical;
+}
+.user-input-form button { /* Submit button */
+    flex-shrink: 0;
+}
+
+/* --- Right Sidebar: AI Tutor, Resources --- */
+.ai-tutor-panel-preview {
+    text-align: center;
+}
+.ai-tutor-quick-help-text p {
+    font-size: var(--font-size-sm);
+    color: var(--current-text-color-secondary);
+    margin-bottom: var(--spacing-sm);
+}
+#open-ai-tutor-btn { /* Uses .button .button--secondary .button--full-width */
+    font-size: var(--font-size-sm);
+}
+
+.resource-list-sidebar {
+    list-style: none;
+    padding-left: 0;
+}
+.resource-list-sidebar li a {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    color: var(--current-link-color);
+    padding: var(--spacing-xs) 0;
+}
+.resource-list-sidebar li a:hover {
+    color: var(--current-link-hover-color);
+}
+.resource-list-sidebar li i {
+    width: 16px; text-align: center;
+    opacity: 0.7;
+}
+
+/* AI Tutor Modal (Basic - can be styled more like a chat window) */
+#ai-tutor-chat-modal .modal__content {
+    max-width: 450px; /* Smaller modal for chat */
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+}
+.ai-tutor-messages-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    border: 1px solid var(--current-border-color);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    background-color: var(--current-bg-color);
+}
+.ai-tutor-input-area {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+#ai-tutor-input-area input { flex-grow: 1; }
+#ai-tutor-input-area button { padding: var(--spacing-sm); /* Adjust for icon button */ }
+
+
+/* --- Responsive Adjustments for mcourse.css --- */
+@media (max-width: 1200px) {
+    .learning-environment-grid {
+        grid-template-columns: 2fr 5fr; /* Collapse right sidebar first */
+    }
+    .learning-sidebar--right { display: none; }
+}
+
+@media (max-width: 992px) {
+    .learning-environment-grid {
+        grid-template-columns: 1fr; /* Stack main content and left sidebar */
+        height: auto; /* Allow content to define height */
+    }
+    .learning-sidebar--left {
+        order: 2; /* Move sidebar below main content on mobile */
+        max-height: 300px; /* Limit height when stacked */
+        margin-top: var(--spacing-lg);
+    }
+    .learning-interaction-area { order: 1; }
+    .media-controls-area { flex-direction: column; align-items: stretch; }
+    .tts-controls, .ttv-controls { width: 100%; justify-content: space-between; }
+}
+
+@media (max-width: 767px) {
+    .mcourse-main-content {
+        padding-top: var(--spacing-sm);
+        padding-bottom: var(--spacing-sm);
+    }
+    .learning-environment-grid {
+        gap: var(--spacing-md);
+        padding: 0 var(--spacing-xs); /* Reduce padding for grid itself */
+    }
+    .learning-sidebar, .learning-interaction-area {
+        padding: var(--spacing-md);
+    }
+    .current-topic-title-text { font-size: var(--font-size-lg); }
+    .topic-actions .topic-action-btn span { display: none; } /* Show only icons on mobile */
+    .topic-actions .topic-action-btn { padding: var(--spacing-xs); }
+    .ai-question-bubble, .user-answer-bubble { max-width: 95%; }
+    .user-input-form textarea { rows: 2; }
+}
 
