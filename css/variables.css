@@ -1,0 +1,287 @@
+/* css/variables.css */
+/* ================================================
+   Uplas Global CSS Variables (variables.css)
+   ================================================ */
+
+:root {
+    /* Core Color Palette (Uplas Brand Identity) */
+    --color-primary: #00b4d8;          /* Skyblue - Main Accent */
+    --color-primary-dark: #0077b6;     /* Darker Skyblue for hovers/active states */
+    --color-primary-light: #72d2e8;    /* Lighter Skyblue for subtle accents */
+    --color-primary-ultralight: rgba(0, 180, 216, 0.1); /* For subtle backgrounds/hovers */
+
+    --color-secondary: #3d405b;        /* Luxury Black / Dark Blue-Gray - For text, dark backgrounds */
+    --color-secondary-dark: #2c2e43;   /* Darker shade of secondary */
+    --color-secondary-light: #5a6181;  /* Lighter shade of secondary */
+
+    --color-accent: #f4a261;           /* Orange Accent - For CTAs or highlights */
+    --color-accent-dark: #e76f51;      /* Darker Orange */
+    --color-accent-light: #f6b98a;     /* Lighter Orange */
+
+    /* Functional Colors */
+    --color-success: #28a745;          /* Green for success messages, confirmations */
+    --color-success-light: rgba(40, 167, 69, 0.1);
+    --color-error: #dc3545;            /* Red for errors, warnings */
+    --color-error-light: rgba(220, 53, 69, 0.1);
+    --color-warning: #ffc107;          /* Yellow for warnings, attention */
+    --color-warning-light: rgba(255, 193, 7, 0.1);
+    --color-info: var(--color-primary);/* Using primary for info accents */
+    --color-info-light: var(--color-primary-ultralight);
+
+    /* Neutral & Grayscale Palette */
+    --color-white: #ffffff;
+    --color-black: #121212;            /* True black for specific elements if needed */
+    --color-gray-100: #f8f9fa;         /* Very light gray, almost white */
+    --color-gray-200: #f4f1de;         /* Light Cream - Main light page background */
+    --color-gray-300: #e9ecef;         /* Light gray for borders, dividers */
+    --color-gray-400: #dee2e6;         /* Slightly darker gray for borders */
+    --color-gray-500: #ced4da;         /* Medium gray for input borders */
+    --color-gray-600: #adb5bd;         /* Text secondary on light backgrounds */
+    --color-gray-700: #5a5f73;         /* Softer secondary text for light mode */
+    --color-gray-800: #333745;         /* Primary text on light backgrounds (Softer Black) */
+    --color-gray-900: #212529;         /* Darker gray, near black */
+
+    /* Dark Mode Specific Base Colors */
+    --color-dark-bg-primary: #1a1c23;      /* Primary dark background (very dark blue/gray) */
+    --color-dark-bg-secondary: #222430;    /* Secondary dark background (slightly lighter) */
+    --color-dark-bg-panel: #2d2f3e;        /* For cards/panels in dark mode */
+    --color-dark-bg-input: #3a3f51;        /* Dark mode input background */
+    --color-dark-border-primary: #404552;  /* Primary dark mode border */
+    --color-dark-border-secondary: #505562;/* Slightly lighter dark border */
+    --color-dark-text-primary: var(--color-gray-100); /* Primary text on dark backgrounds */
+    --color-dark-text-secondary: var(--color-gray-600); /* Secondary text on dark backgrounds */
+
+
+    /* Typography */
+    --font-primary: 'Poppins', sans-serif;
+    --font-size-base: 16px;
+    --font-size-xs: 0.75rem;    /* 12px */
+    --font-size-sm: 0.875rem;   /* 14px */
+    --font-size-md: 1rem;       /* 16px */
+    --font-size-lg: 1.125rem;   /* 18px */
+    --font-size-xl: 1.5rem;     /* 24px */
+    --font-size-xxl: 2rem;      /* 32px */
+    --font-size-hero: clamp(2.2rem, 6vw, 3.5rem); /* Responsive hero title */
+
+    --line-height-base: 1.65;
+    --line-height-heading: 1.3;
+
+    --font-weight-light: 300;
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Spacing */
+    --spacing-xxs: 0.25rem;  /* 4px */
+    --spacing-xs: 0.5rem;   /* 8px */
+    --spacing-sm: 0.75rem;  /* 12px */
+    --spacing-md: 1rem;     /* 16px */
+    --spacing-lg: 1.5rem;   /* 24px */
+    --spacing-xl: 2rem;     /* 32px */
+    --spacing-xxl: 3rem;    /* 48px */
+    --spacing-xxxl: 4rem;   /* 64px */
+
+    /* Borders & Shadows */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-xl: 16px;
+    --border-radius-pill: 9999px;
+    --border-width: 1px;
+    --border-width-bold: 2px;
+
+    --box-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --box-shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.06);
+    --box-shadow-md: 0 5px 12px -1px rgba(0, 0, 0, 0.08), 0 3px 7px -2px rgba(0, 0, 0, 0.05);
+    --box-shadow-lg: 0 12px 20px -3px rgba(0, 0, 0, 0.1), 0 5px 8px -4px rgba(0, 0, 0, 0.06);
+    --box-shadow-xl: 0 20px 30px -5px rgba(0, 0, 0, 0.12), 0 10px 15px -6px rgba(0, 0, 0, 0.08);
+    --box-shadow-focus: 0 0 0 3px var(--color-primary-ultralight);
+    --box-shadow-focus-error: 0 0 0 3px var(--color-error-light);
+
+    /* Transitions */
+    --transition-short: 0.15s ease-out;
+    --transition-base: 0.25s ease-out;
+    --transition-long: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+    /* Layout Specific */
+    --header-height: 70px; /* Standard Uplas header height */
+    --container-max-width: 1200px;
+    --container-padding-x: var(--spacing-lg);
+
+
+    /* === THEME-DEPENDENT VARIABLES (Light Mode Defaults) === */
+    --current-bg-color: var(--color-gray-200); /* Main page background */
+    --current-text-color: var(--color-gray-800); /* Primary text on light bg */
+    --current-text-color-secondary: var(--color-gray-700); /* Secondary text on light bg */
+    --current-card-bg: var(--color-white); /* Panel/card background */
+    --current-border-color: var(--color-gray-400); /* Standard border */
+    --current-border-color-light: var(--color-gray-300); /* Lighter border for dividers */
+    --current-input-bg: var(--color-white);
+    --current-input-border-color: var(--color-gray-500);
+    --current-input-text-color: var(--color-gray-800);
+    --current-input-placeholder-color: var(--color-gray-600);
+    --current-link-color: var(--color-primary);
+    --current-link-hover-color: var(--color-primary-dark);
+    --current-header-bg: var(--color-white);
+    --current-footer-bg: var(--color-secondary-dark);
+    --current-footer-text-color: var(--color-gray-600); /* Muted text for footer */
+
+    /* Button Theming */
+    --current-button-primary-bg: var(--color-primary);
+    --current-button-primary-text: var(--color-white);
+    --current-button-primary-hover-bg: var(--color-primary-dark);
+    --current-button-primary-border: var(--color-primary);
+
+    --current-button-secondary-bg: transparent;
+    --current-button-secondary-text: var(--color-secondary);
+    --current-button-secondary-border: var(--color-secondary);
+    --current-button-secondary-hover-bg: var(--color-secondary);
+    --current-button-secondary-hover-text: var(--color-white);
+}
+
+.dark-mode {
+    --current-bg-color: var(--color-dark-bg-secondary);
+    --current-text-color: var(--color-dark-text-primary);
+    --current-text-color-secondary: var(--color-dark-text-secondary);
+    --current-card-bg: var(--color-dark-bg-panel);
+    --current-border-color: var(--color-dark-border-primary);
+    --current-border-color-light: var(--color-dark-border-secondary);
+    --current-input-bg: var(--color-dark-bg-input);
+    --current-input-border-color: var(--color-dark-border-primary);
+    --current-input-text-color: var(--color-dark-text-primary);
+    --current-input-placeholder-color: var(--color-dark-text-secondary);
+    --current-link-color: var(--color-primary-light);
+    --current-link-hover-color: var(--color-white);
+    --current-header-bg: var(--color-dark-bg-panel);
+    --current-footer-bg: var(--color-dark-bg-primary);
+    --current-footer-text-color: var(--color-dark-text-secondary);
+
+    /* Button Theming - Dark Mode */
+    --current-button-primary-bg: var(--color-primary);
+    --current-button-primary-text: var(--color-black); /* Dark text on primary for contrast in dark mode */
+    --current-button-primary-hover-bg: var(--color-primary-light);
+    --current-button-primary-border: var(--color-primary);
+
+    --current-button-secondary-text: var(--color-primary-light);
+    --current-button-secondary-border: var(--color-primary-light);
+    --current-button-secondary-hover-bg: var(--color-primary-light);
+    --current-button-secondary-hover-text: var(--color-black);
+}
+```javascript
+// js/global.js
+/* ================================================
+   Uplas Global JavaScript (global.js)
+   - Theme Toggle
+   - Mobile Navigation
+   - Common Utility Functions
+   ================================================ */
+'use strict';
+
+document.addEventListener('DOMContentLoaded', () => {
+    const body = document.body;
+
+    // --- 1. Theme Toggle ---
+    const themeToggleButton = document.getElementById('theme-toggle');
+
+    const updateThemeButtonAppearance = (isDarkMode) => {
+        if (!themeToggleButton) return;
+        const themeTextSpan = themeToggleButton.querySelector('.theme-text'); // If you have text like "Dark Mode"
+        const moonIcon = themeToggleButton.querySelector('.theme-icon--dark');
+        const sunIcon = themeToggleButton.querySelector('.theme-icon--light');
+
+        themeToggleButton.setAttribute('aria-label', isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+        themeToggleButton.setAttribute('title', isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode');
+
+        if (themeTextSpan) {
+            themeTextSpan.textContent = isDarkMode ? 'Light Mode' : 'Dark Mode';
+        }
+        if (moonIcon) moonIcon.style.display = isDarkMode ? 'none' : 'inline-block';
+        if (sunIcon) sunIcon.style.display = isDarkMode ? 'inline-block' : 'none';
+    };
+
+    const applyThemePreference = () => {
+        const savedDarkMode = localStorage.getItem('uplasGlobalTheme');
+        // Default to system preference if no saved theme
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        let isDarkMode;
+
+        if (savedDarkMode !== null) {
+            isDarkMode = savedDarkMode === 'true';
+        } else {
+            isDarkMode = systemPrefersDark;
+        }
+
+        body.classList.toggle('dark-mode', isDarkMode);
+        updateThemeButtonAppearance(isDarkMode);
+    };
+
+    if (themeToggleButton) {
+        themeToggleButton.addEventListener('click', () => {
+            const isCurrentlyDark = body.classList.contains('dark-mode');
+            const newIsDarkMode = !isCurrentlyDark;
+            body.classList.toggle('dark-mode', newIsDarkMode);
+            localStorage.setItem('uplasGlobalTheme', newIsDarkMode);
+            updateThemeButtonAppearance(newIsDarkMode);
+        });
+    }
+    applyThemePreference(); // Apply theme on initial load
+
+    // --- 2. Mobile Navigation Toggle ---
+    const mobileNavToggleButton = document.getElementById('mobile-nav-toggle');
+    const mainNavigation = document.getElementById('main-navigation'); // Assuming your <nav> has this ID
+
+    if (mobileNavToggleButton && mainNavigation) {
+        mobileNavToggleButton.addEventListener('click', () => {
+            const isExpanded = mobileNavToggleButton.getAttribute('aria-expanded') === 'true' || false;
+            mobileNavToggleButton.setAttribute('aria-expanded', !isExpanded);
+            mainNavigation.classList.toggle('nav--open'); // This class controls visibility
+
+            // Toggle icon (e.g., hamburger to X)
+            const icon = mobileNavToggleButton.querySelector('i'); // Assuming Font Awesome
+            if (icon) {
+                icon.classList.toggle('fa-bars', isExpanded);
+                icon.classList.toggle('fa-times', !isExpanded);
+            }
+        });
+    }
+
+    // --- 3. Common Utility Functions (Optional - Add as needed) ---
+
+    /**
+     * Smoothly scrolls to an element.
+     * @param {string} selector - CSS selector for the target element.
+     */
+    window.uplasScrollToElement = (selector) => { // Expose to global window object if needed by other scripts
+        const targetElement = document.querySelector(selector);
+        if (targetElement) {
+            targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    };
+
+    /**
+     * Gets a cookie by name.
+     * Useful if you implement CSRF protection with Django.
+     * @param {string} name - The name of the cookie.
+     * @returns {string|null} The cookie value or null if not found.
+     */
+    window.uplasGetCookie = (name) => {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    };
+
+    console.log("Uplas global.js loaded.");
+});
