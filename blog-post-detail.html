@@ -2,14 +2,12 @@
 <html lang="en"> <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {/* The title will be dynamically set by JS based on the article loaded */}
     <title data-translate-key="blog_post_page_title_default">Blog Post | Uplas AI Insights</title>
     <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    {/* Serif font for better readability of long-form article content */}
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -18,27 +16,25 @@
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/blog-post-detail.css">
 
-    {/* SEO Meta Tags - these should be dynamically populated by JS or backend */}
     <meta name="description" content="Detailed article on AI trends, education, and Uplas updates. Read insightful content from Uplas experts.">
     <meta name="keywords" content="AI, blog, article, Uplas, technology, machine learning, data science">
-    <meta name="author" content="Uplas Team"> {/* Default, can be updated by JS */}
+    <meta name="author" content="Uplas Team">
     <meta name="theme-color" content="#00b4d8">
 
-    {/* Open Graph / Facebook Meta Tags - dynamically populated */}
+
     <meta property="og:title" content="Blog Post Title | Uplas">
     <meta property="og:description" content="A brief summary of the blog post.">
-    <meta property="og:image" content="images/blog_default_featured_image.jpg"> {/* Default OG image */}
-    <meta property="og:url" content="https://uplas.com/blog-post-detail.html"> {/* Canonical URL */}
+    <meta property="og:image" content="images/blog_default_featured_image.jpg">
+    <meta property="og:url" content="https://uplas.com/blog-post-detail.html">
     <meta property="og:type" content="article">
-    {/* <meta property="article:published_time" content="2025-05-20T12:00:00Z" /> */}
-    {/* <meta property="article:author" content="Author Name" /> */}
+    <meta property="article:published_time" content="2025-05-20T12:00:00Z" />
+    <meta property="article:author" content="Author Name" />
 
-    {/* Twitter Card Meta Tags - dynamically populated */}
+
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Blog Post Title | Uplas">
     <meta name="twitter:description" content="A brief summary of the blog post.">
-    <meta name="twitter:image" content="images/blog_default_featured_image.jpg"> {/* Default Twitter image */}
-</head>
+    <meta name="twitter:image" content="images/blog_default_featured_image.jpg">
 <body class="light-mode">
 
     <header class="header" id="page-header">
@@ -67,7 +63,6 @@
                             <option value="fr">Français (FR)</option>
                         </select>
                     </div>
-                    {/* Currency selector likely not needed on blog post detail */}
                 </div>
                 <button id="theme-toggle" class="button button--theme" aria-label="Switch color theme" title="Toggle theme">
                     <i class="fas fa-moon theme-icon theme-icon--dark" aria-hidden="true"></i>
@@ -89,7 +84,6 @@
         <div class="container article-layout-container">
             <article class="blog-post-full-article" id="blog-article-container">
                 <header class="blog-post-header">
-                    {/* Breadcrumbs */}
                     <nav aria-label="Breadcrumb" class="breadcrumb-nav">
                         <ol>
                             <li><a href="index.html" data-translate-key="nav_home">Home</a></li>
@@ -124,10 +118,8 @@
                 </figure>
 
                 <div class="article-body-content" id="article-body-content">
-                    {/* Article content (Markdown rendered or HTML) will be injected here by JS */}
                     <p class="loading-article-message" data-translate-key="blog_post_loading_content">Loading article content...</p>
                     
-                    {/* --- Example Static Content (to be replaced by dynamic loading) --- */}
                     <p>This is where the main body of the blog post will appear. It will support rich text formatting, including paragraphs, headings, lists, images, and code blocks. The content will be fetched dynamically based on the article slug from the URL.</p>
                     <h2>A Deeper Dive into the Topic</h2>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
@@ -146,7 +138,6 @@ def hello_uplas():
 hello_uplas()</code></pre>
                     <blockquote>"This is an example blockquote. It can be used to highlight important quotes or statements from experts or within the text itself. It should stand out visually from the regular paragraph text."</blockquote>
                     <p>We encourage you to think critically about these concepts and how they apply to your own work or studies. The field of AI is constantly evolving, and continuous learning is key to staying at the forefront.</p>
-                    {/* --- End Example Static Content --- */}
                 </div>
 
                 <footer class="article-footer">
