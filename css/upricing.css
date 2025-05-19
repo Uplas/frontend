@@ -1,1 +1,273 @@
+```css
+/* css/upricing.css */
+/* ==========================================================================
+   Uplas Pricing Page Styles (upricing.css)
+   - Relies on variables.css and global.css
+   ========================================================================== */
 
+@import url('global.css'); /* Includes variables.css */
+
+/* --- Pricing Hero Section --- */
+.pricing-hero-section {
+    padding: var(--spacing-xxl) 0;
+    background-color: var(--current-header-bg); /* Use header bg for a clean look, or a subtle gradient */
+    text-align: center;
+    border-bottom: 1px solid var(--current-border-color-light);
+}
+.pricing-hero__title {
+    font-size: var(--font-size-hero);
+    color: var(--current-text-color);
+    margin-bottom: var(--spacing-sm);
+}
+.dark-mode .pricing-hero__title { color: var(--color-primary-light); }
+.pricing-hero__subtitle {
+    font-size: clamp(1.1rem, 3vw, 1.35rem);
+    color: var(--current-text-color-secondary);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* --- Pricing Plans Section --- */
+.pricing-plans-section {
+    padding: var(--spacing-xxl) 0;
+}
+.pricing-plans-section .section-title { text-align: center; display: block; }
+
+.pricing-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+}
+
+.pricing-card {
+    background-color: var(--current-card-bg);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: var(--box-shadow-md);
+    text-align: center;
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+    border: 2px solid transparent; /* For featured state */
+    display: flex;
+    flex-direction: column;
+}
+.pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-lg);
+}
+
+.pricing-card--featured {
+    border-color: var(--color-primary);
+    box-shadow: var(--box-shadow-lg); /* More prominent shadow */
+    transform: scale(1.03); /* Slightly larger */
+    position: relative;
+}
+.pricing-card--featured:hover { transform: scale(1.05) translateY(-5px); }
+
+.pricing-card__badge {
+    position: absolute;
+    top: -15px; /* Adjust to sit nicely above the card */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--color-accent);
+    color: var(--color-white);
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--border-radius-pill);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.dark-mode .pricing-card__badge { color: var(--color-text-dark); }
+
+
+.pricing-card__title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-semibold);
+    color: var(--current-text-color);
+    margin-bottom: var(--spacing-sm);
+}
+.dark-mode .pricing-card--featured .pricing-card__title {
+    color: var(--color-primary-light);
+}
+
+.pricing-card__price {
+    margin-bottom: var(--spacing-md);
+    line-height: 1.1;
+}
+.pricing-card__price .price-value { /* This span will be updated by JS for currency */
+    font-size: clamp(2rem, 8vw, 3rem);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    display: block; /* Or inline-block if preferred */
+}
+.dark-mode .pricing-card__price .price-value { color: var(--color-primary-light); }
+.pricing-card__price .price-term {
+    font-size: var(--font-size-sm);
+    color: var(--current-text-color-secondary);
+    font-weight: var(--font-weight-medium);
+}
+
+.pricing-card__description {
+    font-size: var(--font-size-sm);
+    color: var(--current-text-color-secondary);
+    margin-bottom: var(--spacing-lg);
+    min-height: 4.5em; /* Approx 3 lines */
+}
+
+.pricing-card__features {
+    list-style: none;
+    padding: 0;
+    margin-bottom: var(--spacing-lg);
+    text-align: left;
+    flex-grow: 1; /* Pushes CTA to bottom */
+}
+.pricing-card__features li {
+    font-size: var(--font-size-sm);
+    color: var(--current-text-color);
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: flex-start; /* Align icon with first line of text */
+    gap: var(--spacing-sm);
+}
+.pricing-card__features li i.fa-check {
+    color: var(--color-success);
+    margin-top: 0.2em; /* Align with text */
+    flex-shrink: 0;
+}
+.pricing-card__features li i.fa-times {
+    color: var(--color-error);
+    margin-top: 0.2em;
+    flex-shrink: 0;
+}
+.pricing-card__features li.feature--unavailable {
+    color: var(--current-text-color-secondary);
+    opacity: 0.7;
+    /* text-decoration: line-through; */ /* Optional */
+}
+
+.pricing-card__cta { /* Uses .button */
+    width: 100%;
+    margin-top: auto; /* Pushes to bottom if features list doesn't fill space */
+}
+
+/* --- Enterprise Plan Section --- */
+.enterprise-plan-section {
+    padding: var(--spacing-xxl) 0;
+    background-color: var(--color-secondary-dark);
+    color: var(--color-dark-text-primary);
+}
+.dark-mode .enterprise-plan-section {
+    background-color: var(--color-dark-bg-primary);
+}
+.enterprise-plan__container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xl);
+}
+.enterprise-plan__text-content {
+    flex: 1;
+    max-width: 650px;
+    text-align: center;
+}
+.enterprise-plan__text-content .section-title {
+    color: var(--color-white); /* Override global for dark bg */
+    border-bottom-color: var(--color-primary-light);
+}
+.dark-mode .enterprise-plan__text-content .section-title {
+     color: var(--color-primary-light);
+}
+.enterprise-plan__text-content p {
+    color: var(--color-dark-text-secondary);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-lg);
+}
+.enterprise-plan__image-container {
+    flex: 1;
+    max-width: 500px;
+    width: 100%;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--box-shadow-xl);
+}
+.enterprise-plan__image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+@media (min-width: 992px) {
+    .enterprise-plan__container {
+        flex-direction: row;
+        gap: var(--spacing-xxxl);
+        text-align: left;
+    }
+    .enterprise-plan__text-content { text-align: left; }
+    .enterprise-plan__text-content .section-title { text-align: left; display: inline-block; }
+    .enterprise-plan__image-container { order: 1; /* Image on right */ }
+}
+
+
+/* --- FAQ Section --- */
+/* Styles inherited from global.css or uhome.css if consistent */
+.faq-section { padding: var(--spacing-xxl) 0; }
+.faq-section .section-title { text-align: center; display: block; }
+
+/* --- Contact Section --- */
+.contact-section {
+    padding: var(--spacing-xxl) 0;
+    background-color: var(--current-bg-color);
+}
+.contact-section .section-title,
+.contact-section .section-subtitle {
+    text-align: center;
+}
+.contact-form-container {
+    max-width: 700px;
+    margin: var(--spacing-xl) auto 0 auto;
+    background-color: var(--current-card-bg);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-md);
+}
+.form__title--centered { text-align: center; }
+.contact-form-stacked .form__row { /* For stacked name/email on mobile */
+    /* Handled by global form styles, can add overrides if needed */
+}
+.contact-form__submit-btn { /* Uses .button .button--primary .button--large */
+    width: 100%;
+}
+@media (min-width: 768px) {
+    .contact-form-stacked .form__row {
+        display: flex;
+        gap: var(--spacing-lg);
+    }
+    .contact-form-stacked .form__row .form__group {
+        flex: 1;
+    }
+    .contact-form__submit-btn { width: auto; display: block; margin-left: auto; }
+}
+
+/* --- Payment Modal --- */
+/* Payment modal styles will be primarily inherited from mcourseD.css or global modal styles.
+   Ensure all elements like #summary-plan-price-span use data-price-usd for dynamic currency.
+*/
+#summary-plan-price-span { /* Ensure it's stylable for currency */
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+}
+.dark-mode #summary-plan-price-span {
+    color: var(--color-primary-light);
+}
+
+/* --- Responsive Adjustments for upricing.css --- */
+@media (max-width: 767px) {
+    .pricing-cards-grid { grid-template-columns: 1fr; }
+    .pricing-card--featured { transform: scale(1); } /* No scale on mobile for featured */
+    .pricing-card--featured:hover { transform: translateY(-5px); }
+    .enterprise-plan__container {
+        padding-left: var(--container-padding-x);
+        padding-right: var(--container-padding-x);
+    }
+}
