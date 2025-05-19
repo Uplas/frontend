@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en"> <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {/* The title will be dynamically set by JS based on the article loaded */}
+    <title data-translate-key="blog_post_page_title_default">Blog Post | Uplas AI Insights</title>
+    <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    {/* Serif font for better readability of long-form article content */}
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/blog-post-detail.css">
+
+    {/* SEO Meta Tags - these should be dynamically populated by JS or backend */}
+    <meta name="description" content="Detailed article on AI trends, education, and Uplas updates. Read insightful content from Uplas experts.">
+    <meta name="keywords" content="AI, blog, article, Uplas, technology, machine learning, data science">
+    <meta name="author" content="Uplas Team"> {/* Default, can be updated by JS */}
+    <meta name="theme-color" content="#00b4d8">
+
+    {/* Open Graph / Facebook Meta Tags - dynamically populated */}
+    <meta property="og:title" content="Blog Post Title | Uplas">
+    <meta property="og:description" content="A brief summary of the blog post.">
+    <meta property="og:image" content="images/blog_default_featured_image.jpg"> {/* Default OG image */}
+    <meta property="og:url" content="https://uplas.com/blog-post-detail.html"> {/* Canonical URL */}
+    <meta property="og:type" content="article">
+    {/* <meta property="article:published_time" content="2025-05-20T12:00:00Z" /> */}
+    {/* <meta property="article:author" content="Author Name" /> */}
+
+    {/* Twitter Card Meta Tags - dynamically populated */}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Blog Post Title | Uplas">
+    <meta name="twitter:description" content="A brief summary of the blog post.">
+    <meta name="twitter:image" content="images/blog_default_featured_image.jpg"> {/* Default Twitter image */}
+</head>
+<body class="light-mode">
+
+    <header class="header" id="page-header">
+        <div class="container header__container">
+            <a href="index.html" class="logo" aria-label="Uplas Homepage">
+                <img src="images/uni_plas_prev_ui.ico" alt="Uplas Platform Logo" class="logo__img">
+            </a>
+            <nav class="nav" id="main-navigation" aria-label="Main site navigation">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="index.html" class="nav__link" data-translate-key="nav_home">Home</a></li>
+                    <li class="nav__item"><a href="ucourses_list.html" class="nav__link" data-translate-key="nav_courses">Courses</a></li>
+                    <li class="nav__item"><a href="uprojects.html" class="nav__link" data-translate-key="nav_projects">My Projects</a></li>
+                    <li class="nav__item"><a href="ucommunity.html" class="nav__link" data-translate-key="nav_community">Community</a></li>
+                    <li class="nav__item"><a href="upricing.html" class="nav__link" data-translate-key="nav_pricing">Pricing</a></li>
+                    <li class="nav__item"><a href="ublog.html" class="nav__link nav__link--active" aria-current="page" data-translate-key="nav_blog">Blog</a></li>
+                </ul>
+            </nav>
+            <div class="header-actions">
+                <div class="language-currency-selectors">
+                    <div class="select-wrapper">
+                        <label for="language-selector" class="sr-only" data-translate-key="sr_select_language">Select Language</label>
+                        <i class="fas fa-globe selector-icon"></i>
+                        <select id="language-selector" class="header-select" title="Select Language">
+                            <option value="en">English (EN)</option>
+                            <option value="es">Español (ES)</option>
+                            <option value="fr">Français (FR)</option>
+                        </select>
+                    </div>
+                    {/* Currency selector likely not needed on blog post detail */}
+                </div>
+                <button id="theme-toggle" class="button button--theme" aria-label="Switch color theme" title="Toggle theme">
+                    <i class="fas fa-moon theme-icon theme-icon--dark" aria-hidden="true"></i>
+                    <i class="fas fa-sun theme-icon theme-icon--light" aria-hidden="true" style="display:none;"></i>
+                    <span class="sr-only" data-translate-key="toggle_theme_sr">Toggle Dark/Light Mode</span>
+                </button>
+                <div class="user-profile-placeholder-header" id="user-avatar-header">
+                    <button class="user-avatar-button-header" aria-label="User menu">JD</button>
+                </div>
+            </div>
+            <button class="nav__toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-navigation">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+                <span class="sr-only" data-translate-key="toggle_navigation_sr">Menu</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-content blog-post-main">
+        <div class="container article-layout-container">
+            <article class="blog-post-full-article" id="blog-article-container">
+                <header class="blog-post-header">
+                    {/* Breadcrumbs */}
+                    <nav aria-label="Breadcrumb" class="breadcrumb-nav">
+                        <ol>
+                            <li><a href="index.html" data-translate-key="nav_home">Home</a></li>
+                            <li><i class="fas fa-angle-right"></i></li>
+                            <li><a href="ublog.html" data-translate-key="nav_blog">Blog</a></li>
+                            <li><i class="fas fa-angle-right"></i></li>
+                            <li><span id="breadcrumb-article-title" aria-current="page" data-translate-key="blog_post_breadcrumb_current_placeholder">Article Title Placeholder</span></li>
+                        </ol>
+                    </nav>
+
+                    <h1 class="article-title" id="article-main-title" data-translate-key="blog_post_title_placeholder">Article Title Will Load Here</h1>
+                    <div class="article-meta">
+                        <span class="meta-item author-meta">
+                            <img src="https://placehold.co/40x40/00b4d8/FFFFFF?text=A&font=poppins" alt="Author Avatar" class="author-avatar" id="article-author-avatar">
+                            <span data-translate-key="by_author">By</span> <a href="#" class="author-name" id="article-author-name" data-translate-key="blog_post_author_placeholder">Author Name</a>
+                        </span>
+                        <span class="meta-item publish-date">
+                            <i class="fas fa-calendar-alt"></i> <time datetime="2025-01-01" id="article-publish-date" data-translate-key="blog_post_date_placeholder">January 1, 2025</time>
+                        </span>
+                        <span class="meta-item category-meta">
+                            <i class="fas fa-folder-open"></i> <a href="#" class="category-link" id="article-category-link" data-translate-key="blog_post_category_placeholder">Category</a>
+                        </span>
+                        <span class="meta-item reading-time">
+                            <i class="fas fa-clock"></i> <span id="article-reading-time" data-translate-key="blog_post_reading_time_placeholder">5 min read</span>
+                        </span>
+                    </div>
+                </header>
+
+                <figure class="featured-image-container">
+                    <img src="https://placehold.co/1200x500/3d405b/FFFFFF?text=Featured+Image&font=poppins" alt="Featured image for the blog post" id="article-featured-image" class="featured-image">
+                    <figcaption id="featured-image-caption" class="featured-image-caption" data-translate-key="blog_post_featured_image_caption_placeholder">Optional caption for the featured image.</figcaption>
+                </figure>
+
+                <div class="article-body-content" id="article-body-content">
+                    {/* Article content (Markdown rendered or HTML) will be injected here by JS */}
+                    <p class="loading-article-message" data-translate-key="blog_post_loading_content">Loading article content...</p>
+                    
+                    {/* --- Example Static Content (to be replaced by dynamic loading) --- */}
+                    <p>This is where the main body of the blog post will appear. It will support rich text formatting, including paragraphs, headings, lists, images, and code blocks. The content will be fetched dynamically based on the article slug from the URL.</p>
+                    <h2>A Deeper Dive into the Topic</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+                    <img src="https://placehold.co/800x400/72d2e8/000000?text=In-Article+Image&font=poppins" alt="An illustrative image within the article content" class="in-article-image">
+                    <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+                    <h3>Key Takeaways</h3>
+                    <ul>
+                        <li>First key takeaway point.</li>
+                        <li>Second important insight or fact.</li>
+                        <li>Third crucial piece of information.</li>
+                    </ul>
+                    <pre><code class="language-python"># Example Python code block
+def hello_uplas():
+    print("Hello from Uplas AI Blog!")
+
+hello_uplas()</code></pre>
+                    <blockquote>"This is an example blockquote. It can be used to highlight important quotes or statements from experts or within the text itself. It should stand out visually from the regular paragraph text."</blockquote>
+                    <p>We encourage you to think critically about these concepts and how they apply to your own work or studies. The field of AI is constantly evolving, and continuous learning is key to staying at the forefront.</p>
+                    {/* --- End Example Static Content --- */}
+                </div>
+
+                <footer class="article-footer">
+                    <div class="article-tags" id="article-tags-container">
+                        <strong data-translate-key="blog_post_tags_label">Tags:</strong>
+                        {/* Tags will be populated by JS */}
+                        <a href="#" class="tag">#AI</a>
+                        <a href="#" class="tag">#MachineLearning</a>
+                    </div>
+                    <div class="social-share-buttons">
+                        <strong data-translate-key="blog_post_share_label">Share this post:</strong>
+                        <a href="#" id="share-twitter" class="social-share-btn twitter" aria-label="Share on Twitter" title="Share on Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" id="share-linkedin" class="social-share-btn linkedin" aria-label="Share on LinkedIn" title="Share on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" id="share-facebook" class="social-share-btn facebook" aria-label="Share on Facebook" title="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" id="copy-link" class="social-share-btn copy-link" aria-label="Copy link to clipboard" title="Copy link"><i class="fas fa-link"></i></a>
+                        <span id="copy-link-feedback" class="copy-link-feedback" aria-live="polite"></span>
+                    </div>
+                </footer>
+            </article>
+
+            <section class="author-bio-section" id="author-bio-section">
+                <h3 class="section-title--small" data-translate-key="blog_post_author_bio_title">About the Author</h3>
+                <div class="author-bio-card">
+                    <img src="https://placehold.co/100x100/0077b6/FFFFFF?text=A&font=poppins" alt="Author's profile picture" class="author-bio__avatar" id="bio-author-avatar">
+                    <div class="author-bio__details">
+                        <h4 class="author-bio__name" id="bio-author-name">Author Name Placeholder</h4>
+                        <p class="author-bio__title-org" id="bio-author-title-org">Author Title at Organization</p>
+                        <p class="author-bio__description" id="bio-author-description" data-translate-key="blog_post_author_bio_placeholder">Author's biography will appear here, providing some background and expertise related to the article's topic. This helps establish credibility and connect with the reader.</p>
+                        <div class="author-bio__social-links" id="bio-author-social">
+                            {/* <a href="#" aria-label="Author on Twitter"><i class="fab fa-twitter"></i></a> */}
+                            {/* <a href="#" aria-label="Author on LinkedIn"><i class="fab fa-linkedin-in"></i></a> */}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="related-articles-section" id="related-articles-section">
+                <h3 class="section-title--small" data-translate-key="blog_post_related_articles_title">Related Articles</h3>
+                <div class="related-articles-grid" id="related-articles-grid">
+                    {/* Related article previews will be populated by JS */}
+                    <p class="loading-message" data-translate-key="blog_post_loading_related">Loading related articles...</p>
+                </div>
+            </section>
+
+            <section class="comments-section" id="comments-section">
+                <h3 class="section-title--small" data-translate-key="blog_post_comments_title">Comments (<span id="comment-count">0</span>)</h3>
+                <div id="comments-list">
+                    {/* Comments will be loaded here */}
+                    <p class="no-comments-message" data-translate-key="blog_post_no_comments">Be the first to comment!</p>
+                </div>
+                <form id="add-comment-form" class="add-comment-form">
+                    <h4 data-translate-key="blog_post_leave_comment_title">Leave a Comment</h4>
+                    <div class="form__group">
+                        <label for="commenter-name" class="form__label" data-translate-key="form_label_your_name">Your Name</label>
+                        <input type="text" id="commenter-name" name="commenterName" class="form__input" required>
+                    </div>
+                    <div class="form__group">
+                        <label for="comment-text" class="form__label" data-translate-key="form_label_your_comment">Your Comment</label>
+                        <textarea id="comment-text" name="commentText" class="form__textarea" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="button button--primary" data-translate-key="form_button_submit_comment">Submit Comment</button>
+                    <div id="comment-form-status" class="form__status" aria-live="polite"></div>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer" id="page-footer" role="contentinfo">
+        <div class="footer__container container">
+            <div class="footer__section footer__section--contact">
+                <h3 class="footer__heading" data-translate-key="footer_contact_us">Get in Touch</h3>
+                <address class="footer__address">
+                    <p><i class="fas fa-phone footer__icon" aria-hidden="true"></i> <a href="tel:+254708654984" class="footer__link">+254 708 654 984</a></p>
+                    <p><i class="fas fa-envelope footer__icon" aria-hidden="true"></i> <a href="mailto:support@uplas.com" class="footer__link">support@uplas.com</a></p>
+                    <p><i class="fas fa-map-marker-alt footer__icon" aria-hidden="true"></i> <span data-translate-key="footer_location">Uplas Towers, Kilifi, Kenya</span></p>
+                </address>
+            </div>
+            <div class="footer__section footer__section--social">
+                <h3 class="footer__heading" data-translate-key="footer_follow_us">Connect With Us</h3>
+                <div class="social-media">
+                    <a href="#" class="social-media__link" aria-label="Uplas on Facebook" title="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on Twitter" title="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on LinkedIn" title="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                    <a href="#" class="social-media__link" aria-label="Uplas on Instagram" title="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                </div>
+            </div>
+            <div class="footer__section footer__section--links">
+                <h3 class="footer__heading" data-translate-key="footer_explore_uplas">Explore Uplas</h3>
+                <ul class="footer__list">
+                    <li><a href="index.html" class="footer__link" data-translate-key="nav_home">Home</a></li>
+                    <li><a href="ucourses_list.html" class="footer__link" data-translate-key="nav_courses_all">All Courses</a></li>
+                    <li><a href="upricing.html" class="footer__link" data-translate-key="nav_pricing_plans">Pricing Plans</a></li>
+                    <li><a href="ublog.html" class="footer__link" data-translate-key="nav_blog_insights">AI Insights Blog</a></li>
+                    <li><a href="/about" class="footer__link" data-translate-key="nav_about">About Uplas</a></li>
+                </ul>
+            </div>
+             <div class="footer__section footer__section--legal">
+                <h3 class="footer__heading" data-translate-key="footer_legal_support">Legal & Support</h3>
+                <ul class="footer__list">
+                    <li><a href="/terms" class="footer__link" data-translate-key="footer_terms">Terms of Service</a></li>
+                    <li><a href="/privacy" class="footer__link" data-translate-key="footer_privacy">Privacy Policy</a></li>
+                    <li><a href="/cookies" class="footer__link" data-translate-key="footer_cookies">Cookie Policy</a></li>
+                    <li><a href="upricing.html#contact-section" class="footer__link" data-translate-key="footer_help">Help Center</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <p class="footer__copyright" data-translate-key="footer_copyright_dynamic">© <span id="current-year-footer">{currentYear}</span> Uplas EdTech Solutions Ltd. All rights reserved. Empowering the next generation of AI innovators.</p>
+        </div>
+    </footer>
+    <script src="js/global.js"></script>
+    <script src="js/apiUtils.js"></script> {/* If comments/related posts are fetched via authenticated API */}
+    <script src="js/blog-post-detail.js"></script>
+    {/* Prism.js for syntax highlighting - include if you render code blocks */}
+    {/* <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script> */}
+    {/* <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script> */}
+    {/* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.min.css"> */}
+</body>
+</html>
