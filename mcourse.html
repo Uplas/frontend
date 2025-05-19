@@ -1,326 +1,899 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"> <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI in Workplace: Learn with Uplas</title> <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title data-translate-key="mcourse_page_title_default">Interactive AI Learning | Uplas</title>
+    <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon">
 
-    <link rel="stylesheet" href="mcourse.css"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <meta name="description" content="Master AI in the workplace with Uplas's personalized learning platform.">
-    <meta name="theme-color" content="#00b4d8"> </head>
-<body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <header class="site-header" role="banner">
-        <div class="container header-container">
-            <div class="logo">
-                <a href="uhome.html"> <img src="images/uni_plas_prev_ui.ico" alt="Uplas Logo" class="logo-img"> <span class="logo-text">Uplas</span>
-                </a>
-            </div>
-            <nav class="main-navigation" role="navigation" aria-label="Main Navigation">
-                <ul>
-                    <li><a href="uhome.html" class="nav-link">Dashboard</a></li>
-                    <li><a href="uprojects.html" class="nav-link">Projects</a></li>
-                    <li><a href="ucommunity.html" class="nav-link">Community</a></li>
-                    <li><a href="#" class="nav-link active" aria-current="page">Courses</a></li> </ul>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/mcourse.css">
+
+    <meta name="description" content="Engage in interactive AI-powered Q&A learning sessions on Uplas. Experience personalized learning with TTS, TTV, and AI Tutor support.">
+    <meta name="theme-color" content="#00b4d8">
+</head>
+<body class="light-mode">
+
+    <header class="header" id="page-header">
+        <div class="container header__container">
+            <a href="index.html" class="logo" aria-label="Uplas Homepage">
+                <img src="images/uni_plas_prev_ui.ico" alt="Uplas Platform Logo" class="logo__img">
+            </a>
+            <nav class="nav" id="main-navigation" aria-label="Main site navigation">
+                <ul class="nav__list">
+                    <li class="nav__item"><a href="index.html" class="nav__link" data-translate-key="nav_home">Home</a></li>
+                    <li class="nav__item"><a href="ucourses_list.html" class="nav__link" data-translate-key="nav_courses">Courses</a></li>
+                    {/* */}
+                    <li class="nav__item"><a href="#" class="nav__link nav__link--active" aria-current="page" data-translate-key="nav_learning_session">Learning Session</a></li>
+                    <li class="nav__item"><a href="uprojects.html" class="nav__link" data-translate-key="nav_projects">My Projects</a></li>
+                    <li class="nav__item"><a href="ucommunity.html" class="nav__link" data-translate-key="nav_community">Community</a></li>
+                </ul>
             </nav>
-            <div class="user-controls">
-                <button id="theme-toggle" aria-label="Toggle theme">
-                    <i class="fas fa-moon" aria-hidden="true"></i> </button>
-                <div class="user-profile-placeholder" id="user-avatar-container"> 
-                     <button class="user-avatar-button" aria-label="User menu">JD</button>
-                     </div>
+            <div class="header-actions">
+                <div class="language-currency-selectors">
+                    <div class="select-wrapper">
+                        <label for="language-selector" class="sr-only" data-translate-key="sr_select_language">Select Language</label>
+                        <i class="fas fa-globe selector-icon"></i>
+                        <select id="language-selector" class="header-select" title="Select Language">
+                            <option value="en">English (EN)</option>
+                            <option value="es">Español (ES)</option>
+                            <option value="fr">Français (FR)</option>
+                        </select>
+                    </div>
+                    {/* Currency selector might be less relevant on an active learning page unless showing unlockable content costs */}
+                </div>
+                <button id="theme-toggle" class="button button--theme" aria-label="Switch color theme" title="Toggle theme">
+                    <i class="fas fa-moon theme-icon theme-icon--dark" aria-hidden="true"></i>
+                    <i class="fas fa-sun theme-icon theme-icon--light" aria-hidden="true" style="display:none;"></i>
+                    <span class="sr-only" data-translate-key="toggle_theme_sr">Toggle Dark/Light Mode</span>
+                </button>
+                {/* User Profile/Avatar Placeholder */}
+                <div class="user-profile-placeholder-header" id="user-avatar-header">
+                    <button class="user-avatar-button-header" aria-label="User menu">JD</button>
+                </div>
             </div>
-            <button class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-                <i class="fas fa-bars"></i>
+            <button class="nav__toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-navigation">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+                <span class="sr-only" data-translate-key="toggle_navigation_sr">Menu</span>
             </button>
         </div>
     </header>
 
-    <main id="main-content" role="main">
-
-        <section class="course-intro" aria-labelledby="course-main-title">
-             <div class="container">
-                <h1 id="course-main-title">AI in Workplace: Blend with AI, improve productivity, efficiency and foster teamwork</h1>
-                <p class="course-subtitle">Learn to leverage AI tools and techniques to enhance your workplace productivity and efficiency while creating better collaboration opportunities with your team.</p>
-                </div>
-        </section>
-
-        <section class="progress-dashboard" aria-labelledby="dashboard-title">
-            <div class="container">
-                <div class="dashboard-header">
-                    <h2 id="dashboard-title">Your Path to AI Mastery</h2> <div class="streak-counter">
-                        <i class="fas fa-fire streak-flame" aria-hidden="true"></i>
-                        <span id="streak-days">5 Day Streak</span> </div>
-                </div>
-                <div class="progress-stats-grid"> <div class="stat-card">
-                        <span class="stat-value">42%</span>
-                        <span class="stat-label">Course Completion</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-value">230</span>
-                        <span class="stat-label">XP Points</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-value">3</span>
-                        <span class="stat-label">Badges Earned</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-value">8</span>
-                        <span class="stat-label">Topics Mastered</span>
-                    </div>
-                </div>
-                <div class="progress-bar-area">
-                    <div class="progress-bar-labels">
-                        <span id="progress-label">Course Progress</span>
-                        <span id="progress-percentage">42% Complete</span>
-                    </div>
-                    <div class="progress-bar-container" role="progressbar" aria-valuenow="42" aria-valuemin="0" aria-valuemax="100" aria-labelledby="progress-label">
-                        <div class="progress-bar-fill" id="course-progress-bar" style="width: 42%;"></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <nav class="learning-path-nav" aria-label="Course Modules Navigation">
-             <div class="container">
-                <ul class="learning-path-list">
-                    <li class="path-module completed">
-                        <a href="#module-1"> <span class="module-number">Module 1</span>
-                            <span class="module-title">Deep Learning & Generative AI</span>
-                            <span class="module-status">8 topics • Completed <i class="fas fa-check-circle" aria-hidden="true"></i></span>
-                        </a>
-                    </li>
-                    <li class="path-module active">
-                         <a href="#module-2" aria-current="true"> <span class="module-number">Module 2</span>
-                            <span class="module-title">Data & Practical ML</span>
-                            <span class="module-status">3 topics • In Progress <i class="fas fa-spinner fa-pulse" aria-hidden="true"></i></span>
-                         </a>
-                    </li>
-                    <li class="path-module locked"> <a href="#module-3"> 
-                            <span class="module-number">Module 3</span>
-                            <span class="module-title">Real-World AI Deployment</span>
-                            <span class="module-status">3 topics • Locked <i class="fas fa-lock" aria-hidden="true"></i></span>
-                         </a>
-                    </li>
-                     </ul>
-             </div>
-        </nav>
-
-        <div class="course-modules-container">
-            <div class="container">
-
-                <section id="module-1" class="course-module" aria-labelledby="module-1-title">
-                    <header class="module-header">
-                        <h3 id="module-1-title">Module 1: Deep Learning & Generative AI</h3>
-                        <button class="module-toggle-btn" aria-expanded="true" aria-controls="module-1-content">
-                            <i class="fas fa-chevron-up" aria-hidden="true"></i>
-                            <span class="visually-hidden">Collapse Module 1</span> </button>
-                    </header>
-                    <div id="module-1-content" class="module-content">
-                        <ul class="topic-list">
-                            <li class="topic-item completed"> <div class="topic-header">
-                                    <button class="topic-toggle-btn" aria-expanded="false" aria-controls="topic-1-1-content">
-                                        <span class="topic-title">
-                                            <i class="fas fa-check-circle status-icon" aria-hidden="true"></i>
-                                            Deep Learning Fundamentals
-                                        </span>
-                                        <span class="topic-status-badge">Completed</span>
-                                        <i class="fas fa-chevron-down toggle-icon" aria-hidden="true"></i>
-                                    </button>
-                                     <div class="topic-content-icons">
-                                        <i class="fas fa-book-open" title="Reading available"></i>
-                                        <i class="fas fa-volume-up" title="Audio available"></i>
-                                        <i class="fas fa-video" title="Video available"></i>
-                                        <i class="fas fa-question-circle" title="Quiz available"></i>
-                                    </div>
-                                </div>
-                                <div id="topic-1-1-content" class="topic-content" role="region" hidden> <div class="content-tabs">
-                                        <button role="tab" aria-selected="true" aria-controls="tab-1-1-read" id="tabbtn-1-1-read">Read</button>
-                                        <button role="tab" aria-selected="false" aria-controls="tab-1-1-watch" id="tabbtn-1-1-watch">Watch</button>
-                                        <button role="tab" aria-selected="false" aria-controls="tab-1-1-listen" id="tabbtn-1-1-listen">Listen</button>
-                                        <button role="tab" aria-selected="false" aria-controls="tab-1-1-practice" id="tabbtn-1-1-practice">Practice</button>
-                                    </div>
-                                    <div id="tab-1-1-read" class="tab-panel" role="tabpanel" aria-labelledby="tabbtn-1-1-read">
-                                        <h4>Deep Learning Fundamentals</h4>
-                                        <p>Text content goes here...</p>
-                                        <div class="ai-interaction-box personalized-quiz">
-                                            <h5><i class="fas fa-robot" aria-hidden="true"></i> Personalized Practice Question</h5>
-                                            <p>Question text...</p>
-                                            <div class="options">[Options here]</div>
-                                            </div>
-                                         <div class="ai-interaction-box content-generation">
-                                            <button class="ai-action-btn"><i class="fas fa-headphones" aria-hidden="true"></i> Generate Audio Summary</button>
-                                            <button class="ai-action-btn"><i class="fas fa-film" aria-hidden="true"></i> Generate Video Explanation</button>
-                                         </div>
-                                    </div>
-                                    <div id="tab-1-1-watch" class="tab-panel" role="tabpanel" aria-labelledby="tabbtn-1-1-watch" hidden>
-                                        <div class="video-player-wrapper">
-                                            <iframe width="100%" height="315" src="/api/placeholder/560/315" frameborder="0" allowfullscreen title="Deep Learning Fundamentals Video"></iframe>
-                                        </div>
-                                    </div>
-                                    <div id="tab-1-1-listen" class="tab-panel" role="tabpanel" aria-labelledby="tabbtn-1-1-listen" hidden>
-                                        <div class="audio-player-wrapper">
-                                            <audio controls src="/api/placeholder/audio.mp3">Your browser does not support the audio element.</audio>
-                                            </div>
-                                    </div>
-                                    <div id="tab-1-1-practice" class="tab-panel" role="tabpanel" aria-labelledby="tabbtn-1-1-practice" hidden>
-                                         <div class="ai-interaction-box ai-project">
-                                            <h5><i class="fas fa-lightbulb" aria-hidden="true"></i> Applied Mini-Project</h5>
-                                            <p>Project description...</p>
-                                            <pre><code># Code snippet example</code></pre>
-                                            <button class="btn btn-primary">Upload Solution</button>
-                                        </div>
-                                         <div class="quiz-box">
-                                            <h5>Knowledge Check</h5>
-                                            <p>Quiz question...</p>
-                                            <div class="options">[Options here]</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+    <main class="mcourse-main-content" id="main-content-area" role="main">
+        <div class="learning-environment-grid">
+            <aside class="learning-sidebar learning-sidebar--left">
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title" data-translate-key="mcourse_sidebar_course_nav">Course Navigation</h3>
+                    <nav id="course-module-topic-nav" class="module-topic-nav">
+                        {/* Dynamically populated by JS based on current course */}
+                        <div class="module-group">
+                            <button class="module-title-btn" aria-expanded="true" aria-controls="module-1-topics">Module 1: AI Fundamentals</button>
+                            <ul id="module-1-topics" class="topic-list-nav">
+                                <li><a href="#" class="topic-link-nav active" data-topic-id="1.1">1.1 What is AI?</a></li>
+                                <li><a href="#" class="topic-link-nav" data-topic-id="1.2">1.2 Types of AI</a></li>
                             </ul>
-                    </div>
-                </section>
-
-                <section id="module-2" class="course-module" aria-labelledby="module-2-title">
-                     <header class="module-header">
-                        <h3 id="module-2-title">Module 2: Data & Practical ML</h3>
-                        <button class="module-toggle-btn" aria-expanded="true" aria-controls="module-2-content">
-                            <i class="fas fa-chevron-up" aria-hidden="true"></i>
-                            <span class="visually-hidden">Collapse Module 2</span>
-                        </button>
-                    </header>
-                    <div id="module-2-content" class="module-content">
-                        <ul class="topic-list">
-                             <li class="topic-item in-progress">
-                                <div class="topic-header">
-                                     <button class="topic-toggle-btn" aria-expanded="true" aria-controls="topic-2-1-content"> <span class="topic-title">
-                                            <i class="fas fa-spinner fa-pulse status-icon" aria-hidden="true"></i>
-                                            Data Library
-                                        </span>
-                                        <span class="topic-status-badge">In Progress</span>
-                                        <i class="fas fa-chevron-up toggle-icon" aria-hidden="true"></i> </button>
-                                     <div class="topic-content-icons">[...]</div>
-                                </div>
-                                <div id="topic-2-1-content" class="topic-content" role="region"> [Content similar to Topic 1.1]
-                                </div>
-                            </li>
-                             </ul>
-                    </div>
-                 </section>
-                 
-                 </div>
-        </div>
-
-        <section class="community-highlights" aria-labelledby="community-title">
-            <div class="container">
-                <div class="section-header">
-                    <h2 id="community-title">From the Community</h2>
-                    <a href="ucommunity.html" class="link-arrow">See All Discussions <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                        </div>
+                        <div class="module-group">
+                            <button class="module-title-btn" aria-expanded="false" aria-controls="module-2-topics">Module 2: Machine Learning Basics</button>
+                            <ul id="module-2-topics" class="topic-list-nav" hidden>
+                                <li><a href="#" class="topic-link-nav" data-topic-id="2.1">2.1 Supervised Learning</a></li>
+                            </ul>
+                        </div>
+                    </nav>
                 </div>
-                <div class="discussion-list">
-                    <article class="discussion-item">
-                        <header class="discussion-meta">
-                            <div class="author-info">
-                                <img src="/api/placeholder/30/30" alt="" class="author-avatar"> <span class="author-name">Sarah K.</span>
-                            </div>
-                            <time datetime="2025-04-23T14:57:00Z" class="discussion-time">2 hours ago</time> </header>
-                        <h4 class="discussion-title"><a href="#">Struggling with Transformer architecture</a></h4> <p class="discussion-preview">I'm having a hard time understanding the attention mechanism...</p>
-                        <footer class="discussion-stats">
-                            <span><i class="fas fa-comment" aria-hidden="true"></i> 12 Replies</span>
-                            <span><i class="fas fa-eye" aria-hidden="true"></i> 45 Views</span>
-                             <span><button class="like-btn" aria-label="Like this post"><i class="fas fa-heart" aria-hidden="true"></i> 8 Likes</button></span>
-                        </footer>
-                    </article>
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title" data-translate-key="mcourse_sidebar_progress">Your Progress</h3>
+                    <div class="progress-overview-simple">
+                        <p data-translate-key="mcourse_topic_completion">Topic Completion: <span id="topic-progress-percentage">0%</span></p>
+                        <div class="progress-bar-container small-progress">
+                            <div class="progress-bar-fill" id="topic-progress-bar" style="width: 0%;"></div>
+                        </div>
+                        <p data-translate-key="mcourse_xp_points">XP Points: <span id="user-xp-points">0</span></p>
+                        <p data-translate-key="mcourse_badges_earned">Badges: <span id="user-badges-count">0</span></p>
                     </div>
-            </div>
-        </section>
+                </div>
+            </aside>
 
-        <aside class="next-actions" aria-labelledby="next-actions-title">
-             <div class="container">
-                <h2 id="next-actions-title">Recommended Next Steps</h2>
-                <div class="action-cards-grid">
-                    <div class="action-card">
-                        <i class="fas fa-code action-icon" aria-hidden="true"></i>
-                        <h4 class="action-title"><a href="#">Complete Data Library Exercise</a></h4> <p class="action-description">Solidify your understanding of data manipulation.</p>
+            <section class="learning-interaction-area" aria-labelledby="current-topic-title">
+                <header class="topic-header-main">
+                    <h2 id="current-topic-title" class="current-topic-title-text">1.1 What is AI?</h2>
+                    <div class="topic-actions">
+                        <button class="topic-action-btn" id="bookmark-topic-btn" aria-label="Bookmark this topic" title="Bookmark topic">
+                            <i class="far fa-bookmark"></i> <span data-translate-key="button_bookmark">Bookmark</span>
+                        </button>
+                        <button class="topic-action-btn" id="discuss-topic-btn" aria-label="Discuss this topic in community" title="Discuss in community">
+                            <i class="fas fa-comments"></i> <span data-translate-key="button_discuss">Discuss</span>
+                        </button>
                     </div>
-                     <div class="action-card">
-                        <i class="fas fa-users action-icon" aria-hidden="true"></i>
-                        <h4 class="action-title"><a href="#">Join the Discussion</a></h4> <p class="action-description">Add insights on transformer architecture.</p>
-                    </div>
-                    </div>
-             </div>
-        </aside>
+                </header>
 
-        <div class="ai-tutor-fab">
-             <button id="ai-tutor-btn" aria-label="Open AI Tutor">
-                 <i class="fas fa-robot" aria-hidden="true"></i>
-                 <span class="tooltip">Ask AI Tutor</span> </button>
-             </div>
+                <div class="qna-content-area" id="qna-content-area">
+                    {/* AI Questions and User Answers will be appended here by JS */}
+                    <div class="ai-question-bubble">
+                        <p id="ai-question-text" data-translate-key="mcourse_ai_question_placeholder">Welcome! Let's start with a basic question: Can you define Artificial Intelligence in your own words?</p>
+                    </div>
+                </div>
 
+                <div class="media-controls-area">
+                    <div class="tts-controls">
+                        <label for="tts-voice-character-select" class="sr-only" data-translate-key="sr_select_voice">Select Voice Character</label>
+                        <select id="tts-voice-character-select" class="form__select form__select--compact" title="Select TTS Voice">
+                            <option value="alloy" data-translate-key="tts_voice_alloy">Alloy (Neutral)</option>
+                            <option value="echo" data-translate-key="tts_voice_echo">Echo (Energetic)</option>
+                            <option value="fable" data-translate-key="tts_voice_fable">Fable (Storyteller)</option>
+                            <option value="onyx" data-translate-key="tts_voice_onyx">Onyx (Deep)</option>
+                            <option value="nova" data-translate-key="tts_voice_nova">Nova (Bright)</option>
+                            <option value="shimmer" data-translate-key="tts_voice_shimmer">Shimmer (Warm)</option>
+                        </select>
+                        <button id="play-tts-btn" class="button button--secondary button--small" aria-label="Play current content as audio" title="Listen to content">
+                            <i class="fas fa-play"></i> <span data-translate-key="button_listen">Listen</span>
+                        </button>
+                        <div id="audio-player-container" class="audio-player-container-inline"></div>
+                    </div>
+                    <div class="ttv-controls">
+                        <button id="generate-ttv-btn" class="button button--secondary button--small" aria-label="Generate video for this content" title="Watch video explanation">
+                            <i class="fas fa-video"></i> <span data-translate-key="button_watch_video">Watch Video</span>
+                        </button>
+                    </div>
+                </div>
+                <div id="ttv-player-container" class="video-player-wrapper" style="display: none;">
+                    {/* Video player will be injected here */}
+                </div>
+
+                <form id="user-answer-form" class="user-input-form">
+                    <label for="user-answer-input" class="sr-only" data-translate-key="sr_your_answer">Your Answer</label>
+                    <textarea id="user-answer-input" class="form__textarea" rows="3" placeholder="Type your answer or question here..." required data-translate-key="mcourse_answer_placeholder"></textarea>
+                    <button type="submit" class="button button--primary" id="submit-answer-btn">
+                        <i class="fas fa-paper-plane"></i> <span data-translate-key="button_submit_answer">Submit Answer</span>
+                    </button>
+                </form>
+            </section>
+
+            <aside class="learning-sidebar learning-sidebar--right">
+                <div class="sidebar-section ai-tutor-panel-preview">
+                    <h3 class="sidebar-title" data-translate-key="mcourse_sidebar_ai_tutor">AI Tutor</h3>
+                    <div id="ai-tutor-quick-help" class="ai-tutor-quick-help-text">
+                        <p data-translate-key="mcourse_ai_tutor_prompt">Stuck? Need clarification? Ask the AI Tutor!</p>
+                    </div>
+                    <button class="button button--secondary button--full-width" id="open-ai-tutor-btn">
+                        <i class="fas fa-robot"></i> <span data-translate-key="button_open_ai_tutor">Open AI Tutor</span>
+                    </button>
+                </div>
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title" data-translate-key="mcourse_sidebar_resources">Topic Resources</h3>
+                    <ul id="topic-resources-list" class="resource-list-sidebar">
+                        {/* Dynamically populated by JS */}
+                        <li><a href="#" target="_blank" rel="noopener noreferrer"><i class="fas fa-link"></i> <span data-translate-key="mcourse_resource_placeholder1">Key Definitions PDF</span></a></li>
+                        <li><a href="#" target="_blank" rel="noopener noreferrer"><i class="fas fa-book-open"></i> <span data-translate-key="mcourse_resource_placeholder2">Further Reading Chapter</span></a></li>
+                    </ul>
+                </div>
+                {/* AI Tutor Chat Window (Initially Hidden or as a Modal) */}
+                <div id="ai-tutor-chat-modal" class="modal-overlay" hidden>
+                    <div class="modal__content ai-tutor-modal__content">
+                        <button class="modal__close-button" id="close-ai-tutor-modal-btn">&times;</button>
+                        <h4 data-translate-key="ai_tutor_chat_title">AI Tutor Chat</h4>
+                        <div id="ai-tutor-messages" class="ai-tutor-messages-area"></div>
+                        <form id="ai-tutor-input-form" class="ai-tutor-input-area">
+                            <input type="text" id="ai-tutor-message-input" placeholder="Ask a question..." required>
+                            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </aside>
+        </div>
     </main>
 
-    <footer class="site-footer" role="contentinfo">
-         <div class="container footer-grid">
-            <div class="footer-section footer-about">
-                <div class="logo">
-                     <img src="images/uni_plas_prev_ui.ico" alt="Uplas Logo" class="logo-img">
-                     <span class="logo-text">Uplas</span>
-                </div>
-                <p>Empowering professionals and students with AI skills for the future.</p>
-                 <div class="copyright">
-                    &copy; <span id="current-year">2025</span> Uplas. All rights reserved. </div>
-            </div>
-             <div class="footer-section footer-links">
-                 <h4>Quick Links</h4>
-                 <ul>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Courses</a></li>
-                    <li><a href="#">Community</a></li>
-                    <li><a href="#">Contact</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                 </ul>
-            </div>
-            <div class="footer-section footer-contact">
-                 <h4>Contact Us</h4>
-                 <address> 123 AI Learning Street, Tech City<br> <a href="mailto:info@uplas.com">info@uplas.com</a><br>
-                    <a href="tel:+254708654984">+254 708 654 984</a> [cite: 17]
-                 </address>
-            </div>
-            <div class="footer-section footer-social">
-                 <h4>Follow Us</h4>
-                 <ul class="social-media-list">
-                     <li><a href="#" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
-                     <li><a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
-                     <li><a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a></li>
-                     <li><a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
-                 </ul>
-            </div>
+    <footer class="footer" id="page-footer" role="contentinfo">
+        {/* ... Standard Footer Structure with data-translate-key attributes ... */}
+        <div class="footer__container container">
+            {/* ... footer content ... */}
+        </div>
+        <div class="footer__bottom">
+            <p class="footer__copyright" data-translate-key="footer_copyright_dynamic">© <span id="current-year-footer">{currentYear}</span> Uplas EdTech Solutions Ltd. All rights reserved. Empowering the next generation of AI innovators.</p>
         </div>
     </footer>
 
-    <div class="achievement-popup" id="achievement-popup" role="alert" aria-live="polite" hidden>
-        <i class="fas fa-award achievement-icon" aria-hidden="true"></i>
-        <div class="achievement-details">
-            <h5 id="achievement-title">New Achievement!</h5>
-            <p id="achievement-desc">Description of achievement.</p>
-        </div>
-        <button class="close-popup-btn" aria-label="Close achievement notification">&times;</button>
-    </div>
-
-    <div class="accessibility-widget">
-        <button class="accessibility-toggle" id="accessibility-toggle" aria-label="Accessibility Settings" aria-haspopup="true" aria-expanded="false">
-            <i class="fas fa-universal-access" aria-hidden="true"></i>
-        </button>
-        <div class="accessibility-panel" id="accessibility-panel" role="dialog" aria-labelledby="accessibility-title" hidden>
-             <h4 id="accessibility-title">Accessibility Options</h4>
-             <button class="close-panel-btn" aria-label="Close accessibility panel">&times;</button>
-        </div>
-    </div>
-    
-    <script src="mcourse.js"></script> 
+    <script src="js/global.js"></script>
+    <script src="js/apiUtils.js"></script>
+    <script src="js/mcourse.js"></script>
 </body>
 </html>
+```css
+/* css/mcourse.css */
+/* ==========================================================================
+   Uplas Interactive Learning Page Styles (mcourse.css)
+   - Relies on variables.css and global.css
+   ========================================================================== */
+
+@import url('global.css');
+
+/* --- Main Layout: Learning Environment Grid --- */
+.mcourse-main-content {
+    padding-top: var(--spacing-lg); /* Space below fixed header */
+    padding-bottom: var(--spacing-lg);
+    flex-grow: 1; /* Ensure it takes available height */
+}
+
+.learning-environment-grid {
+    display: grid;
+    grid-template-columns: 2fr 5fr 2.5fr; /* Sidebar - Main - Sidebar */
+    gap: var(--spacing-lg);
+    height: calc(100vh - var(--header-height) - (var(--spacing-lg) * 2)); /* Full viewport height minus header and padding */
+    max-width: 1800px; /* Allow wider layout for learning */
+    margin: 0 auto;
+    padding: 0 var(--container-padding-x);
+}
+
+.learning-sidebar {
+    background-color: var(--current-card-bg);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-sm);
+    overflow-y: auto; /* Scrollable if content exceeds height */
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.learning-sidebar--left {
+    /* Specific styles for left sidebar if any */
+}
+.learning-sidebar--right {
+    /* Specific styles for right sidebar if any */
+}
+
+.sidebar-section {
+    /* Styles for individual sections within sidebars */
+}
+.sidebar-title {
+    font-size: 1.05rem; /* Slightly smaller than main section titles */
+    font-weight: var(--font-weight-semibold);
+    color: var(--current-text-color);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 1px solid var(--current-border-color-light);
+}
+
+/* Course Navigation in Left Sidebar */
+.module-topic-nav .module-group {
+    margin-bottom: var(--spacing-md);
+}
+.module-topic-nav .module-title-btn {
+    font-weight: var(--font-weight-medium);
+    color: var(--current-text-color);
+    padding: var(--spacing-xs) 0;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.module-topic-nav .module-title-btn:hover {
+    color: var(--current-link-hover-color);
+}
+.module-topic-nav .topic-list-nav {
+    list-style: none;
+    padding-left: var(--spacing-md); /* Indent topics */
+    margin-top: var(--spacing-xs);
+}
+.module-topic-nav .topic-link-nav {
+    display: block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    color: var(--current-text-color-secondary);
+    border-radius: var(--border-radius-sm);
+}
+.module-topic-nav .topic-link-nav:hover,
+.module-topic-nav .topic-link-nav.active {
+    background-color: var(--color-primary-ultralight);
+    color: var(--color-primary-dark);
+    font-weight: var(--font-weight-medium);
+}
+.dark-mode .module-topic-nav .topic-link-nav.active {
+    color: var(--color-primary-light);
+}
+
+/* Progress Overview in Left Sidebar */
+.progress-overview-simple p {
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--spacing-xs);
+    color: var(--current-text-color-secondary);
+}
+.progress-overview-simple p span {
+    font-weight: var(--font-weight-semibold);
+    color: var(--current-text-color);
+}
+.progress-bar-container.small-progress {
+    height: 8px;
+    margin-bottom: var(--spacing-sm);
+}
+
+/* --- Main Learning Interaction Area --- */
+.learning-interaction-area {
+    background-color: var(--current-card-bg);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-md);
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Fill the grid cell height */
+}
+
+.topic-header-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--current-border-color-light);
+}
+.current-topic-title-text {
+    font-size: var(--font-size-xl);
+    margin-bottom: 0;
+}
+.topic-actions { display: flex; gap: var(--spacing-sm); }
+.topic-action-btn { /* Uses .button styles implicitly if classes are added */
+    font-size: var(--font-size-sm);
+    color: var(--current-text-color-secondary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--current-border-color);
+    border-radius: var(--border-radius-md);
+}
+.topic-action-btn:hover {
+    color: var(--current-link-hover-color);
+    border-color: var(--current-link-hover-color);
+    background-color: var(--color-primary-ultralight);
+}
+.topic-action-btn .fa-bookmark.fas { /* For liked state */
+    color: var(--color-accent);
+}
+
+
+/* Q&A Content Area */
+.qna-content-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: var(--spacing-sm) 0;
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+.ai-question-bubble, .user-answer-bubble {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-lg);
+    max-width: 80%;
+    line-height: 1.5;
+    box-shadow: var(--box-shadow-xs);
+}
+.ai-question-bubble {
+    background-color: var(--color-primary-ultralight);
+    color: var(--current-text-color); /* Ensure readability */
+    align-self: flex-start;
+    border-bottom-left-radius: var(--border-radius-sm); /* Bubble tail effect */
+}
+.dark-mode .ai-question-bubble {
+    background-color: var(--color-secondary-light);
+    color: var(--color-dark-text-primary);
+}
+.user-answer-bubble {
+    background-color: var(--color-success-light); /* Or a neutral user color */
+    color: var(--current-text-color);
+    align-self: flex-end;
+    border-bottom-right-radius: var(--border-radius-sm);
+}
+.dark-mode .user-answer-bubble {
+    background-color: var(--color-primary-dark);
+}
+.ai-question-bubble p, .user-answer-bubble p { margin-bottom: 0; }
+
+/* Media Controls (TTS, TTV) */
+.media-controls-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm) 0;
+    border-top: 1px solid var(--current-border-color-light);
+    margin-top: var(--spacing-sm);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+.tts-controls, .ttv-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+.form__select--compact { /* For TTS voice select */
+    padding-top: var(--spacing-xs);
+    padding-bottom: var(--spacing-xs);
+    font-size: var(--font-size-xs);
+    min-width: 120px;
+    height: auto; /* Let content define height */
+}
+.audio-player-container-inline {
+    /* Styles for an inline audio player if needed, or it'll be a standard <audio> tag */
+}
+.video-player-wrapper {
+    margin-top: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    box-shadow: var(--box-shadow-sm);
+    background-color: var(--color-black); /* Placeholder for video */
+    aspect-ratio: 16 / 9; /* Maintain aspect ratio */
+}
+.video-player-wrapper iframe,
+.video-player-wrapper video {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+
+/* User Input Form */
+.user-input-form {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--current-border-color-light);
+}
+.user-input-form textarea {
+    flex-grow: 1;
+    min-height: 40px; /* Start small, can grow */
+    resize: vertical;
+}
+.user-input-form button { /* Submit button */
+    flex-shrink: 0;
+}
+
+/* --- Right Sidebar: AI Tutor, Resources --- */
+.ai-tutor-panel-preview {
+    text-align: center;
+}
+.ai-tutor-quick-help-text p {
+    font-size: var(--font-size-sm);
+    color: var(--current-text-color-secondary);
+    margin-bottom: var(--spacing-sm);
+}
+#open-ai-tutor-btn { /* Uses .button .button--secondary .button--full-width */
+    font-size: var(--font-size-sm);
+}
+
+.resource-list-sidebar {
+    list-style: none;
+    padding-left: 0;
+}
+.resource-list-sidebar li a {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    color: var(--current-link-color);
+    padding: var(--spacing-xs) 0;
+}
+.resource-list-sidebar li a:hover {
+    color: var(--current-link-hover-color);
+}
+.resource-list-sidebar li i {
+    width: 16px; text-align: center;
+    opacity: 0.7;
+}
+
+/* AI Tutor Modal (Basic - can be styled more like a chat window) */
+#ai-tutor-chat-modal .modal__content {
+    max-width: 450px; /* Smaller modal for chat */
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+}
+.ai-tutor-messages-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    border: 1px solid var(--current-border-color);
+    border-radius: var(--border-radius-sm);
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-sm);
+    background-color: var(--current-bg-color);
+}
+.ai-tutor-input-area {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+#ai-tutor-input-area input { flex-grow: 1; }
+#ai-tutor-input-area button { padding: var(--spacing-sm); /* Adjust for icon button */ }
+
+
+/* --- Responsive Adjustments for mcourse.css --- */
+@media (max-width: 1200px) {
+    .learning-environment-grid {
+        grid-template-columns: 2fr 5fr; /* Collapse right sidebar first */
+    }
+    .learning-sidebar--right { display: none; }
+}
+
+@media (max-width: 992px) {
+    .learning-environment-grid {
+        grid-template-columns: 1fr; /* Stack main content and left sidebar */
+        height: auto; /* Allow content to define height */
+    }
+    .learning-sidebar--left {
+        order: 2; /* Move sidebar below main content on mobile */
+        max-height: 300px; /* Limit height when stacked */
+        margin-top: var(--spacing-lg);
+    }
+    .learning-interaction-area { order: 1; }
+    .media-controls-area { flex-direction: column; align-items: stretch; }
+    .tts-controls, .ttv-controls { width: 100%; justify-content: space-between; }
+}
+
+@media (max-width: 767px) {
+    .mcourse-main-content {
+        padding-top: var(--spacing-sm);
+        padding-bottom: var(--spacing-sm);
+    }
+    .learning-environment-grid {
+        gap: var(--spacing-md);
+        padding: 0 var(--spacing-xs); /* Reduce padding for grid itself */
+    }
+    .learning-sidebar, .learning-interaction-area {
+        padding: var(--spacing-md);
+    }
+    .current-topic-title-text { font-size: var(--font-size-lg); }
+    .topic-actions .topic-action-btn span { display: none; } /* Show only icons on mobile */
+    .topic-actions .topic-action-btn { padding: var(--spacing-xs); }
+    .ai-question-bubble, .user-answer-bubble { max-width: 95%; }
+    .user-input-form textarea { rows: 2; }
+}
+
+```javascript
+// js/mcourse.js
+/* ==========================================================================
+   Uplas Interactive Learning Page JavaScript (mcourse.js)
+   - Handles Q&A flow, TTS/TTV controls, AI Tutor interaction, progress updates.
+   - Relies on global.js for theme, nav, language, currency.
+   ========================================================================== */
+'use strict';
+
+document.addEventListener('DOMContentLoaded', () => {
+    // --- Element Selectors ---
+    const courseModuleTopicNav = document.getElementById('course-module-topic-nav');
+    const currentTopicTitleText = document.getElementById('current-topic-title-text');
+    const qnaContentArea = document.getElementById('qna-content-area');
+    const aiQuestionText = document.getElementById('ai-question-text'); // Initial question bubble
+
+    // Media Controls
+    const ttsVoiceCharacterSelect = document.getElementById('tts-voice-character-select');
+    const playTtsBtn = document.getElementById('play-tts-btn');
+    const audioPlayerContainer = document.getElementById('audio-player-container');
+    const generateTtvBtn = document.getElementById('generate-ttv-btn');
+    const ttvPlayerContainer = document.getElementById('ttv-player-container');
+
+    // User Input
+    const userAnswerForm = document.getElementById('user-answer-form');
+    const userAnswerInput = document.getElementById('user-answer-input');
+    const submitAnswerBtn = document.getElementById('submit-answer-btn');
+
+    // AI Tutor
+    const openAiTutorBtn = document.getElementById('open-ai-tutor-btn');
+    const aiTutorChatModal = document.getElementById('ai-tutor-chat-modal');
+    const closeAiTutorModalBtn = document.getElementById('close-ai-tutor-modal-btn');
+    const aiTutorMessagesArea = document.getElementById('ai-tutor-messages');
+    const aiTutorInputForm = document.getElementById('ai-tutor-input-form');
+    const aiTutorMessageInput = document.getElementById('ai-tutor-message-input');
+
+    // Progress Indicators (placeholders for now)
+    const topicProgressPercentage = document.getElementById('topic-progress-percentage');
+    const topicProgressBar = document.getElementById('topic-progress-bar');
+    const userXpPoints = document.getElementById('user-xp-points');
+    const userBadgesCount = document.getElementById('user-badges-count');
+
+    // Topic Actions
+    const bookmarkTopicBtn = document.getElementById('bookmark-topic-btn');
+    const discussTopicBtn = document.getElementById('discuss-topic-btn');
+
+
+    // --- State ---
+    let currentTopicId = "1.1"; // Default or loaded from URL/backend
+    let currentCourseId = "adv_ai"; // Example, should be dynamic
+    let ttsAudioElement = null;
+    let isTtsPlaying = false;
+
+    // --- Utility Functions ---
+    const appendMessageToQnA = (text, type = 'ai-question') => {
+        if (!qnaContentArea) return;
+        const bubble = document.createElement('div');
+        bubble.classList.add(type === 'ai-question' ? 'ai-question-bubble' : 'user-answer-bubble');
+        const p = document.createElement('p');
+        p.textContent = text;
+        bubble.appendChild(p);
+        qnaContentArea.appendChild(bubble);
+        qnaContentArea.scrollTop = qnaContentArea.scrollHeight; // Scroll to bottom
+    };
+
+    // --- Course Navigation (Simplified) ---
+    if (courseModuleTopicNav) {
+        courseModuleTopicNav.addEventListener('click', (e) => {
+            const target = e.target.closest('.topic-link-nav, .module-title-btn');
+            if (!target) return;
+
+            if (target.classList.contains('module-title-btn')) {
+                e.preventDefault();
+                const contentId = target.getAttribute('aria-controls');
+                const content = document.getElementById(contentId);
+                const isExpanded = target.getAttribute('aria-expanded') === 'true';
+                target.setAttribute('aria-expanded', !isExpanded);
+                if (content) content.hidden = isExpanded;
+            } else if (target.classList.contains('topic-link-nav')) {
+                e.preventDefault();
+                document.querySelectorAll('.topic-link-nav.active').forEach(el => el.classList.remove('active'));
+                target.classList.add('active');
+                currentTopicId = target.dataset.topicId;
+                loadTopicContent(currentTopicId);
+            }
+        });
+    }
+
+    async function loadTopicContent(topicId) {
+        console.log(`Loading content for topic: ${topicId}`);
+        if (currentTopicTitleText) currentTopicTitleText.textContent = `${topicId} ${document.querySelector(`.topic-link-nav[data-topic-id="${topicId}"]`)?.textContent || 'Topic Title'}`;
+        // Clear previous Q&A, media
+        if (qnaContentArea) qnaContentArea.innerHTML = '';
+        if (audioPlayerContainer) audioPlayerContainer.innerHTML = '';
+        if (ttvPlayerContainer) {
+            ttvPlayerContainer.innerHTML = '';
+            ttvPlayerContainer.style.display = 'none';
+        }
+        isTtsPlaying = false;
+        if(playTtsBtn) playTtsBtn.innerHTML = `<i class="fas fa-play"></i> <span data-translate-key="button_listen">Listen</span>`;
+
+
+        // TODO: Fetch initial question/content for this topic from backend
+        // const topicData = await fetchAuthenticated(`/api/course/${currentCourseId}/topic/${topicId}/content`);
+        // For now, simulate:
+        const simulatedFirstQuestion = `This is the start of topic ${topicId}. What would you like to know first about it? Or, here is an initial piece of information... [Content for topic ${topicId}]`;
+        appendMessageToQnA(simulatedFirstQuestion, 'ai-question');
+        if (aiQuestionText && qnaContentArea.firstChild.isEqualNode(aiQuestionText.parentElement)) {
+             aiQuestionText.textContent = simulatedFirstQuestion; // Update initial bubble if it's still the only one
+        }
+
+
+        // TODO: Update resources list based on topicId
+        const resourcesList = document.getElementById('topic-resources-list');
+        if (resourcesList) {
+            resourcesList.innerHTML = `<li><a href="#"><i class="fas fa-link"></i> Resource for Topic ${topicId}</a></li>`;
+        }
+        // TODO: Update progress indicators
+        if(topicProgressPercentage) topicProgressPercentage.textContent = `${Math.floor(Math.random()*30)}%`; // Simulate
+        if(topicProgressBar) topicProgressBar.style.width = topicProgressPercentage.textContent;
+    }
+
+    // --- TTS Controls ---
+    if (playTtsBtn && ttsVoiceCharacterSelect) {
+        playTtsBtn.addEventListener('click', async () => {
+            const currentContentElements = qnaContentArea.querySelectorAll('.ai-question-bubble p, .user-answer-bubble p');
+            if (currentContentElements.length === 0) {
+                alert("No content to play."); // TODO: Translate
+                return;
+            }
+
+            const textToSpeak = Array.from(currentContentElements).map(el => el.textContent).join("\n\n");
+            const selectedVoice = ttsVoiceCharacterSelect.value;
+
+            if (isTtsPlaying && ttsAudioElement) {
+                ttsAudioElement.pause();
+                isTtsPlaying = false;
+                playTtsBtn.innerHTML = `<i class="fas fa-play"></i> <span data-translate-key="button_listen">Listen</span>`;
+                return;
+            }
+
+            playTtsBtn.disabled = true;
+            playTtsBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span data-translate-key="button_loading">Loading...</span>`;
+
+            try {
+                console.log(`Requesting TTS for: "${textToSpeak.substring(0,50)}..." with voice: ${selectedVoice}`);
+                // TODO: Call backend API to get TTS audio URL
+                // const response = await fetchAuthenticated('/api/tts', {
+                //     method: 'POST',
+                //     body: JSON.stringify({ text: textToSpeak, voice: selectedVoice, language: document.documentElement.lang })
+                // });
+                // if (!response.ok) throw new Error('TTS generation failed');
+                // const data = await response.json(); // Expects { audioUrl: "..." }
+
+                // Simulate API response
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                const data = { audioUrl: `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(textToSpeak.substring(0,100))}&tl=${document.documentElement.lang}&client=tw-ob` }; // Example using Google Translate TTS (for demo only, has limitations)
+
+                if (audioPlayerContainer) {
+                    audioPlayerContainer.innerHTML = ''; // Clear previous player
+                    ttsAudioElement = new Audio(data.audioUrl);
+                    ttsAudioElement.controls = true;
+                    audioPlayerContainer.appendChild(ttsAudioElement);
+                    ttsAudioElement.play();
+                    isTtsPlaying = true;
+                    playTtsBtn.innerHTML = `<i class="fas fa-pause"></i> <span data-translate-key="button_pause">Pause</span>`;
+
+                    ttsAudioElement.onended = () => {
+                        isTtsPlaying = false;
+                        playTtsBtn.innerHTML = `<i class="fas fa-play"></i> <span data-translate-key="button_listen">Listen</span>`;
+                    };
+                }
+            } catch (error) {
+                console.error("TTS Error:", error);
+                alert("Could not play audio."); // TODO: Translate
+                playTtsBtn.innerHTML = `<i class="fas fa-play"></i> <span data-translate-key="button_listen">Listen</span>`;
+            } finally {
+                playTtsBtn.disabled = false;
+            }
+        });
+    }
+
+    // --- TTV Controls ---
+    if (generateTtvBtn) {
+        generateTtvBtn.addEventListener('click', async () => {
+            const currentContentElements = qnaContentArea.querySelectorAll('.ai-question-bubble p, .user-answer-bubble p');
+            if (currentContentElements.length === 0) {
+                alert("No content for video generation."); // TODO: Translate
+                return;
+            }
+            const textForVideo = Array.from(currentContentElements).map(el => el.textContent).join("\n\n");
+
+            generateTtvBtn.disabled = true;
+            generateTtvBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span data-translate-key="button_generating_video">Generating...</span>`;
+            ttvPlayerContainer.style.display = 'none';
+            ttvPlayerContainer.innerHTML = '';
+
+            try {
+                console.log(`Requesting TTV for: "${textForVideo.substring(0,50)}..."`);
+                // TODO: Call backend API for TTV generation
+                // const response = await fetchAuthenticated('/api/ttv', {
+                //     method: 'POST',
+                //     body: JSON.stringify({ text: textForVideo, language: document.documentElement.lang })
+                // });
+                // if (!response.ok) throw new Error('TTV generation failed');
+                // const data = await response.json(); // Expects { videoUrl: "..." }
+
+                // Simulate API response
+                await new Promise(resolve => setTimeout(resolve, 3000));
+                // Placeholder video - replace with actual video URL or embed code
+                const data = { videoUrl: "https://www.w3schools.com/html/mov_bbb.mp4" };
+
+                if (ttvPlayerContainer && data.videoUrl) {
+                    ttvPlayerContainer.innerHTML = `<video controls width="100%" src="${data.videoUrl}" type="video/mp4">Your browser does not support the video tag.</video>`;
+                    ttvPlayerContainer.style.display = 'block';
+                }
+            } catch (error) {
+                console.error("TTV Error:", error);
+                alert("Could not generate video at this time."); // TODO: Translate
+            } finally {
+                generateTtvBtn.disabled = false;
+                generateTtvBtn.innerHTML = `<i class="fas fa-video"></i> <span data-translate-key="button_watch_video">Watch Video</span>`;
+            }
+        });
+    }
+
+    // --- User Answer Submission ---
+    if (userAnswerForm) {
+        userAnswerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const answerText = userAnswerInput.value.trim();
+            if (!answerText) return;
+
+            appendMessageToQnA(answerText, 'user-answer');
+            userAnswerInput.value = '';
+            submitAnswerBtn.disabled = true;
+            submitAnswerBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span data-translate-key="button_submitting">Submitting...</span>`;
+
+            try {
+                console.log(`Submitting answer for topic ${currentTopicId}: "${answerText}"`);
+                // TODO: Send answer to backend Q&A engine
+                // const response = await fetchAuthenticated(`/api/course/${currentCourseId}/topic/${currentTopicId}/answer`, {
+                //     method: 'POST',
+                //     body: JSON.stringify({ answer: answerText })
+                // });
+                // if (!response.ok) throw new Error('Failed to submit answer');
+                // const aiResponse = await response.json(); // Expects { nextQuestion: "...", feedback: "...", xp_gained: 10, badge_earned: "..." }
+
+                // Simulate API response
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                const aiResponse = {
+                    nextQuestion: `That's an interesting point about "${answerText.substring(0,20)}...". Now, consider this: [New AI Question based on user's answer and topic ${currentTopicId}]`,
+                    feedback: Math.random() > 0.5 ? "Good insight!" : "Okay, let's explore that further.",
+                    xp_gained: Math.floor(Math.random() * 10) + 5
+                };
+
+                if (aiResponse.feedback) {
+                    appendMessageToQnA(`Tutor: ${aiResponse.feedback}`, 'ai-question'); // Display feedback
+                }
+                appendMessageToQnA(aiResponse.nextQuestion, 'ai-question'); // Display next question
+
+                // Update progress (simulation)
+                if(userXpPoints && aiResponse.xp_gained) {
+                    userXpPoints.textContent = parseInt(userXpPoints.textContent) + aiResponse.xp_gained;
+                }
+                // TODO: Handle badge earning display
+
+            } catch (error) {
+                console.error("Error submitting answer:", error);
+                appendMessageToQnA("Sorry, I couldn't process your answer right now. Please try again.", 'ai-question');
+            } finally {
+                submitAnswerBtn.disabled = false;
+                submitAnswerBtn.innerHTML = `<i class="fas fa-paper-plane"></i> <span data-translate-key="button_submit_answer">Submit Answer</span>`;
+                userAnswerInput.focus();
+            }
+        });
+    }
+
+    // --- AI Tutor Modal ---
+    const openTutorChat = () => aiTutorChatModal && (aiTutorChatModal.hidden = false, setTimeout(()=>aiTutorChatModal.classList.add('active'),10), aiTutorMessageInput?.focus());
+    const closeTutorChat = () => aiTutorChatModal && (aiTutorChatModal.classList.remove('active'), setTimeout(()=>aiTutorChatModal.hidden = true, 300));
+
+    if(openAiTutorBtn) openAiTutorBtn.addEventListener('click', openTutorChat);
+    if(closeAiTutorModalBtn) closeAiTutorModalBtn.addEventListener('click', closeTutorChat);
+
+    if (aiTutorInputForm) {
+        aiTutorInputForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userQuery = aiTutorMessageInput.value.trim();
+            if (!userQuery) return;
+
+            // Display user message in tutor chat
+            const userMsgDiv = document.createElement('div');
+            userMsgDiv.classList.add('tutor-message', 'user-tutor-message');
+            userMsgDiv.textContent = userQuery;
+            aiTutorMessagesArea.appendChild(userMsgDiv);
+            aiTutorMessageInput.value = '';
+            aiTutorMessagesArea.scrollTop = aiTutorMessagesArea.scrollHeight;
+
+            // TODO: Send query to backend AI Tutor
+            // const response = await fetchAuthenticated(`/api/ai/tutor/ask`, {
+            //     method: 'POST',
+            //     body: JSON.stringify({ query: userQuery, courseId: currentCourseId, topicId: currentTopicId })
+            // });
+            // const tutorRes = await response.json(); // Expects { answer: "..." }
+
+            // Simulate response
+            await new Promise(resolve => setTimeout(resolve, 1200));
+            const tutorRes = { answer: `Regarding "${userQuery.substring(0,30)}...", here's some information related to topic ${currentTopicId}: [AI Tutor's detailed answer].` };
+
+            const tutorMsgDiv = document.createElement('div');
+            tutorMsgDiv.classList.add('tutor-message', 'ai-tutor-message');
+            tutorMsgDiv.textContent = tutorRes.answer;
+            aiTutorMessagesArea.appendChild(tutorMsgDiv);
+            aiTutorMessagesArea.scrollTop = aiTutorMessagesArea.scrollHeight;
+        });
+    }
+
+
+    // --- Topic Actions (Bookmark, Discuss) ---
+    if (bookmarkTopicBtn) {
+        bookmarkTopicBtn.addEventListener('click', () => {
+            const isBookmarked = bookmarkTopicBtn.classList.toggle('active');
+            bookmarkTopicBtn.querySelector('i').classList.toggle('far'); // Outline
+            bookmarkTopicBtn.querySelector('i').classList.toggle('fas'); // Solid
+            bookmarkTopicBtn.setAttribute('aria-label', isBookmarked ? 'Remove bookmark' : 'Bookmark this topic');
+            // TODO: API call to save/remove bookmark for currentTopicId
+            console.log(`Topic ${currentTopicId} ${isBookmarked ? 'bookmarked' : 'unbookmarked'}`);
+        });
+    }
+    if (discussTopicBtn) {
+        discussTopicBtn.addEventListener('click', () => {
+            // TODO: Redirect to community page, potentially to a specific discussion thread for this topic
+            window.open(`ucommunity.html?topicRef=${currentCourseId}-${currentTopicId}`, '_blank');
+        });
+    }
+
+
+    // --- Initial Load ---
+    loadTopicContent(currentTopicId); // Load content for the initial/default topic
+    // Global.js handles theme, nav, language, currency.
+
+    console.log("Uplas Interactive Learning Page (mcourse.js) loaded.");
+});
+
+
