@@ -32,7 +32,7 @@
     --color-white: #ffffff;
     --color-black: #121212;            /* True black for specific elements if needed */
     --color-gray-100: #f8f9fa;         /* Very light gray, almost white */
-    --color-gray-200: #f4f1de;         /* Light Cream - Main light page background */
+    --color-gray-200: #ffffff;         /* UPDATED: Dazzling White - Main light page background (was #f4f1de Light Cream) */
     --color-gray-300: #e9ecef;         /* Light gray for borders, dividers */
     --color-gray-400: #dee2e6;         /* Slightly darker gray for borders */
     --color-gray-500: #ced4da;         /* Medium gray for input borders */
