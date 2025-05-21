@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en"> <head>
     <meta charset="UTF-8">
@@ -10,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/global.css">
@@ -114,10 +113,51 @@
                         <a href="ucourses_list.html" class="button button--secondary pricing-card__cta" data-translate-key="upricing_cta_browse_courses">Browse Courses</a>
                     </div>
 
+                    <div class="pricing-card">
+                        <h3 class="pricing-card__title" data-translate-key="upricing_plan_full_platform_monthly_title">Full Platform Access (Monthly)</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-value" data-price-usd="25.00">$25.00</span> <span class="price-term" data-translate-key="upricing_plan_per_month">/ Month</span>
+                        </div>
+                        <p class="pricing-card__description" data-translate-key="upricing_plan_full_platform_monthly_desc">Unlimited access to all content and features, billed monthly for flexibility.</p>
+                        <ul class="pricing-card__features">
+                            <li data-translate-key="upricing_feature_platform_all_courses"><i class="fas fa-check"></i> All Courses & Modules</li>
+                            <li data-translate-key="upricing_feature_platform_all_projects"><i class="fas fa-check"></i> All AI-Generated Projects</li>
+                            <li data-translate-key="upricing_feature_platform_community"><i class="fas fa-check"></i> Full Community Access</li>
+                            <li data-translate-key="upricing_feature_platform_masterclass"><i class="fas fa-check"></i> Exclusive Video Masterclasses</li>
+                            <li data-translate-key="upricing_feature_platform_priority_support"><i class="fas fa-check"></i> Priority Support</li>
+                        </ul>
+                        <button class="button button--primary pricing-card__cta select-plan-btn" 
+                                data-plan-id="full_platform_monthly" 
+                                data-name="Full Platform Access (Monthly)" 
+                                data-price-usd="25.00" 
+                                data-billing-cycle="Monthly" 
+                                data-translate-key="upricing_cta_get_monthly_access">Get Monthly Access</button>
+                    </div>
+
+                    <div class="pricing-card">
+                        <h3 class="pricing-card__title" data-translate-key="upricing_plan_full_platform_quarterly_title">Full Platform Access (Quarterly)</h3>
+                        <div class="pricing-card__price">
+                            <span class="price-value" data-price-usd="70.00">$70.00</span> <span class="price-term" data-translate-key="upricing_plan_per_quarter">/ Quarter</span>
+                        </div>
+                        <p class="pricing-card__description" data-translate-key="upricing_plan_full_platform_quarterly_desc">Enjoy full access with savings, billed every three months.</p>
+                        <ul class="pricing-card__features">
+                            <li data-translate-key="upricing_feature_platform_all_courses"><i class="fas fa-check"></i> All Courses & Modules</li>
+                            <li data-translate-key="upricing_feature_platform_all_projects"><i class="fas fa-check"></i> All AI-Generated Projects</li>
+                            <li data-translate-key="upricing_feature_platform_community"><i class="fas fa-check"></i> Full Community Access</li>
+                            <li data-translate-key="upricing_feature_platform_masterclass"><i class="fas fa-check"></i> Exclusive Video Masterclasses</li>
+                            <li data-translate-key="upricing_feature_platform_priority_support"><i class="fas fa-check"></i> Priority Support</li>
+                        </ul>
+                        <button class="button button--primary pricing-card__cta select-plan-btn" 
+                                data-plan-id="full_platform_quarterly" 
+                                data-name="Full Platform Access (Quarterly)" 
+                                data-price-usd="70.00" 
+                                data-billing-cycle="Quarterly" 
+                                data-translate-key="upricing_cta_get_quarterly_access">Get Quarterly Access</button>
+                    </div>
+
                     <div class="pricing-card pricing-card--featured">
                         <span class="pricing-card__badge" data-translate-key="upricing_badge_best_value">Best Value</span>
-                        <h3 class="pricing-card__title" data-translate-key="upricing_plan_full_platform_title">Full Platform Access</h3>
-                        <div class="pricing-card__price">
+                        <h3 class="pricing-card__title" data-translate-key="upricing_plan_full_platform_title">Full Platform Access (Yearly)</h3> <div class="pricing-card__price">
                             <span class="price-value" data-price-usd="200.00">$200.00</span>
                             <span class="price-term" data-translate-key="upricing_plan_per_year">/ Year</span>
                         </div>
@@ -129,7 +169,12 @@
                             <li data-translate-key="upricing_feature_platform_masterclass"><i class="fas fa-check"></i> Exclusive Video Masterclasses</li>
                             <li data-translate-key="upricing_feature_platform_priority_support"><i class="fas fa-check"></i> Priority Support</li>
                         </ul>
-                        <button class="button button--primary pricing-card__cta select-plan-btn" data-plan-id="full_platform_yearly" data-name="Full Platform Access (Yearly)" data-price-usd="200.00" data-billing-cycle="Yearly" data-translate-key="upricing_cta_get_full_access">Get Full Access</button>
+                        <button class="button button--primary pricing-card__cta select-plan-btn" 
+                                data-plan-id="full_platform_yearly" 
+                                data-name="Full Platform Access (Yearly)" 
+                                data-price-usd="200.00" 
+                                data-billing-cycle="Yearly" 
+                                data-translate-key="upricing_cta_get_full_access">Get Full Access</button>
                     </div>
 
                     <div class="pricing-card">
@@ -144,7 +189,12 @@
                             <li data-translate-key="upricing_feature_community_groups"><i class="fas fa-check"></i> Industry-specific groups</li>
                             <li data-translate-key="upricing_feature_community_networking"><i class="fas fa-check"></i> Networking opportunities</li>
                         </ul>
-                        <button class="button button--primary pricing-card__cta select-plan-btn" data-plan-id="community_monthly" data-name="Community Access (Monthly)" data-price-usd="3.99" data-billing-cycle="Monthly" data-translate-key="upricing_cta_join_community">Join Community</button>
+                        <button class="button button--primary pricing-card__cta select-plan-btn" 
+                                data-plan-id="community_monthly" 
+                                data-name="Community Access (Monthly)" 
+                                data-price-usd="3.99" 
+                                data-billing-cycle="Monthly" 
+                                data-translate-key="upricing_cta_join_community">Join Community</button>
                     </div>
                 </div>
             </div>
