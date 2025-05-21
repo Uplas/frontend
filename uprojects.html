@@ -46,14 +46,12 @@
                             <option value="fr">Français (FR)</option>
                         </select>
                     </div>
-                    {/* Currency selector might be less relevant here unless projects have costs */}
-                </div>
+                    </div>
                 <button id="theme-toggle" class="button button--theme" aria-label="Switch color theme" title="Toggle theme">
                     <i class="fas fa-moon theme-icon theme-icon--dark" aria-hidden="true"></i>
                     <i class="fas fa-sun theme-icon theme-icon--light" aria-hidden="true" style="display:none;"></i>
                     <span class="sr-only" data-translate-key="toggle_theme_sr">Toggle Dark/Light Mode</span>
                 </button>
-                 {/* User Profile/Avatar Placeholder */}
                  <div class="user-profile-placeholder-header" id="user-avatar-header">
                     <button class="user-avatar-button-header" aria-label="User menu">JD</button>
                 </div>
@@ -128,8 +126,7 @@
                     </div>
                     <div class="project-list-container" id="project-list-container">
                         <p class="empty-state-message" id="no-projects-message" data-translate-key="uprojects_no_projects_msg">No projects yet. AI will generate projects based on your learning progress, or you can start one!</p>
-                        {/* Project cards will be injected here by JavaScript */}
-                    </div>
+                        </div>
                 </div>
             </section>
 
@@ -137,15 +134,12 @@
                 <header class="feature-panel__header panel-drag-handle">
                     <h2 id="ai-tutor-title" class="feature-panel__title"><i class="fas fa-robot" aria-hidden="true"></i> <span data-translate-key="uprojects_ai_tutor_panel_title">AI Project Assistant</span></h2>
                     <div class="panel-controls">
-                        {/* <button class="panel-control-btn minimize-panel-btn" aria-label="Minimize Panel" title="Minimize"><i class="fas fa-window-minimize"></i></button> */}
-                        {/* <button class="panel-control-btn maximize-panel-btn" aria-label="Maximize Panel" title="Maximize"><i class="fas fa-expand-alt"></i></button> */}
                         <button class="panel-control-btn close-panel-btn" data-panel-id="ai-tutor-panel" aria-label="Close AI Tutor" title="Close"><i class="fas fa-times"></i></button>
                     </div>
                 </header>
                 <div class="feature-panel__content chat-area">
                     <div class="chat-messages" id="chat-messages-ai-tutor">
-                        {/* Initial message can be added by JS */}
-                    </div>
+                        </div>
                     <form class="chat-input-form" id="ai-tutor-input-form">
                         <label for="ai-tutor-message-input" class="sr-only" data-translate-key="sr_ai_tutor_message_input">Your message to AI Tutor</label>
                         <textarea id="ai-tutor-message-input" class="chat-input__textarea" placeholder="Ask about your project, debug code..." aria-label="Your message to AI Tutor" data-translate-key="uprojects_ai_tutor_placeholder"></textarea>
@@ -175,8 +169,7 @@
                         </div>
                         <button id="ide-run-code-btn" class="button button--success button--extra-small"><i class="fas fa-play"></i> <span data-translate-key="uprojects_ide_button_run">Run</span></button>
                         <button id="ide-save-code-btn" class="button button--secondary button--extra-small"><i class="fas fa-save"></i> <span data-translate-key="uprojects_ide_button_save">Save</span></button>
-                        {/* <button id="ide-format-code-btn" class="button button--secondary button--extra-small"><i class="fas fa-align-left"></i> Format</button> */}
-                    </div>
+                        </div>
                     <div class="ide-editor-container">
                         <label for="ide-code-area" class="sr-only" data-translate-key="sr_ide_code_editor">Code editor</label>
                         <textarea id="ide-code-area" class="code-editor-textarea" placeholder="Your Python code for the project appears here..." aria-label="Code editor" data-translate-key="uprojects_ide_code_placeholder"></textarea>
@@ -198,7 +191,6 @@
                 <div class="feature-panel__content resources-area">
                     <p data-translate-key="uprojects_resources_desc">Access key documentation, code snippets, and helpful links relevant to your current project stage. (Content will be dynamic based on project)</p>
                     <ul class="resource-list" id="project-specific-resources-list">
-                        {/* JS will populate this based on active project */}
                         <li><a href="#" target="_blank" rel="noopener noreferrer" class="resource-list__link"><i class="fab fa-python resource-list__icon"></i> Python for AI: Advanced Techniques</a></li>
                     </ul>
                 </div>
