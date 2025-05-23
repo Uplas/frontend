@@ -1,7 +1,7 @@
 /* css/global.css */
 /* ================================================
    Uplas Global Styles (global.css)
-   - Apply to common HTML elements, base layout utilities, header, footer.
+   - Base HTML, typography, utilities, forms, header, footer, modals.
    - Assumes variables.css is linked before this in HTML.
    ================================================ */
 
@@ -11,12 +11,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
 
 /* --- Base HTML & Body --- */
-:root { /* Fallbacks, actual values from variables.css if linked correctly */
+:root {
     font-family: var(--font-primary, 'Poppins', sans-serif);
-    font-size: var(--font-size-base, 16px);
+    font-size: var(--font-size-base, 16px); /* Default base font size */
     line-height: var(--line-height-base, 1.65);
-    background-color: var(--current-bg-color, #ffffff); /* Fallback light bg */
-    color: var(--current-text-color, #333333); /* Fallback dark text */
+    background-color: var(--current-bg-color, #ffffff);
+    color: var(--current-text-color, #212529);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,7 +25,7 @@ html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    height: 100%;
+    height: 100%; /* Ensure html takes full height */
 }
 
 body {
@@ -33,16 +33,16 @@ body {
     background-color: var(--current-bg-color);
     color: var(--current-text-color);
     margin: 0;
-    min-height: 100%;
-    display: flex;
-    flex-direction: column;
+    min-height: 100%; /* Ensure body takes at least full viewport height */
+    display: flex; /* Added to enable sticky footer */
+    flex-direction: column; /* Content grows, footer stays at bottom */
     line-height: var(--line-height-base);
     transition: background-color var(--transition-base), color var(--transition-base);
-    padding-top: var(--header-height, 70px); /* Space for fixed header */
-    overflow-x: hidden; /* Prevent horizontal scroll on body */
+    padding-top: var(--header-height, 70px); /* Space for fixed header, ensure --header-height is defined in variables.css */
+    overflow-x: hidden;
 }
 
-body.mobile-nav-active { overflow-y: hidden; } /* Prevent body scroll when mobile nav is open */
+body.mobile-nav-active { overflow-y: hidden; }
 
 /* --- Typography --- */
 h1, h2, h3, h4, h5, h6 {
@@ -51,11 +51,11 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--current-text-color);
     margin-bottom: var(--spacing-md);
 }
-h1 { font-size: var(--font-size-hero, clamp(2.2rem, 5vw, 3.3rem)); font-weight: var(--font-weight-bold); }
-h2 { font-size: var(--font-size-xxl, 2rem); }
-h3 { font-size: var(--font-size-xl, 1.5rem); }
-h4 { font-size: var(--font-size-lg, 1.125rem); }
-p { margin-bottom: var(--spacing-md); }
+h1 { font-size: var(--font-size-hero, clamp(2.2rem, 5vw, 3.3rem)); font-weight: var(--font-weight-bold); } /* */
+h2 { font-size: var(--font-size-xxl, 2rem); } /* */
+h3 { font-size: var(--font-size-xl, 1.5rem); } /* */
+h4 { font-size: var(--font-size-lg, 1.125rem); } /* */
+p { margin-bottom: var(--spacing-md); } /* */
 a {
     color: var(--current-link-color);
     text-decoration: none;
@@ -72,35 +72,44 @@ li { margin-bottom: var(--spacing-xs); }
 /* --- Layout & Utilities --- */
 .container {
     width: 100%;
-    max-width: var(--container-max-width, 1200px);
+    max-width: var(--container-max-width, 1200px); /* */
     margin-left: auto;
     margin-right: auto;
-    padding-left: var(--container-padding-x, var(--spacing-lg));
+    padding-left: var(--container-padding-x, var(--spacing-lg)); /* Use spacing var */
     padding-right: var(--container-padding-x, var(--spacing-lg));
 }
-.sr-only {
+.sr-only { /* */
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
 }
-.section-title {
+.section-title { /* */
     font-size: var(--font-size-xxl);
     font-weight: var(--font-weight-bold);
     margin-bottom: var(--spacing-lg);
+    color: var(--current-text-color);
     text-align: center;
 }
-/* ... other utilities ... */
-
-/* --- Focus Visible --- */
-*:focus:not(:focus-visible) { outline: none; }
-*:focus-visible {
-    outline: var(--border-width-bold) solid var(--color-accent, orange);
-    outline-offset: 2px;
-    box-shadow: 0 0 0 3px var(--color-accent-light, rgba(244, 162, 97, 0.35));
-    border-radius: var(--border-radius-sm);
+.section-title--left-align { text-align: left; } /* */
+.section-subtitle { /* */
+    font-size: var(--font-size-lg);
+    color: var(--current-text-color-secondary);
+    max-width: 750px;
+    margin: 0 auto var(--spacing-md) auto;
+    text-align: center;
+    line-height: 1.7;
 }
 
-/* --- Buttons --- */
-.button { /* */
+/* --- Focus Visible --- (From your global (1).css) */
+*:focus:not(:focus-visible) { outline: none; } /* */
+*:focus-visible {
+    outline: var(--border-width-bold) solid var(--color-accent, orange); /* */
+    outline-offset: 2px; /* */
+    box-shadow: 0 0 0 3px var(--color-accent-light, rgba(244, 162, 97, 0.35)); /* */
+    border-radius: var(--border-radius-sm); /* */
+}
+
+/* --- Buttons --- (From your global (1).css) */
+.button {
     display: inline-flex; align-items: center; justify-content: center;
     gap: var(--spacing-xs); padding: var(--spacing-sm) var(--spacing-lg);
     font-family: var(--font-primary); font-weight: var(--font-weight-medium);
@@ -111,8 +120,7 @@ li { margin-bottom: var(--spacing-xs); }
     box-shadow: var(--box-shadow-xs);
 }
 .button:hover { transform: translateY(-2px); box-shadow: var(--box-shadow-md); text-decoration: none; }
-/* ... other button styles from your global (1).css ... */
-.button--primary { /* */
+.button--primary {
     background-color: var(--current-button-primary-bg, var(--color-primary));
     color: var(--current-button-primary-text, var(--color-white));
     border-color: var(--current-button-primary-border, var(--color-primary));
@@ -122,7 +130,7 @@ li { margin-bottom: var(--spacing-xs); }
     background-color: var(--current-button-primary-hover-bg, var(--color-primary-dark));
     border-color: var(--current-button-primary-hover-bg, var(--color-primary-dark));
 }
-.button--secondary { /* */
+.button--secondary {
     background-color: var(--current-button-secondary-bg, transparent);
     color: var(--current-button-secondary-text, var(--color-secondary));
     border-color: var(--current-button-secondary-border, var(--color-secondary));
@@ -132,31 +140,21 @@ li { margin-bottom: var(--spacing-xs); }
     color: var(--current-button-secondary-hover-text, var(--color-white));
     border-color: var(--current-button-secondary-hover-bg, var(--color-secondary));
 }
-.dark-mode .button--secondary {
-    color: var(--current-button-secondary-text, var(--color-primary-light));
-    border-color: var(--current-button-secondary-border, var(--color-primary-light));
-}
-.dark-mode .button--secondary:hover {
-     background-color: var(--current-button-secondary-hover-bg, var(--color-primary-light));
-    color: var(--current-button-secondary-hover-text, var(--color-black));
-    border-color: var(--current-button-secondary-hover-bg, var(--color-primary-light));
-}
-.button--theme { /* */
+/* ... other button variants ... */
+.button--theme {
     background: none; border: none; padding: var(--spacing-xs); font-size: 1.3rem; 
     display: inline-flex; align-items: center; justify-content: center;
-    width: 36px; height: 36px; /* Ensure consistent size */
+    width: 36px; height: 36px;
     color: var(--current-text-color-secondary);
 }
 .button--theme:hover { transform: none; box-shadow: none; color: var(--color-primary); }
-.theme-icon--dark { display: inline-block; }
-.theme-icon--light { display: none; }
+.theme-icon--dark { display: inline-block; } /* Default for light mode */
+.theme-icon--light { display: none; }       /* Hidden in light mode */
 .dark-mode .theme-icon--dark { display: none !important; }
 .dark-mode .theme-icon--light { display: inline-block !important; }
 
-
-/* --- Forms --- */
-/* ... Form styles from your global (1).css are good, ensure they are present ... */
-.form__group { margin-bottom: var(--spacing-lg); position: relative; } /* */
+/* --- Forms --- (From your global (1).css) */
+.form__group { margin-bottom: var(--spacing-lg); position: relative; }
 .form__label {
     display: block; font-weight: var(--font-weight-medium);
     margin-bottom: var(--spacing-xs);
@@ -171,25 +169,13 @@ li { margin-bottom: var(--spacing-xs); }
     font-size: 0.95rem; line-height: 1.5;
     transition: border-color var(--transition-short), box-shadow var(--transition-short);
 }
-.form__input::placeholder, .form__textarea::placeholder {
-    color: var(--current-input-placeholder-color); opacity: 0.8;
-}
+.form__input::placeholder, .form__textarea::placeholder { color: var(--current-input-placeholder-color); opacity: 0.8; }
 .form__input:focus, .form__select:focus, .form__textarea:focus {
-    border-color: var(--color-primary);
-    box-shadow: var(--box-shadow-focus);
-    outline: none;
+    border-color: var(--color-primary); box-shadow: var(--box-shadow-focus); outline: none;
 }
-.form__input.invalid, .form__select.invalid, .form__textarea.invalid {
-    border-color: var(--color-error) !important;
-    box-shadow: var(--box-shadow-focus-error) !important;
-}
-.form__error-message {
-    display: block; color: var(--color-error);
-    font-size: var(--font-size-xs);
-    margin-top: var(--spacing-xxs);
-    min-height: 1.2em;
-}
-.form__select { /* Custom select arrow styling from your global (1).css */
+.form__input.invalid, .form__select.invalid, .form__textarea.invalid { border-color: var(--color-error) !important; box-shadow: var(--box-shadow-focus-error) !important; }
+.form__error-message { display: block; color: var(--color-error); font-size: var(--font-size-xs); margin-top: var(--spacing-xxs); min-height: 1.2em; }
+.form__select {
     appearance: none; -webkit-appearance: none; -moz-appearance: none;
     background-repeat: no-repeat; background-position: right var(--spacing-md) center; background-size: 1em;
     padding-right: calc(var(--spacing-md) + 1.5em);
@@ -198,64 +184,61 @@ li { margin-bottom: var(--spacing-xs); }
 .dark-mode .form__select {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23cccccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 }
-.form__status { /* For AJAX form feedback */
+.form__status {
     margin-top: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md);
     border-radius: var(--border-radius-md); text-align: center;
-    font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);
-    display: none; /* JS shows this */
+    font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); display: none;
 }
 .form__status--success { background-color: var(--color-success-light); color: var(--color-success); border: 1px solid var(--color-success); }
 .form__status--error { background-color: var(--color-error-light); color: var(--color-error); border: 1px solid var(--color-error); }
 .form__status--loading { background-color: var(--color-info-light); color: var(--color-primary-dark); border: 1px solid var(--color-primary); }
 
-/* --- Header Styling --- */
-/* .header is the main <header> tag in each HTML page (or the root of components/header.html if loaded into a div) */
-/* If using dynamic loading, the placeholder div's direct child will be the content of components/header.html */
-/* So, if components/header.html starts with <div class="container header__container">...</div>, then styles for .header might need to target the placeholder's ID or a wrapper class you add */
-/* Assuming the dynamically loaded header is wrapped by <header class="header" id="page-header"> on the main page or the placeholder is `<header id="site-header-placeholder" class="header"></header>` */
 
-.header { /* This class should be on the <header> element itself, whether static or the root of components/header.html */
+/* --- Header Styling (Crucial for Horizontal Layout) --- */
+.header { /* This class is on the main <header> tag that wraps the loaded component */
     background-color: var(--current-header-bg);
-    height: var(--header-height);
+    height: var(--header-height, 70px); /* Ensure --header-height is defined in variables.css */
     box-shadow: var(--box-shadow-sm);
     border-bottom: var(--border-width) solid var(--current-border-color-light);
-    position: fixed;
+    position: fixed; /* Fixed header */
     top: 0;
     left: 0;
     right: 0;
-    z-index: var(--z-index-header, 1030); /* Ensure high z-index */
+    z-index: var(--z-index-header);
     transition: background-color var(--transition-base), border-color var(--transition-base);
-    padding: 0; /* Remove direct padding, use .container inside for content padding */
+    padding: 0; /* Container inside will handle padding */
 }
 
-/* This class is inside components/header.html */
-.header__container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.header__container { /* This class is inside components/header.html */
+    display: flex; /* KEY FOR HORIZONTAL LAYOUT */
+    justify-content: space-between; /* Distributes space */
+    align-items: center; /* Vertically aligns items */
     height: 100%; /* Make container fill header height */
+    gap: var(--spacing-md); /* Optional gap between direct children (logo, nav, actions) */
 }
 
-.logo { display: flex; align-items: center; text-decoration: none; }
-.logo__img { height: 40px; width: auto; margin-right: var(--spacing-sm); }
+.logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
+.logo__img { height: calc(var(--header-height) - var(--spacing-lg)); max-height: 40px; width: auto; margin-right: var(--spacing-xs); }
 
-.nav { flex-grow: 1; display: flex; justify-content: flex-start; margin-left: var(--spacing-lg); } /* Align nav left, or center */
-.nav__list { list-style: none; display: flex; gap: var(--spacing-sm); align-items: center; }
+.nav { flex-grow: 1; display: flex; justify-content: flex-start; /* or center if preferred */ } /* Allows nav to take available space */
+.nav__list { list-style: none; display: flex; align-items: center; padding: 0; margin: 0; gap: var(--spacing-sm); } /* Horizontal nav items */
+.nav__item {}
 .nav__link {
-    font-weight: var(--font-weight-medium);
-    color: var(--current-text-color);
-    padding: var(--spacing-xs) var(--spacing-md);
-    position: relative;
-    font-size: var(--font-size-sm);
-    border-radius: var(--border-radius-sm);
-    text-decoration: none;
+    font-weight: var(--font-weight-medium); color: var(--current-text-color);
+    padding: var(--spacing-xs) var(--spacing-md); position: relative;
+    font-size: var(--font-size-sm); border-radius: var(--border-radius-sm);
 }
-/* ... rest of .nav__link and .header-actions styling from your global (1).css ... */
+/* ... (nav link hover/active styles from your global (1).css are good) ... */
 .nav__link:not(.nav__link--cta)::after {
     content: ''; position: absolute; bottom: 0;
     left: 50%; transform: translateX(-50%);
     width: 0; height: 2px; background-color: var(--current-link-color);
     transition: width var(--transition-base);
+}
+.nav__link:not(.nav__link--cta):hover::after,
+.nav__link:not(.nav__link--cta):focus-visible::after,
+.nav__link--active:not(.nav__link--cta)::after {
+    width: 70%;
 }
 .nav__link:not(.nav__link--cta):hover,
 .nav__link:not(.nav__link--cta):focus-visible,
@@ -263,30 +246,26 @@ li { margin-bottom: var(--spacing-xs); }
     color: var(--current-link-hover-color);
     background-color: var(--color-primary-ultralight);
 }
-.nav__link:not(.nav__link--cta):hover::after,
-.nav__link:not(.nav__link--cta):focus-visible::after,
-.nav__link--active:not(.nav__link--cta)::after {
-    width: 70%;
-}
-.header-actions { display: flex; align-items: center; gap: var(--spacing-md); }
-.language-currency-selectors { display: flex; gap: var(--spacing-sm); }
+
+
+.header-actions { display: flex; align-items: center; gap: var(--spacing-md); flex-shrink: 0; }
+.language-currency-selectors { display: flex; gap: var(--spacing-sm); align-items: center; }
 .select-wrapper { position: relative; display: flex; align-items: center; }
 .selector-icon {
-    position: absolute; left: var(--spacing-sm);
+    position: absolute; left: var(--spacing-sm); top: 50%; transform: translateY(-50%);
     font-size: 0.9em; color: var(--current-text-color-secondary); pointer-events: none;
 }
 .header-select {
     background-color: var(--current-input-bg); color: var(--current-text-color);
     border: 1px solid var(--current-border-color); border-radius: var(--border-radius-md);
-    padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-xs) calc(var(--spacing-sm) + 20px);
+    padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-xs) calc(var(--spacing-sm) + 20px); /* Space for icon */
     font-size: var(--font-size-xs); font-weight: var(--font-weight-medium);
     appearance: none; -webkit-appearance: none; -moz-appearance: none;
     cursor: pointer; min-width: 80px; height: 32px; line-height: 1;
 }
 .header-select:hover { border-color: var(--color-primary); }
-.header-select::-ms-expand { display: none; }
 
-.user-profile-placeholder-header { display: none; align-items: center; }
+.user-profile-placeholder-header { display: none; align-items: center; /* JS shows this */ }
 .user-avatar-button-header {
     width: 36px; height: 36px; border-radius: 50%;
     background-color: var(--color-primary-light); color: var(--color-secondary-dark);
@@ -295,37 +274,39 @@ li { margin-bottom: var(--spacing-xs); }
     border: 1px solid var(--color-primary);
 }
 
-.nav__toggle { /* Burger Icon */
-    display: none; background: none; border: none;
-    color: var(--current-text-color); font-size: 1.6rem; cursor: pointer;
-    padding: var(--spacing-xs); z-index: 1051; /* Above nav dropdown */
+.nav__toggle { /* Burger Icon for Mobile */
+    display: none; /* Shown by media query */
+    background: none; border: none; color: var(--current-text-color);
+    font-size: 1.6rem; cursor: pointer; padding: var(--spacing-xs);
+    z-index: 1051; /* Above mobile nav dropdown */
 }
 .nav__toggle:hover { color: var(--current-link-hover-color); }
 
 
-/* --- Footer Styling --- */
-/* .footer is the main <footer> tag in each HTML page or root of components/footer.html */
-.footer {
+/* --- Footer Styling (Crucial for Layout) --- */
+.main-content { flex-grow: 1; } /* Allows footer to stick to bottom if content is short */
+
+.footer { /* This class is on the main <footer> tag */
     background-color: var(--current-footer-bg);
     color: var(--current-footer-text-color);
     padding: var(--spacing-xxl) 0 var(--spacing-lg) 0;
-    margin-top: auto; /* Pushes footer to bottom if page content is short */
-    border-top: 1px solid var(--current-border-color); /* Subtle top border */
+    /* margin-top: auto; -- This is handled by body flex for sticky footer */
+    border-top: 1px solid var(--current-border-color);
 }
-/* This class is inside components/footer.html */
-.footer__container {
-    display: grid;
+
+.footer__container { /* This class is inside components/footer.html */
+    display: grid; /* KEY FOR COLUMN LAYOUT */
     grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); /* Responsive columns */
     gap: var(--spacing-xl);
-    text-align: left; /* Default for footer sections */
+    text-align: left; /* Default for sections */
 }
 .footer__section {}
 .footer__heading {
     font-size: 1.1rem; font-weight: var(--font-weight-semibold);
-    margin-bottom: var(--spacing-md); color: var(--color-white); /* Usually white on dark bg */
+    margin-bottom: var(--spacing-md); color: var(--color-white);
     text-transform: uppercase; letter-spacing: 0.5px;
 }
-.dark-mode .footer__heading { color: var(--color-dark-text-primary); } /* Adjust if needed for dark on dark */
+.dark-mode .footer__heading { color: var(--color-dark-text-primary); }
 
 .footer__address p { margin: var(--spacing-xs) 0; font-size: 0.9rem; line-height: 1.6; }
 .footer__icon { margin-right: var(--spacing-sm); opacity: 0.8; font-size: 0.9em; }
@@ -357,73 +338,57 @@ li { margin-bottom: var(--spacing-xs); }
 .footer__copyright { font-size: 0.85rem; opacity: 0.8; margin: 0; }
 
 
-/* --- Mobile Navigation Styles --- */
-@media (max-width: 991px) { /* Breakpoint for mobile nav */
+/* --- Mobile Navigation Styles (Responsive Overrides) --- */
+@media (max-width: 991px) { /* Adjust this breakpoint based on your design */
     .header__container {
-        /* Nav will be absolutely positioned, so container might just hold logo and toggle */
+        /* Allow space for burger menu if other items are hidden */
     }
-    .nav { /* This is #main-navigation */
-        display: none; /* Hidden by default */
+    .nav { /* Main navigation menu, ID #main-navigation */
+        display: none; 
         position: absolute;
-        top: 100%; /* Directly below the header */
+        top: var(--header-height, 70px); /* Position below header */
         left: 0;
-        right: 0;
+        width: 100%;
         background-color: var(--current-header-bg);
-        flex-direction: column;
-        align-items: stretch; /* Make links full width */
-        padding: var(--spacing-sm) 0;
         box-shadow: var(--box-shadow-md);
-        border-top: var(--border-width) solid var(--current-border-color);
-        z-index: 1040; /* Below header actions if they remain visible */
+        flex-direction: column;
+        padding: var(--spacing-md) 0;
+        border-top: var(--border-width) solid var(--current-border-color-light);
     }
     .nav.nav--active { /* Class toggled by JS */
         display: flex;
-        animation: slideDownNav 0.3s ease-out;
+        animation: slideDownNav 0.3s ease-out forwards;
     }
     @keyframes slideDownNav {
-        from { opacity: 0; transform: translateY(-10px); }
+        from { opacity: 0; transform: translateY(-20px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
-    .nav__list { flex-direction: column; width: 100%; gap: 0; }
-    .nav__item { width: 100%; }
+    .nav__list { flex-direction: column; width: 100%; gap: 0; align-items: stretch; }
+    .nav__item { width: 100%; margin:0; }
     .nav__link {
-        display: block; /* Make link take full width of li */
-        padding: var(--spacing-md) var(--spacing-lg); /* Generous padding for touch */
-        width: 100%;
-        text-align: left;
-        border-bottom: var(--border-width) solid var(--current-border-color-light);
-        border-radius: 0; /* Remove radius from desktop style */
+        display: block; padding: var(--spacing-md) var(--spacing-lg); width: 100%;
+        text-align: left; border-bottom: var(--border-width) solid var(--current-border-color-light);
+        border-radius: 0;
     }
     .nav__list li:last-child .nav__link { border-bottom: none; }
     .nav__link:not(.nav__link--cta)::after { display: none; } /* No underline effect on mobile */
-    .nav__link--cta {
-        margin: var(--spacing-sm) var(--spacing-lg); /* Add margin around CTA in mobile menu */
-        text-align: center;
-    }
+    .nav__link--cta { margin: var(--spacing-sm) var(--spacing-lg); text-align: center; }
 
     .nav__toggle { display: flex; } /* Show burger icon */
 
-    .header-actions { /* How actions behave on mobile */
-        margin-left: auto; /* Push toggle to right if nav is hidden */
-    }
-    .language-currency-selectors {
-        display: none; /* Hide in header on mobile by default */
-        /* If you want them in the mobile menu, you'd add them to nav's HTML */
-    }
-    /* If language/currency were moved into .nav for mobile: */
-    /* .nav .language-currency-selectors { display: flex; flex-direction:column; padding: var(--spacing-md); gap: var(--spacing-sm); border-top: 1px solid var(--current-border-color-light); } */
-    /* .nav .select-wrapper { width: 100%; } */
-    /* .nav .header-select { width: 100%; } */
+    .header-actions .language-currency-selectors { display: none; /* Hide in header on mobile by default */ }
+    /* If language/currency selectors are moved into mobile nav, they would be styled there */
 
-    .footer__container { text-align: center; }
+    /* Footer adjustments for mobile */
+    .footer__container { text-align: center; gap: var(--spacing-lg); }
     .footer__section { margin-bottom: var(--spacing-lg); }
-    .footer__list { display: inline-block; text-align: left; } /* Allows centering of the list block */
+    .footer__list { display: inline-block; text-align: left; }
     .social-media { justify-content: center; }
 }
 
-/* Modal styles (re-checked from your global (1).css) */
-.modal-overlay { /* */
+/* Modal styles (from your global (1).css) */
+.modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0,0,0,0.6);
     display: flex; align-items: center; justify-content: center;
@@ -431,29 +396,22 @@ li { margin-bottom: var(--spacing-xs); }
     opacity: 0; visibility: hidden;
     transition: opacity var(--transition-medium), visibility var(--transition-medium) 0s var(--transition-medium);
 }
-.modal-overlay[hidden] { display: none !important; }
-.modal-overlay.active {
-    opacity: 1; visibility: visible;
-    transition-delay: 0s;
-}
-.modal__content { /* */
+.modal-overlay[hidden] { display: none !important; } /* Ensure really hidden if JS sets it */
+.modal-overlay.active { opacity: 1; visibility: visible; transition-delay: 0s; }
+
+.modal__content {
     background-color: var(--current-card-bg);
-    padding: var(--spacing-xl);
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--box-shadow-xl);
-    max-width: 90vw;
-    width: 600px;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-    transform: scale(0.95);
-    transition: transform var(--transition-medium);
+    padding: var(--spacing-xl); border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-xl); max-width: 90vw; width: 600px;
+    max-height: 90vh; overflow-y: auto; position: relative;
+    transform: scale(0.95); transition: transform var(--transition-medium);
 }
 .modal-overlay.active .modal__content { transform: scale(1); }
-.modal__close-button { /* */
+
+.modal__close-button {
     position: absolute; top: var(--spacing-md); right: var(--spacing-md);
     background: none; border: none; font-size: 1.8rem; color: var(--current-text-color-secondary);
     cursor: pointer; line-height: 1; padding: 0;
 }
 .modal__close-button:hover { color: var(--color-error); }
-.modal__title { font-size: var(--font-size-xl); margin-bottom: var(--spacing-lg); color: var(--current-text-color); } /* */
+.modal__title { font-size: var(--font-size-xl); margin-bottom: var(--spacing-lg); color: var(--current-text-color); }
