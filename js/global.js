@@ -6,6 +6,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeToggleButton = document.getElementById('theme-toggle');
     const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
 
+    const pathSegments = window.location.pathname.split('/');
+    let currentPageFile = pathSegments.pop() || 'index.html'; // Default to index.html if path ends with /
+    if (currentPageFile.trim() === "") currentPageFile = "index.html";
+
+     // Load Header and Footer Components FIRST
+    const headerPlaceholder = document.getElementById('site-header-placeholder');
+    const footerPlaceholder = document.getElementById('site-footer-placeholder');
+    let headerLoaded = false;
+    let footerLoaded = false;
+
+    if (typeof loadHTMLComponent === 'function') { // Check if componentLoader.js is loaded
+        if (headerPlaceholder) {
+            headerLoaded = await loadHTMLComponent('components/header.html', 'site-header-placeholder', currentPageFile);
+        }
+        if (footerPlaceholder) {
+            footerLoaded = await loadHTMLComponent('components/footer.html', 'site-footer-placeholder');
+        }
+    } else {
+        console.error("componentLoader.js and loadHTMLComponent function not found. Header/Footer will not be loaded dynamically.");
+    }
+
+
     // Store current theme toggle aria-label keys for dynamic updates
     const themeAriaLabels = {
         light: 'theme_toggle_dark', // Aria label key when in light mode (button shows moon, action is "Switch to Dark")
@@ -76,6 +98,132 @@ document.addEventListener('DOMContentLoaded', () => {
             applyTheme(currentTheme); // Re-apply theme to update aria-label with new translations
         });
     }
+
+    // --- Initialize i18nManager (MUST run after components might be loaded if they contain translate keys, or re-translate)
+    if (typeof i18nManager !== 'undefined' && typeof i18nManager.init === 'function') {
+        await i18nManager.init('en');
+        if (languageSelector) { // Re-check selector after potential header load
+             const langSel = document.getElementById('language-selector');
+             if(langSel && typeof window.uplasGetCurrentLocale === 'function') langSel.value = window.uplasGetCurrentLocale();
+        }
+    } else {
+        console.error("i18nManager is not available. Translations might not work.");
+    }
+    
+    // --- Theme Management --- (Now that header might be loaded)
+    const themeToggleButton = document.getElementById('theme-toggle'); // Re-select after load
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const themeAriaLabels = { light: 'theme_toggle_dark', dark: 'theme_toggle_light' };
+    const themeAriaLabelDefaults = { light: 'Switch to Dark Mode', dark: 'Switch to Light Mode' };
+
+    function applyTheme(theme) {
+        // ... (applyTheme function remains the same as in previous js/global.js)
+        // Ensure it correctly selects themeToggleButton if it's now dynamically loaded
+        const currentThemeToggleButton = document.getElementById('theme-toggle'); // Re-fetch in case of dynamic load
+        const isDark = theme === 'dark';
+        document.body.classList.toggle('dark-mode', isDark);
+        if (currentThemeToggleButton) {
+            currentThemeToggleButton.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            if (typeof window.uplasTranslate === 'function') {
+                const ariaKey = isDark ? themeAriaLabels.dark : themeAriaLabels.light;
+                const ariaDefault = isDark ? themeAriaLabelDefaults.dark : themeAriaLabelDefaults.light;
+                currentThemeToggleButton.setAttribute('aria-label', window.uplasTranslate(ariaKey, { fallback: ariaDefault }));
+            } else {
+                 currentThemeToggleButton.setAttribute('aria-label', isDark ? themeAriaLabelDefaults.dark : themeAriaLabelDefaults.light);
+            }
+        }
+    }
+
+    function toggleTheme() {
+        // ... (toggleTheme function remains the same)
+        const currentThemeIsDark = document.body.classList.contains('dark-mode');
+        const newTheme = currentThemeIsDark ? 'light' : 'dark';
+        localStorage.setItem('uplas-theme', newTheme);
+        applyTheme(newTheme);
+    }
+
+    if (headerLoaded && themeToggleButton) { // Check if header loaded and button exists
+         document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
+    } else if (!headerLoaded && themeToggleButton) { // If header wasn't dynamic but button exists
+        themeToggleButton.addEventListener('click', toggleTheme);
+    }
+
+    // --- Language Management --- (Now that header might be loaded)
+    // Event listener for language selector
+    const languageSelector = document.getElementById('language-selector'); // Re-select
+    if (headerLoaded && languageSelector) {
+        if (typeof window.uplasOnLanguageChange === 'function') {
+            window.uplasOnLanguageChange((newLocale) => {
+                if (languageSelector.value !== newLocale) languageSelector.value = newLocale;
+            });
+        }
+         languageSelector.addEventListener('change', (event) => {
+            if (typeof window.uplasChangeLanguage === 'function') window.uplasChangeLanguage(event.target.value);
+        });
+    } else if (!headerLoaded && languageSelector){ // Fallback if header not dynamic
+         if (typeof window.uplasOnLanguageChange === 'function') { /* ... same as above ... */ }
+         languageSelector.addEventListener('change', (event) => { /* ... same as above ... */});
+    }
+    
+    // Update theme toggle aria-label on language change
+     if (headerLoaded && typeof window.uplasOnLanguageChange === 'function' && document.getElementById('theme-toggle')) {
+        window.uplasOnLanguageChange(() => {
+            const currentTheme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
+            applyTheme(currentTheme); 
+        });
+    }
+
+
+    // --- Currency Management --- (Selectors might be in header)
+    const currencySelector = document.getElementById('currency-selector'); // Re-select
+    let currentCurrency = localStorage.getItem('uplas-currency') || 'USD';
+    // ... (rest of currency functions: simulatedExchangeRates, formatPrice, updateDisplayedPrices, changeCurrency remain the same)
+    window.simulatedExchangeRates = simulatedExchangeRates; 
+    window.currentCurrency = currentCurrency;
+    window.updateUserCurrencyDisplay = updateDisplayedPrices;
+
+
+    if (headerLoaded && currencySelector) {
+        currencySelector.value = currentCurrency;
+        currencySelector.addEventListener('change', (event) => changeCurrency(event.target.value));
+    } else if (!headerLoaded && currencySelector) { // Fallback if header not dynamic
+        currencySelector.value = currentCurrency;
+        currencySelector.addEventListener('change', (event) => changeCurrency(event.target.value));
+    }
+
+
+    // --- Mobile Navigation Toggle --- (Button is in header)
+    const mobileMenuButton = document.getElementById('mobile-nav-toggle'); // Re-select
+    const mainNav = document.getElementById('main-navigation'); // Re-select
+
+    if (headerLoaded && mobileMenuButton && mainNav) {
+        mobileMenuButton.addEventListener('click', () => {
+            // ... (mobile nav toggle logic remains the same) ...
+            const isExpanded = mainNav.classList.toggle('nav--active'); 
+            mobileMenuButton.classList.toggle('active');
+            mobileMenuButton.setAttribute('aria-expanded', isExpanded.toString());
+            document.body.classList.toggle('mobile-nav-active', isExpanded);
+        });
+    } else if (!headerLoaded && mobileMenuButton && mainNav) { // Fallback
+         mobileMenuButton.addEventListener('click', () => { /* ... same logic ... */ });
+    }
+
+    // --- Utility: Smooth Scroll ---
+    // ... (uplasScrollToElement remains the same) ...
+
+    // --- Footer Year Update (now handled by componentLoader.js after footer loads) ---
+    // The updateDynamicFooterYear function in componentLoader will be called if footer loads.
+
+    // --- Final Initializations after components and i18n ---
+    // Apply theme (important for initial aria-label of theme toggle if translations loaded)
+    const savedTheme = localStorage.getItem('uplas-theme');
+    applyTheme(savedTheme || (prefersDarkScheme.matches ? 'dark' : 'light'));
+
+    // Apply currency (prices might be in main content or footer)
+    updateDisplayedPrices();
+
+    console.log('Uplas global.js initialized, dynamic components attempted.');
+});
 
 
     // --- Currency Management --- (Stays in global.js as it's not strictly i18n)
