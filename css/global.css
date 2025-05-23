@@ -1,473 +1,459 @@
-/* Uplas Frontend: css/global.css */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'); /* Font Awesome */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+/* css/global.css */
+/* ================================================
+   Uplas Global Styles (global.css)
+   - Apply to common HTML elements, base layout utilities, header, footer.
+   - Assumes variables.css is linked before this in HTML.
+   ================================================ */
 
-/* Apply variables */
-:root {
-    /* This will be populated by variables.css, but good to have fallbacks or use directly */
+/* --- Import Font Awesome & Google Fonts --- */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+
+/* --- Base HTML & Body --- */
+:root { /* Fallbacks, actual values from variables.css if linked correctly */
     font-family: var(--font-primary, 'Poppins', sans-serif);
     font-size: var(--font-size-base, 16px);
-    line-height: var(--line-height-base, 1.6);
-    background-color: var(--current-bg-color);
-    color: var(--current-text-color);
-    transition: background-color var(--transition-medium), color var(--transition-medium);
+    line-height: var(--line-height-base, 1.65);
+    background-color: var(--current-bg-color, #ffffff); /* Fallback light bg */
+    color: var(--current-text-color, #333333); /* Fallback dark text */
 }
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    height: 100%;
 }
 
 body {
-    font-family: var(--font-primary, 'Poppins', sans-serif);
-    font-size: var(--font-size-md);
-    line-height: var(--line-height-base);
-    color: var(--current-text-color);
+    font-family: var(--font-primary);
     background-color: var(--current-bg-color);
-    transition: background-color var(--transition-base), color var(--transition-base);
-    overflow-x: hidden; /* Prevent horizontal scroll */
-}
-
-/* Headings */
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-primary, 'Poppins', sans-serif);
     color: var(--current-text-color);
-    margin-bottom: var(--spacing-sm);
-    line-height: var(--line-height-heading);
-    font-weight: var(--font-weight-semibold);
+    margin: 0;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    line-height: var(--line-height-base);
+    transition: background-color var(--transition-base), color var(--transition-base);
+    padding-top: var(--header-height, 70px); /* Space for fixed header */
+    overflow-x: hidden; /* Prevent horizontal scroll on body */
 }
-h1 { font-size: var(--font-size-xxl); }
-h2 { font-size: var(--font-size-xl); }
-h3 { font-size: var(--font-size-lg); }
-h4 { font-size: var(--font-size-md); font-weight: var(--font-weight-medium); }
 
+body.mobile-nav-active { overflow-y: hidden; } /* Prevent body scroll when mobile nav is open */
 
+/* --- Typography --- */
+h1, h2, h3, h4, h5, h6 {
+    line-height: var(--line-height-heading, 1.3);
+    font-weight: var(--font-weight-semibold);
+    color: var(--current-text-color);
+    margin-bottom: var(--spacing-md);
+}
+h1 { font-size: var(--font-size-hero, clamp(2.2rem, 5vw, 3.3rem)); font-weight: var(--font-weight-bold); }
+h2 { font-size: var(--font-size-xxl, 2rem); }
+h3 { font-size: var(--font-size-xl, 1.5rem); }
+h4 { font-size: var(--font-size-lg, 1.125rem); }
+p { margin-bottom: var(--spacing-md); }
 a {
     color: var(--current-link-color);
     text-decoration: none;
     transition: color var(--transition-short);
 }
-a:hover, a:focus {
+a:hover, a:focus-visible {
     color: var(--current-link-hover-color);
     text-decoration: underline;
 }
+img, picture, video, canvas, svg { display: block; max-width: 100%; height: auto; }
+ul, ol { list-style-position: outside; padding-left: var(--spacing-lg); margin-bottom: var(--spacing-md); }
+li { margin-bottom: var(--spacing-xs); }
 
-img, svg {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-/* Utility Classes */
+/* --- Layout & Utilities --- */
 .container {
-    width: 90%;
+    width: 100%;
     max-width: var(--container-max-width, 1200px);
     margin-left: auto;
     margin-right: auto;
-    padding-left: var(--container-padding-x, 1rem);
-    padding-right: var(--container-padding-x, 1rem);
+    padding-left: var(--container-padding-x, var(--spacing-lg));
+    padding-right: var(--container-padding-x, var(--spacing-lg));
 }
-
-.text-center { text-align: center; }
-.text-primary { color: var(--color-primary) !important; }
-.text-accent { color: var(--color-accent) !important; }
-.font-bold { font-weight: var(--font-weight-bold); }
-.font-semibold { font-weight: var(--font-weight-semibold); }
-.mt-1 { margin-top: var(--spacing-sm); }
-.mb-1 { margin-bottom: var(--spacing-sm); }
-.mt-2 { margin-top: var(--spacing-md); }
-.mb-2 { margin-bottom: var(--spacing-md); }
-.mt-3 { margin-top: var(--spacing-lg); }
-.mb-3 { margin-bottom: var(--spacing-lg); }
-
-/* Buttons */
-.btn {
-    display: inline-block;
-    padding: var(--spacing-sm) var(--spacing-lg);
-    font-family: var(--font-primary, 'Poppins', sans-serif);
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-medium);
+.sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+.section-title {
+    font-size: var(--font-size-xxl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-lg);
     text-align: center;
-    border-radius: var(--border-radius-md);
-    cursor: pointer;
-    transition: background-color var(--transition-base), color var(--transition-base), border-color var(--transition-base), transform var(--transition-short);
-    border: var(--border-width) solid transparent;
-    white-space: nowrap;
 }
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--box-shadow-sm);
-}
-.btn:focus {
-    outline: none;
-    box-shadow: var(--box-shadow-focus);
+/* ... other utilities ... */
+
+/* --- Focus Visible --- */
+*:focus:not(:focus-visible) { outline: none; }
+*:focus-visible {
+    outline: var(--border-width-bold) solid var(--color-accent, orange);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px var(--color-accent-light, rgba(244, 162, 97, 0.35));
+    border-radius: var(--border-radius-sm);
 }
 
-.btn--primary {
+/* --- Buttons --- */
+.button { /* */
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: var(--spacing-xs); padding: var(--spacing-sm) var(--spacing-lg);
+    font-family: var(--font-primary); font-weight: var(--font-weight-medium);
+    font-size: var(--font-size-sm); border-radius: var(--border-radius-md);
+    border: var(--border-width-bold) solid transparent; cursor: pointer;
+    text-align: center; text-decoration: none; white-space: nowrap;
+    transition: all var(--transition-base);
+    box-shadow: var(--box-shadow-xs);
+}
+.button:hover { transform: translateY(-2px); box-shadow: var(--box-shadow-md); text-decoration: none; }
+/* ... other button styles from your global (1).css ... */
+.button--primary { /* */
     background-color: var(--current-button-primary-bg, var(--color-primary));
     color: var(--current-button-primary-text, var(--color-white));
     border-color: var(--current-button-primary-border, var(--color-primary));
+    font-weight: var(--font-weight-semibold);
 }
-.btn--primary:hover {
+.button--primary:hover, .button--primary:focus-visible {
     background-color: var(--current-button-primary-hover-bg, var(--color-primary-dark));
     border-color: var(--current-button-primary-hover-bg, var(--color-primary-dark));
 }
-
-.btn--secondary {
+.button--secondary { /* */
     background-color: var(--current-button-secondary-bg, transparent);
     color: var(--current-button-secondary-text, var(--color-secondary));
     border-color: var(--current-button-secondary-border, var(--color-secondary));
 }
-.btn--secondary:hover {
+.button--secondary:hover, .button--secondary:focus-visible {
     background-color: var(--current-button-secondary-hover-bg, var(--color-secondary));
     color: var(--current-button-secondary-hover-text, var(--color-white));
     border-color: var(--current-button-secondary-hover-bg, var(--color-secondary));
 }
-.dark-mode .btn--secondary { /* Ensure text readable in dark mode for this type */
+.dark-mode .button--secondary {
     color: var(--current-button-secondary-text, var(--color-primary-light));
     border-color: var(--current-button-secondary-border, var(--color-primary-light));
 }
-.dark-mode .btn--secondary:hover {
+.dark-mode .button--secondary:hover {
      background-color: var(--current-button-secondary-hover-bg, var(--color-primary-light));
     color: var(--current-button-secondary-hover-text, var(--color-black));
     border-color: var(--current-button-secondary-hover-bg, var(--color-primary-light));
 }
-
-
-.btn--accent {
-    background-color: var(--color-accent);
-    color: var(--color-white);
-    border-color: var(--color-accent);
-}
-.btn--accent:hover {
-    background-color: var(--color-accent-dark);
-    border-color: var(--color-accent-dark);
-}
-
-.btn--icon {
-    padding: var(--spacing-sm);
-    line-height: 1; /* ensure icon is centered */
-}
-
-/* Forms */
-.form__group {
-    margin-bottom: var(--spacing-lg);
-}
-.form__label {
-    display: block;
-    font-weight: var(--font-weight-medium);
-    margin-bottom: var(--spacing-xs);
+.button--theme { /* */
+    background: none; border: none; padding: var(--spacing-xs); font-size: 1.3rem; 
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; /* Ensure consistent size */
     color: var(--current-text-color-secondary);
 }
-.form__input,
-.form__select,
-.form__textarea {
-    width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
-    font-family: var(--font-primary, 'Poppins', sans-serif);
-    font-size: var(--font-size-md);
-    border: var(--border-width) solid var(--current-input-border-color, var(--color-gray-500));
-    border-radius: var(--border-radius-md);
-    background-color: var(--current-input-bg, var(--color-white));
-    color: var(--current-input-text-color, var(--color-gray-800));
-    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+.button--theme:hover { transform: none; box-shadow: none; color: var(--color-primary); }
+.theme-icon--dark { display: inline-block; }
+.theme-icon--light { display: none; }
+.dark-mode .theme-icon--dark { display: none !important; }
+.dark-mode .theme-icon--light { display: inline-block !important; }
+
+
+/* --- Forms --- */
+/* ... Form styles from your global (1).css are good, ensure they are present ... */
+.form__group { margin-bottom: var(--spacing-lg); position: relative; } /* */
+.form__label {
+    display: block; font-weight: var(--font-weight-medium);
+    margin-bottom: var(--spacing-xs);
+    font-size: var(--font-size-sm); color: var(--current-text-color);
 }
-.form__input:focus,
-.form__select:focus,
-.form__textarea:focus {
-    outline: none;
+.form__input, .form__select, .form__textarea {
+    width: 100%; padding: var(--spacing-sm) var(--spacing-md);
+    border: var(--border-width) solid var(--current-input-border-color);
+    border-radius: var(--border-radius-md);
+    background-color: var(--current-input-bg);
+    color: var(--current-input-text-color);
+    font-size: 0.95rem; line-height: 1.5;
+    transition: border-color var(--transition-short), box-shadow var(--transition-short);
+}
+.form__input::placeholder, .form__textarea::placeholder {
+    color: var(--current-input-placeholder-color); opacity: 0.8;
+}
+.form__input:focus, .form__select:focus, .form__textarea:focus {
     border-color: var(--color-primary);
     box-shadow: var(--box-shadow-focus);
+    outline: none;
 }
-.form__input::placeholder,
-.form__textarea::placeholder {
-    color: var(--current-input-placeholder-color, var(--color-gray-600));
-    opacity: 0.8;
+.form__input.invalid, .form__select.invalid, .form__textarea.invalid {
+    border-color: var(--color-error) !important;
+    box-shadow: var(--box-shadow-focus-error) !important;
 }
-.form__textarea {
-    min-height: 120px;
-    resize: vertical;
+.form__error-message {
+    display: block; color: var(--color-error);
+    font-size: var(--font-size-xs);
+    margin-top: var(--spacing-xxs);
+    min-height: 1.2em;
 }
-.form__select {
-    appearance: none; /* Remove default arrow */
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-repeat: no-repeat;
-    background-position: right var(--spacing-md) center;
-    background-size: 1em;
-    padding-right: calc(var(--spacing-md) + 1.5em); /* Make space for custom arrow */
-    /*
-      FIXED SVG Arrow:
-      Using a Base64 encoded SVG. Color is #888 (gray) which should work on most light/dark input backgrounds.
-      You can generate your own with a different color if needed.
-      Original: https://www.veryicon.com/icons/miscellaneous/utility/expand-arrow-outline.html (example)
-    */
+.form__select { /* Custom select arrow styling from your global (1).css */
+    appearance: none; -webkit-appearance: none; -moz-appearance: none;
+    background-repeat: no-repeat; background-position: right var(--spacing-md) center; background-size: 1em;
+    padding-right: calc(var(--spacing-md) + 1.5em);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 }
 .dark-mode .form__select {
-    /* If the default gray arrow isn't visible enough on dark inputs, use a lighter one */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23cccccc' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
 }
+.form__status { /* For AJAX form feedback */
+    margin-top: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius-md); text-align: center;
+    font-size: var(--font-size-sm); font-weight: var(--font-weight-medium);
+    display: none; /* JS shows this */
+}
+.form__status--success { background-color: var(--color-success-light); color: var(--color-success); border: 1px solid var(--color-success); }
+.form__status--error { background-color: var(--color-error-light); color: var(--color-error); border: 1px solid var(--color-error); }
+.form__status--loading { background-color: var(--color-info-light); color: var(--color-primary-dark); border: 1px solid var(--color-primary); }
 
+/* --- Header Styling --- */
+/* .header is the main <header> tag in each HTML page (or the root of components/header.html if loaded into a div) */
+/* If using dynamic loading, the placeholder div's direct child will be the content of components/header.html */
+/* So, if components/header.html starts with <div class="container header__container">...</div>, then styles for .header might need to target the placeholder's ID or a wrapper class you add */
+/* Assuming the dynamically loaded header is wrapped by <header class="header" id="page-header"> on the main page or the placeholder is `<header id="site-header-placeholder" class="header"></header>` */
 
-.form__error-message {
-    display: block;
-    color: var(--color-error);
-    font-size: var(--font-size-sm);
-    margin-top: var(--spacing-xs);
-}
-.form__input.invalid,
-.form__textarea.invalid {
-    border-color: var(--color-error);
-}
-.form__input.invalid:focus,
-.form__textarea.invalid:focus {
-    box-shadow: var(--box-shadow-focus-error);
-}
-
-.form-status-message { /* For messages from apiUtils.js */
-    padding: var(--spacing-sm);
-    margin-top: var(--spacing-md);
-    border-radius: var(--border-radius-sm);
-    font-size: var(--font-size-sm);
-    text-align: center;
-}
-.form-status-message.success { /* You'll need to add this class in apiUtils if using */
-    background-color: var(--color-success-light);
-    color: var(--color-success);
-    border: 1px solid var(--color-success);
-}
-.form-status-message.error { /* You'll need to add this class in apiUtils if using */
-    background-color: var(--color-error-light);
-    color: var(--color-error);
-    border: 1px solid var(--color-error);
-}
-
-
-/* Header Styles */
-.site-header {
-    background-color: var(--current-header-bg, var(--color-white));
-    padding: var(--spacing-sm) 0;
+.header { /* This class should be on the <header> element itself, whether static or the root of components/header.html */
+    background-color: var(--current-header-bg);
+    height: var(--header-height);
     box-shadow: var(--box-shadow-sm);
-    position: sticky;
+    border-bottom: var(--border-width) solid var(--current-border-color-light);
+    position: fixed;
     top: 0;
-    z-index: var(--z-index-header, 1030);
-    transition: background-color var(--transition-base);
-}
-.site-header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.logo-container .site-logo {
-    font-size: var(--font-size-xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--color-primary);
-    display: flex;
-    align-items: center;
-}
-.logo-container .site-logo img {
-    max-height: 40px; /* Adjust as needed */
-    margin-right: var(--spacing-xs);
-}
-
-.main-nav ul {
-    list-style: none;
-    display: flex;
-    align-items: center;
-}
-.main-nav ul li {
-    margin-left: var(--spacing-lg);
-}
-.main-nav ul li a {
-    color: var(--current-text-color);
-    font-weight: var(--font-weight-medium);
-    padding: var(--spacing-xs) 0;
-    position: relative;
-}
-.main-nav ul li a:hover,
-.main-nav ul li a.active { /* Add .active class via JS for current page */
-    color: var(--color-primary);
-}
-.main-nav ul li a::after { /* Underline effect for hover/active */
-    content: '';
-    position: absolute;
-    bottom: -2px;
     left: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--color-primary);
-    transition: width var(--transition-short);
-}
-.main-nav ul li a:hover::after,
-.main-nav ul li a.active::after {
-    width: 100%;
+    right: 0;
+    z-index: var(--z-index-header, 1030); /* Ensure high z-index */
+    transition: background-color var(--transition-base), border-color var(--transition-base);
+    padding: 0; /* Remove direct padding, use .container inside for content padding */
 }
 
-.header-controls {
+/* This class is inside components/header.html */
+.header__container {
     display: flex;
-    align-items: center;
-}
-.header-controls .form__select {
-    padding: var(--spacing-xs) calc(var(--spacing-sm) + 1em) var(--spacing-xs) var(--spacing-sm);
-    margin-left: var(--spacing-md);
-    font-size: var(--font-size-sm);
-    background-color: transparent; /* Make it look less like a form input */
-    border: 1px solid var(--current-border-color-light);
-}
-.dark-mode .header-controls .form__select {
-    border-color: var(--current-border-color);
-}
-
-#theme-toggle {
-    background: none;
-    border: none;
-    color: var(--current-text-color);
-    cursor: pointer;
-    font-size: 1.3rem; /* Adjust icon size */
-    padding: var(--spacing-xs);
-    margin-left: var(--spacing-sm);
-}
-#theme-toggle:hover {
-    color: var(--color-primary);
-}
-
-
-/* Mobile Menu Toggle Button */
-#mobile-menu-toggle {
-    display: none; /* Hidden by default, shown in media query */
-    background: none;
-    border: none;
-    font-size: 1.8rem;
-    color: var(--current-text-color);
-    cursor: pointer;
-    z-index: calc(var(--z-index-header) + 1); /* Above nav */
-}
-
-/* Footer Styles */
-.site-footer {
-    background-color: var(--current-footer-bg, var(--color-secondary-dark));
-    color: var(--current-footer-text-color, var(--color-gray-400));
-    padding: var(--spacing-xxl) 0;
-    font-size: var(--font-size-sm);
-}
-.site-footer .container {
-    display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
-    gap: var(--spacing-lg);
+    align-items: center;
+    height: 100%; /* Make container fill header height */
 }
-.footer-column {
-    flex: 1;
-    min-width: 200px; /* Ensure columns don't get too squished */
+
+.logo { display: flex; align-items: center; text-decoration: none; }
+.logo__img { height: 40px; width: auto; margin-right: var(--spacing-sm); }
+
+.nav { flex-grow: 1; display: flex; justify-content: flex-start; margin-left: var(--spacing-lg); } /* Align nav left, or center */
+.nav__list { list-style: none; display: flex; gap: var(--spacing-sm); align-items: center; }
+.nav__link {
+    font-weight: var(--font-weight-medium);
+    color: var(--current-text-color);
+    padding: var(--spacing-xs) var(--spacing-md);
+    position: relative;
+    font-size: var(--font-size-sm);
+    border-radius: var(--border-radius-sm);
+    text-decoration: none;
 }
-.footer-column h4 {
-    color: var(--color-white); /* Make footer titles stand out */
-    margin-bottom: var(--spacing-md);
-    font-weight: var(--font-weight-semibold);
+/* ... rest of .nav__link and .header-actions styling from your global (1).css ... */
+.nav__link:not(.nav__link--cta)::after {
+    content: ''; position: absolute; bottom: 0;
+    left: 50%; transform: translateX(-50%);
+    width: 0; height: 2px; background-color: var(--current-link-color);
+    transition: width var(--transition-base);
 }
-.footer-column ul {
-    list-style: none;
+.nav__link:not(.nav__link--cta):hover,
+.nav__link:not(.nav__link--cta):focus-visible,
+.nav__link--active:not(.nav__link--cta) {
+    color: var(--current-link-hover-color);
+    background-color: var(--color-primary-ultralight);
 }
-.footer-column ul li {
-    margin-bottom: var(--spacing-xs);
+.nav__link:not(.nav__link--cta):hover::after,
+.nav__link:not(.nav__link--cta):focus-visible::after,
+.nav__link--active:not(.nav__link--cta)::after {
+    width: 70%;
 }
-.footer-column ul li a {
-    color: var(--current-footer-text-color, var(--color-gray-400));
-    transition: color var(--transition-short);
+.header-actions { display: flex; align-items: center; gap: var(--spacing-md); }
+.language-currency-selectors { display: flex; gap: var(--spacing-sm); }
+.select-wrapper { position: relative; display: flex; align-items: center; }
+.selector-icon {
+    position: absolute; left: var(--spacing-sm);
+    font-size: 0.9em; color: var(--current-text-color-secondary); pointer-events: none;
 }
-.footer-column ul li a:hover {
-    color: var(--color-primary-light);
-    text-decoration: underline;
+.header-select {
+    background-color: var(--current-input-bg); color: var(--current-text-color);
+    border: 1px solid var(--current-border-color); border-radius: var(--border-radius-md);
+    padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-xs) calc(var(--spacing-sm) + 20px);
+    font-size: var(--font-size-xs); font-weight: var(--font-weight-medium);
+    appearance: none; -webkit-appearance: none; -moz-appearance: none;
+    cursor: pointer; min-width: 80px; height: 32px; line-height: 1;
 }
-.footer-socials a {
-    margin-right: var(--spacing-sm);
-    font-size: 1.3rem;
+.header-select:hover { border-color: var(--color-primary); }
+.header-select::-ms-expand { display: none; }
+
+.user-profile-placeholder-header { display: none; align-items: center; }
+.user-avatar-button-header {
+    width: 36px; height: 36px; border-radius: 50%;
+    background-color: var(--color-primary-light); color: var(--color-secondary-dark);
+    font-weight: var(--font-weight-semibold); font-size: var(--font-size-sm);
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--color-primary);
 }
-.footer-bottom {
-    text-align: center;
-    margin-top: var(--spacing-xl);
+
+.nav__toggle { /* Burger Icon */
+    display: none; background: none; border: none;
+    color: var(--current-text-color); font-size: 1.6rem; cursor: pointer;
+    padding: var(--spacing-xs); z-index: 1051; /* Above nav dropdown */
+}
+.nav__toggle:hover { color: var(--current-link-hover-color); }
+
+
+/* --- Footer Styling --- */
+/* .footer is the main <footer> tag in each HTML page or root of components/footer.html */
+.footer {
+    background-color: var(--current-footer-bg);
+    color: var(--current-footer-text-color);
+    padding: var(--spacing-xxl) 0 var(--spacing-lg) 0;
+    margin-top: auto; /* Pushes footer to bottom if page content is short */
+    border-top: 1px solid var(--current-border-color); /* Subtle top border */
+}
+/* This class is inside components/footer.html */
+.footer__container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); /* Responsive columns */
+    gap: var(--spacing-xl);
+    text-align: left; /* Default for footer sections */
+}
+.footer__section {}
+.footer__heading {
+    font-size: 1.1rem; font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-md); color: var(--color-white); /* Usually white on dark bg */
+    text-transform: uppercase; letter-spacing: 0.5px;
+}
+.dark-mode .footer__heading { color: var(--color-dark-text-primary); } /* Adjust if needed for dark on dark */
+
+.footer__address p { margin: var(--spacing-xs) 0; font-size: 0.9rem; line-height: 1.6; }
+.footer__icon { margin-right: var(--spacing-sm); opacity: 0.8; font-size: 0.9em; }
+.footer__link { color: inherit; opacity: 0.9; transition: opacity var(--transition-short); }
+.footer__link:hover { opacity: 1; text-decoration: underline; }
+
+.footer__list { list-style: none; padding: 0; margin: 0; }
+.footer__list li { margin-bottom: var(--spacing-sm); }
+
+.social-media { display: flex; gap: var(--spacing-md); }
+.social-media__link {
+    color: inherit; font-size: 1.35rem; opacity: 0.8;
+    width: 40px; height: 40px; display: inline-flex;
+    align-items: center; justify-content: center;
+    border-radius: 50%; background-color: rgba(255, 255, 255, 0.05);
+    transition: all var(--transition-base);
+}
+.social-media__link:hover {
+    color: var(--color-white); background-color: var(--color-primary);
+    transform: translateY(-2px) scale(1.05); opacity: 1;
+}
+
+.footer__bottom {
+    text-align: center; margin-top: var(--spacing-xl);
     padding-top: var(--spacing-lg);
-    border-top: 1px solid var(--current-border-color); /* Use a theme-aware border */
+    border-top: var(--border-width) solid var(--current-border-color);
 }
-.dark-mode .footer-column h4,
-.dark-mode .footer-bottom {
-    color: var(--color-gray-100);
-}
-.dark-mode .footer-column ul li a {
-    color: var(--color-gray-500);
-}
-.dark-mode .footer-column ul li a:hover {
-    color: var(--color-primary-light);
-}
+.dark-mode .footer__bottom { border-top-color: var(--color-dark-border-secondary); }
+.footer__copyright { font-size: 0.85rem; opacity: 0.8; margin: 0; }
 
 
-/* Accessibility */
-.sr-only { /* Screen-reader only text */
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-
-/* Responsive (Example: Mobile Navigation) */
-@media (max-width: 768px) {
-    .main-nav {
-        display: none; /* Hide nav by default on mobile */
+/* --- Mobile Navigation Styles --- */
+@media (max-width: 991px) { /* Breakpoint for mobile nav */
+    .header__container {
+        /* Nav will be absolutely positioned, so container might just hold logo and toggle */
+    }
+    .nav { /* This is #main-navigation */
+        display: none; /* Hidden by default */
         position: absolute;
-        top: var(--header-height, 70px); /* Position below header */
+        top: 100%; /* Directly below the header */
         left: 0;
-        width: 100%;
-        background-color: var(--current-header-bg); /* Match header or use card bg */
+        right: 0;
+        background-color: var(--current-header-bg);
+        flex-direction: column;
+        align-items: stretch; /* Make links full width */
+        padding: var(--spacing-sm) 0;
         box-shadow: var(--box-shadow-md);
-        flex-direction: column;
-        padding: var(--spacing-md) 0;
+        border-top: var(--border-width) solid var(--current-border-color);
+        z-index: 1040; /* Below header actions if they remain visible */
     }
-    .main-nav.active {
-        display: flex; /* Show when active */
+    .nav.nav--active { /* Class toggled by JS */
+        display: flex;
+        animation: slideDownNav 0.3s ease-out;
     }
-    .main-nav ul {
-        flex-direction: column;
-        width: 100%;
-        align-items: flex-start; /* Align items to the left or center */
-    }
-    .main-nav ul li {
-        margin-left: 0;
-        width: 100%;
-    }
-    .main-nav ul li a {
-        display: block;
-        padding: var(--spacing-md) var(--container-padding-x, 1rem);
-        width: 100%;
-        border-bottom: 1px solid var(--current-border-color-light);
-    }
-    .main-nav ul li:last-child a {
-        border-bottom: none;
-    }
-    .main-nav ul li a::after { /* Remove underline effect on mobile if desired */
-        display: none;
+    @keyframes slideDownNav {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
-    #mobile-menu-toggle {
-        display: block; /* Show burger icon */
+    .nav__list { flex-direction: column; width: 100%; gap: 0; }
+    .nav__item { width: 100%; }
+    .nav__link {
+        display: block; /* Make link take full width of li */
+        padding: var(--spacing-md) var(--spacing-lg); /* Generous padding for touch */
+        width: 100%;
+        text-align: left;
+        border-bottom: var(--border-width) solid var(--current-border-color-light);
+        border-radius: 0; /* Remove radius from desktop style */
+    }
+    .nav__list li:last-child .nav__link { border-bottom: none; }
+    .nav__link:not(.nav__link--cta)::after { display: none; } /* No underline effect on mobile */
+    .nav__link--cta {
+        margin: var(--spacing-sm) var(--spacing-lg); /* Add margin around CTA in mobile menu */
+        text-align: center;
     }
 
-    .header-controls {
-        /* Optionally hide some controls or stack them on mobile */
-        /* For example, hide language/currency selectors or make them smaller */
+    .nav__toggle { display: flex; } /* Show burger icon */
+
+    .header-actions { /* How actions behave on mobile */
+        margin-left: auto; /* Push toggle to right if nav is hidden */
     }
-     .header-controls .form__select {
-        max-width: 80px; /* Example: make selectors smaller */
-        padding-left: var(--spacing-xs);
-        padding-right: calc(var(--spacing-xs) + 1em);
+    .language-currency-selectors {
+        display: none; /* Hide in header on mobile by default */
+        /* If you want them in the mobile menu, you'd add them to nav's HTML */
     }
+    /* If language/currency were moved into .nav for mobile: */
+    /* .nav .language-currency-selectors { display: flex; flex-direction:column; padding: var(--spacing-md); gap: var(--spacing-sm); border-top: 1px solid var(--current-border-color-light); } */
+    /* .nav .select-wrapper { width: 100%; } */
+    /* .nav .header-select { width: 100%; } */
+
+    .footer__container { text-align: center; }
+    .footer__section { margin-bottom: var(--spacing-lg); }
+    .footer__list { display: inline-block; text-align: left; } /* Allows centering of the list block */
+    .social-media { justify-content: center; }
 }
+
+/* Modal styles (re-checked from your global (1).css) */
+.modal-overlay { /* */
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    display: flex; align-items: center; justify-content: center;
+    z-index: var(--z-index-modal-backdrop, 1040);
+    opacity: 0; visibility: hidden;
+    transition: opacity var(--transition-medium), visibility var(--transition-medium) 0s var(--transition-medium);
+}
+.modal-overlay[hidden] { display: none !important; }
+.modal-overlay.active {
+    opacity: 1; visibility: visible;
+    transition-delay: 0s;
+}
+.modal__content { /* */
+    background-color: var(--current-card-bg);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-xl);
+    max-width: 90vw;
+    width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: scale(0.95);
+    transition: transform var(--transition-medium);
+}
+.modal-overlay.active .modal__content { transform: scale(1); }
+.modal__close-button { /* */
+    position: absolute; top: var(--spacing-md); right: var(--spacing-md);
+    background: none; border: none; font-size: 1.8rem; color: var(--current-text-color-secondary);
+    cursor: pointer; line-height: 1; padding: 0;
+}
+.modal__close-button:hover { color: var(--color-error); }
+.modal__title { font-size: var(--font-size-xl); margin-bottom: var(--spacing-lg); color: var(--current-text-color); } /* */
