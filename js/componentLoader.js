@@ -6,28 +6,28 @@
  * Fetches HTML content from a given path and injects it into a target element.
  * @param {string} componentPath - The path to the HTML component file (e.g., 'components/header.html').
  * @param {string} targetElementId - The ID of the HTML element where the component will be loaded.
- * @param {string} [currentPageFile] - Optional: The filename of the current page (e.g., 'index.html') for highlighting active nav links.
+ * @param {string} [currentPageFile] - Optional: The filename of the current page (e.g., 'index.html') for nav highlighting.
  * @returns {Promise<boolean>} True if successful, false otherwise.
  */
 async function loadHTMLComponent(componentPath, targetElementId, currentPageFile) {
     const targetElement = document.getElementById(targetElementId);
     if (!targetElement) {
-        console.error(`Target element '${targetElementId}' not found for component '${componentPath}'.`);
+        console.error(`Dynamic Component Loader: Target element '${targetElementId}' not found for component '${componentPath}'.`);
         return false;
     }
 
     try {
-        const response = await fetch(componentPath);
-        if (!response.ok) {
+        const response = await fetch(componentPath); // Fetches the component HTML file
+        if (!response.ok) { // Checks if the fetch was successful (status 200-299)
             throw new Error(`Failed to fetch component ${componentPath}: ${response.status} ${response.statusText}`);
         }
-        const htmlContent = await response.text();
-        targetElement.innerHTML = htmlContent;
+        const htmlContent = await response.text(); // Gets the HTML content as text
+        targetElement.innerHTML = htmlContent; // Injects the HTML into the placeholder
+        console.log(`Dynamic Component Loader: Successfully loaded '${componentPath}' into '#${targetElementId}'.`);
 
-        // After injecting HTML, re-run translation for the new content if i18nManager is ready and defined
+        // After injecting HTML, re-run translation for the new content if i18nManager is ready
+        // Assumes uplasApplyTranslations and uplasGetCurrentLocale are globally available from i18n.js
         if (typeof window.uplasApplyTranslations === 'function' && typeof window.uplasGetCurrentLocale === 'function') {
-            // It's better if uplasApplyTranslations can take a scope (the targetElement)
-            // For now, re-translating the whole page, which is fine for header/footer.
             window.uplasApplyTranslations(window.uplasGetCurrentLocale());
         }
 
@@ -38,14 +38,14 @@ async function loadHTMLComponent(componentPath, targetElementId, currentPageFile
         
         // If footer is loaded and has a year placeholder, ensure it's updated
         if (targetElementId === 'site-footer-placeholder' && typeof updateDynamicFooterYear === 'function') {
-            updateDynamicFooterYear(); // Call a specific function to handle footer year
+            updateDynamicFooterYear();
         }
-
 
         return true;
     } catch (error) {
-        console.error(`Error loading component '${componentPath}' into '${targetElementId}':`, error);
-        targetElement.innerHTML = `<p style="color:var(--color-error); padding: 1rem;">Error loading ${targetElementId.replace('-placeholder', '')}.</p>`;
+        console.error(`Dynamic Component Loader: Error loading component '${componentPath}' into '#${targetElementId}':`, error);
+        // Display an error message in the placeholder if loading fails
+        targetElement.innerHTML = `<p style="color:var(--color-error, red); padding: 1rem; text-align:center;">Error: The ${targetElementId.replace('-placeholder', '').replace('site-', '')} could not be loaded.</p>`;
         return false;
     }
 }
@@ -56,27 +56,38 @@ async function loadHTMLComponent(componentPath, targetElementId, currentPageFile
  * @param {string} currentPageFilename - The filename of the current page (e.g., 'index.html').
  */
 function setActiveNavLink(currentPageFilename) {
-    const navLinks = document.querySelectorAll('#main-navigation .nav__link'); // Selector from components/header.html
-    if (navLinks.length === 0) return;
+    // Selector for navigation links, assumes 'main-navigation' is the ID of the <nav> tag in header.html
+    const navLinks = document.querySelectorAll('#main-navigation .nav__list .nav__item .nav__link');
+    if (navLinks.length === 0) {
+        // console.warn("Dynamic Component Loader: No navigation links found for setActiveNavLink. Check selector and if header is loaded.");
+        return;
+    }
 
+    let foundActive = false;
     navLinks.forEach(link => {
-        link.classList.remove('nav__link--active');
-        link.removeAttribute('aria-current');
-        
-        let linkFilename = link.getAttribute('href');
-        if (linkFilename) {
-            // Handle absolute URLs or relative URLs correctly
-            if (linkFilename.includes('/')) {
-                linkFilename = linkFilename.substring(linkFilename.lastIndexOf('/') + 1);
-            }
-            linkFilename = linkFilename.split('#')[0].split('?')[0]; // Remove hash and query params
+        link.classList.remove('nav__link--active'); // Reset active class
+        link.removeAttribute('aria-current');       // Reset ARIA current attribute
 
-            if (linkFilename === currentPageFilename || (linkFilename === 'index.html' && currentPageFilename === '')) {
+        let linkHref = link.getAttribute('href');
+        if (linkHref) {
+            // Normalize the href to get just the filename or base path
+            let linkPath = linkHref.split('/').pop().split('#')[0].split('?')[0];
+            if (linkPath === "" && linkHref.endsWith('/')) linkPath = "index.html"; // Handle root path
+            else if (linkPath === "") linkPath = "index.html"; // Default if href is just "#something" or "?"
+
+            // Normalize currentPageFilename as well (e.g. if it's empty, it means index.html)
+            let normalizedCurrentPage = currentPageFilename;
+            if (normalizedCurrentPage === "" || normalizedCurrentPage === "/") normalizedCurrentPage = "index.html";
+            
+            if (linkPath === normalizedCurrentPage) {
                 link.classList.add('nav__link--active');
                 link.setAttribute('aria-current', 'page');
+                foundActive = true;
             }
         }
     });
+    // If no exact match (e.g. on a sub-page not directly in nav), could highlight a parent, but simple match is fine.
+    // console.log(`Dynamic Component Loader: Active nav link processing complete for ${currentPageFilename}. Found active: ${foundActive}`);
 }
 
 /**
@@ -85,26 +96,36 @@ function setActiveNavLink(currentPageFilename) {
  */
 function updateDynamicFooterYear() {
     const currentYearFooterSpan = document.getElementById('current-year-footer'); // ID from components/footer.html
-    if (currentYearFooterSpan) {
-        const yearTextKey = currentYearFooterSpan.dataset.translateKey || 'footer_copyright_dynamic'; // Default key if not set
-        let yearTextContent = currentYearFooterSpan.textContent || "{currentYear}"; // Fallback content with placeholder
-
-        if (yearTextKey && typeof window.uplasTranslate === 'function') {
-            yearTextContent = window.uplasTranslate(yearTextKey, { fallback: "© {currentYear} Uplas EdTech Solutions Ltd." });
-        }
-        
-        if (yearTextContent && yearTextContent.includes("{currentYear}")) {
-            currentYearFooterSpan.textContent = yearTextContent.replace("{currentYear}", new Date().getFullYear());
-        } else if (yearTextContent && !yearTextContent.match(/\d{4}/)) { 
-             currentYearFooterSpan.innerHTML = `© ${new Date().getFullYear()} ${yearTextContent}`;
-        } else if (!yearTextContent.trim()) {
-            currentYearFooterSpan.textContent = `© ${new Date().getFullYear()}`;
-        }
+    if (!currentYearFooterSpan) {
+        // console.warn("Dynamic Component Loader: Footer year span ('current-year-footer') not found.");
+        return;
     }
+
+    const yearTextKey = currentYearFooterSpan.dataset.translateKey || 'footer_copyright_dynamic';
+    let yearTextTemplate = currentYearFooterSpan.innerHTML || "{currentYear}"; // Use innerHTML to preserve surrounding text
+                                                                            // Default fallback for template structure
+    
+    // If the span is initially empty but has a translate key, fetch the template from translations
+    if (currentYearFooterSpan.textContent.trim() === '{currentYear}' && yearTextKey && typeof window.uplasTranslate === 'function') {
+        yearTextTemplate = window.uplasTranslate(yearTextKey, { fallback: "© {currentYear} Uplas EdTech Solutions Ltd." });
+    } else if (!yearTextTemplate.includes("{currentYear}")) { // If placeholder is missing in current content but should be there
+         yearTextTemplate = (window.uplasTranslate && yearTextKey) ? window.uplasTranslate(yearTextKey, { fallback: `© {currentYear} Uplas.` }) : `© {currentYear} Uplas.`;
+    }
+
+
+    if (yearTextTemplate.includes("{currentYear}")) {
+        currentYearFooterSpan.innerHTML = yearTextTemplate.replace("{currentYear}", new Date().getFullYear());
+    } else if (!yearTextTemplate.match(/\d{4}/)) { // If no placeholder and no year found in default text
+         currentYearFooterSpan.innerHTML = `© ${new Date().getFullYear()} ${yearTextTemplate}`;
+    }
+    // If already contains a year, assume it's fine or will be handled by translation refresh
+    // console.log("Dynamic Component Loader: Footer year updated.");
 }
 
-// Expose functions to be used by global.js or other scripts if loaded as a module
-// For simple script include, they are already global.
-// window.loadHTMLComponent = loadHTMLComponent;
-// window.setActiveNavLink = setActiveNavLink;
-// window.updateDynamicFooterYear = updateDynamicFooterYear;
+// Make functions globally available if not using ES modules.
+// If using modules, you would export them and import in global.js.
+window.loadHTMLComponent = loadHTMLComponent;
+window.setActiveNavLink = setActiveNavLink;
+window.updateDynamicFooterYear = updateDynamicFooterYear;
+
+console.log("Dynamic Component Loader (componentLoader.js) script loaded.");
