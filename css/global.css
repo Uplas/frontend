@@ -198,8 +198,14 @@ li { margin-bottom: var(--spacing-xs); }
 }
 .form__row .form__group {
     flex: 1 1 auto; /* Allow groups to grow and shrink */
-    min-width: 200px; /* Minimum width before stacking */
+    min-width: calc(50% - (var(--spacing-md) / 2)); /* Ensure two items fit nicely with gap */
 }
+@media (max-width: 576px) { /* Stack on small screens */
+    .form__row .form__group {
+        min-width: 100%;
+    }
+}
+
 
 /* --- Header Styling --- */
 .header {
@@ -211,7 +217,7 @@ li { margin-bottom: var(--spacing-xs); }
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000; /* var(--z-index-header) if defined elsewhere */
+    z-index: 1000;
     transition: background-color var(--transition-base), border-color var(--transition-base);
     padding: 0;
 }
@@ -233,22 +239,22 @@ li { margin-bottom: var(--spacing-xs); }
 }
 
 .logo__img {
-    height: calc(var(--header-height) - var(--spacing-md));
-    max-height: 45px;
-    min-height: 35px;
+    height: calc(var(--header-height) - var(--spacing-md)); /* Adjusted for a larger logo */
+    max-height: 45px; /* Increased max-height */
+    min-height: 35px; /* Ensure it doesn't get too small */
     width: auto;
 }
 
 .logo__text {
-    font-family: var(--font-primary);
-    font-size: clamp(1.5rem, 2.5vw, 1.8rem);
+    font-family: var(--font-primary); /* Poppins */
+    font-size: clamp(1.5rem, 2.5vw, 1.8rem); /* Responsive font size */
     font-weight: var(--font-weight-semibold);
     color: var(--current-text-color);
-    line-height: 1;
+    line-height: 1; /* Ensure vertical alignment */
 }
 
 .dark-mode .logo__text {
-    color: var(--color-primary-light);
+    color: var(--color-primary-light); /* Ensure visibility in dark mode */
 }
 
 
@@ -422,19 +428,19 @@ li { margin-bottom: var(--spacing-xs); }
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0,0,0,0.6);
     display: flex; align-items: center; justify-content: center;
-    z-index: 1040; /* var(--z-index-modal-backdrop) if defined */
+    z-index: 1040;
     opacity: 0; visibility: hidden;
-    transition: opacity 0.3s ease-out, visibility 0.3s ease-out; /* var(--transition-medium) */
+    transition: opacity 0.3s ease-out, visibility 0s 0.3s;
 }
 .modal-overlay[hidden] { display: none !important; }
-.modal-overlay.active { opacity: 1; visibility: visible; }
+.modal-overlay.active { opacity: 1; visibility: visible; transition-delay: 0s; }
 
 .modal__content {
     background-color: var(--current-card-bg);
     padding: var(--spacing-xl); border-radius: var(--border-radius-lg);
     box-shadow: var(--box-shadow-xl); max-width: 90vw; width: 600px;
     max-height: 90vh; overflow-y: auto; position: relative;
-    transform: scale(0.95); transition: transform 0.3s ease-out; /* var(--transition-medium) */
+    transform: scale(0.95); transition: transform 0.3s ease-out;
 }
 .modal-overlay.active .modal__content { transform: scale(1); }
 
@@ -473,21 +479,22 @@ li { margin-bottom: var(--spacing-xs); }
     background-repeat: no-repeat;
     background-position: center;
     background-size: contain;
-    opacity: 0.7;
+    opacity: 0; /* Hidden by default, made active by JS */
     transition: opacity 0.2s;
 }
 .payment-modal__content .card-type-icon.active {
-    opacity: 1;
+    opacity: 0.7; /* Show when active */
 }
 
-/* Example card type icons - replace with actual SVG paths or Font Awesome classes */
+/* Card type icons (ensure paths are correct relative to CSS file or use absolute paths) */
 .payment-modal__content .card-type-icon.visa { background-image: url('../images/payment_icons/visa_icon.svg'); }
 .payment-modal__content .card-type-icon.mastercard { background-image: url('../images/payment_icons/mastercard_icon.svg'); }
 .payment-modal__content .card-type-icon.amex { background-image: url('../images/payment_icons/amex_icon.svg'); }
 .payment-modal__content .card-type-icon.discover { background-image: url('../images/payment_icons/discover_icon.svg'); }
 .payment-modal__content .card-type-icon.diners { background-image: url('../images/payment_icons/diners_icon.svg'); }
 .payment-modal__content .card-type-icon.jcb { background-image: url('../images/payment_icons/jcb_icon.svg'); }
-.payment-modal__content .card-type-icon.unknown { /* No icon, or a generic one */ }
+/* .payment-modal__content .card-type-icon.unknown { no specific icon, or a generic one } */
+
 
 .payment-modal__content .form__row {
     display: flex;
@@ -500,4 +507,20 @@ li { margin-bottom: var(--spacing-xs); }
 
 .payment-modal__action-area {
     margin-top: var(--spacing-lg);
+}
+
+/* Stripe Card Element Styling */
+#stripe-card-element {
+    padding: var(--spacing-sm) var(--spacing-md); /* Match other .form__input */
+    border: var(--border-width) solid var(--current-input-border-color);
+    border-radius: var(--border-radius-md);
+    background-color: var(--current-input-bg);
+    /* Height is usually controlled by Stripe's own styling based on font-size */
+}
+#stripe-card-element.StripeElement--focus {
+    border-color: var(--color-primary);
+    box-shadow: var(--box-shadow-focus);
+}
+#stripe-card-errors { /* This is a .form__error-message */
+    min-height: 1.2em; /* Ensure space even if empty initially */
 }
