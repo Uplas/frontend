@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const paymentCardTypeIcon = document.getElementById('payment-card-type-icon');
     const paymentExpiryDateInput = document.getElementById('payment-expiry-date');
     const paymentCvvInput = document.getElementById('payment-cvv');
+    const stripe = Stripe('YOUR_STRIPE_PUBLISHABLE_KEY'); // Replace with your actual key
 
 
     // --- State ---
