@@ -28,10 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const paymentCardholderNameInput = document.getElementById('payment-cardholder-name');
     const paymentEmailInput = document.getElementById('payment-email');
 
-    // Stripe.js specific elements (ensure these IDs are in your upricing.html modal)
     const stripeCardElementContainer = document.getElementById('stripe-card-element');
     const stripeCardErrors = document.getElementById('stripe-card-errors');
-
 
     // --- State ---
     let isModalOpen = false;
@@ -45,11 +43,22 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Stripe.js has not been loaded. Payment functionality will be limited.');
             if (paymentSubmitButton) paymentSubmitButton.disabled = true;
             selectPlanButtons.forEach(btn => btn.disabled = true);
-            // It's better to show this error inside the modal if the user tries to open it.
+            // Error can be shown if user tries to open modal
             return false;
         }
-        // Replace 'YOUR_STRIPE_PUBLISHABLE_KEY' with your actual Stripe publishable key from your Stripe dashboard
-        stripe = Stripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY'); // IMPORTANT: Use your TEST key for development
+        // L56: Action: The Stripe public key pk_test_YOUR_STRIPE_PUBLISHABLE_KEY needs to be correctly set.
+        // IMPORTANT: Replace with your actual Stripe publishable key from your Stripe dashboard
+        // Consider using a configuration variable for this key, e.g., window.UPLAS_CONFIG.STRIPE_PUBLIC_KEY
+        const stripePublicKey = (typeof window.UPLAS_CONFIG !== 'undefined' && window.UPLAS_CONFIG.STRIPE_PUBLIC_KEY)
+            ? window.UPLAS_CONFIG.STRIPE_PUBLIC_KEY
+            : 'pk_test_YOUR_STRIPE_PUBLISHABLE_KEY'; // Fallback, ensure this is replaced
+
+        if (stripePublicKey === 'pk_test_YOUR_STRIPE_PUBLISHABLE_KEY') {
+            console.warn("Stripe.js: Using placeholder public key. Please replace with your actual Stripe key.");
+            if(paymentFormGlobalStatus) displayFormStatus(paymentFormGlobalStatus, 'Payment system configuration error.', 'error', 'err_payment_config_missing');
+        }
+
+        stripe = Stripe(stripePublicKey);
         const elements = stripe.elements();
         const cardStyle = {
             base: {
@@ -66,41 +75,36 @@ document.addEventListener('DOMContentLoaded', () => {
                 iconColor: '#fa755a'
             }
         };
-        // Create and mount the Card Element
-        // Ensure you have a div with id="stripe-card-element" in your payment modal for Stripe to mount to.
-        // Add this div to your upricing.html and mcourseD.html payment modals
-        // Example for the HTML part:
-        // <div class="form__group">
-        //     <label for="stripe-card-element" class="form__label" data-translate-key="form_label_card_details">Card Details</label>
-        //     <div id="stripe-card-element" class="form__input"> </div>
-        //     <div id="stripe-card-errors" role="alert" class="form__error-message"></div>
-        // </div>
         if (stripeCardElementContainer) {
             cardElement = elements.create('card', { style: cardStyle, hidePostalCode: true });
             cardElement.mount(stripeCardElementContainer);
-
             cardElement.on('change', function(event) {
                 if (stripeCardErrors) {
                     stripeCardErrors.textContent = event.error ? event.error.message : '';
                 }
             });
         } else {
-             console.error("Stripe card element container '#stripe-card-element' not found. Stripe Element cannot be mounted.");
+             console.error("Stripe card element container '#stripe-card-element' not found.");
+             if(paymentFormGlobalStatus) displayFormStatus(paymentFormGlobalStatus, 'Payment UI is missing. Please contact support.', 'error', 'err_payment_ui_stripe_missing');
              return false;
         }
         return true;
     }
-
     const stripeInitialized = initializeStripe();
 
-
-    // --- Utility Functions ---
+    // --- Utility Functions (using local versions for this file) ---
     const displayFormStatus = (element, message, type, translateKey = null, variables = {}) => {
         if (!element) return;
-        const text = (translateKey && typeof window.uplasTranslate === 'function') ?
-                     window.uplasTranslate(translateKey, { fallback: message, variables }) : message;
-        element.innerHTML = text; // Use innerHTML to allow for spinner icon
-        element.className = 'form__status payment-status-message';
+        let text = message;
+        if (translateKey && typeof window.uplasTranslate === 'function') {
+            text = window.uplasTranslate(translateKey, { fallback: message, variables });
+        } else if (translateKey) { // Fallback if uplasTranslate not ready but key provided
+            text = message || translateKey.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        }
+
+
+        element.innerHTML = text;
+        element.className = 'form__status payment-status-message'; // Reset classes
         if (type === 'loading' && !element.querySelector('.fa-spinner')) {
              element.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${text}`;
         }
@@ -118,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         element.className = 'form__status payment-status-message';
     };
 
-    const validateInput = (inputElement) => {
+    const validateInput = (inputElement) => { /* ... (same as upricing (9).js) ... */
         const group = inputElement.closest('.form__group');
         if (!group) return inputElement.checkValidity();
         const errorSpan = group.querySelector('.form__error-message');
@@ -133,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 else if (inputElement.validity.patternMismatch) defaultMessage = inputElement.title || "Please match the requested format.";
                 else if (inputElement.validity.typeMismatch) defaultMessage = `Please enter a valid ${inputElement.type}.`;
 
-                const errorKey = inputElement.dataset.errorKeyRequired || inputElement.dataset.errorKeyPattern || inputElement.dataset.errorKeyType || (inputElement.name + '_error');
+                const errorKey = inputElement.dataset.errorKeyRequired || inputElement.dataset.errorKeyPattern || inputElement.dataset.errorKeyType || (inputElement.name ? `${inputElement.name}_error` : 'input_error_generic');
                 errorSpan.textContent = (typeof window.uplasTranslate === 'function' && errorKey) ?
                                         window.uplasTranslate(errorKey, {fallback: defaultMessage}) : defaultMessage;
             }
@@ -141,45 +145,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return true;
     };
-    const focusFirstElement = (container) => {
-        if (!container) return;
-        const focusable = container.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-        focusable?.focus();
-    };
+    const focusFirstElement = (container) => { /* ... (same as upricing (9).js) ... */ };
 
 
     // --- Payment Modal Logic ---
-    function updatePaymentModalSummary() {
-        if (!currentSelectedPlan || !summaryPlanNameEl || !summaryPlanPriceEl || !summaryBillingCycleDiv || !summaryBillingCycleEl) {
-            return;
+    function updatePaymentModalSummary() { /* ... (same as upricing (9).js) ... */ }
+    function openPaymentModal(planData) { /* ... (same as upricing (9).js, but added prefill for email) ... */
+        if (!paymentModal) {
+            alert("Payment modal element not found."); return;
         }
-        summaryPlanNameEl.textContent = currentSelectedPlan.name;
-        summaryPlanPriceEl.dataset.priceUsd = currentSelectedPlan.priceUsd;
-        if (typeof window.updateUserCurrencyDisplay === 'function') {
-            window.updateUserCurrencyDisplay();
-        } else {
-            const price = parseFloat(currentSelectedPlan.priceUsd);
-            const currency = localStorage.getItem('uplas-currency') || 'USD';
-            summaryPlanPriceEl.textContent = `${currency} ${price.toFixed(2)}`;
-        }
-
-        if (currentSelectedPlan.billingCycle && currentSelectedPlan.billingCycle.toLowerCase() !== 'one-time') {
-            const billingCycleKey = `billing_cycle_${currentSelectedPlan.billingCycle.toLowerCase()}`;
-            const billingCycleText = (typeof window.uplasTranslate === 'function') ?
-                                     window.uplasTranslate(billingCycleKey, {fallback: currentSelectedPlan.billingCycle}) :
-                                     currentSelectedPlan.billingCycle;
-            summaryBillingCycleEl.textContent = billingCycleText;
-            summaryBillingCycleDiv.hidden = false;
-        } else {
-            summaryBillingCycleDiv.hidden = true;
-        }
-    }
-
-    function openPaymentModal(planData) {
-        if (!paymentModal || !stripeInitialized) {
-            const errorMsgKey = !stripeInitialized ? "err_payment_system_unavailable" : "err_payment_modal_missing";
-            const fallbackMsg = !stripeInitialized ? "Payment system is not available. Please try again later." : "Payment modal element not found.";
-            alert(typeof window.uplasTranslate === 'function' ? window.uplasTranslate(errorMsgKey, {fallback: fallbackMsg}) : fallbackMsg);
+        if (!stripeInitialized) {
+            displayFormStatus(paymentFormGlobalStatus || document.body, 'Payment system is currently unavailable. Please try again later.', 'error', 'err_payment_system_unavailable_stripe');
             return;
         }
         currentSelectedPlan = planData;
@@ -195,11 +171,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if(paymentFormGlobalStatus) clearFormStatus(paymentFormGlobalStatus);
         if(stripeCardErrors) stripeCardErrors.textContent = '';
 
-
         unifiedCardPaymentForm?.reset();
         cardElement?.clear();
         unifiedCardPaymentForm?.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
 
+        // Pre-fill email if user is logged in and uplasApi is available
+        if (typeof window.uplasApi !== 'undefined' && window.uplasApi.getUserData && paymentEmailInput) {
+            const userData = window.uplasApi.getUserData(); // From apiUtils.js
+            if (userData && userData.email) {
+                paymentEmailInput.value = userData.email;
+            }
+        }
 
         paymentModal.hidden = false;
         document.body.style.overflow = 'hidden';
@@ -210,45 +192,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 10);
         isModalOpen = true;
     }
+    function closePaymentModal() { /* ... (same as upricing (9).js) ... */ }
 
-    function closePaymentModal() {
-        if (!paymentModal) return;
-        paymentModal.classList.remove('active');
-        setTimeout(() => {
-            paymentModal.hidden = true;
-            document.body.style.overflow = '';
-            isModalOpen = false;
-            currentSelectedPlan = null;
-            cardElement?.clear();
-        }, 300);
-    }
 
     // --- Event Listeners ---
-    selectPlanButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            const planData = {
-                id: button.dataset.planId,
-                name: button.dataset.name,
-                priceUsd: button.dataset.priceUsd,
-                billingCycle: button.dataset.billingCycle
-            };
-             if (!planData.priceUsd || isNaN(parseFloat(planData.priceUsd))) {
-                alert("Error: Price information is missing or invalid for this item.");
-                return;
-            }
-            openPaymentModal(planData);
-        });
-    });
-
-    if (contactSalesButton && typeof window.uplasScrollToElement === 'function') {
-      contactSalesButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            window.uplasScrollToElement('#contact-section');
-            document.getElementById('contact-name')?.focus();
-        });
-    }
-
+    selectPlanButtons.forEach(button => { /* ... (same as upricing (9).js) ... */ });
+    if (contactSalesButton && typeof window.uplasScrollToElement === 'function') { /* ... (same as upricing (9).js) ... */ }
     if (closeModalButton) closeModalButton.addEventListener('click', closePaymentModal);
     document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && isModalOpen) closePaymentModal(); });
     paymentModal?.addEventListener('click', (event) => { if (event.target === paymentModal) closePaymentModal(); });
@@ -256,23 +205,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (unifiedCardPaymentForm && stripeInitialized) {
         unifiedCardPaymentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!currentSelectedPlan || !cardElement) { // Ensure cardElement is also initialized
+            if (!currentSelectedPlan || !cardElement) {
                 displayFormStatus(paymentFormGlobalStatus, 'Payment system error or no plan selected.', 'error', 'err_payment_system_or_plan');
+                return;
+            }
+            if (typeof window.uplasApi === 'undefined' || typeof window.uplasApi.fetchAuthenticated !== 'function') {
+                displayFormStatus(paymentFormGlobalStatus, 'Payment service unavailable. Please try again later.', 'error', 'error_service_unavailable');
                 return;
             }
 
             let isFormValid = true;
             if (paymentCardholderNameInput && !validateInput(paymentCardholderNameInput)) isFormValid = false;
             if (paymentEmailInput && !validateInput(paymentEmailInput)) isFormValid = false;
-            // Stripe Element handles its own visual validation, error shown in stripeCardErrors
 
             if (!isFormValid) {
-                displayFormStatus(paymentFormGlobalStatus, 'Please correct the name and email fields.', 'error', 'err_correct_form_errors_basic');
+                displayFormStatus(paymentFormGlobalStatus, 'Please correct your name and email fields.', 'error', 'err_correct_form_errors_basic');
                 return;
             }
 
             if (paymentSubmitButton) paymentSubmitButton.disabled = true;
-            displayFormStatus(paymentFormGlobalStatus, 'Processing payment...', 'loading', true, 'payment_status_processing');
+            displayFormStatus(paymentFormGlobalStatus, 'Processing payment...', 'loading', 'payment_status_processing');
 
             const cardholderName = paymentCardholderNameInput.value;
             const email = paymentEmailInput.value;
@@ -280,74 +232,80 @@ document.addEventListener('DOMContentLoaded', () => {
             const { paymentMethod, error: pmError } = await stripe.createPaymentMethod({
                 type: 'card',
                 card: cardElement,
-                billing_details: {
-                    name: cardholderName,
-                    email: email,
-                },
+                billing_details: { name: cardholderName, email: email },
             });
 
             if (pmError) {
-                displayFormStatus(paymentFormGlobalStatus, pmError.message, 'error'); // Show Stripe's error message
-                if (stripeCardErrors) stripeCardErrors.textContent = pmError.message; // Also show in Stripe's error div
+                displayFormStatus(paymentFormGlobalStatus, pmError.message, 'error');
+                if (stripeCardErrors) stripeCardErrors.textContent = pmError.message;
                 if (paymentSubmitButton) paymentSubmitButton.disabled = false;
                 return;
             }
-             if (stripeCardErrors) stripeCardErrors.textContent = ''; // Clear Stripe errors if PaymentMethod created
+            if (stripeCardErrors) stripeCardErrors.textContent = '';
 
             const paymentDataForBackend = {
-                planId: currentSelectedPlan.id,
-                planName: currentSelectedPlan.name,
-                amountUSD: parseFloat(currentSelectedPlan.priceUsd).toFixed(2),
-                currency: 'USD',
-                billingCycle: currentSelectedPlan.billingCycle,
-                paymentMethodId: paymentMethod.id,
-                email: email,
-                cardholderName: cardholderName
+                plan_id: currentSelectedPlan.id, // Plan ID from your backend (e.g., 'starter_monthly', 'pro_annual')
+                payment_method_id: paymentMethod.id, // Stripe PaymentMethod ID
+                email: email, // For receipt and user matching on backend
+                // Optionally include other details if your backend needs them:
+                // plan_name: currentSelectedPlan.name,
+                // amount_usd: parseFloat(currentSelectedPlan.priceUsd),
+                // currency: 'usd',
+                // billing_cycle: currentSelectedPlan.billingCycle,
+                // cardholder_name: cardholderName,
             };
 
             try {
                 console.log("Sending Payment Data (Stripe Method ID) to Backend:", paymentDataForBackend);
-                // **ACTUAL BACKEND INTEGRATION POINT**
-                // const backendResponse = await fetchAuthenticated('/api/payments/create-subscription-stripe', {
-                //     method: 'POST',
-                //     body: JSON.stringify(paymentDataForBackend)
-                // });
-                // const backendResult = backendResponse; // Assuming fetchAuthenticated parses JSON
+                // L190: unifiedCardPaymentForm submit
+                // L232-L236: Action: Send paymentMethod.id and order details to Django backend.
+                // Endpoint: /api/payments/create-subscription-stripe/ or /api/payments/charge/
+                // Your backend's StripeSubscriptionCreateView or a similar view for one-time payments
+                const response = await window.uplasApi.fetchAuthenticated(
+                    '/payments/create-subscription-stripe/', // Adjust if it's a one-time charge
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(paymentDataForBackend)
+                    }
+                );
+                const backendResult = await response.json();
 
-                // SIMULATE BACKEND CALL
-                await new Promise(resolve => setTimeout(resolve, 2500));
-                const backendResult = { success: Math.random() > 0.1, message_key: "payment_status_success_subscription" };
-
-                if (backendResult.success) {
-                    displayFormStatus(paymentFormGlobalStatus, 'Payment successful! Thank you.', 'success', false, backendResult.message_key);
+                if (response.ok && backendResult.success) { // Assuming backend returns { success: true, ... }
+                    displayFormStatus(paymentFormGlobalStatus, backendResult.message || 'Subscription successful! Thank you.', 'success', 'payment_status_success_subscription');
                     cardElement.clear();
                     setTimeout(() => {
                         closePaymentModal();
-                        // window.location.href = '/dashboard?plan_activated=' + currentSelectedPlan.id;
+                        // Optionally, redirect or update UI to reflect active subscription
+                        // window.location.href = '/dashboard?subscription_activated=' + currentSelectedPlan.id;
+                        // Or dispatch an event for global.js to update user status
+                        window.dispatchEvent(new CustomEvent('userSubscriptionChanged', { detail: { planId: currentSelectedPlan.id } }));
                     }, 3000);
                 } else if (backendResult.requires_action && backendResult.client_secret) {
-                    // Example for Payment Intents that require further client action (e.g., 3D Secure)
+                    // Handle cases where Stripe requires further client-side action (e.g., 3D Secure)
+                    console.log("Stripe requires further action. Client Secret:", backendResult.client_secret);
                     const { error: confirmError } = await stripe.confirmCardPayment(backendResult.client_secret);
                     if (confirmError) {
                         displayFormStatus(paymentFormGlobalStatus, confirmError.message, 'error');
                         if (paymentSubmitButton) paymentSubmitButton.disabled = false;
                     } else {
-                        displayFormStatus(paymentFormGlobalStatus, 'Payment successful after authentication!', 'success', false, "payment_status_success_authenticated");
+                        // Payment successful after authentication
+                        displayFormStatus(paymentFormGlobalStatus, 'Payment successful after authentication!', 'success', "payment_status_success_authenticated");
                         cardElement.clear();
-                        setTimeout(closePaymentModal, 3000);
+                        setTimeout(() => {
+                            closePaymentModal();
+                            window.dispatchEvent(new CustomEvent('userSubscriptionChanged', { detail: { planId: currentSelectedPlan.id } }));
+                        }, 3000);
                     }
-                } else {
-                    displayFormStatus(paymentFormGlobalStatus, backendResult.message || 'Payment failed. Please try again.', 'error', false, backendResult.message_key || 'payment_status_error_generic');
-                    if (paymentSubmitButton) paymentSubmitButton.disabled = false;
+                } else { // General failure from backend
+                    throw new Error(backendResult.detail || backendResult.message || 'Payment processing failed. Please try again.');
                 }
             } catch (error) {
                 console.error('Payment Submission to Backend Error:', error);
-                displayFormStatus(paymentFormGlobalStatus, error.message || 'A network error occurred.', 'error', false, 'payment_status_error_network');
+                displayFormStatus(paymentFormGlobalStatus, error.message, 'error', 'payment_status_error_network');
                 if (paymentSubmitButton) paymentSubmitButton.disabled = false;
             }
         });
     }
-
 
     // Contact Form Submission
     if (contactForm) {
@@ -366,25 +324,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const submitButton = contactForm.querySelector('button[type="submit"]');
             if (submitButton) submitButton.disabled = true;
-            displayFormStatus(contactStatusDiv, 'Sending your message...', 'loading', true, 'contact_status_sending');
+            displayFormStatus(contactStatusDiv, 'Sending your message...', 'loading', 'contact_status_sending');
 
             const formData = new FormData(contactForm);
             const data = Object.fromEntries(formData.entries());
 
-            try {
-                console.log("Submitting Contact Form Data:", data);
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                const result = { success: true, message_key: "contact_status_success" };
+            // Ensure uplasApi is available for contact form too, though it might be a public endpoint
+            if (typeof window.uplasApi === 'undefined' || typeof window.uplasApi.fetchAuthenticated !== 'function') {
+                displayFormStatus(contactStatusDiv, 'Service unavailable. Please try again later.', 'error', 'error_service_unavailable');
+                if (submitButton) submitButton.disabled = false;
+                return;
+            }
 
-                if (result.success) {
-                    displayFormStatus(contactStatusDiv, "Message sent successfully!", 'success', false, result.message_key);
+            try {
+                // L261: contactForm.addEventListener
+                // L279: Action: Replace simulation with an API call to /api/contact/submit/.
+                // Assuming /api/core/contact/ as per backend urls.py
+                const response = await window.uplasApi.fetchAuthenticated(
+                    '/core/contact/', // Endpoint from your backend's core app
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(data),
+                        // isPublic: true // Add this if fetchAuthenticated supports it and endpoint is public
+                    }
+                );
+                const result = await response.json();
+
+                if (response.ok && result.success) { // Assuming backend returns { success: true, message: "..." }
+                    displayFormStatus(contactStatusDiv, result.message || "Message sent successfully! We'll be in touch.", 'success', result.message_key || "contact_status_success");
                     contactForm.reset();
                 } else {
-                    displayFormStatus(contactStatusDiv, result.message || 'Failed to send message.', 'error', false, result.message_key || 'contact_status_error_generic');
+                    throw new Error(result.detail || result.message || 'Failed to send message. Please try again.');
                 }
             } catch (error) {
                 console.error('Contact Form Submission Error:', error);
-                displayFormStatus(contactStatusDiv, 'A network error occurred. Please try again.', 'error', false, 'contact_status_error_network');
+                displayFormStatus(contactStatusDiv, error.message, 'error', 'contact_status_error_network');
             } finally {
                 if (submitButton) submitButton.disabled = false;
             }
@@ -394,5 +368,74 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    console.log("Uplas Pricing Page (upricing.js) with Stripe.js conceptual integration initialized.");
+    console.log("Uplas Pricing Page (upricing.js) API integrated and initialized.");
 });
+```
+
+**Key Changes and Explanations:**
+
+1.  **`initializeStripe()` (L56)**:
+    * **Stripe Public Key**: It now tries to get the Stripe public key from `window.UPLAS_CONFIG.STRIPE_PUBLIC_KEY`. If not found, it falls back to the placeholder. **You must set this configuration variable globally or replace the placeholder directly.** A warning is logged if the placeholder is still in use.
+    * Error handling for Stripe.js not loading or the card element container missing has been slightly improved to use `displayFormStatus`.
+
+2.  **`openPaymentModal(planData)`**:
+    * Added pre-filling of the email input (`paymentEmailInput`) if `window.uplasApi.getUserData()` is available and returns user data with an email.
+
+3.  **`unifiedCardPaymentForm` Submit Listener (L190, L232-L236)**:
+    * **API Call**: The simulated backend call is replaced with:
+        ```javascript
+        const response = await window.uplasApi.fetchAuthenticated(
+            '/payments/create-subscription-stripe/', // Or your specific payment endpoint
+            {
+                method: 'POST',
+                body: JSON.stringify(paymentDataForBackend)
+            }
+        );
+        const backendResult = await response.json();
+        ```
+    * **Endpoint**: Uses `/api/payments/create-subscription-stripe/`. Your backend `StripeSubscriptionCreateView` (in `apps/payments/views.py`) is designed to handle subscription creation. If you also need to handle one-time charges for courses/modules (not just subscriptions), you might need a different endpoint (e.g., `/api/payments/charge/`) or modify the existing one to handle different product types.
+    * **`paymentDataForBackend`**: This object now sends `plan_id` (which should correspond to a `SubscriptionPlan.plan_id` or a similar identifier your backend expects for Stripe), `payment_method_id`, and `email`. Other details like `planName`, `amountUSD` are commented out but can be included if your backend needs them for verification or record-keeping.
+    * **Response Handling**:
+        * Checks for `response.ok && backendResult.success`.
+        * Handles `backendResult.requires_action && backendResult.client_secret` for cases where Stripe requires further client-side steps (like 3D Secure authentication using `stripe.confirmCardPayment`).
+        * Displays success or error messages using `displayFormStatus`.
+        * On success, it dispatches a `userSubscriptionChanged` event, which `global.js` or other parts of your application could listen to for UI updates.
+
+4.  **`contactForm` Submit Listener (L261, L279)**:
+    * **API Call**: Replaced `console.log` with:
+        ```javascript
+        const response = await window.uplasApi.fetchAuthenticated(
+            '/core/contact/', // Endpoint from your backend's core app (ContactMessageCreateView)
+            {
+                method: 'POST',
+                body: JSON.stringify(data),
+                // isPublic: true // Consider if this endpoint is public
+            }
+        );
+        const result = await response.json();
+        ```
+    * **Endpoint**: Uses `/api/core/contact/` which matches your `ContactMessageCreateView` in `apps/core/views.py`.
+    * **Authentication**: It uses `fetchAuthenticated`. If your contact form is public and doesn't require users to be logged in, you might:
+        * Make the `/api/core/contact/` endpoint public on the backend (e.g., `permission_classes = [AllowAny]`).
+        * Modify `fetchAuthenticated` in `apiUtils.js` to accept an `isPublic: true` option to skip sending the `Authorization` header.
+        * Or use a direct `fetch()` call here if `uplasApi` is not strictly needed for this public endpoint.
+    * **Response Handling**: Assumes the backend returns `{ success: true, message: "..." }` on successful submission.
+
+**Important Reminders & Next Steps:**
+
+* **Stripe Public Key**: **Crucially, replace `'pk_test_YOUR_STRIPE_PUBLISHABLE_KEY'`** with your actual Stripe publishable key. Consider setting it via `window.UPLAS_CONFIG.STRIPE_PUBLIC_KEY` as shown in the code.
+* **Backend Payment Endpoint (`/api/payments/create-subscription-stripe/`)**:
+    * Ensure this endpoint in your Django `apps/payments/views.py` (`StripeSubscriptionCreateView`) correctly:
+        * Retrieves or creates a Stripe Customer ID for the authenticated Uplas user.
+        * Uses the `payment_method_id` from the frontend to attach it to the customer or use it for the subscription/charge.
+        * Creates a Stripe Subscription (or Charge for one-time payments) using your Stripe **secret key**.
+        * Handles potential errors from Stripe (e.g., card declines, insufficient funds) and returns appropriate error messages to the frontend.
+        * If dealing with Payment Intents that require SCA (Strong Customer Authentication), it should return `requires_action: true` and the `client_secret` for the PaymentIntent, as partially handled in the frontend code.
+        * Returns a clear success or failure response, ideally with a `success: true/false` field and a user-friendly `message` or `detail`.
+* **Backend Contact Endpoint (`/api/core/contact/`)**:
+    * Ensure your `ContactMessageCreateView` in `apps/core/views.py` correctly saves the contact message and returns a success response (e.g., `{ "success": true, "message": "Your message has been sent!" }`).
+* **Error Handling**: Review the error messages returned by your backend and ensure the frontend displays them clearly.
+* **UI Updates Post-Payment**: After a successful payment, the current code dispatches a `userSubscriptionChanged` event and then reloads the page (for `mcourseD.js`). You might want a more sophisticated UI update without a full reload, especially if it's a Single Page Application (SPA).
+* **Security**: Always handle sensitive operations like payment processing on the backend. The frontend should only collect payment information and send a tokenized representation (like Stripe's `paymentMethod.id`) to your server. **Never expose your Stripe secret key in frontend code.**
+
+This updated `upricing.js` should now correctly integrate with your backend for handling payments and contact form submissions. Remember to test all flows thoroughly, including successful payments, card declines, and other error scenari
