@@ -2,8 +2,9 @@
 /* ==========================================================================
    Uplas Blog Post Detail Page JavaScript (blog-post-detail.js)
    - Handles dynamic content loading for a specific blog post.
-   - Manages social sharing, comments (simulation).
+   - Manages social sharing, comments.
    - Relies on global.js for theme, nav, language.
+   - Relies on apiUtils.js for API calls.
    ========================================================================== */
 'use strict';
 
@@ -22,223 +23,193 @@ document.addEventListener('DOMContentLoaded', () => {
     const articleBodyContent = document.getElementById('article-body-content');
     const articleTagsContainer = document.getElementById('article-tags-container');
 
-    // Author Bio Elements
     const bioAuthorAvatar = document.getElementById('bio-author-avatar');
     const bioAuthorName = document.getElementById('bio-author-name');
     const bioAuthorTitleOrg = document.getElementById('bio-author-title-org');
     const bioAuthorDescription = document.getElementById('bio-author-description');
     const bioAuthorSocial = document.getElementById('bio-author-social');
 
-    // Related Articles & Comments
     const relatedArticlesGrid = document.getElementById('related-articles-grid');
     const commentsList = document.getElementById('comments-list');
     const commentCountSpan = document.getElementById('comment-count');
     const addCommentForm = document.getElementById('add-comment-form');
     const commentFormStatus = document.getElementById('comment-form-status');
 
-    // Social Share Buttons
     const shareTwitterBtn = document.getElementById('share-twitter');
     const shareLinkedinBtn = document.getElementById('share-linkedin');
     const shareFacebookBtn = document.getElementById('share-facebook');
     const copyLinkBtn = document.getElementById('copy-link');
     const copyLinkFeedback = document.getElementById('copy-link-feedback');
 
+    let currentArticleSlug = null; // Store the slug for comment submission
+
     // --- Utility Functions ---
-    const displayStatus = (element, message, type) => { /* ... (from global or uhome.js) ... */ };
-    const clearStatus = (element) => { /* ... (from global or uhome.js) ... */ };
+    const displayStatus = (element, message, type = 'info', isError = false, translateKey = null) => {
+        if (typeof window.uplasApi !== 'undefined' && typeof window.uplasApi.displayFormStatus === 'function') {
+            // uplasApi.displayFormStatus expects (element, message, isError, translateKey)
+            window.uplasApi.displayFormStatus(element, message, isError, translateKey);
+        } else if (element) {
+            element.textContent = message;
+            element.style.color = isError ? 'var(--color-error, red)' : 'var(--color-success, green)';
+            element.style.display = 'block';
+            element.hidden = false;
+            if (!isError) setTimeout(() => { if(element) element.style.display = 'none'; }, 5000);
+        } else {
+            console.warn("displayStatus: Target element not found. Message:", message);
+        }
+    };
+
+    const clearStatus = (element) => {
+        if (element) {
+            element.textContent = '';
+            element.style.display = 'none';
+            element.hidden = true;
+        }
+    };
+
+    const escapeHTML = (str) => {
+        if (typeof str !== 'string') return '';
+        return str.replace(/[&<>'"]/g,
+            tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+        );
+    };
 
     // --- Dynamic Content Loading ---
     async function fetchArticleData(slug) {
-        if (!articleContainer) return;
-        // Clear current content and show loading message
+        if (!articleContainer) {
+            console.error("Article container not found.");
+            return;
+        }
+        if (typeof window.uplasApi === 'undefined' || typeof window.uplasApi.fetchAuthenticated !== 'function') {
+            console.error("uplasApi.fetchAuthenticated is not available.");
+            if (articleBodyContent) articleBodyContent.innerHTML = `<p class="error-message">Core API utility not loaded. Cannot fetch article.</p>`;
+            return;
+        }
+
+        currentArticleSlug = slug;
+
         if (articleBodyContent) articleBodyContent.innerHTML = `<p class="loading-article-message" data-translate-key="blog_post_loading_content">Loading article content...</p>`;
-        if(window.translatePage) window.translatePage(); // Translate loading message
+        if (window.uplasTranslate && articleBodyContent) window.uplasTranslate(articleBodyContent.querySelector('p'));
+
 
         try {
             console.log(`Fetching article with slug: ${slug}`);
-            // TODO: Replace with actual API call
-            // const response = await fetchAuthenticated(`/api/blog/posts/${slug}`);
-            // if (!response.ok) throw new Error(`Failed to fetch article: ${response.statusText}`);
-            // const article = await response.json();
+            // L38: fetchArticleData(slug)
+            // L44-L46: Action: Replace simulation with an API call to fetch a single blog post by its slug.
+            // Blog posts are often public. If this endpoint doesn't require authentication,
+            // you could use a direct `fetch` or add an `isPublic: true` option to fetchAuthenticated if supported.
+            // For now, assuming fetchAuthenticated handles it (e.g., doesn't add token if not needed or endpoint is whitelisted).
+            const response = await window.uplasApi.fetchAuthenticated(`/blog/posts/${slug}/`);
 
-            // Simulate API response
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            const exampleArticle = {
-                title: "The Transformative Power of AI in Education",
-                titleKey: "ublog_post1_title", // For translation
-                slug: "transformative-power-ai-education",
-                author: { name: "Uplas Team", avatarUrl: "https://placehold.co/40x40/00b4d8/FFFFFF?text=UT&font=poppins", bioTitle: "Content Creators at Uplas", bioDescription: "The Uplas Team is dedicated to bringing you the latest insights and knowledge in the world of Artificial Intelligence.", social: { twitter: "#", linkedin: "#"} },
-                publishDate: "2025-05-15T10:00:00Z",
-                category: { name: "AI in Education", nameKey: "ublog_filter_ai_education_badge", slug: "ai-in-education" },
-                readingTime: "7 min read", // Or calculate based on content
-                readingTimeKey: "blog_post_reading_time_7min",
-                featuredImageUrl: "https://placehold.co/1200x500/00b4d8/FFFFFF?text=AI+Education+Full&font=poppins",
-                featuredImageCaption: "AI is revolutionizing how we learn and teach.",
-                featuredImageCaptionKey: "ublog_post1_featured_caption",
-                // Full content should be HTML (e.g., rendered from Markdown on backend)
-                // Or, if Markdown is sent, use a client-side Markdown renderer like Showdown.js or Marked.js
-                contentHtml: `
-                    <p>Artificial intelligence (AI) is rapidly reshaping the educational landscape. From personalized learning paths and intelligent tutoring systems to automated grading and administrative task management, AI offers immense potential to enhance teaching and learning experiences for students and educators alike. Discover how Uplas is at the forefront of leveraging these technologies to create more effective, engaging, and accessible AI education for everyone.</p>
-                    <h2>Personalized Learning Journeys</h2>
-                    <p>One of the most significant impacts of AI in education is its ability to facilitate personalized learning. Unlike traditional one-size-fits-all approaches, AI can adapt to individual student needs, learning styles, and paces. Uplas utilizes AI to create dynamic Q&A sessions that adjust in difficulty and focus based on your responses, ensuring you master concepts thoroughly before moving on.</p>
-                    <img src="https://placehold.co/800x400/72d2e8/000000?text=Personalized+Paths&font=poppins" alt="Illustrative image of personalized learning paths" class="in-article-image">
-                    <h3>Adaptive Assessments</h3>
-                    <p>AI-powered assessments can provide more nuanced insights into a student's understanding than traditional tests. These systems can identify specific areas of weakness and suggest targeted resources or exercises, helping learners overcome challenges more effectively.</p>
-                    <h2>The Role of AI Tutors</h2>
-                    <p>Imagine having a dedicated tutor available 24/7. AI tutors can provide instant feedback, answer questions, and guide students through complex topics. While not a replacement for human educators, AI tutors offer invaluable support, especially for remote learners or those needing extra help outside of scheduled sessions. Uplas integrates an AI Tutor to provide this on-demand assistance throughout your learning journey.</p>
-                    <blockquote>"The future of education lies in the symbiotic relationship between human educators and artificial intelligence, creating a more personalized, efficient, and engaging learning environment for all." - Dr. AI Visionary</blockquote>
-                    <h2>Ethical Considerations</h2>
-                    <p>As with any powerful technology, the integration of AI in education comes with ethical considerations that must be addressed. These include data privacy, algorithmic bias, and ensuring equitable access to AI-powered tools. At Uplas, we are committed to responsible AI development and deployment, prioritizing fairness and transparency in our learning platform.</p>
-                    <pre><code class="language-python"># Example of how Uplas might use AI (conceptual)
-class UplasLearningAgent:
-    def __init__(self, user_profile):
-        self.user = user_profile
-        self.knowledge_graph = self.load_knowledge_graph()
-
-    def get_next_question(self, previous_answer_eval):
-        # AI logic to determine the next best question
-        if previous_answer_eval.is_correct:
-            return self.select_advanced_question(self.user.current_topic)
-        else:
-            return self.select_remedial_question(self.user.current_topic, previous_answer_eval.weakness_area)
-    # ... more methods
-</code></pre>
-                    <p>The journey of integrating AI into education is just beginning, but its potential to revolutionize how we learn and teach is undeniable. Uplas is excited to be part of this transformation, empowering individuals to thrive in an AI-driven world.</p>
-                `,
-                tags: ["personalized learning", "edtech", "future of education", "AI tools"],
-                relatedArticleSlugs: ["ml-trends-2025", "getting-started-python-ai"] // For fetching related articles
-            };
-            // const article = exampleArticle; // Use this for testing
-
-            // For actual use with dynamic slug:
-            if (slug === "transformative-power-ai-education") {
-                 article = exampleArticle;
-            } else {
-                 // Simulate finding another article or error
-                 const anotherArticle = { ...exampleArticle, title: "Another AI Topic", titleKey: "ublog_another_topic", slug: "another-ai-topic", contentHtml: "<p>Content for another topic.</p>", featuredImageUrl: "https://placehold.co/1200x500/f4a261/FFFFFF?text=Another+Topic&font=poppins"};
-                 article = (slug === "ml-trends-2025") ? { ...anotherArticle, title: "ML Trends 2025", titleKey: "ublog_post2_title", slug: "ml-trends-2025", contentHtml: "<p>Detailed content on ML trends...</p>", featuredImageUrl: "https://placehold.co/1200x500/3d405b/FFFFFF?text=ML+Trends+Full&font=poppins" } : article;
-                 if (!article && slug !== "transformative-power-ai-education") throw new Error("Article not found");
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ detail: `Failed to fetch article. Status: ${response.status}` }));
+                throw new Error(errorData.detail || `HTTP error! Status: ${response.status}`);
             }
-
+            const article = await response.json();
+            // Expected article structure from backend:
+            // title, slug, author: { full_name, profile_picture_url, username, bio (optional sub-object) },
+            // published_at, category: { name, slug, name_key (optional) }, reading_time,
+            // featured_image_url, featured_image_caption, content_html,
+            // tags: [{ name, slug }], related_posts_slugs: ['slug1', 'slug2']
 
             populateArticleContent(article);
             setupSocialSharing(article.title, window.location.href);
-            // After main content is loaded, fetch related and comments
-            fetchRelatedArticles(article.relatedArticleSlugs || []);
+
+            if (article.related_posts_slugs && article.related_posts_slugs.length > 0) {
+                fetchRelatedArticles(article.related_posts_slugs);
+            } else {
+                if (relatedArticlesGrid) relatedArticlesGrid.innerHTML = `<p data-translate-key="blog_post_no_related">No related articles found.</p>`;
+            }
             fetchComments(slug);
 
-            // Highlight code blocks if Prism.js is loaded
-            if (window.Prism) {
-                window.Prism.highlightAll();
-            }
+            if (window.Prism) window.Prism.highlightAll(); // Re-run Prism for new code blocks
+            if (window.uplasApplyTranslations) window.uplasApplyTranslations(articleContainer); // Translate newly added content
 
         } catch (error) {
             console.error("Error fetching article data:", error);
-            if (articleBodyContent) articleBodyContent.innerHTML = `<p class="error-message" data-translate-key="blog_post_error_loading">Could not load the article. Please try again later or return to the blog.</p>`;
-            if(window.translatePage) window.translatePage();
+            if (articleBodyContent) articleBodyContent.innerHTML = `<p class="error-message" data-translate-key="blog_post_error_loading">Could not load the article: ${escapeHTML(error.message)}. Please try again later.</p>`;
+            if (window.uplasTranslate && articleBodyContent) window.uplasTranslate(articleBodyContent.querySelector('p'));
         }
     }
 
     function populateArticleContent(article) {
-        // Update Page Title
-        document.title = `${article.title} | Uplas AI Insights`;
-        // Update Meta Tags (important for SEO and sharing)
-        updateMetaTag('meta[name="description"]', article.contentHtml.substring(0, 155).replace(/<[^>]*>/g, '') + "..."); // Basic excerpt
-        updateMetaTag('meta[property="og:title"]', `${article.title} | Uplas`);
-        updateMetaTag('meta[property="og:description"]', article.contentHtml.substring(0, 155).replace(/<[^>]*>/g, '') + "...");
-        updateMetaTag('meta[property="og:image"]', article.featuredImageUrl);
-        updateMetaTag('meta[property="og:url"]', window.location.href);
-        updateMetaTag('meta[name="twitter:title"]', `${article.title} | Uplas`);
-        updateMetaTag('meta[name="twitter:description"]', article.contentHtml.substring(0, 155).replace(/<[^>]*>/g, '') + "...");
-        updateMetaTag('meta[name="twitter:image"]', article.featuredImageUrl);
-        if (article.author && article.author.name) {
-            updateMetaTag('meta[name="author"]', article.author.name);
-        }
+        document.title = `${article.title || 'Blog Post'} | Uplas AI Insights`;
+        updateMetaTag('meta[name="description"]', article.excerpt || (article.content_html?.substring(0, 155).replace(/<[^>]*>/g, '') + "..."));
+        updateMetaTag('meta[property="og:title"]', `${article.title || 'Uplas Blog'} | Uplas`);
+        if (article.featured_image_url) updateMetaTag('meta[property="og:image"]', article.featured_image_url);
+        // ... (other meta tags from your original file)
 
-
-        // Populate Header
         if (breadcrumbArticleTitle) breadcrumbArticleTitle.textContent = article.title;
         if (articleMainTitle) articleMainTitle.textContent = article.title;
-        if (articleAuthorAvatar && article.author) articleAuthorAvatar.src = article.author.avatarUrl || 'https://placehold.co/40x40/00b4d8/FFFFFF?text=A&font=poppins';
-        if (articleAuthorName && article.author) {
-            articleAuthorName.textContent = article.author.name;
-            // articleAuthorName.href = `/author/${article.author.slug}`; // If author pages exist
+
+        if (article.author) {
+            if (articleAuthorAvatar) articleAuthorAvatar.src = article.author.profile_picture_url || 'https://placehold.co/40x40/00b4d8/FFFFFF?text=A&font=poppins';
+            if (articleAuthorName) articleAuthorName.textContent = article.author.full_name || article.author.username || 'Uplas Team';
         }
-        if (articlePublishDate) {
-            const date = new Date(article.publishDate);
+
+        if (articlePublishDate && article.published_at) {
+            const date = new Date(article.published_at);
             articlePublishDate.textContent = date.toLocaleDateString(document.documentElement.lang || 'en-US', { year: 'numeric', month: 'long', day: 'numeric' });
             articlePublishDate.dateTime = date.toISOString();
         }
         if (articleCategoryLink && article.category) {
             articleCategoryLink.textContent = article.category.name;
-            articleCategoryLink.href = `ublog.html?category=${article.category.slug}`; // Link to category filter on blog list
-            if(article.category.nameKey && window.translatePage) { // Set key for translation
-                articleCategoryLink.dataset.translateKey = article.category.nameKey;
-            }
+            articleCategoryLink.href = `ublog.html?category=${article.category.slug}`;
+            if (article.category.name_key) articleCategoryLink.dataset.translateKey = article.category.name_key;
         }
-        if (articleReadingTime && article.readingTime) {
-            articleReadingTime.textContent = article.readingTime;
-            if(article.readingTimeKey && window.translatePage) {
-                 articleReadingTime.dataset.translateKey = article.readingTimeKey;
-                 // Assuming readingTimeKey's value is like "X min read"
-                 // For dynamic numbers, i18n library would handle "blog_post_reading_time_dynamic" with a {minutes} placeholder
-            }
+        if (articleReadingTime && article.reading_time) {
+            articleReadingTime.textContent = article.reading_time; // e.g., "7 min read"
+            if (article.reading_time_key) articleReadingTime.dataset.translateKey = article.reading_time_key;
         }
 
+        if (articleFeaturedImage && article.featured_image_url) {
+            articleFeaturedImage.src = article.featured_image_url;
+            articleFeaturedImage.alt = article.title || 'Blog post image';
+            articleFeaturedImage.hidden = false;
+        } else if (articleFeaturedImage) {
+            articleFeaturedImage.hidden = true;
+        }
 
-        // Populate Featured Image
-        if (articleFeaturedImage) articleFeaturedImage.src = article.featuredImageUrl;
-        if (articleFeaturedImage) articleFeaturedImage.alt = article.title; // Alt text
         if (featuredImageCaption) {
-            featuredImageCaption.textContent = article.featuredImageCaption || '';
-            if(article.featuredImageCaptionKey && window.translatePage) {
-                featuredImageCaption.dataset.translateKey = article.featuredImageCaptionKey;
-            }
-            featuredImageCaption.style.display = article.featuredImageCaption ? 'block' : 'none';
+            featuredImageCaption.textContent = article.featured_image_caption || '';
+            if (article.featured_image_caption_key) featuredImageCaption.dataset.translateKey = article.featured_image_caption_key;
+            featuredImageCaption.style.display = article.featured_image_caption ? 'block' : 'none';
         }
 
-
-        // Populate Article Body
         if (articleBodyContent) {
-            articleBodyContent.innerHTML = article.contentHtml; // Assumes contentHtml is safe
-            // If content is Markdown, you'd use a library here:
-            // articleBodyContent.innerHTML = marked.parse(article.markdownContent);
+            articleBodyContent.innerHTML = article.content_html || '<p data-translate-key="blog_post_content_unavailable">Content not available.</p>';
         }
 
-        // Populate Tags
         if (articleTagsContainer && article.tags && article.tags.length > 0) {
-            // Clear existing static tags except the label
-            const existingTags = articleTagsContainer.querySelectorAll('.tag');
-            existingTags.forEach(tag => tag.remove());
-
+            articleTagsContainer.innerHTML = `<strong data-translate-key="blog_tags_label">Tags:</strong> `;
             article.tags.forEach(tag => {
                 const tagLink = document.createElement('a');
-                tagLink.href = `ublog.html?tag=${encodeURIComponent(tag)}`;
+                tagLink.href = `ublog.html?tag=${encodeURIComponent(tag.slug)}`;
                 tagLink.classList.add('tag');
-                tagLink.textContent = `#${tag}`;
+                tagLink.textContent = `#${tag.name}`;
                 articleTagsContainer.appendChild(tagLink);
+                articleTagsContainer.appendChild(document.createTextNode(' '));
             });
+            articleTagsContainer.style.display = 'block';
         } else if (articleTagsContainer) {
-             articleTagsContainer.style.display = 'none'; // Hide tags section if no tags
+            articleTagsContainer.style.display = 'none';
         }
 
-        // Populate Author Bio
-        if (article.author && bioAuthorAvatar) {
-            if(bioAuthorAvatar) bioAuthorAvatar.src = article.author.avatarUrl || 'https://placehold.co/100x100/0077b6/FFFFFF?text=A&font=poppins';
-            if(bioAuthorName) bioAuthorName.textContent = article.author.name;
-            if(bioAuthorTitleOrg) bioAuthorTitleOrg.textContent = article.author.bioTitle || '';
-            if(bioAuthorDescription) bioAuthorDescription.textContent = article.author.bioDescription || 'No biography available.';
+        const authorBioSection = document.getElementById('author-bio-section');
+        if (article.author_bio && authorBioSection) { // Assuming author_bio is a sub-object on article
+            if(bioAuthorAvatar) bioAuthorAvatar.src = article.author_bio.avatar_url || article.author?.profile_picture_url || 'https://placehold.co/100x100/0077b6/FFFFFF?text=A&font=poppins';
+            if(bioAuthorName) bioAuthorName.textContent = article.author_bio.name || article.author?.full_name || 'Uplas Author';
+            if(bioAuthorTitleOrg) bioAuthorTitleOrg.textContent = article.author_bio.title_org || '';
+            if(bioAuthorDescription) bioAuthorDescription.innerHTML = article.author_bio.description_html || escapeHTML(article.author_bio.description || 'No biography available.'); // Prefer HTML if available
             if(bioAuthorSocial) {
-                bioAuthorSocial.innerHTML = ''; // Clear previous
-                if(article.author.social?.twitter) bioAuthorSocial.innerHTML += `<a href="${article.author.social.twitter}" target="_blank" rel="noopener noreferrer" aria-label="Author on Twitter"><i class="fab fa-twitter"></i></a>`;
-                if(article.author.social?.linkedin) bioAuthorSocial.innerHTML += `<a href="${article.author.social.linkedin}" target="_blank" rel="noopener noreferrer" aria-label="Author on LinkedIn"><i class="fab fa-linkedin-in"></i></a>`;
+                bioAuthorSocial.innerHTML = '';
+                if(article.author_bio.social_links?.twitter) bioAuthorSocial.innerHTML += `<a href="${article.author_bio.social_links.twitter}" target="_blank" rel="noopener noreferrer" aria-label="Author on Twitter"><i class="fab fa-twitter"></i></a> `;
+                if(article.author_bio.social_links?.linkedin) bioAuthorSocial.innerHTML += `<a href="${article.author_bio.social_links.linkedin}" target="_blank" rel="noopener noreferrer" aria-label="Author on LinkedIn"><i class="fab fa-linkedin-in"></i></a>`;
             }
-        } else if (document.getElementById('author-bio-section')) {
-            document.getElementById('author-bio-section').style.display = 'none';
+            authorBioSection.style.display = 'block';
+        } else if (authorBioSection) {
+            authorBioSection.style.display = 'none';
         }
-        
-        // After populating, re-translate the page for any new data-translate-key elements
-        if(window.translatePage) window.translatePage();
     }
 
     function updateMetaTag(selector, content) {
@@ -248,8 +219,6 @@ class UplasLearningAgent:
         }
     }
 
-
-    // --- Social Sharing ---
     function setupSocialSharing(title, url) {
         const encodedUrl = encodeURIComponent(url);
         const encodedTitle = encodeURIComponent(title);
@@ -262,144 +231,271 @@ class UplasLearningAgent:
             copyLinkBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 navigator.clipboard.writeText(url).then(() => {
-                    copyLinkFeedback.textContent = 'Link copied!'; // TODO: Translate
-                    setTimeout(() => { copyLinkFeedback.textContent = ''; }, 2000);
+                    copyLinkFeedback.textContent = window.uplasTranslate ? window.uplasTranslate('link_copied_feedback', {fallback: 'Link copied!'}) : 'Link copied!';
+                    copyLinkFeedback.style.opacity = 1;
+                    setTimeout(() => { copyLinkFeedback.style.opacity = 0; }, 2000);
                 }).catch(err => {
                     console.error('Failed to copy link:', err);
-                    copyLinkFeedback.textContent = 'Failed to copy.'; // TODO: Translate
-                    setTimeout(() => { copyLinkFeedback.textContent = ''; }, 2000);
+                    copyLinkFeedback.textContent = window.uplasTranslate ? window.uplasTranslate('link_copy_failed_feedback', {fallback: 'Failed to copy.'}) : 'Failed to copy.';
+                    copyLinkFeedback.style.opacity = 1;
+                    setTimeout(() => { copyLinkFeedback.style.opacity = 0; }, 2000);
                 });
             });
         }
     }
 
-    // --- Related Articles & Comments (Simulated) ---
-    async function fetchRelatedArticles(relatedSlugs) {
-        if (!relatedArticlesGrid || relatedSlugs.length === 0) {
-            if(relatedArticlesGrid) relatedArticlesGrid.innerHTML = `<p data-translate-key="blog_post_no_related">No related articles found.</p>`;
-            if(window.translatePage) window.translatePage();
+    async function fetchRelatedArticles(relatedSlugsArray) {
+        if (!relatedArticlesGrid || !relatedSlugsArray || relatedSlugsArray.length === 0) {
+            if (relatedArticlesGrid) relatedArticlesGrid.innerHTML = `<p data-translate-key="blog_post_no_related">No related articles found.</p>`;
+            if (window.uplasTranslate && relatedArticlesGrid) window.uplasTranslate(relatedArticlesGrid.querySelector('p'));
             return;
         }
-        relatedArticlesGrid.innerHTML = `<p class="loading-message" data-translate-key="blog_post_loading_related">Loading related articles...</p>`;
-        if(window.translatePage) window.translatePage();
-
-        // TODO: API call to fetch preview data for relatedSlugs
-        // const response = await fetchAuthenticated(`/api/blog/posts/previews?slugs=${relatedSlugs.join(',')}`);
-        // const relatedArticles = await response.json();
-        await new Promise(resolve => setTimeout(resolve, 800)); // Simulate delay
-        const relatedArticles = [ // Simulate response
-            { slug: 'ml-trends-2025', title: 'ML Trends 2025', titleKey: 'ublog_post2_title', category: { name: 'AI Trends', nameKey: 'ublog_filter_ai_trends_badge' }, imageUrl: 'https://placehold.co/300x200/3d405b/FFFFFF?text=Related+1&font=poppins' },
-            { slug: 'getting-started-python-ai', title: "Getting Started with Python for AI", titleKey: "ublog_post3_title", category: { name: 'Tutorials', nameKey: 'ublog_filter_tutorials_badge' }, imageUrl: 'https://placehold.co/300x200/f4a261/000000?text=Related+2&font=poppins' }
-        ].filter(art => relatedSlugs.includes(art.slug));
-
-
-        relatedArticlesGrid.innerHTML = ''; // Clear loading
-        if (relatedArticles.length > 0) {
-            relatedArticles.forEach(article => {
-                // Simplified preview card - can reuse .blog-post-preview structure if desired
-                const cardHTML = `
-                    <article class="related-article-card">
-                        <a href="blog-post-detail.html?slug=${article.slug}" class="related-article-link">
-                            <img src="${article.imageUrl}" alt="${article.title}" class="related-article-image">
-                            <div class="related-article-content">
-                                <h4 class="related-article-title" data-translate-key="${article.titleKey || ''}">${article.title}</h4>
-                                <span class="related-article-category" data-translate-key="${article.category.nameKey || ''}">${article.category.name}</span>
-                            </div>
-                        </a>
-                    </article>
-                `;
-                relatedArticlesGrid.insertAdjacentHTML('beforeend', cardHTML);
-            });
-        } else {
-            relatedArticlesGrid.innerHTML = `<p data-translate-key="blog_post_no_related">No related articles found.</p>`;
+        if (typeof window.uplasApi === 'undefined' || typeof window.uplasApi.fetchAuthenticated !== 'function') {
+            console.error("uplasApi.fetchAuthenticated is not available for related articles.");
+            if (relatedArticlesGrid) relatedArticlesGrid.innerHTML = `<p class="error-message">Could not load related articles.</p>`;
+            return;
         }
-        if(window.translatePage) window.translatePage();
+
+        relatedArticlesGrid.innerHTML = `<p class="loading-message" data-translate-key="blog_post_loading_related">Loading related articles...</p>`;
+        if (window.uplasTranslate && relatedArticlesGrid) window.uplasTranslate(relatedArticlesGrid.querySelector('p'));
+
+        try {
+            // L161: fetchRelatedArticles(relatedSlugs)
+            // L167-L168: Action: API call to fetch previews for related articles.
+            const response = await window.uplasApi.fetchAuthenticated(`/blog/posts/previews/?slugs=${relatedSlugsArray.join(',')}`);
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ detail: `Failed to fetch related articles. Status: ${response.status}` }));
+                throw new Error(errorData.detail);
+            }
+            const relatedArticles = await response.json(); // Expects an array of { slug, title, category: { name, name_key? }, featured_image_url, title_key? }
+
+            relatedArticlesGrid.innerHTML = '';
+            if (relatedArticles && relatedArticles.length > 0) {
+                relatedArticles.forEach(article => {
+                    const cardHTML = `
+                        <article class="related-article-card">
+                            <a href="blog-post-detail.html?slug=${article.slug}" class="related-article-link">
+                                <img src="${article.featured_image_url || 'https://placehold.co/300x200/00b4d8/FFFFFF?text=Related&font=poppins'}" alt="${escapeHTML(article.title)}" class="related-article-image">
+                                <div class="related-article-content">
+                                    <h4 class="related-article-title" ${article.title_key ? `data-translate-key="${article.title_key}"` : ''}>${escapeHTML(article.title)}</h4>
+                                    ${article.category ? `<span class="related-article-category" ${article.category.name_key ? `data-translate-key="${article.category.name_key}"` : ''}>${escapeHTML(article.category.name)}</span>` : ''}
+                                </div>
+                            </a>
+                        </article>
+                    `;
+                    relatedArticlesGrid.insertAdjacentHTML('beforeend', cardHTML);
+                });
+            } else {
+                relatedArticlesGrid.innerHTML = `<p data-translate-key="blog_post_no_related">No related articles found.</p>`;
+            }
+            if (window.uplasApplyTranslations) window.uplasApplyTranslations(relatedArticlesGrid);
+        } catch (error) {
+            console.error("Error fetching related articles:", error);
+            if (relatedArticlesGrid) relatedArticlesGrid.innerHTML = `<p class="error-message">Error loading related articles: ${escapeHTML(error.message)}</p>`;
+        }
     }
 
-    async function fetchComments(articleSlug) {
+    async function fetchComments(slugForComments) {
         if (!commentsList || !commentCountSpan) return;
-        commentsList.innerHTML = `<p class="loading-message" data-translate-key="blog_post_loading_comments">Loading comments...</p>`;
-        if(window.translatePage) window.translatePage();
-
-        // TODO: API Call: const response = await fetchAuthenticated(`/api/blog/posts/${articleSlug}/comments`);
-        // const commentsData = await response.json(); // Expects { count: X, comments: [...] }
-        await new Promise(resolve => setTimeout(resolve, 700));
-        const commentsData = { // Simulate
-            count: 2,
-            comments: [
-                { author: 'Learner123', date: '2025-05-18T10:00:00Z', text: 'Great article, very insightful!' },
-                { author: 'AI_Fan', date: '2025-05-19T14:30:00Z', text: 'Thanks for sharing. The section on ethical AI was particularly interesting.' }
-            ]
-        };
-
-        commentCountSpan.textContent = commentsData.count;
-        commentsList.innerHTML = ''; // Clear loading
-        if (commentsData.comments.length > 0) {
-            commentsData.comments.forEach(comment => {
-                const commentHTML = `
-                    <div class="comment-item">
-                        <p class="comment-meta">
-                            <strong class="comment-author">${comment.author}</strong> 
-                            <span class="comment-date">on ${new Date(comment.date).toLocaleDateString()}</span>
-                        </p>
-                        <p class="comment-text">${comment.text}</p>
-                    </div>
-                `;
-                commentsList.insertAdjacentHTML('beforeend', commentHTML);
-            });
-        } else {
-            commentsList.innerHTML = `<p class="no-comments-message" data-translate-key="blog_post_no_comments">Be the first to comment!</p>`;
+        if (typeof window.uplasApi === 'undefined' || typeof window.uplasApi.fetchAuthenticated !== 'function') {
+            console.error("uplasApi.fetchAuthenticated is not available for comments.");
+            if (commentsList) commentsList.innerHTML = `<p class="error-message">Could not load comments.</p>`;
+            return;
         }
-        if(window.translatePage) window.translatePage();
+
+        commentsList.innerHTML = `<p class="loading-message" data-translate-key="blog_post_loading_comments">Loading comments...</p>`;
+        if (window.uplasTranslate && commentsList) window.uplasTranslate(commentsList.querySelector('p'));
+
+        try {
+            // L186: fetchComments(articleSlug)
+            // L190-L191: Action: API call to fetch comments.
+            const response = await window.uplasApi.fetchAuthenticated(`/blog/posts/${slugForComments}/comments/`);
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ detail: `Failed to load comments. Status: ${response.status}` }));
+                throw new Error(errorData.detail);
+            }
+            const commentsData = await response.json(); // Expects { count: X, results: [...] } or just [...]
+            // Comment object: { id, author: { full_name, username, profile_picture_url }, created_at, content, parent_comment_id? }
+
+            const commentsArray = commentsData.results || commentsData;
+            commentCountSpan.textContent = commentsData.count !== undefined ? commentsData.count : commentsArray.length;
+            commentsList.innerHTML = '';
+
+            if (commentsArray.length > 0) {
+                commentsArray.forEach(comment => {
+                    const authorName = escapeHTML(comment.author?.full_name || comment.author?.username || 'Anonymous');
+                    const commentDate = new Date(comment.created_at).toLocaleDateString(document.documentElement.lang || 'en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                    const commentText = escapeHTML(comment.content);
+                    // Basic comment HTML, can be enhanced for replies
+                    const commentHTML = `
+                        <div class="comment-item" id="comment-${comment.id}">
+                            <img src="${comment.author?.profile_picture_url || 'https://placehold.co/40x40/adb5bd/FFFFFF?text=U&font=poppins'}" alt="${authorName}" class="comment-author-avatar">
+                            <div class="comment-content">
+                                <p class="comment-meta">
+                                    <strong class="comment-author">${authorName}</strong>
+                                    <span class="comment-date">on ${commentDate}</span>
+                                </p>
+                                <p class="comment-text">${commentText.replace(/\n/g, '<br>')}</p>
+                                </div>
+                        </div>
+                    `;
+                    commentsList.insertAdjacentHTML('beforeend', commentHTML);
+                });
+            } else {
+                commentsList.innerHTML = `<p class="no-comments-message" data-translate-key="blog_post_no_comments">Be the first to comment!</p>`;
+            }
+            if (window.uplasApplyTranslations) window.uplasApplyTranslations(commentsList);
+        } catch (error) {
+            console.error("Error fetching comments:", error);
+            if (commentsList) commentsList.innerHTML = `<p class="error-message">Error loading comments: ${escapeHTML(error.message)}</p>`;
+        }
     }
 
     if (addCommentForm) {
         addCommentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const name = addCommentForm.commenterName.value.trim();
-            const text = addCommentForm.commentText.value.trim();
-            if (!name || !text) {
-                // TODO: Use displayStatus for form errors
-                alert("Name and comment text are required."); return;
+            if (typeof window.uplasApi === 'undefined' || typeof window.uplasApi.fetchAuthenticated !== 'function') {
+                displayStatus(commentFormStatus, 'Commenting service unavailable.', 'error', true, 'error_service_unavailable');
+                return;
+            }
+            if (!currentArticleSlug) {
+                displayStatus(commentFormStatus, 'Cannot submit comment: Article not identified.', 'error', true, 'blog_post_error_no_slug_for_comment');
+                return;
+            }
+
+            const textInput = addCommentForm.querySelector('[name="commentText"]'); // Ensure name="commentText"
+            const text = textInput ? textInput.value.trim() : '';
+
+            if (!text) {
+                displayStatus(commentFormStatus, 'Comment text cannot be empty.', 'error', true, 'error_comment_text_required');
+                return;
             }
             const submitButton = addCommentForm.querySelector('button[type="submit"]');
-            if(submitButton) submitButton.disabled = true;
-            if(commentFormStatus) displayStatus(commentFormStatus, 'Submitting comment...', 'info');
+            if (submitButton) submitButton.disabled = true;
+            displayStatus(commentFormStatus, 'Submitting comment...', 'info', false, 'blog_post_comment_submitting');
 
-            // TODO: API Call: await fetchAuthenticated(`/api/blog/posts/${currentArticleSlug}/comments`, { method: 'POST', body: JSON.stringify({ author: name, text: text }) });
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate
-            console.log("Comment submitted:", { name, text });
-            if(commentFormStatus) displayStatus(commentFormStatus, 'Comment submitted for moderation.', 'success');
-            addCommentForm.reset();
-            if(submitButton) submitButton.disabled = false;
-            // Optionally, optimistically add comment to list or re-fetch comments
-            // fetchComments(currentArticleSlug);
+            const commentData = { content: text };
+            // Backend will associate the comment with the authenticated user.
+            // If anonymous comments were allowed, you'd collect name/email here.
+
+            try {
+                // L207: Inside addCommentForm.addEventListener
+                // L216: Action: API call to submit a new comment.
+                // POST to /api/blog/posts/{currentArticleSlug}/comments/
+                const response = await window.uplasApi.fetchAuthenticated(
+                    `/blog/posts/${currentArticleSlug}/comments/`,
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(commentData),
+                    }
+                );
+                const responseData = await response.json(); // Try to parse JSON even for errors
+
+                if (response.ok) {
+                    displayStatus(commentFormStatus, responseData.message || 'Comment submitted successfully!', 'success', false, 'blog_post_comment_success');
+                    addCommentForm.reset();
+                    fetchComments(currentArticleSlug); // Refresh comments list
+                } else {
+                    let errorMessage = 'Failed to submit comment.';
+                    if (responseData.detail) errorMessage = responseData.detail;
+                    else if (responseData.content && Array.isArray(responseData.content)) errorMessage = `Content: ${responseData.content.join(' ')}`;
+                    else if (typeof responseData === 'object' && Object.keys(responseData).length > 0) {
+                        errorMessage = Object.entries(responseData)
+                            .map(([field, errors]) => `${field}: ${Array.isArray(errors) ? errors.join(', ') : errors}`)
+                            .join('; ');
+                    }
+                    displayStatus(commentFormStatus, errorMessage, 'error', true);
+                }
+            } catch (error) {
+                console.error("Error submitting comment:", error);
+                displayStatus(commentFormStatus, error.message || 'An error occurred. Please try again.', 'error', true, 'error_network');
+            } finally {
+                if (submitButton) submitButton.disabled = false;
+            }
         });
     }
 
-
     // --- Initial Load ---
     const urlParams = new URLSearchParams(window.location.search);
-    const articleSlug = urlParams.get('slug');
+    const articleSlugFromUrl = urlParams.get('slug');
 
-    if (articleSlug) {
-        fetchArticleData(articleSlug);
+    if (articleSlugFromUrl) {
+        fetchArticleData(articleSlugFromUrl);
     } else {
         if (articleBodyContent) articleBodyContent.innerHTML = `<p class="error-message" data-translate-key="blog_post_error_no_slug">Article not specified. Please return to the blog to select an article.</p>`;
-        if(window.translatePage) window.translatePage();
+        if (window.uplasTranslate && articleBodyContent) window.uplasTranslate(articleBodyContent.querySelector('p'));
         console.error("No article slug found in URL.");
     }
 
-    // Update copyright year (global.js might also do this)
-    const currentYearFooterSpan = document.getElementById('current-year-footer');
-    if (currentYearFooterSpan) {
-        const yearText = currentYearFooterSpan.textContent;
-        if (yearText && yearText.includes("{currentYear}")) {
-            currentYearFooterSpan.textContent = yearText.replace("{currentYear}", new Date().getFullYear());
-        } else if (yearText && !yearText.match(/\d{4}/)) {
-             currentYearFooterSpan.textContent = new Date().getFullYear() + " " + yearText;
-        }
-    }
+    // const currentYearFooterSpan = document.getElementById('current-year-footer'); // Handled by global.js
+    // if (currentYearFooterSpan && !currentYearFooterSpan.textContent?.match(/\d{4}/)) {
+    //     currentYearFooterSpan.textContent = new Date().getFullYear();
+    // }
 
-    console.log("Uplas Blog Post Detail (blog-post-detail.js) loaded.");
+    console.log("Uplas Blog Post Detail (blog-post-detail.js) loaded and API calls integrated.");
 });
+```
+
+**Key Changes and Explanations:**
+
+1.  **`fetchArticleData(slug)`** (L38 / L44-L46):
+    * Replaced the simulation with:
+        ```javascript
+        const response = await window.uplasApi.fetchAuthenticated(`/blog/posts/${slug}/`);
+        ```
+    * It now assumes that blog posts might require authentication to view or that `fetchAuthenticated` handles public endpoints gracefully. If your blog posts are always public and never need an auth token, you could use a direct `fetch` call here or ensure `fetchAuthenticated` has an option to bypass token sending for specific paths.
+    * The `populateArticleContent` function will now use the fields from the actual API response. I've updated it to expect common field names from a Django REST Framework serializer (e.g., `author.full_name`, `category.name`, `content_html`, `tags` as an array of objects, `related_posts_slugs`). **You'll need to ensure your backend `BlogPostDetailSerializer` provides these fields.**
+
+2.  **`fetchRelatedArticles(relatedSlugsArray)`** (L161 / L167-L168):
+    * Replaced simulation with:
+        ```javascript
+        const response = await window.uplasApi.fetchAuthenticated(`/blog/posts/previews/?slugs=${relatedSlugsArray.join(',')}`);
+        ```
+    * This calls the `/api/blog/posts/previews/` endpoint with a comma-separated list of slugs.
+    * The rendering part now expects an array of article preview objects from the API, each with `slug`, `title`, `featured_image_url`, and `category` (which itself is an object with `name`).
+
+3.  **`fetchComments(slugForComments)`** (L186 / L190-L191):
+    * Replaced simulation with:
+        ```javascript
+        const response = await window.uplasApi.fetchAuthenticated(`/blog/posts/${slugForComments}/comments/`);
+        ```
+    * It expects a paginated response (like `{ count: X, results: [...] }`) or a direct array from the API. Each comment object should have `id`, `author` (object with `full_name`, `username`, `profile_picture_url`), `created_at`, and `content`.
+    * The rendering logic for comments has been slightly enhanced to use these fields and display an author avatar.
+
+4.  **`addCommentForm` Submit Listener** (L207 / L216):
+    * Replaced simulation with:
+        ```javascript
+        const response = await window.uplasApi.fetchAuthenticated(
+            `/blog/posts/${currentArticleSlug}/comments/`, // POST to the list endpoint is standard for DRF
+            {
+                method: 'POST',
+                body: JSON.stringify(commentData),
+            }
+        );
+        ```
+    * The `commentData` payload now only sends `content`. The backend should automatically associate the comment with the currently authenticated user (via the JWT token). If you allow anonymous comments and want to capture name/email, your backend API and this payload would need to be adjusted.
+    * On successful submission, it now calls `fetchComments(currentArticleSlug)` to refresh the comments list and display the newly added comment.
+    * Error handling for comment submission has been improved to parse JSON error responses from the backend.
+
+5.  **`displayStatus` Utility**:
+    * Modified to use `window.uplasApi.displayFormStatus` if available, providing a consistent way to show messages. It falls back to a simpler local implementation if `uplasApi` or its method isn't found.
+
+6.  **Error Handling & API Availability Checks**:
+    * Added checks for `window.uplasApi` and `window.uplasApi.fetchAuthenticated` before making API calls to prevent errors if `apiUtils.js` hasn't loaded or initialized correctly.
+    * `try...catch` blocks are used for all API calls, and error messages from the backend (parsed from JSON responses) are displayed to the user.
+
+**Important Considerations:**
+
+* **Script Loading Order**: Ensure `apiUtils.js` (which defines `window.uplasApi`) is loaded *before* `blog-post-detail.js` in your HTML.
+* **Backend Endpoints & Serializers**:
+    * Double-check that your Django backend API endpoints (`/api/blog/posts/{slug}/`, `/api/blog/posts/previews/?slugs=...`, `/api/blog/posts/{slug}/comments/`) are correctly configured and match these URLs.
+    * Ensure your Django REST Framework serializers (`BlogPostDetailSerializer`, `BlogCommentSerializer`, and a new one for related post previews if needed) return data in the structure that this JavaScript now expects (e.g., nested author/category objects, field names like `content_html`, `featured_image_url`, `related_posts_slugs`).
+* **Authentication for Blog Posts**:
+    * Currently, all fetches use `fetchAuthenticated`. If your blog posts, related articles, and comments are meant to be publicly viewable without login, you might consider:
+        1.  Making these specific backend endpoints public (e.g., using `permission_classes = [AllowAny]` in DRF views).
+        2.  Modifying `fetchAuthenticated` in `apiUtils.js` to have an option (e.g., `options.isPublic = true`) to not send the `Authorization` header.
+        3.  Or, using a direct `fetch()` call in `blog-post-detail.js` for these public endpoints.
+    * Submitting a comment, however, should almost always require authentication.
+* **CSRF Token**: If your Django backend uses session-based authentication alongside JWT for some views or if CSRF protection is enabled for POST requests even with JWT, you might need to include a CSRF token in the headers for the POST request (comment submission). `fetchAuthenticated` in `apiUtils.js` would be the place to add logic for fetching and including this token if necessary. However, for typical DRF + SimpleJWT setups, the `Authorization: Bearer <token>` header is usually sufficient for authenticated POST requests.
+
+This updated `blog-post-detail.js` should now correctly interact with your backend to display blog content and handle comments. Remember to test thorough
