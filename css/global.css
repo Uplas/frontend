@@ -51,11 +51,11 @@ h1, h2, h3, h4, h5, h6 {
     color: var(--current-text-color);
     margin-bottom: var(--spacing-md);
 }
-h1 { font-size: var(--font-size-hero, clamp(2.2rem, 5vw, 3.3rem)); font-weight: var(--font-weight-bold); } /* */
-h2 { font-size: var(--font-size-xxl, 2rem); } /* */
-h3 { font-size: var(--font-size-xl, 1.5rem); } /* */
-h4 { font-size: var(--font-size-lg, 1.125rem); } /* */
-p { margin-bottom: var(--spacing-md); } /* */
+h1 { font-size: var(--font-size-hero, clamp(2.2rem, 5vw, 3.3rem)); font-weight: var(--font-weight-bold); }
+h2 { font-size: var(--font-size-xxl, 2rem); }
+h3 { font-size: var(--font-size-xl, 1.5rem); }
+h4 { font-size: var(--font-size-lg, 1.125rem); }
+p { margin-bottom: var(--spacing-md); }
 a {
     color: var(--current-link-color);
     text-decoration: none;
@@ -72,25 +72,25 @@ li { margin-bottom: var(--spacing-xs); }
 /* --- Layout & Utilities --- */
 .container {
     width: 100%;
-    max-width: var(--container-max-width, 1200px); /* */
+    max-width: var(--container-max-width, 1200px);
     margin-left: auto;
     margin-right: auto;
-    padding-left: var(--container-padding-x, var(--spacing-lg)); /* Use spacing var */
+    padding-left: var(--container-padding-x, var(--spacing-lg));
     padding-right: var(--container-padding-x, var(--spacing-lg));
 }
-.sr-only { /* */
+.sr-only {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
     overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
 }
-.section-title { /* */
+.section-title {
     font-size: var(--font-size-xxl);
     font-weight: var(--font-weight-bold);
     margin-bottom: var(--spacing-lg);
     color: var(--current-text-color);
     text-align: center;
 }
-.section-title--left-align { text-align: left; } /* */
-.section-subtitle { /* */
+.section-title--left-align { text-align: left; }
+.section-subtitle {
     font-size: var(--font-size-lg);
     color: var(--current-text-color-secondary);
     max-width: 750px;
@@ -99,16 +99,16 @@ li { margin-bottom: var(--spacing-xs); }
     line-height: 1.7;
 }
 
-/* --- Focus Visible --- (From your global (1).css) */
-*:focus:not(:focus-visible) { outline: none; } /* */
+/* --- Focus Visible --- */
+*:focus:not(:focus-visible) { outline: none; }
 *:focus-visible {
-    outline: var(--border-width-bold) solid var(--color-accent, orange); /* */
-    outline-offset: 2px; /* */
-    box-shadow: 0 0 0 3px var(--color-accent-light, rgba(244, 162, 97, 0.35)); /* */
-    border-radius: var(--border-radius-sm); /* */
+    outline: var(--border-width-bold) solid var(--color-accent, orange);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px var(--color-accent-light, rgba(244, 162, 97, 0.35));
+    border-radius: var(--border-radius-sm);
 }
 
-/* --- Buttons --- (From your global (1).css) */
+/* --- Buttons --- */
 .button {
     display: inline-flex; align-items: center; justify-content: center;
     gap: var(--spacing-xs); padding: var(--spacing-sm) var(--spacing-lg);
@@ -140,20 +140,19 @@ li { margin-bottom: var(--spacing-xs); }
     color: var(--current-button-secondary-hover-text, var(--color-white));
     border-color: var(--current-button-secondary-hover-bg, var(--color-secondary));
 }
-/* ... other button variants ... */
 .button--theme {
-    background: none; border: none; padding: var(--spacing-xs); font-size: 1.3rem; 
+    background: none; border: none; padding: var(--spacing-xs); font-size: 1.3rem;
     display: inline-flex; align-items: center; justify-content: center;
     width: 36px; height: 36px;
     color: var(--current-text-color-secondary);
 }
 .button--theme:hover { transform: none; box-shadow: none; color: var(--color-primary); }
-.theme-icon--dark { display: inline-block; } /* Default for light mode */
-.theme-icon--light { display: none; }       /* Hidden in light mode */
+.theme-icon--dark { display: inline-block; }
+.theme-icon--light { display: none; }
 .dark-mode .theme-icon--dark { display: none !important; }
 .dark-mode .theme-icon--light { display: inline-block !important; }
 
-/* --- Forms --- (From your global (1).css) */
+/* --- Forms --- */
 .form__group { margin-bottom: var(--spacing-lg); position: relative; }
 .form__label {
     display: block; font-weight: var(--font-weight-medium);
@@ -192,43 +191,74 @@ li { margin-bottom: var(--spacing-xs); }
 .form__status--success { background-color: var(--color-success-light); color: var(--color-success); border: 1px solid var(--color-success); }
 .form__status--error { background-color: var(--color-error-light); color: var(--color-error); border: 1px solid var(--color-error); }
 .form__status--loading { background-color: var(--color-info-light); color: var(--color-primary-dark); border: 1px solid var(--color-primary); }
+.form__row { /* For multiple form groups in a row */
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+.form__row .form__group {
+    flex: 1 1 auto; /* Allow groups to grow and shrink */
+    min-width: 200px; /* Minimum width before stacking */
+}
 
-
-/* --- Header Styling (Crucial for Horizontal Layout) --- */
-.header { /* This class is on the main <header> tag that wraps the loaded component */
+/* --- Header Styling --- */
+.header {
     background-color: var(--current-header-bg);
-    height: var(--header-height, 70px); /* Ensure --header-height is defined in variables.css */
+    height: var(--header-height, 70px);
     box-shadow: var(--box-shadow-sm);
     border-bottom: var(--border-width) solid var(--current-border-color-light);
-    position: fixed; /* Fixed header */
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: var(--z-index-header);
+    z-index: 1000; /* var(--z-index-header) if defined elsewhere */
     transition: background-color var(--transition-base), border-color var(--transition-base);
-    padding: 0; /* Container inside will handle padding */
+    padding: 0;
 }
 
-.header__container { /* This class is inside components/header.html */
-    display: flex; /* KEY FOR HORIZONTAL LAYOUT */
-    justify-content: space-between; /* Distributes space */
-    align-items: center; /* Vertically aligns items */
-    height: 100%; /* Make container fill header height */
-    gap: var(--spacing-md); /* Optional gap between direct children (logo, nav, actions) */
+.header__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    gap: var(--spacing-md);
 }
 
-.logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
-.logo__img { height: calc(var(--header-height) - var(--spacing-lg)); max-height: 40px; width: auto; margin-right: var(--spacing-xs); }
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    flex-shrink: 0;
+    gap: var(--spacing-xxs);
+}
 
-.nav { flex-grow: 1; display: flex; justify-content: flex-start; /* or center if preferred */ } /* Allows nav to take available space */
-.nav__list { list-style: none; display: flex; align-items: center; padding: 0; margin: 0; gap: var(--spacing-sm); } /* Horizontal nav items */
-.nav__item {}
+.logo__img {
+    height: calc(var(--header-height) - var(--spacing-md));
+    max-height: 45px;
+    min-height: 35px;
+    width: auto;
+}
+
+.logo__text {
+    font-family: var(--font-primary);
+    font-size: clamp(1.5rem, 2.5vw, 1.8rem);
+    font-weight: var(--font-weight-semibold);
+    color: var(--current-text-color);
+    line-height: 1;
+}
+
+.dark-mode .logo__text {
+    color: var(--color-primary-light);
+}
+
+
+.nav { flex-grow: 1; display: flex; justify-content: flex-start; }
+.nav__list { list-style: none; display: flex; align-items: center; padding: 0; margin: 0; gap: var(--spacing-sm); }
 .nav__link {
     font-weight: var(--font-weight-medium); color: var(--current-text-color);
     padding: var(--spacing-xs) var(--spacing-md); position: relative;
     font-size: var(--font-size-sm); border-radius: var(--border-radius-sm);
 }
-/* ... (nav link hover/active styles from your global (1).css are good) ... */
 .nav__link:not(.nav__link--cta)::after {
     content: ''; position: absolute; bottom: 0;
     left: 50%; transform: translateX(-50%);
@@ -258,14 +288,14 @@ li { margin-bottom: var(--spacing-xs); }
 .header-select {
     background-color: var(--current-input-bg); color: var(--current-text-color);
     border: 1px solid var(--current-border-color); border-radius: var(--border-radius-md);
-    padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-xs) calc(var(--spacing-sm) + 20px); /* Space for icon */
+    padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-xs) calc(var(--spacing-sm) + 20px);
     font-size: var(--font-size-xs); font-weight: var(--font-weight-medium);
     appearance: none; -webkit-appearance: none; -moz-appearance: none;
     cursor: pointer; min-width: 80px; height: 32px; line-height: 1;
 }
 .header-select:hover { border-color: var(--color-primary); }
 
-.user-profile-placeholder-header { display: none; align-items: center; /* JS shows this */ }
+.user-profile-placeholder-header { display: none; align-items: center; }
 .user-avatar-button-header {
     width: 36px; height: 36px; border-radius: 50%;
     background-color: var(--color-primary-light); color: var(--color-secondary-dark);
@@ -274,33 +304,31 @@ li { margin-bottom: var(--spacing-xs); }
     border: 1px solid var(--color-primary);
 }
 
-.nav__toggle { /* Burger Icon for Mobile */
-    display: none; /* Shown by media query */
+.nav__toggle {
+    display: none;
     background: none; border: none; color: var(--current-text-color);
     font-size: 1.6rem; cursor: pointer; padding: var(--spacing-xs);
-    z-index: 1051; /* Above mobile nav dropdown */
+    z-index: 1051;
 }
 .nav__toggle:hover { color: var(--current-link-hover-color); }
 
 
-/* --- Footer Styling (Crucial for Layout) --- */
-.main-content { flex-grow: 1; } /* Allows footer to stick to bottom if content is short */
+/* --- Footer Styling --- */
+.main-content { flex-grow: 1; }
 
-.footer { /* This class is on the main <footer> tag */
+.footer {
     background-color: var(--current-footer-bg);
     color: var(--current-footer-text-color);
     padding: var(--spacing-xxl) 0 var(--spacing-lg) 0;
-    /* margin-top: auto; -- This is handled by body flex for sticky footer */
     border-top: 1px solid var(--current-border-color);
 }
 
-.footer__container { /* This class is inside components/footer.html */
-    display: grid; /* KEY FOR COLUMN LAYOUT */
-    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); /* Responsive columns */
+.footer__container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
     gap: var(--spacing-xl);
-    text-align: left; /* Default for sections */
+    text-align: left;
 }
-.footer__section {}
 .footer__heading {
     font-size: 1.1rem; font-weight: var(--font-weight-semibold);
     margin-bottom: var(--spacing-md); color: var(--color-white);
@@ -338,15 +366,19 @@ li { margin-bottom: var(--spacing-xs); }
 .footer__copyright { font-size: 0.85rem; opacity: 0.8; margin: 0; }
 
 
-/* --- Mobile Navigation Styles (Responsive Overrides) --- */
-@media (max-width: 991px) { /* Adjust this breakpoint based on your design */
-    .header__container {
-        /* Allow space for burger menu if other items are hidden */
+/* --- Mobile Navigation Styles --- */
+@media (max-width: 991px) {
+    .logo__img {
+        max-height: 40px;
+        min-height: 30px;
     }
-    .nav { /* Main navigation menu, ID #main-navigation */
-        display: none; 
+    .logo__text {
+        font-size: clamp(1.3rem, 2.2vw, 1.6rem);
+    }
+    .nav {
+        display: none;
         position: absolute;
-        top: var(--header-height, 70px); /* Position below header */
+        top: var(--header-height, 70px);
         left: 0;
         width: 100%;
         background-color: var(--current-header-bg);
@@ -355,7 +387,7 @@ li { margin-bottom: var(--spacing-xs); }
         padding: var(--spacing-md) 0;
         border-top: var(--border-width) solid var(--current-border-color-light);
     }
-    .nav.nav--active { /* Class toggled by JS */
+    .nav.nav--active {
         display: flex;
         animation: slideDownNav 0.3s ease-out forwards;
     }
@@ -372,39 +404,37 @@ li { margin-bottom: var(--spacing-xs); }
         border-radius: 0;
     }
     .nav__list li:last-child .nav__link { border-bottom: none; }
-    .nav__link:not(.nav__link--cta)::after { display: none; } /* No underline effect on mobile */
+    .nav__link:not(.nav__link--cta)::after { display: none; }
     .nav__link--cta { margin: var(--spacing-sm) var(--spacing-lg); text-align: center; }
 
-    .nav__toggle { display: flex; } /* Show burger icon */
+    .nav__toggle { display: flex; }
 
-    .header-actions .language-currency-selectors { display: none; /* Hide in header on mobile by default */ }
-    /* If language/currency selectors are moved into mobile nav, they would be styled there */
+    .header-actions .language-currency-selectors { display: none; }
 
-    /* Footer adjustments for mobile */
     .footer__container { text-align: center; gap: var(--spacing-lg); }
     .footer__section { margin-bottom: var(--spacing-lg); }
     .footer__list { display: inline-block; text-align: left; }
     .social-media { justify-content: center; }
 }
 
-/* Modal styles (from your global (1).css) */
+/* Modal styles */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0,0,0,0.6);
     display: flex; align-items: center; justify-content: center;
-    z-index: var(--z-index-modal-backdrop, 1040);
+    z-index: 1040; /* var(--z-index-modal-backdrop) if defined */
     opacity: 0; visibility: hidden;
-    transition: opacity var(--transition-medium), visibility var(--transition-medium) 0s var(--transition-medium);
+    transition: opacity 0.3s ease-out, visibility 0.3s ease-out; /* var(--transition-medium) */
 }
-.modal-overlay[hidden] { display: none !important; } /* Ensure really hidden if JS sets it */
-.modal-overlay.active { opacity: 1; visibility: visible; transition-delay: 0s; }
+.modal-overlay[hidden] { display: none !important; }
+.modal-overlay.active { opacity: 1; visibility: visible; }
 
 .modal__content {
     background-color: var(--current-card-bg);
     padding: var(--spacing-xl); border-radius: var(--border-radius-lg);
     box-shadow: var(--box-shadow-xl); max-width: 90vw; width: 600px;
     max-height: 90vh; overflow-y: auto; position: relative;
-    transform: scale(0.95); transition: transform var(--transition-medium);
+    transform: scale(0.95); transition: transform 0.3s ease-out; /* var(--transition-medium) */
 }
 .modal-overlay.active .modal__content { transform: scale(1); }
 
@@ -415,3 +445,59 @@ li { margin-bottom: var(--spacing-xs); }
 }
 .modal__close-button:hover { color: var(--color-error); }
 .modal__title { font-size: var(--font-size-xl); margin-bottom: var(--spacing-lg); color: var(--current-text-color); }
+
+/* Styles for the unified card payment form specifically in modals */
+.payment-modal__content .payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.payment-modal__content .input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.payment-modal__content .input-with-icon .form__input {
+    padding-right: 40px; /* Space for the card type icon */
+}
+
+.payment-modal__content .card-type-icon {
+    position: absolute;
+    right: var(--spacing-sm);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+.payment-modal__content .card-type-icon.active {
+    opacity: 1;
+}
+
+/* Example card type icons - replace with actual SVG paths or Font Awesome classes */
+.payment-modal__content .card-type-icon.visa { background-image: url('../images/payment_icons/visa_icon.svg'); }
+.payment-modal__content .card-type-icon.mastercard { background-image: url('../images/payment_icons/mastercard_icon.svg'); }
+.payment-modal__content .card-type-icon.amex { background-image: url('../images/payment_icons/amex_icon.svg'); }
+.payment-modal__content .card-type-icon.discover { background-image: url('../images/payment_icons/discover_icon.svg'); }
+.payment-modal__content .card-type-icon.diners { background-image: url('../images/payment_icons/diners_icon.svg'); }
+.payment-modal__content .card-type-icon.jcb { background-image: url('../images/payment_icons/jcb_icon.svg'); }
+.payment-modal__content .card-type-icon.unknown { /* No icon, or a generic one */ }
+
+.payment-modal__content .form__row {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+.payment-modal__content .form__row .form__group {
+    flex: 1;
+}
+
+.payment-modal__action-area {
+    margin-top: var(--spacing-lg);
+}
