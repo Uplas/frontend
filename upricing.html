@@ -79,11 +79,11 @@
                             <li data-translate-key="upricing_feature_platform_masterclass"><i class="fas fa-check"></i> Exclusive Video Masterclasses</li>
                             <li data-translate-key="upricing_feature_platform_priority_support"><i class="fas fa-check"></i> Priority Support</li>
                         </ul>
-                        <button class="button button--primary pricing-card__cta select-plan-btn" 
-                                data-plan-id="full_platform_monthly" 
-                                data-name="Full Platform Access (Monthly)" 
-                                data-price-usd="25.00" 
-                                data-billing-cycle="Monthly" 
+                        <button class="button button--primary pricing-card__cta select-plan-btn"
+                                data-plan-id="full_platform_monthly"
+                                data-name="Full Platform Access (Monthly)"
+                                data-price-usd="25.00"
+                                data-billing-cycle="Monthly"
                                 data-translate-key="upricing_cta_get_monthly_access">Get Monthly Access</button>
                     </div>
 
@@ -100,11 +100,11 @@
                             <li data-translate-key="upricing_feature_platform_masterclass"><i class="fas fa-check"></i> Exclusive Video Masterclasses</li>
                             <li data-translate-key="upricing_feature_platform_priority_support"><i class="fas fa-check"></i> Priority Support</li>
                         </ul>
-                        <button class="button button--primary pricing-card__cta select-plan-btn" 
-                                data-plan-id="full_platform_quarterly" 
-                                data-name="Full Platform Access (Quarterly)" 
-                                data-price-usd="70.00" 
-                                data-billing-cycle="Quarterly" 
+                        <button class="button button--primary pricing-card__cta select-plan-btn"
+                                data-plan-id="full_platform_quarterly"
+                                data-name="Full Platform Access (Quarterly)"
+                                data-price-usd="70.00"
+                                data-billing-cycle="Quarterly"
                                 data-translate-key="upricing_cta_get_quarterly_access">Get Quarterly Access</button>
                     </div>
 
@@ -122,11 +122,11 @@
                             <li data-translate-key="upricing_feature_platform_masterclass"><i class="fas fa-check"></i> Exclusive Video Masterclasses</li>
                             <li data-translate-key="upricing_feature_platform_priority_support"><i class="fas fa-check"></i> Priority Support</li>
                         </ul>
-                        <button class="button button--primary pricing-card__cta select-plan-btn" 
-                                data-plan-id="full_platform_yearly" 
-                                data-name="Full Platform Access (Yearly)" 
-                                data-price-usd="200.00" 
-                                data-billing-cycle="Yearly" 
+                        <button class="button button--primary pricing-card__cta select-plan-btn"
+                                data-plan-id="full_platform_yearly"
+                                data-name="Full Platform Access (Yearly)"
+                                data-price-usd="200.00"
+                                data-billing-cycle="Yearly"
                                 data-translate-key="upricing_cta_get_full_access">Get Full Access</button>
                     </div>
 
@@ -142,11 +142,11 @@
                             <li data-translate-key="upricing_feature_community_groups"><i class="fas fa-check"></i> Industry-specific groups</li>
                             <li data-translate-key="upricing_feature_community_networking"><i class="fas fa-check"></i> Networking opportunities</li>
                         </ul>
-                        <button class="button button--primary pricing-card__cta select-plan-btn" 
-                                data-plan-id="community_monthly" 
-                                data-name="Community Access (Monthly)" 
-                                data-price-usd="3.99" 
-                                data-billing-cycle="Monthly" 
+                        <button class="button button--primary pricing-card__cta select-plan-btn"
+                                data-plan-id="community_monthly"
+                                data-name="Community Access (Monthly)"
+                                data-price-usd="3.99"
+                                data-billing-cycle="Monthly"
                                 data-translate-key="upricing_cta_join_community">Join Community</button>
                     </div>
                 </div>
@@ -173,7 +173,7 @@
                     <details class="faq-item">
                         <summary class="faq-item__question" data-translate-key="upricing_faq1_q">What payment methods do you accept?</summary>
                         <div class="faq-item__answer">
-                            <p data-translate-key="upricing_faq1_a">We accept major credit/debit cards (via Stripe and Flutterwave), PayPal, M-Pesa for users in supported regions, and direct bank transfers for larger plans or enterprise solutions.</p>
+                            <p data-translate-key="upricing_faq1_a_updated">We accept major credit/debit cards (Visa, Mastercard, American Express, etc.) processed securely. We also support PayPal for selected regions, and direct bank transfers for larger plans or enterprise solutions.</p>
                         </div>
                     </details>
                     <details class="faq-item">
@@ -247,63 +247,69 @@
                 <button class="modal__close-button" id="payment-modal-close-btn" aria-label="Close payment dialog" title="Close">
                     <i class="fas fa-times" aria-hidden="true"></i>
                 </button>
-                <h2 id="payment-modal-main-title-h2" class="payment-modal__main-title" data-translate-key="payment_modal_title">Complete Your Secure Enrollment</h2>
+                <h2 id="payment-modal-main-title-h2" class="payment-modal__main-title" data-translate-key="payment_modal_title_card">Complete Your Secure Payment</h2>
                 <div class="payment-modal__summary">
                     <h3 class="payment-modal__summary-title" data-translate-key="payment_modal_summary_title">Your Order</h3>
                     <div class="payment-modal__summary-item">
                         <span class="payment-modal__summary-label" data-translate-key="payment_modal_summary_item">Item:</span>
-                        <span class="payment-modal__summary-value" id="summary-plan-name-span"></span>
+                        <span class="payment-modal__summary-value" id="summary-plan-name-span">Selected Plan Name</span>
                     </div>
                     <div class="payment-modal__summary-item" id="summary-billing-cycle-div" hidden>
                         <span class="payment-modal__summary-label" data-translate-key="payment_modal_summary_renews">Renews:</span>
-                        <span class="payment-modal__summary-value" id="summary-billing-cycle-span"></span>
+                        <span class="payment-modal__summary-value" id="summary-billing-cycle-span">Billing Cycle</span>
                     </div>
                     <div class="payment-modal__summary-item payment-modal__summary-item--total">
                         <span class="payment-modal__summary-label" data-translate-key="payment_modal_summary_amount_due">Amount Due Today:</span>
-                        <span class="payment-modal__summary-value payment-modal__summary-value--price" id="summary-plan-price-span" data-price-usd=""></span>
+                        <span class="payment-modal__summary-value payment-modal__summary-value--price" id="summary-plan-price-span" data-price-usd="0.00">$0.00</span>
                     </div>
                 </div>
 
-                <div class="payment-modal__methods">
-                    <fieldset>
-                        <legend class="payment-modal__methods-title" data-translate-key="payment_modal_select_method_legend">Choose Your Payment Method</legend>
-                        <div class="payment-gateway-selector" role="tablist" aria-label="Payment Methods">
-                            <button class="payment-gateway-selector__option" id="gateway-btn-mpesa" data-gateway="mpesa" role="tab" aria-selected="false" aria-controls="gateway-panel-mpesa">
-                                <img src="images/mpesa-logo.png" alt="M-Pesa" class="payment-gateway-selector__logo"> M-Pesa
-                            </button>
-                            <button class="payment-gateway-selector__option" id="gateway-btn-stripe" data-gateway="stripe" role="tab" aria-selected="false" aria-controls="gateway-panel-stripe">
-                                <img src="images/stripe-logo.png" alt="Stripe" class="payment-gateway-selector__logo"> <span data-translate-key="payment_method_card_stripe">Card (Stripe)</span>
-                            </button>
-                            <button class="payment-gateway-selector__option" id="gateway-btn-flutterwave" data-gateway="flutterwave" role="tab" aria-selected="false" aria-controls="gateway-panel-flutterwave">
-                                <img src="images/flutterwave-logo.png" alt="Flutterwave" class="payment-gateway-selector__logo"> <span data-translate-key="payment_method_card_flutterwave">Card & More (Flutterwave)</span>
-                            </button>
-                            <button class="payment-gateway-selector__option" id="gateway-btn-paypal" data-gateway="paypal" role="tab" aria-selected="false" aria-controls="gateway-panel-paypal">
-                                <img src="images/paypal-logo.png" alt="PayPal" class="payment-gateway-selector__logo"> PayPal
-                            </button>
+                <div class="payment-modal__form-area">
+                    <form id="unified-card-payment-form" class="payment-form" novalidate>
+                        <div class="form__group">
+                            <label for="payment-cardholder-name" class="form__label" data-translate-key="form_label_cardholder_name">Cardholder Name</label>
+                            <input type="text" id="payment-cardholder-name" name="cardholderName" class="form__input" placeholder="e.g., Jane M. Doe" required autocomplete="cc-name">
+                            <span class="form__error-message" aria-live="polite"></span>
                         </div>
-                    </fieldset>
+                        <div class="form__group">
+                            <label for="payment-email" class="form__label" data-translate-key="form_label_email_receipt">Email for Receipt</label>
+                            <input type="email" id="payment-email" name="email" class="form__input" placeholder="you@example.com" required autocomplete="email">
+                            <span class="form__error-message" aria-live="polite"></span>
+                        </div>
 
-                    <div class="payment-modal__form-area">
-                        <div id="payment-instructions-div" class="payment-instructions" role="status" aria-live="polite" data-translate-key="payment_modal_instructions_default">
-                            Select your preferred payment method to continue.
+                        <div class="form__group">
+                            <label for="payment-card-number" class="form__label" data-translate-key="form_label_card_number">Card Number</label>
+                            <div class="input-with-icon">
+                                <input type="text" id="payment-card-number" name="cardNumber" class="form__input" placeholder="•••• •••• •••• ••••" required pattern="[\d\\s]{13,23}" inputmode="numeric" autocomplete="cc-number" title="Enter a valid card number">
+                                <span id="payment-card-type-icon" class="card-type-icon" aria-hidden="true"></span>
+                            </div>
+                            <span class="form__error-message" aria-live="polite"></span>
                         </div>
-                        
-                        <div class="payment-gateway-panel" id="gateway-panel-mpesa" data-gateway-panel="mpesa" role="tabpanel" aria-labelledby="gateway-btn-mpesa" hidden>
-                          </div>
-                        <div class="payment-gateway-panel" id="gateway-panel-stripe" data-gateway-panel="stripe" role="tabpanel" aria-labelledby="gateway-btn-stripe" hidden>
-                          </div>
-                        
+
+                        <div class="form__row">
+                            <div class="form__group">
+                                <label for="payment-expiry-date" class="form__label" data-translate-key="form_label_expiry_date">Expiry Date</label>
+                                <input type="text" id="payment-expiry-date" name="expiryDate" class="form__input" placeholder="MM / YY" required pattern="(0[1-9]|1[0-2])\s*\/\s*([0-9]{2})" inputmode="numeric" autocomplete="cc-exp" title="Enter date as MM / YY">
+                                <span class="form__error-message" aria-live="polite"></span>
+                            </div>
+                            <div class="form__group">
+                                <label for="payment-cvv" class="form__label" data-translate-key="form_label_cvv">CVV</label>
+                                <input type="text" id="payment-cvv" name="cvv" class="form__input" placeholder="•••" required pattern="\d{3,4}" inputmode="numeric" autocomplete="cc-csc" title="Enter 3 or 4 digit CVV">
+                                <span class="form__error-message" aria-live="polite"></span>
+                            </div>
+                        </div>
+
                         <div id="payment-form-global-status" class="form__status payment-status-message" role="alert"></div>
-                    </div>
-                </div>
 
-                <div class="payment-modal__action-area">
-                    <button id="payment-submit-button" type="button" class="button button--primary button--full-width button--large" disabled data-translate-key="payment_modal_submit_default">
-                        Select Payment Method to Continue
-                    </button>
+                        <div class="payment-modal__action-area">
+                            <button id="payment-submit-button" type="submit" class="button button--primary button--full-width button--large">
+                                <i class="fas fa-shield-alt"></i> <span data-translate-key="payment_modal_submit_pay_now">Pay Now</span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
                  <p class="payment-modal__tos-notice">
-                    <span data-translate-key="payment_modal_tos_notice_part1">By clicking "Proceed to Payment" or completing your purchase, you agree to Uplas's</span>
+                    <span data-translate-key="payment_modal_tos_notice_part1">By clicking "Pay Now", you agree to Uplas's</span>
                     <a href="terms.html" target="_blank" rel="noopener noreferrer" data-translate-key="payment_modal_tos_link">Terms of Service</a>
                     <span data-translate-key="payment_modal_tos_notice_part2">and</span>
                     <a href="privacy.html" target="_blank" rel="noopener noreferrer" data-translate-key="payment_modal_privacy_link">Privacy Policy</a>.
@@ -315,7 +321,7 @@
     <div id="site-footer-placeholder">
         </div>
 
-    <script src="js/componentLoader.js"></script> 
+    <script src="js/componentLoader.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/apiUtils.js"></script>
     <script src="js/global.js"></script>
