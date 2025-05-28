@@ -268,38 +268,22 @@
                     <form id="unified-card-payment-form" class="payment-form" novalidate>
                         <div class="form__group">
                             <label for="payment-cardholder-name" class="form__label" data-translate-key="form_label_cardholder_name">Cardholder Name</label>
-                            <input type="text" id="payment-cardholder-name" name="cardholderName" class="form__input" placeholder="e.g., Jane M. Doe" required autocomplete="cc-name">
+                            <input type="text" id="payment-cardholder-name" name="cardholderName" class="form__input" placeholder="e.g., Jane M. Doe" required autocomplete="cc-name" data-error-key-required="error_cardholder_name_required">
                             <span class="form__error-message" aria-live="polite"></span>
                         </div>
                         <div class="form__group">
                             <label for="payment-email" class="form__label" data-translate-key="form_label_email_receipt">Email for Receipt</label>
-                            <input type="email" id="payment-email" name="email" class="form__input" placeholder="you@example.com" required autocomplete="email">
+                            <input type="email" id="payment-email" name="email" class="form__input" placeholder="you@example.com" required autocomplete="email" data-error-key-required="error_email_required" data-error-key-type="error_email_invalid">
                             <span class="form__error-message" aria-live="polite"></span>
                         </div>
 
                         <div class="form__group">
-                            <label for="payment-card-number" class="form__label" data-translate-key="form_label_card_number">Card Number</label>
-                            <div class="input-with-icon">
-                                <input type="text" id="payment-card-number" name="cardNumber" class="form__input" placeholder="•••• •••• •••• ••••" required pattern="[\d\\s]{13,23}" inputmode="numeric" autocomplete="cc-number" title="Enter a valid card number">
-                                <span id="payment-card-type-icon" class="card-type-icon" aria-hidden="true"></span>
-                            </div>
-                            <span class="form__error-message" aria-live="polite"></span>
+                            <label for="stripe-card-element" class="form__label" data-translate-key="form_label_card_details">Card Details</label>
+                            <div id="stripe-card-element" class="form__input">
+                                </div>
+                            <div id="stripe-card-errors" role="alert" class="form__error-message"></div>
                         </div>
-
-                        <div class="form__row">
-                            <div class="form__group">
-                                <label for="payment-expiry-date" class="form__label" data-translate-key="form_label_expiry_date">Expiry Date</label>
-                                <input type="text" id="payment-expiry-date" name="expiryDate" class="form__input" placeholder="MM / YY" required pattern="(0[1-9]|1[0-2])\s*\/\s*([0-9]{2})" inputmode="numeric" autocomplete="cc-exp" title="Enter date as MM / YY">
-                                <span class="form__error-message" aria-live="polite"></span>
-                            </div>
-                            <div class="form__group">
-                                <label for="payment-cvv" class="form__label" data-translate-key="form_label_cvv">CVV</label>
-                                <input type="text" id="payment-cvv" name="cvv" class="form__input" placeholder="•••" required pattern="\d{3,4}" inputmode="numeric" autocomplete="cc-csc" title="Enter 3 or 4 digit CVV">
-                                <span class="form__error-message" aria-live="polite"></span>
-                            </div>
-                        </div>
-
-                        <div id="payment-form-global-status" class="form__status payment-status-message" role="alert"></div>
+                        <div id="payment-form-global-status" class="form__status payment-status-message" role="alert" hidden></div>
 
                         <div class="payment-modal__action-area">
                             <button id="payment-submit-button" type="submit" class="button button--primary button--full-width button--large">
@@ -325,8 +309,7 @@
     <script src="js/i18n.js"></script>
     <script src="js/apiUtils.js"></script>
     <script src="js/global.js"></script>
-    <script src="js/upricing.js"></script>
-    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://js.stripe.com/v3/"></script> <script src="js/upricing.js"></script>
 
 </body>
 </html>
