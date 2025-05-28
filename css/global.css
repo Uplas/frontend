@@ -191,21 +191,20 @@ li { margin-bottom: var(--spacing-xs); }
 .form__status--success { background-color: var(--color-success-light); color: var(--color-success); border: 1px solid var(--color-success); }
 .form__status--error { background-color: var(--color-error-light); color: var(--color-error); border: 1px solid var(--color-error); }
 .form__status--loading { background-color: var(--color-info-light); color: var(--color-primary-dark); border: 1px solid var(--color-primary); }
-.form__row { /* For multiple form groups in a row */
+.form__row {
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-md);
 }
 .form__row .form__group {
-    flex: 1 1 auto; /* Allow groups to grow and shrink */
-    min-width: calc(50% - (var(--spacing-md) / 2)); /* Ensure two items fit nicely with gap */
+    flex: 1 1 auto;
+    min-width: calc(50% - (var(--spacing-md) / 2));
 }
-@media (max-width: 576px) { /* Stack on small screens */
+@media (max-width: 576px) {
     .form__row .form__group {
         min-width: 100%;
     }
 }
-
 
 /* --- Header Styling --- */
 .header {
@@ -239,22 +238,22 @@ li { margin-bottom: var(--spacing-xs); }
 }
 
 .logo__img {
-    height: calc(var(--header-height) - var(--spacing-md)); /* Adjusted for a larger logo */
-    max-height: 45px; /* Increased max-height */
-    min-height: 35px; /* Ensure it doesn't get too small */
+    height: calc(var(--header-height) - var(--spacing-md));
+    max-height: 45px;
+    min-height: 35px;
     width: auto;
 }
 
 .logo__text {
-    font-family: var(--font-primary); /* Poppins */
-    font-size: clamp(1.5rem, 2.5vw, 1.8rem); /* Responsive font size */
+    font-family: var(--font-primary);
+    font-size: clamp(1.5rem, 2.5vw, 1.8rem);
     font-weight: var(--font-weight-semibold);
     color: var(--current-text-color);
-    line-height: 1; /* Ensure vertical alignment */
+    line-height: 1;
 }
 
 .dark-mode .logo__text {
-    color: var(--color-primary-light); /* Ensure visibility in dark mode */
+    color: var(--color-primary-light);
 }
 
 
@@ -487,14 +486,13 @@ li { margin-bottom: var(--spacing-xs); }
 }
 
 /* Card type icons (ensure paths are correct relative to CSS file or use absolute paths) */
+/* Make sure you have these SVGs in ../images/payment_icons/ or update paths */
 .payment-modal__content .card-type-icon.visa { background-image: url('../images/payment_icons/visa_icon.svg'); }
 .payment-modal__content .card-type-icon.mastercard { background-image: url('../images/payment_icons/mastercard_icon.svg'); }
 .payment-modal__content .card-type-icon.amex { background-image: url('../images/payment_icons/amex_icon.svg'); }
 .payment-modal__content .card-type-icon.discover { background-image: url('../images/payment_icons/discover_icon.svg'); }
 .payment-modal__content .card-type-icon.diners { background-image: url('../images/payment_icons/diners_icon.svg'); }
 .payment-modal__content .card-type-icon.jcb { background-image: url('../images/payment_icons/jcb_icon.svg'); }
-/* .payment-modal__content .card-type-icon.unknown { no specific icon, or a generic one } */
-
 
 .payment-modal__content .form__row {
     display: flex;
@@ -509,18 +507,21 @@ li { margin-bottom: var(--spacing-xs); }
     margin-top: var(--spacing-lg);
 }
 
-/* Stripe Card Element Styling */
+/* Stripe Card Element Styling Placeholder */
+/* This div will be styled by Stripe Elements, but you can provide a base style */
 #stripe-card-element {
-    padding: var(--spacing-sm) var(--spacing-md); /* Match other .form__input */
+    padding: var(--spacing-sm); /* Match other .form__input padding if possible */
     border: var(--border-width) solid var(--current-input-border-color);
     border-radius: var(--border-radius-md);
     background-color: var(--current-input-bg);
-    /* Height is usually controlled by Stripe's own styling based on font-size */
+    /* Height is usually controlled by Stripe's own styling based on font-size of the Element */
 }
+/* You can style the focus state if Stripe Element allows it via its options or classes */
 #stripe-card-element.StripeElement--focus {
     border-color: var(--color-primary);
     box-shadow: var(--box-shadow-focus);
 }
 #stripe-card-errors { /* This is a .form__error-message */
     min-height: 1.2em; /* Ensure space even if empty initially */
+    /* Error styling comes from .form__error-message */
 }
