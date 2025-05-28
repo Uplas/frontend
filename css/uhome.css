@@ -114,7 +114,7 @@
     box-shadow: var(--box-shadow-md);
 }
 .benefit-item__icon {
-    width: 70px; /* Adjusted size */
+    width: 70px; 
     height: 70px;
     border-radius: 50%;
     margin: 0 auto var(--spacing-md) auto;
@@ -123,7 +123,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem; /* If using Font Awesome icons directly */
+    font-size: 2rem; 
     color: var(--color-primary);
     border: 2px solid var(--color-primary-light);
 }
@@ -243,7 +243,7 @@
     box-shadow: var(--box-shadow-sm);
 }
 .dark-mode .auth-toggle-button.active {
-    color: var(--color-text-dark);
+    color: var(--color-black); 
 }
 
 .form-wrapper {
@@ -253,13 +253,21 @@
     box-shadow: var(--box-shadow-md);
     border: 1px solid var(--current-border-color);
 }
-.form { display: none; }
-.form.form--active { display: block; animation: fadeInForm 0.5s ease-out; }
+
+/* Styles specific to forms within the .auth-section */
+.auth-section .form {
+    display: none; /* Hide forms in .auth-section by default */
+}
+.auth-section .form.form--active { /* Show only the active form in .auth-section */
+    display: block;
+    animation: fadeInForm 0.5s ease-out;
+}
+
 @keyframes fadeInForm {
     from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
 }
-.form__title {
+.form__title { /* This is a general .form__title, used by both signup/login and contact */
     text-align: center;
     margin-bottom: var(--spacing-lg);
     font-size: var(--font-size-xl);
@@ -267,13 +275,14 @@
 }
 .dark-mode .form__title { color: var(--color-primary-light); }
 
-.form-step { display: none; }
-.form-step.form-step--active { display: block; animation: fadeInStep 0.4s ease-out forwards; }
+/* Styles for multi-step form within .auth-section */
+.auth-section .form-step { display: none; }
+.auth-section .form-step.form-step--active { display: block; animation: fadeInStep 0.4s ease-out forwards; }
 @keyframes fadeInStep {
     from { opacity: 0; transform: translateX(20px); }
     to { opacity: 1; transform: translateX(0); }
 }
-.form-step:not(.form-step--active) { animation: fadeOutStep 0.3s ease-out forwards; }
+.auth-section .form-step:not(.form-step--active) { animation: fadeOutStep 0.3s ease-out forwards; }
 @keyframes fadeOutStep {
     from { opacity: 1; transform: translateX(0); }
     to { opacity: 0; transform: translateX(-20px); display:none; }
@@ -321,8 +330,7 @@
 .form__button-group .form__button { flex: 1; }
 .form__button--prev i { margin-right: var(--spacing-xs); }
 .form__button--next i { margin-left: var(--spacing-xs); }
-/* .form__status styles are in global.css */
-/* .form__link styles are in global.css */
+
 .form__group--subtle-text { text-align: right; margin-top: var(--spacing-sm); }
 
 
@@ -378,18 +386,15 @@
 .faq-item__answer li { margin-bottom: var(--spacing-xs); }
 
 
-/* --- Footer Styles --- */
-/* Footer styles inherited from global.css */
-
 /* --- Responsive Adjustments specific to uhome.css --- */
 @media (max-width: 767px) {
     .benefits-grid { grid-template-columns: 1fr; }
     #course-description-image-section .feature-highlight__container {
-        flex-direction: column-reverse; /* Stack image above text on mobile */
+        flex-direction: column-reverse;
     }
     .auth-toggle-buttons { flex-direction: column; border-radius: var(--border-radius-md); }
     .auth-toggle-button { border-radius: var(--border-radius-md); }
     .auth-toggle-button:not(:last-child) { margin-bottom: var(--spacing-xs); }
-    .form__button-group { flex-direction: column-reverse; } /* Stack buttons, primary on bottom */
+    .form__button-group { flex-direction: column-reverse; }
     .form__button-group .form__button:not(:last-child) { margin-bottom: var(--spacing-sm); }
 }
