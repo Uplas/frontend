@@ -9,7 +9,7 @@
 /* --- Pricing Hero Section --- */
 .pricing-hero-section {
     padding: var(--spacing-xxl) 0;
-    background-color: var(--current-header-bg); /* Use header bg for a clean look, or a subtle gradient */
+    background-color: var(--current-header-bg);
     text-align: center;
     border-bottom: 1px solid var(--current-border-color-light);
 }
@@ -46,7 +46,7 @@
     box-shadow: var(--box-shadow-md);
     text-align: center;
     transition: transform var(--transition-base), box-shadow var(--transition-base);
-    border: 2px solid transparent; /* For featured state */
+    border: 2px solid transparent;
     display: flex;
     flex-direction: column;
 }
@@ -57,15 +57,15 @@
 
 .pricing-card--featured {
     border-color: var(--color-primary);
-    box-shadow: var(--box-shadow-lg); /* More prominent shadow */
-    transform: scale(1.03); /* Slightly larger */
+    box-shadow: var(--box-shadow-lg);
+    transform: scale(1.03);
     position: relative;
 }
 .pricing-card--featured:hover { transform: scale(1.05) translateY(-5px); }
 
 .pricing-card__badge {
     position: absolute;
-    top: -15px; /* Adjust to sit nicely above the card */
+    top: -15px;
     left: 50%;
     transform: translateX(-50%);
     background-color: var(--color-accent);
@@ -94,11 +94,11 @@
     margin-bottom: var(--spacing-md);
     line-height: 1.1;
 }
-.pricing-card__price .price-value { /* This span will be updated by JS for currency */
+.pricing-card__price .price-value {
     font-size: clamp(2rem, 8vw, 3rem);
     font-weight: var(--font-weight-bold);
     color: var(--color-primary);
-    display: block; /* Or inline-block if preferred */
+    display: block;
 }
 .dark-mode .pricing-card__price .price-value { color: var(--color-primary-light); }
 .pricing-card__price .price-term {
@@ -119,19 +119,19 @@
     padding: 0;
     margin-bottom: var(--spacing-lg);
     text-align: left;
-    flex-grow: 1; /* Pushes CTA to bottom */
+    flex-grow: 1;
 }
 .pricing-card__features li {
     font-size: var(--font-size-sm);
     color: var(--current-text-color);
     margin-bottom: var(--spacing-sm);
     display: flex;
-    align-items: flex-start; /* Align icon with first line of text */
+    align-items: flex-start;
     gap: var(--spacing-sm);
 }
 .pricing-card__features li i.fa-check {
     color: var(--color-success);
-    margin-top: 0.2em; /* Align with text */
+    margin-top: 0.2em;
     flex-shrink: 0;
 }
 .pricing-card__features li i.fa-times {
@@ -142,12 +142,11 @@
 .pricing-card__features li.feature--unavailable {
     color: var(--current-text-color-secondary);
     opacity: 0.7;
-    /* text-decoration: line-through; */ /* Optional */
 }
 
-.pricing-card__cta { /* Uses .button */
+.pricing-card__cta {
     width: 100%;
-    margin-top: auto; /* Pushes to bottom if features list doesn't fill space */
+    margin-top: auto;
 }
 
 /* --- Enterprise Plan Section --- */
@@ -171,7 +170,7 @@
     text-align: center;
 }
 .enterprise-plan__text-content .section-title {
-    color: var(--color-white); /* Override global for dark bg */
+    color: var(--color-white);
     border-bottom-color: var(--color-primary-light);
 }
 .dark-mode .enterprise-plan__text-content .section-title {
@@ -204,7 +203,7 @@
     }
     .enterprise-plan__text-content { text-align: left; }
     .enterprise-plan__text-content .section-title { text-align: left; display: inline-block; }
-    .enterprise-plan__image-container { order: 1; /* Image on right */ }
+    .enterprise-plan__image-container { order: 1; }
 }
 
 
@@ -243,7 +242,8 @@
 }
 
 /* --- Payment Modal --- */
-/* Styles for the unified card payment form elements are now in global.css */
+/* The actual modal styles are in global.css.
+   This ensures specific summary items in upricing.html are correctly styled if needed. */
 #summary-plan-price-span {
     font-weight: var(--font-weight-bold);
     color: var(--color-primary);
