@@ -1,4 +1,3 @@
-```css
 /* css/mcourseD.css */
 /* ==========================================================================
    Uplas Course Detail Page Styles (mcourseD.css)
@@ -225,72 +224,203 @@
     border-bottom-color: var(--color-primary-light);
 }
 
-.course-tabs__panel { /* Tab panels use .course-section styling */
+.course-tabs__panel {
     animation: fadeInPanel 0.4s ease-out;
 }
 @keyframes fadeInPanel { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 .course-tabs__panel[hidden] { display: none !important; }
 
 /* --- Overview Tab Content --- */
-.learn-list { /* ... (Keep existing .learn-list styles, ensure variable usage) ... */ }
-
-/* --- Curriculum Tab Content (Accordion) --- */
-.curriculum-summary { /* ... (Keep existing styles, ensure variable usage) ... */ }
-.module-accordion .module { /* ... (Keep existing styles, ensure variable usage) ... */ }
-.module__header { /* ... */ }
-.module__toggle-button { /* ... */ }
-.module__meta { /* ... */ }
-.module__toggle-icon { /* ... */ }
-.module__content { /* ... (Ensure max-height transition is smooth) ... */ }
-.lesson { /* ... */ }
-.lesson__icon { /* ... */ }
-.lesson__title { /* ... */ }
-.lesson__type-badge { /* ... */ }
-.lesson__status { /* ... */ }
-.lesson__action-button.buy-module-btn { /* Style for unlock button */
-    /* Uses .button .button--secondary .button--extra-small */
-    margin-left: auto; /* Push to the right */
+.learn-list {
+    list-style: none;
+    padding: 0;
+    margin-top: var(--spacing-sm);
+}
+.learn-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-sm);
+    font-size: var(--font-size-md);
+    line-height: 1.7;
+    margin-bottom: var(--spacing-md);
+    color: var(--current-text-color);
+}
+.learn-list__icon {
+    color: var(--color-primary);
+    font-size: 1.1em;
+    margin-top: 0.2em; /* Align with text better */
     flex-shrink: 0;
 }
-.module-price-display { /* Span inside the unlock button */
-    /* Inherits button text color. Can be styled if needed. */
-}
+.dark-mode .learn-list__icon { color: var(--color-primary-light); }
 
-/* --- Instructors, Reviews, FAQ Tabs --- */
-/* Styles for these are generally good from user's mcourse_detail_page.css.
-   Ensure they use global variables and maintain consistency.
-   .instructor-profile-card, .review-card, .faq-item, etc.
-*/
+/* --- Curriculum Tab Content (Accordion) --- */
+.curriculum-summary {
+    background-color: var(--current-bg-color);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-sm);
+    color: var(--current-text-color-secondary);
+    border: 1px solid var(--current-border-color-light);
+}
+.dark-mode .curriculum-summary { background-color: var(--color-dark-bg-secondary); }
+
+.module-accordion .module {
+    border: 1px solid var(--current-border-color);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-md);
+    background-color: var(--current-card-bg); /* Ensure modules have card bg */
+}
+.module__header { /* Nothing specific, just a container */ }
+.module__toggle-button {
+    width: 100%;
+    background: none; border: none;
+    padding: var(--spacing-md) var(--spacing-lg);
+    text-align: left; font-size: 1.05rem; font-weight: var(--font-weight-semibold);
+    color: var(--current-text-color);
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: background-color var(--transition-short);
+}
+.module__toggle-button:hover { background-color: var(--current-bg-color); }
+.dark-mode .module__toggle-button:hover { background-color: var(--color-dark-bg-secondary); }
+.module__meta {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-regular);
+    color: var(--current-text-color-secondary);
+    margin-left: var(--spacing-md);
+}
+.badge.badge--free { /* Assuming badge styles are global or defined elsewhere */
+    background-color: var(--color-success); color: var(--color-white);
+    padding: 2px 6px; border-radius: var(--border-radius-sm); font-size: 0.7rem;
+    margin-left: var(--spacing-xs);
+}
+.module__toggle-icon i { transition: transform var(--transition-base); }
+.module__content {
+    padding: 0 var(--spacing-lg) var(--spacing-md) var(--spacing-lg);
+    border-top: 1px solid var(--current-border-color-light);
+    overflow: hidden;
+    /* max-height: 0; -- Use hidden attribute instead for accessibility */
+    /* transition: max-height 0.3s ease-out, padding 0.3s ease-out; */
+}
+.module__content[hidden] { display: none; }
+.module__content ul { list-style: none; padding: 0; margin-top: var(--spacing-sm); }
+
+.lesson {
+    display: flex; align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) 0;
+    border-bottom: 1px solid var(--current-border-color-light);
+    font-size: var(--font-size-sm);
+}
+.lesson:last-child { border-bottom: none; }
+.lesson__icon { color: var(--current-text-color-secondary); width: 18px; text-align: center; }
+.lesson__title { flex-grow: 1; color: var(--current-text-color); }
+.lesson__type-badge {
+    font-size: var(--font-size-xs);
+    background-color: var(--current-border-color-light);
+    color: var(--current-text-color-secondary);
+    padding: 2px 6px; border-radius: var(--border-radius-pill);
+}
+.lesson__status {
+    font-size: var(--font-size-xs);
+    color: var(--current-text-color-secondary);
+    display: inline-flex; align-items: center; gap: var(--spacing-xxs);
+}
+.lesson__status .fa-unlock { color: var(--color-success); }
+.lesson__status .fa-lock { color: var(--color-error); }
+.lesson__action-button.buy-module-btn {
+    margin-left: auto;
+    flex-shrink: 0;
+}
 
 /* --- Sidebar Widgets (Pricing & Meta) --- */
-.course-layout__sidebar .widget-title { /* ... (Keep existing styles) ... */ }
-.pricing-widget { /* ... */ }
-.pricing-widget__video-preview-container { /* ... */ }
-.button--play-preview { /* ... */ }
-.pricing-widget__title-overlay { /* ... */ }
-.pricing-widget__options-container { /* ... */ }
-.pricing-widget__current-price,
-.pricing-card-sidebar__price span[data-price-usd] { /* For dynamic currency */
-    font-weight: var(--font-weight-bold);
-    color: var(--color-primary);
+.course-layout__sidebar .widget-title {
+    font-size: 1.1rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--current-text-color);
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 1px solid var(--current-border-color-light);
 }
-.dark-mode .pricing-widget__current-price,
-.dark-mode .pricing-card-sidebar__price span[data-price-usd] {
-    color: var(--color-primary-light);
+.pricing-widget { padding: 0; overflow: hidden; } /* Remove default padding for image */
+.pricing-widget__video-preview-container {
+    position: relative;
+    background-color: var(--color-black);
 }
-/* ... (Keep other pricing widget styles, ensure variable usage) ... */
-.course-meta-widget { /* ... */ }
-.course-meta-list { /* ... */ }
+.pricing-widget__course-image { width: 100%; height: auto; display: block; aspect-ratio: 16/9; object-fit: cover; }
+.button--play-preview {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0,0,0,0.5); color: var(--color-white);
+    border: 2px solid var(--color-white); border-radius: 50%;
+    width: 60px; height: 60px; font-size: 1.5rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background-color var(--transition-short), transform var(--transition-short);
+}
+.button--play-preview:hover { background-color: rgba(0,0,0,0.7); transform: translate(-50%, -50%) scale(1.1); }
+.pricing-widget__title-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+    color: var(--color-white);
+    padding: var(--spacing-lg) var(--spacing-md) var(--spacing-sm) var(--spacing-md);
+    font-size: 1.1rem; font-weight: var(--font-weight-semibold); margin: 0;
+}
+
+.pricing-widget__options-container { padding: var(--spacing-lg); }
+.pricing-widget__main-option { margin-bottom: var(--spacing-md); }
+.pricing-widget__label { font-size: var(--font-size-sm); color: var(--current-text-color-secondary); margin-bottom: var(--spacing-xxs); }
+.pricing-widget__current-price {
+    font-size: 2rem; font-weight: var(--font-weight-bold);
+    color: var(--color-primary); margin-bottom: var(--spacing-sm);
+}
+.dark-mode .pricing-widget__current-price { color: var(--color-primary-light); }
+.pricing-widget__access-note { font-size: var(--font-size-xs); color: var(--current-text-color-secondary); margin-top: var(--spacing-xs); }
+.pricing-widget__or-separator {
+    text-align: center; font-size: var(--font-size-xs);
+    color: var(--current-text-color-secondary); font-weight: var(--font-weight-semibold);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin: var(--spacing-lg) 0; position: relative;
+}
+.pricing-widget__or-separator span { background-color: var(--current-card-bg); padding: 0 var(--spacing-sm); position: relative; z-index: 1; }
+.pricing-widget__or-separator::before {
+    content: ''; display: block; width: 100%; height: 1px;
+    background-color: var(--current-border-color-light);
+    position: absolute; top: 50%; left: 0; z-index: 0;
+}
+.pricing-options-sidebar { display: flex; flex-direction: column; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
+.pricing-card-sidebar { /* Button-like appearance */
+    display: block; width: 100%;
+    padding: var(--spacing-sm); border: 1px solid var(--current-border-color);
+    border-radius: var(--border-radius-md); text-align: left;
+    transition: border-color var(--transition-short), background-color var(--transition-short);
+    position: relative;
+}
+.pricing-card-sidebar:hover { border-color: var(--color-primary); background-color: var(--color-primary-ultralight); }
+.pricing-card-sidebar__title { font-weight: var(--font-weight-semibold); font-size: 0.95rem; display: block; margin-bottom: var(--spacing-xxs); }
+.pricing-card-sidebar__price { font-size: 0.9rem; color: var(--current-text-color-secondary); }
+.pricing-card-sidebar__price span[data-price-usd] { font-weight: var(--font-weight-medium); color: var(--current-text-color); }
+.badge.badge--save { /* Reusing badge style */
+    position: absolute; top: var(--spacing-sm); right: var(--spacing-sm);
+    background-color: var(--color-accent); color: var(--color-white);
+    font-size: 0.65rem;
+}
+.dark-mode .badge.badge--save { color: var(--color-text-dark); }
+
+.pricing-widget__all-plans-link { display: block; text-align: center; font-size: var(--font-size-sm); margin-bottom: var(--spacing-sm); }
+.pricing-widget__guarantee {
+    font-size: var(--font-size-xs); text-align: center;
+    color: var(--current-text-color-secondary); display: flex; align-items: center; justify-content: center; gap: var(--spacing-xs);
+}
+.pricing-widget__guarantee i { color: var(--color-success); }
+
+.course-meta-widget ul { list-style: none; padding: 0; }
+.course-meta-list li { display: flex; align-items: center; gap: var(--spacing-sm); font-size: var(--font-size-sm); }
+.course-meta__icon { color: var(--current-text-color-secondary); width: 18px; text-align: center; }
 
 /* --- Payment Modal --- */
-/* Styles for .modal-overlay, .payment-modal__content, etc. are comprehensive in user's CSS.
-   Main task is to ensure all colors, fonts, borders, shadows use the new global --current-* variables.
-   Example:
-   .payment-modal__content { background-color: var(--current-card-bg); ... }
-   .payment-gateway-selector__option { background-color: var(--current-bg-color); border-color: var(--current-border-color); ... }
-   The payment modal submit button (#payment-submit-button) uses global button styles.
-*/
-#summary-plan-price-span { /* Ensure this also uses dynamic currency styling */
+/* Styles for the unified card payment form elements are now in global.css */
+#summary-plan-price-span {
     font-weight: var(--font-weight-bold);
     color: var(--color-primary);
 }
@@ -299,14 +429,14 @@
 }
 
 
-/* --- Video Masterclass Section (New) --- */
+/* --- Video Masterclass Section --- */
 .video-masterclass-section {
     padding: var(--spacing-xxl) 0;
     background-color: var(--current-bg-color);
     border-top: 1px solid var(--current-border-color-light);
 }
 .dark-mode .video-masterclass-section {
-    background-color: var(--color-dark-bg-primary); /* Darker for contrast */
+    background-color: var(--color-dark-bg-primary);
 }
 #masterclass-section-title { text-align: center; }
 .masterclass-grid {
@@ -339,7 +469,7 @@
     position: relative;
     width: 100%;
     padding-top: 56.25%; /* 16:9 Aspect Ratio */
-    background-color: var(--current-border-color-light); /* Placeholder */
+    background-color: var(--current-border-color-light);
 }
 .masterclass-card__thumbnail {
     position: absolute;
@@ -408,5 +538,3 @@
 .masterclass-no-access-message .link {
     font-weight: var(--font-weight-semibold);
 }
-
-/* Ensure footer styles are consistent (likely from global.css) */
