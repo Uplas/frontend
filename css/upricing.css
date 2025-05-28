@@ -1,4 +1,3 @@
-```css
 /* css/upricing.css */
 /* ==========================================================================
    Uplas Pricing Page Styles (upricing.css)
@@ -210,7 +209,6 @@
 
 
 /* --- FAQ Section --- */
-/* Styles inherited from global.css or uhome.css if consistent */
 .faq-section { padding: var(--spacing-xxl) 0; }
 .faq-section .section-title { text-align: center; display: block; }
 
@@ -232,12 +230,7 @@
     box-shadow: var(--box-shadow-md);
 }
 .form__title--centered { text-align: center; }
-.contact-form-stacked .form__row { /* For stacked name/email on mobile */
-    /* Handled by global form styles, can add overrides if needed */
-}
-.contact-form__submit-btn { /* Uses .button .button--primary .button--large */
-    width: 100%;
-}
+
 @media (min-width: 768px) {
     .contact-form-stacked .form__row {
         display: flex;
@@ -250,10 +243,8 @@
 }
 
 /* --- Payment Modal --- */
-/* Payment modal styles will be primarily inherited from mcourseD.css or global modal styles.
-   Ensure all elements like #summary-plan-price-span use data-price-usd for dynamic currency.
-*/
-#summary-plan-price-span { /* Ensure it's stylable for currency */
+/* Styles for the unified card payment form elements are now in global.css */
+#summary-plan-price-span {
     font-weight: var(--font-weight-bold);
     color: var(--color-primary);
 }
@@ -264,7 +255,7 @@
 /* --- Responsive Adjustments for upricing.css --- */
 @media (max-width: 767px) {
     .pricing-cards-grid { grid-template-columns: 1fr; }
-    .pricing-card--featured { transform: scale(1); } /* No scale on mobile for featured */
+    .pricing-card--featured { transform: scale(1); }
     .pricing-card--featured:hover { transform: translateY(-5px); }
     .enterprise-plan__container {
         padding-left: var(--container-padding-x);
