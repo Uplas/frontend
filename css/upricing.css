@@ -9,7 +9,7 @@
 /* --- Pricing Hero Section --- */
 .pricing-hero-section {
     padding: var(--spacing-xxl) 0;
-    background-color: var(--current-header-bg); /* Uses a variable defined in global or variables */
+    background-color: var(--current-header-bg); 
     text-align: center;
     border-bottom: 1px solid var(--current-border-color-light);
 }
@@ -111,7 +111,7 @@
     font-size: var(--font-size-sm);
     color: var(--current-text-color-secondary);
     margin-bottom: var(--spacing-lg);
-    min-height: 4.5em; /* Approx 3 lines */
+    min-height: 4.5em; 
 }
 
 .pricing-card__features {
@@ -146,7 +146,7 @@
 
 .pricing-card__cta {
     width: 100%;
-    margin-top: auto; /* Pushes button to the bottom */
+    margin-top: auto; 
 }
 
 /* --- Enterprise Plan Section --- */
@@ -170,14 +170,14 @@
     text-align: center;
 }
 .enterprise-plan__text-content .section-title {
-    color: var(--color-white); /* Overrides global for this section */
+    color: var(--color-white); 
     border-bottom-color: var(--color-primary-light);
 }
 .dark-mode .enterprise-plan__text-content .section-title {
      color: var(--color-primary-light);
 }
 .enterprise-plan__text-content p {
-    color: var(--color-dark-text-secondary); /* Uses dark mode text color variable */
+    color: var(--color-dark-text-secondary); 
     font-size: var(--font-size-lg);
     margin-bottom: var(--spacing-lg);
 }
@@ -203,7 +203,7 @@
     }
     .enterprise-plan__text-content { text-align: left; }
     .enterprise-plan__text-content .section-title { text-align: left; display: inline-block; }
-    .enterprise-plan__image-container { order: 1; } /* Image on the right */
+    .enterprise-plan__image-container { order: 1; } 
 }
 
 
@@ -214,8 +214,12 @@
 /* --- Contact Section --- */
 .contact-section {
     padding: var(--spacing-xxl) 0;
-    background-color: var(--color-gray-100); /* Optional: for slight contrast */
+    background-color: var(--color-gray-100); /* MODIFICATION: Changed for better contrast from body */
 }
+.dark-mode .contact-section {
+    background-color: var(--color-dark-bg-primary); /* Ensure dark mode has contrast too */
+}
+
 .contact-section .section-title,
 .contact-section .section-subtitle {
     text-align: center;
@@ -223,16 +227,16 @@
 .contact-form-container {
     max-width: 700px;
     margin: var(--spacing-xl) auto 0 auto;
-    background-color: var(--current-card-bg);
+    background-color: var(--current-card-bg); /* This will be white in light mode */
     padding: var(--spacing-xl);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--box-shadow-md);
 }
 .form__title--centered { text-align: center; }
 
-/* Override to ensure the contact form is visible if a global .form { display: none; } exists */
+/* Explicitly make the contact form visible if using this as a fallback */
 #contact-section #contact-form.form {
-    display: block; /* Or 'flex' if it's a flex container; 'block' is usually fine for forms */
+    display: block; 
 }
 
 @media (min-width: 768px) {
@@ -247,8 +251,7 @@
 }
 
 /* --- Payment Modal --- */
-/* Styles for the payment modal are in global.css */
-#summary-plan-price-span { /* Ensure this specific element inside the modal is styled if needed */
+#summary-plan-price-span {
     font-weight: var(--font-weight-bold);
     color: var(--color-primary);
 }
@@ -258,11 +261,11 @@
 
 /* --- Responsive Adjustments for upricing.css --- */
 @media (max-width: 767px) {
-    .pricing-cards-grid { grid-template-columns: 1fr; } /* Stack cards on mobile */
-    .pricing-card--featured { transform: scale(1); } /* Remove scaling on mobile if it causes issues */
+    .pricing-cards-grid { grid-template-columns: 1fr; } 
+    .pricing-card--featured { transform: scale(1); } 
     .pricing-card--featured:hover { transform: translateY(-5px); }
     .enterprise-plan__container {
-        padding-left: var(--container-padding-x-mobile, var(--spacing-md)); /* Use mobile padding */
+        padding-left: var(--container-padding-x-mobile, var(--spacing-md)); 
         padding-right: var(--container-padding-x-mobile, var(--spacing-md));
     }
 }
