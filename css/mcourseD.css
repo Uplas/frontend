@@ -15,7 +15,7 @@
     position: relative;
     overflow: hidden;
 }
-.course-hero::before { /* Optional overlay for texture or depth */
+.course-hero::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -25,7 +25,7 @@
 .dark-mode .course-hero {
     background: linear-gradient(135deg, var(--color-dark-bg-primary) 0%, var(--color-secondary-dark) 100%);
 }
-.course-hero__content { /* Uses .container */
+.course-hero__content {
     position: relative;
     z-index: 1;
     display: flex;
@@ -36,7 +36,7 @@
 .course-hero__text-content { max-width: 780px; }
 .course-hero__breadcrumb {
     font-size: var(--font-size-sm);
-    color: var(--color-dark-text-secondary); /* Light text on dark hero */
+    color: var(--color-dark-text-secondary);
     margin-bottom: var(--spacing-md);
     display: block;
     opacity: 0.9;
@@ -51,7 +51,7 @@
     font-size: clamp(2.2rem, 5.5vw, 3.3rem);
     font-weight: var(--font-weight-bold);
     line-height: 1.15;
-    color: var(--color-white); /* Ensure title is white on dark hero */
+    color: var(--color-white);
     margin-bottom: var(--spacing-md);
     text-shadow: 0 2px 5px rgba(0,0,0,0.3);
 }
@@ -60,7 +60,7 @@
     font-weight: var(--font-weight-regular);
     margin-bottom: var(--spacing-lg);
     opacity: 0.95;
-    color: var(--color-dark-text-secondary); /* Light text on dark hero */
+    color: var(--color-dark-text-secondary);
     line-height: 1.65;
     max-width: 700px;
     margin-left:auto;
@@ -79,8 +79,8 @@
 .course-hero__meta span { display: inline-flex; align-items: center; }
 .course-hero__meta-icon { margin-right: var(--spacing-xs); color: var(--color-primary-light); font-size: 1em; }
 .course-hero__actions { margin-top: var(--spacing-xl); }
-.course-hero__cta { /* Uses .button .button--primary .button--large */
-    box-shadow: var(--box-shadow-lg); /* Make hero CTA prominent */
+.course-hero__cta {
+    box-shadow: var(--box-shadow-lg);
 }
 .course-hero__media-content {
     max-width: 580px;
@@ -92,13 +92,13 @@
     height: auto;
     border-radius: var(--border-radius-xl);
     box-shadow: var(--box-shadow-xl);
-    border: 4px solid var(--color-white); /* White border on dark hero */
+    border: 4px solid var(--color-white);
 }
 .dark-mode .course-hero__image {
-    border-color: var(--current-card-bg); /* Or a specific dark theme border */
+    border-color: var(--current-card-bg);
 }
 
-@media screen and (min-width: 992px) { /* Hero responsive adjustments */
+@media screen and (min-width: 992px) {
     .course-hero { text-align: left; padding: var(--spacing-xxxl) 0; }
     .course-hero__content { flex-direction: row; justify-content: space-between; align-items: center; }
     .course-hero__text-content { flex: 1 1 58%; }
@@ -107,7 +107,6 @@
     .course-hero__breadcrumb, .course-hero__subtitle { margin-left: 0; text-align: left; }
 }
 
-/* --- Main Page Layout & Sections (using global .container) --- */
 .course-layout {
     padding-top: var(--spacing-xxl);
     padding-bottom: var(--spacing-xxl);
@@ -115,30 +114,29 @@
     flex-direction: column;
     gap: var(--spacing-xl);
 }
-.course-layout__main-content { flex: 1; min-width: 0; } /* Prevent flexbox shrinking issues */
+.course-layout__main-content { flex: 1; min-width: 0; }
 .course-layout__sidebar {
     flex-shrink: 0;
-    width: 100%; /* Full width on mobile, constrained by parent .container */
+    width: 100%;
 }
 
-@media screen and (min-width: 992px) { /* Desktop layout for sidebar */
+@media screen and (min-width: 992px) {
     .course-layout { flex-direction: row; gap: var(--spacing-xxl); }
-    .course-layout__main-content { flex: 2.5; } /* Main content takes more space */
+    .course-layout__main-content { flex: 2.5; }
     .course-layout__sidebar {
         flex: 1;
-        width: 350px; /* Fixed width for sidebar on desktop */
+        width: 350px;
         max-width: 380px;
-        position: sticky; /* Sticky sidebar */
-        top: calc(var(--header-height) + var(--spacing-lg)); /* Below fixed header */
+        position: sticky;
+        top: calc(var(--header-height) + var(--spacing-lg));
         align-self: flex-start;
-        max-height: calc(100vh - var(--header-height) - var(--spacing-xl) * 2); /* Scrollable if too long */
+        max-height: calc(100vh - var(--header-height) - var(--spacing-xl) * 2);
         overflow-y: auto;
     }
     .course-layout__sidebar::-webkit-scrollbar { width: 6px; }
     .course-layout__sidebar::-webkit-scrollbar-thumb { background: var(--current-border-color); border-radius: 3px; }
 }
 
-/* --- Generic Section Styling (applied to tab panels and sidebar widgets) --- */
 .course-section {
     background-color: var(--current-card-bg);
     padding: var(--spacing-xl);
@@ -149,28 +147,28 @@
 }
 .course-layout__main-content .course-section:last-child,
 .course-layout__sidebar .course-section:last-child {
-    margin-bottom: 0; /* Remove bottom margin from last section in a column */
+    margin-bottom: 0;
 }
 
-.section-title { /* General section title style */
+.section-title {
     font-size: clamp(1.5rem, 4vw, 2rem);
     font-weight: var(--font-weight-semibold);
     color: var(--current-text-color);
     margin-bottom: var(--spacing-lg);
     padding-bottom: var(--spacing-sm);
     border-bottom: 2px solid var(--color-primary);
-    display: inline-block; /* So border only spans text width */
+    display: inline-block;
 }
 .dark-mode .section-title {
     color: var(--color-primary-light);
     border-bottom-color: var(--color-primary-light);
 }
-.section-title--sub { /* For titles within tab panels */
+.section-title--sub {
     font-size: clamp(1.3rem, 3.5vw, 1.7rem);
-    margin-top: var(--spacing-lg); /* Add space if not the first element */
+    margin-top: var(--spacing-lg);
 }
 .section-title--sub:first-child { margin-top: 0; }
-.section-title--tertiary { /* For smaller headings within sections */
+.section-title--tertiary {
     font-size: clamp(1.1rem, 3vw, 1.25rem);
     font-weight: var(--font-weight-semibold);
     color: var(--current-text-color);
@@ -178,17 +176,16 @@
     margin-bottom: var(--spacing-sm);
 }
 
-/* --- Course Content Tabs --- */
 .course-tabs { margin-bottom: var(--spacing-xl); }
 .course-tabs__nav {
     display: flex;
-    flex-wrap: nowrap; /* Prevent wrapping, allow scroll */
+    flex-wrap: nowrap;
     gap: var(--spacing-xs);
     border-bottom: var(--border-width) solid var(--current-border-color);
-    overflow-x: auto; /* Enable horizontal scroll on mobile */
-    padding-bottom: 0; /* Align with active tab border */
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: thin;  /* Firefox */
+    overflow-x: auto;
+    padding-bottom: 0;
+    -ms-overflow-style: none;
+    scrollbar-width: thin;
     scrollbar-color: var(--color-primary-light) var(--current-border-color-light);
 }
 .course-tabs__nav::-webkit-scrollbar { height: 4px; }
@@ -203,8 +200,8 @@
     font-family: inherit; font-size: var(--font-size-md); font-weight: var(--font-weight-medium);
     color: var(--current-text-color-secondary);
     transition: color var(--transition-base), border-color var(--transition-base), background-color var(--transition-base);
-    margin-bottom: -1px; /* Overlap nav border for seamless active state */
-    white-space: nowrap; /* Prevent button text from wrapping */
+    margin-bottom: -1px;
+    white-space: nowrap;
     border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
     display: inline-flex; align-items: center; gap: var(--spacing-xs);
 }
@@ -230,7 +227,6 @@
 @keyframes fadeInPanel { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 .course-tabs__panel[hidden] { display: none !important; }
 
-/* --- Overview Tab Content --- */
 .learn-list {
     list-style: none;
     padding: 0;
@@ -248,12 +244,11 @@
 .learn-list__icon {
     color: var(--color-primary);
     font-size: 1.1em;
-    margin-top: 0.2em; /* Align with text better */
+    margin-top: 0.2em;
     flex-shrink: 0;
 }
 .dark-mode .learn-list__icon { color: var(--color-primary-light); }
 
-/* --- Curriculum Tab Content (Accordion) --- */
 .curriculum-summary {
     background-color: var(--current-bg-color);
     padding: var(--spacing-md);
@@ -269,9 +264,8 @@
     border: 1px solid var(--current-border-color);
     border-radius: var(--border-radius-md);
     margin-bottom: var(--spacing-md);
-    background-color: var(--current-card-bg); /* Ensure modules have card bg */
+    background-color: var(--current-card-bg);
 }
-.module__header { /* Nothing specific, just a container */ }
 .module__toggle-button {
     width: 100%;
     background: none; border: none;
@@ -290,7 +284,7 @@
     color: var(--current-text-color-secondary);
     margin-left: var(--spacing-md);
 }
-.badge.badge--free { /* Assuming badge styles are global or defined elsewhere */
+.badge.badge--free {
     background-color: var(--color-success); color: var(--color-white);
     padding: 2px 6px; border-radius: var(--border-radius-sm); font-size: 0.7rem;
     margin-left: var(--spacing-xs);
@@ -300,8 +294,6 @@
     padding: 0 var(--spacing-lg) var(--spacing-md) var(--spacing-lg);
     border-top: 1px solid var(--current-border-color-light);
     overflow: hidden;
-    /* max-height: 0; -- Use hidden attribute instead for accessibility */
-    /* transition: max-height 0.3s ease-out, padding 0.3s ease-out; */
 }
 .module__content[hidden] { display: none; }
 .module__content ul { list-style: none; padding: 0; margin-top: var(--spacing-sm); }
@@ -334,7 +326,6 @@
     flex-shrink: 0;
 }
 
-/* --- Sidebar Widgets (Pricing & Meta) --- */
 .course-layout__sidebar .widget-title {
     font-size: 1.1rem;
     font-weight: var(--font-weight-semibold);
@@ -343,7 +334,7 @@
     padding-bottom: var(--spacing-xs);
     border-bottom: 1px solid var(--current-border-color-light);
 }
-.pricing-widget { padding: 0; overflow: hidden; } /* Remove default padding for image */
+.pricing-widget { padding: 0; overflow: hidden; }
 .pricing-widget__video-preview-container {
     position: relative;
     background-color: var(--color-black);
@@ -389,7 +380,7 @@
     position: absolute; top: 50%; left: 0; z-index: 0;
 }
 .pricing-options-sidebar { display: flex; flex-direction: column; gap: var(--spacing-sm); margin-bottom: var(--spacing-md); }
-.pricing-card-sidebar { /* Button-like appearance */
+.pricing-card-sidebar {
     display: block; width: 100%;
     padding: var(--spacing-sm); border: 1px solid var(--current-border-color);
     border-radius: var(--border-radius-md); text-align: left;
@@ -400,7 +391,7 @@
 .pricing-card-sidebar__title { font-weight: var(--font-weight-semibold); font-size: 0.95rem; display: block; margin-bottom: var(--spacing-xxs); }
 .pricing-card-sidebar__price { font-size: 0.9rem; color: var(--current-text-color-secondary); }
 .pricing-card-sidebar__price span[data-price-usd] { font-weight: var(--font-weight-medium); color: var(--current-text-color); }
-.badge.badge--save { /* Reusing badge style */
+.badge.badge--save {
     position: absolute; top: var(--spacing-sm); right: var(--spacing-sm);
     background-color: var(--color-accent); color: var(--color-white);
     font-size: 0.65rem;
@@ -419,7 +410,7 @@
 .course-meta__icon { color: var(--current-text-color-secondary); width: 18px; text-align: center; }
 
 /* --- Payment Modal --- */
-/* Styles for the unified card payment form elements are now in global.css */
+/* Styles for the unified card payment form elements are in global.css */
 #summary-plan-price-span {
     font-weight: var(--font-weight-bold);
     color: var(--color-primary);
@@ -427,7 +418,6 @@
 .dark-mode #summary-plan-price-span {
     color: var(--color-primary-light);
 }
-
 
 /* --- Video Masterclass Section --- */
 .video-masterclass-section {
