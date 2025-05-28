@@ -1,7 +1,7 @@
 // js/upricing.js
 /* ==========================================================================
    Uplas Pricing Page Specific JavaScript (upricing.js)
-   - Handles plan selection, payment modal triggering, contact form.
+   - Handles plan selection, payment modal triggering (Card via Stripe.js concept), contact form.
    - Relies on global.js for theme, nav, language, currency.
    - Assumes apiUtils.js (for fetchAuthenticated) and i18n.js (for uplasTranslate) are loaded.
    ========================================================================== */
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectPlanButtons = document.querySelectorAll('.select-plan-btn');
     const contactSalesButton = document.querySelector('.enterprise-contact-sales-btn');
 
-    // Unified Payment Modal Elements
+    // Unified Card Payment Modal Elements
     const paymentModal = document.getElementById('payment-modal');
     const closeModalButton = document.getElementById('payment-modal-close-btn');
     const summaryPlanNameEl = document.getElementById('summary-plan-name-span');
@@ -22,31 +22,91 @@ document.addEventListener('DOMContentLoaded', () => {
     const summaryBillingCycleDiv = document.getElementById('summary-billing-cycle-div');
     const summaryBillingCycleEl = document.getElementById('summary-billing-cycle-span');
     const paymentFormGlobalStatus = document.getElementById('payment-form-global-status');
-    const paymentSubmitButton = document.getElementById('payment-submit-button'); // This is the "Pay Now" button
+    const paymentSubmitButton = document.getElementById('payment-submit-button');
 
     const unifiedCardPaymentForm = document.getElementById('unified-card-payment-form');
     const paymentCardholderNameInput = document.getElementById('payment-cardholder-name');
     const paymentEmailInput = document.getElementById('payment-email');
-    const paymentCardNumberInput = document.getElementById('payment-card-number');
-    const paymentCardTypeIcon = document.getElementById('payment-card-type-icon');
-    const paymentExpiryDateInput = document.getElementById('payment-expiry-date');
-    const paymentCvvInput = document.getElementById('payment-cvv');
-    const stripe = Stripe('YOUR_STRIPE_PUBLISHABLE_KEY'); // Replace with your actual key
+
+    // Stripe.js specific elements (ensure these IDs are in your upricing.html modal)
+    const stripeCardElementContainer = document.getElementById('stripe-card-element');
+    const stripeCardErrors = document.getElementById('stripe-card-errors');
 
 
     // --- State ---
     let isModalOpen = false;
     let currentSelectedPlan = null;
+    let stripe = null;
+    let cardElement = null;
+
+    // --- Initialize Stripe ---
+    function initializeStripe() {
+        if (typeof Stripe === 'undefined') {
+            console.error('Stripe.js has not been loaded. Payment functionality will be limited.');
+            if (paymentSubmitButton) paymentSubmitButton.disabled = true;
+            selectPlanButtons.forEach(btn => btn.disabled = true);
+            // It's better to show this error inside the modal if the user tries to open it.
+            return false;
+        }
+        // Replace 'YOUR_STRIPE_PUBLISHABLE_KEY' with your actual Stripe publishable key from your Stripe dashboard
+        stripe = Stripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY'); // IMPORTANT: Use your TEST key for development
+        const elements = stripe.elements();
+        const cardStyle = {
+            base: {
+                color: (document.body.classList.contains('dark-mode') ? '#CFD8DC' : '#32325d'),
+                fontFamily: '"Poppins", sans-serif',
+                fontSmoothing: 'antialiased',
+                fontSize: '16px',
+                '::placeholder': {
+                    color: (document.body.classList.contains('dark-mode') ? '#607D8B' : '#aab7c4')
+                }
+            },
+            invalid: {
+                color: '#fa755a',
+                iconColor: '#fa755a'
+            }
+        };
+        // Create and mount the Card Element
+        // Ensure you have a div with id="stripe-card-element" in your payment modal for Stripe to mount to.
+        // Add this div to your upricing.html and mcourseD.html payment modals
+        // Example for the HTML part:
+        // <div class="form__group">
+        //     <label for="stripe-card-element" class="form__label" data-translate-key="form_label_card_details">Card Details</label>
+        //     <div id="stripe-card-element" class="form__input"> </div>
+        //     <div id="stripe-card-errors" role="alert" class="form__error-message"></div>
+        // </div>
+        if (stripeCardElementContainer) {
+            cardElement = elements.create('card', { style: cardStyle, hidePostalCode: true });
+            cardElement.mount(stripeCardElementContainer);
+
+            cardElement.on('change', function(event) {
+                if (stripeCardErrors) {
+                    stripeCardErrors.textContent = event.error ? event.error.message : '';
+                }
+            });
+        } else {
+             console.error("Stripe card element container '#stripe-card-element' not found. Stripe Element cannot be mounted.");
+             return false;
+        }
+        return true;
+    }
+
+    const stripeInitialized = initializeStripe();
+
 
     // --- Utility Functions ---
     const displayFormStatus = (element, message, type, translateKey = null, variables = {}) => {
         if (!element) return;
         const text = (translateKey && typeof window.uplasTranslate === 'function') ?
                      window.uplasTranslate(translateKey, { fallback: message, variables }) : message;
-        element.textContent = text;
-        element.className = 'form__status'; // Reset
+        element.innerHTML = text; // Use innerHTML to allow for spinner icon
+        element.className = 'form__status payment-status-message';
+        if (type === 'loading' && !element.querySelector('.fa-spinner')) {
+             element.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${text}`;
+        }
         if (type) element.classList.add(`form__status--${type}`);
         element.style.display = 'block';
+        element.hidden = false;
         element.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
     };
 
@@ -54,7 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!element) return;
         element.textContent = '';
         element.style.display = 'none';
-        element.className = 'form__status';
+        element.hidden = true;
+        element.className = 'form__status payment-status-message';
     };
 
     const validateInput = (inputElement) => {
@@ -80,64 +141,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return true;
     };
-
     const focusFirstElement = (container) => {
         if (!container) return;
         const focusable = container.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
         focusable?.focus();
     };
 
-    // --- Card Type Detection and Formatting ---
-    function getCardType(cardNumber) {
-        const num = cardNumber.replace(/\s+/g, '');
-        if (/^4/.test(num)) return 'visa';
-        if (/^5[1-5]/.test(num)) return 'mastercard';
-        if (/^3[47]/.test(num)) return 'amex';
-        if (/^6(?:011|5)/.test(num)) return 'discover';
-        if (/^3(?:0[0-5]|[68])/.test(num)) return 'diners';
-        if (/^(?:2131|1800|35)/.test(num)) return 'jcb';
-        return 'unknown';
-    }
-
-    if (paymentCardNumberInput && paymentCardTypeIcon) {
-        paymentCardNumberInput.addEventListener('input', () => {
-            let value = paymentCardNumberInput.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
-            const cardType = getCardType(value);
-            paymentCardTypeIcon.className = 'card-type-icon'; // Reset
-            if (cardType !== 'unknown') {
-                paymentCardTypeIcon.classList.add(cardType, 'active');
-            }
-
-            let parts = [];
-            for (let i=0, len=value.length; i<len; i+=4) {
-                parts.push(value.substring(i, i+4));
-            }
-            if (parts.length) {
-                paymentCardNumberInput.value = parts.join(' ').substring(0, 23); // Limit length (e.g., 19 digits + 4 spaces)
-            } else {
-                // Allow user to clear input
-                paymentCardNumberInput.value = '';
-            }
-        });
-    }
-
-    if (paymentExpiryDateInput) {
-        paymentExpiryDateInput.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 2) {
-                value = value.substring(0, 2) + ' / ' + value.substring(2, 4);
-            } else if (value.length === 2 && e.inputType !== 'deleteContentBackward' && !e.target.value.includes(' / ')) {
-                value = value + ' / ';
-            }
-            e.target.value = value.substring(0, 7); // MM / YY
-        });
-    }
-
 
     // --- Payment Modal Logic ---
     function updatePaymentModalSummary() {
         if (!currentSelectedPlan || !summaryPlanNameEl || !summaryPlanPriceEl || !summaryBillingCycleDiv || !summaryBillingCycleEl) {
-            console.error("Payment modal summary elements not found or plan not selected.");
             return;
         }
         summaryPlanNameEl.textContent = currentSelectedPlan.name;
@@ -163,9 +176,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function openPaymentModal(planData) {
-        if (!paymentModal) {
-            console.error("Payment modal element not found in the DOM.");
-            alert("Error: Payment functionality is currently unavailable.");
+        if (!paymentModal || !stripeInitialized) {
+            const errorMsgKey = !stripeInitialized ? "err_payment_system_unavailable" : "err_payment_modal_missing";
+            const fallbackMsg = !stripeInitialized ? "Payment system is not available. Please try again later." : "Payment modal element not found.";
+            alert(typeof window.uplasTranslate === 'function' ? window.uplasTranslate(errorMsgKey, {fallback: fallbackMsg}) : fallbackMsg);
             return;
         }
         currentSelectedPlan = planData;
@@ -174,24 +188,27 @@ document.addEventListener('DOMContentLoaded', () => {
         if (paymentSubmitButton) {
             const buttonTextKey = 'payment_modal_submit_pay_now';
             const buttonText = (typeof window.uplasTranslate === 'function') ?
-                               window.uplasTranslate(buttonTextKey, {fallback: 'Pay Now'}) :
-                               'Pay Now';
+                               window.uplasTranslate(buttonTextKey, {fallback: 'Pay Now'}) : 'Pay Now';
             paymentSubmitButton.innerHTML = `<i class="fas fa-shield-alt"></i> ${buttonText}`;
             paymentSubmitButton.disabled = false;
         }
         if(paymentFormGlobalStatus) clearFormStatus(paymentFormGlobalStatus);
+        if(stripeCardErrors) stripeCardErrors.textContent = '';
+
 
         unifiedCardPaymentForm?.reset();
-        unifiedCardPaymentForm?.querySelectorAll('.form__error-message').forEach(el => el.textContent = '');
+        cardElement?.clear();
         unifiedCardPaymentForm?.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
-        if(paymentCardTypeIcon) paymentCardTypeIcon.className = 'card-type-icon';
 
 
         paymentModal.hidden = false;
         document.body.style.overflow = 'hidden';
-        setTimeout(() => paymentModal.classList.add('active'), 10);
+        setTimeout(() => {
+            paymentModal.classList.add('active');
+             if (paymentCardholderNameInput) paymentCardholderNameInput.focus();
+             else focusFirstElement(paymentModal);
+        }, 10);
         isModalOpen = true;
-        focusFirstElement(paymentModal);
     }
 
     function closePaymentModal() {
@@ -202,6 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.style.overflow = '';
             isModalOpen = false;
             currentSelectedPlan = null;
+            cardElement?.clear();
         }, 300);
     }
 
@@ -216,7 +234,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 billingCycle: button.dataset.billingCycle
             };
              if (!planData.priceUsd || isNaN(parseFloat(planData.priceUsd))) {
-                console.error("Button is missing a valid data-price-usd attribute:", button);
                 alert("Error: Price information is missing or invalid for this item.");
                 return;
             }
@@ -225,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (contactSalesButton && typeof window.uplasScrollToElement === 'function') {
-        contactSalesButton.addEventListener('click', (e) => {
+      contactSalesButton.addEventListener('click', (e) => {
             e.preventDefault();
             window.uplasScrollToElement('#contact-section');
             document.getElementById('contact-name')?.focus();
@@ -236,74 +253,103 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && isModalOpen) closePaymentModal(); });
     paymentModal?.addEventListener('click', (event) => { if (event.target === paymentModal) closePaymentModal(); });
 
-
-    if (unifiedCardPaymentForm) {
+    if (unifiedCardPaymentForm && stripeInitialized) {
         unifiedCardPaymentForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!currentSelectedPlan) {
-                displayFormStatus(paymentFormGlobalStatus, 'No plan selected.', 'error', 'err_no_plan_selected');
+            if (!currentSelectedPlan || !cardElement) { // Ensure cardElement is also initialized
+                displayFormStatus(paymentFormGlobalStatus, 'Payment system error or no plan selected.', 'error', 'err_payment_system_or_plan');
                 return;
             }
 
             let isFormValid = true;
-            [paymentCardholderNameInput, paymentEmailInput, paymentCardNumberInput, paymentExpiryDateInput, paymentCvvInput].forEach(input => {
-                if (input && !validateInput(input)) isFormValid = false;
-            });
+            if (paymentCardholderNameInput && !validateInput(paymentCardholderNameInput)) isFormValid = false;
+            if (paymentEmailInput && !validateInput(paymentEmailInput)) isFormValid = false;
+            // Stripe Element handles its own visual validation, error shown in stripeCardErrors
 
             if (!isFormValid) {
-                displayFormStatus(paymentFormGlobalStatus, 'Please correct the errors in the form.', 'error', 'err_correct_form_errors');
+                displayFormStatus(paymentFormGlobalStatus, 'Please correct the name and email fields.', 'error', 'err_correct_form_errors_basic');
                 return;
             }
 
-            displayFormStatus(paymentFormGlobalStatus, 'Processing your payment...', 'loading', true, 'payment_status_processing');
-            if(paymentSubmitButton) paymentSubmitButton.disabled = true;
+            if (paymentSubmitButton) paymentSubmitButton.disabled = true;
+            displayFormStatus(paymentFormGlobalStatus, 'Processing payment...', 'loading', true, 'payment_status_processing');
 
-            const paymentData = {
+            const cardholderName = paymentCardholderNameInput.value;
+            const email = paymentEmailInput.value;
+
+            const { paymentMethod, error: pmError } = await stripe.createPaymentMethod({
+                type: 'card',
+                card: cardElement,
+                billing_details: {
+                    name: cardholderName,
+                    email: email,
+                },
+            });
+
+            if (pmError) {
+                displayFormStatus(paymentFormGlobalStatus, pmError.message, 'error'); // Show Stripe's error message
+                if (stripeCardErrors) stripeCardErrors.textContent = pmError.message; // Also show in Stripe's error div
+                if (paymentSubmitButton) paymentSubmitButton.disabled = false;
+                return;
+            }
+             if (stripeCardErrors) stripeCardErrors.textContent = ''; // Clear Stripe errors if PaymentMethod created
+
+            const paymentDataForBackend = {
                 planId: currentSelectedPlan.id,
                 planName: currentSelectedPlan.name,
                 amountUSD: parseFloat(currentSelectedPlan.priceUsd).toFixed(2),
                 currency: 'USD',
                 billingCycle: currentSelectedPlan.billingCycle,
-                gateway: 'card_processor', // Your backend's identifier for this
-                cardholderName: paymentCardholderNameInput.value,
-                email: paymentEmailInput.value,
-                // IMPORTANT: In a real app, you would send a payment token from Stripe.js/Braintree etc. NOT raw card details.
-                // For simulation:
-                // paymentToken: "simulated_token_for_" + getCardType(paymentCardNumberInput.value)
+                paymentMethodId: paymentMethod.id,
+                email: email,
+                cardholderName: cardholderName
             };
 
             try {
-                console.log("Submitting Card Payment Data:", paymentData);
-                // TODO: Replace with actual fetchAuthenticated call to your backend, sending the payment token.
-                // const result = await fetchAuthenticated('/api/payments/charge-card', {
-                // method: 'POST',
-                // body: JSON.stringify(paymentData)
+                console.log("Sending Payment Data (Stripe Method ID) to Backend:", paymentDataForBackend);
+                // **ACTUAL BACKEND INTEGRATION POINT**
+                // const backendResponse = await fetchAuthenticated('/api/payments/create-subscription-stripe', {
+                //     method: 'POST',
+                //     body: JSON.stringify(paymentDataForBackend)
                 // });
+                // const backendResult = backendResponse; // Assuming fetchAuthenticated parses JSON
 
-                await new Promise(resolve => setTimeout(resolve, 2500)); // Simulate API call
-                const result = { success: Math.random() > 0.1, message_key: "payment_status_success_subscription" };
+                // SIMULATE BACKEND CALL
+                await new Promise(resolve => setTimeout(resolve, 2500));
+                const backendResult = { success: Math.random() > 0.1, message_key: "payment_status_success_subscription" };
 
-                if (result.success) {
-                    displayFormStatus(paymentFormGlobalStatus, 'Payment successful! Thank you for your purchase.', 'success', false, result.message_key);
+                if (backendResult.success) {
+                    displayFormStatus(paymentFormGlobalStatus, 'Payment successful! Thank you.', 'success', false, backendResult.message_key);
+                    cardElement.clear();
                     setTimeout(() => {
                         closePaymentModal();
-                        // Potentially redirect or update UI to reflect purchase
                         // window.location.href = '/dashboard?plan_activated=' + currentSelectedPlan.id;
                     }, 3000);
+                } else if (backendResult.requires_action && backendResult.client_secret) {
+                    // Example for Payment Intents that require further client action (e.g., 3D Secure)
+                    const { error: confirmError } = await stripe.confirmCardPayment(backendResult.client_secret);
+                    if (confirmError) {
+                        displayFormStatus(paymentFormGlobalStatus, confirmError.message, 'error');
+                        if (paymentSubmitButton) paymentSubmitButton.disabled = false;
+                    } else {
+                        displayFormStatus(paymentFormGlobalStatus, 'Payment successful after authentication!', 'success', false, "payment_status_success_authenticated");
+                        cardElement.clear();
+                        setTimeout(closePaymentModal, 3000);
+                    }
                 } else {
-                    displayFormStatus(paymentFormGlobalStatus, result.message || 'Payment failed. Please check your details or try another card.', 'error', false, result.message_key || 'payment_status_error_generic');
-                    if(paymentSubmitButton) paymentSubmitButton.disabled = false;
+                    displayFormStatus(paymentFormGlobalStatus, backendResult.message || 'Payment failed. Please try again.', 'error', false, backendResult.message_key || 'payment_status_error_generic');
+                    if (paymentSubmitButton) paymentSubmitButton.disabled = false;
                 }
             } catch (error) {
-                console.error('Card Payment Submission Error:', error);
-                displayFormStatus(paymentFormGlobalStatus, error.message || 'A network error occurred. Please try again.', 'error', false, 'payment_status_error_network');
-                if(paymentSubmitButton) paymentSubmitButton.disabled = false;
+                console.error('Payment Submission to Backend Error:', error);
+                displayFormStatus(paymentFormGlobalStatus, error.message || 'A network error occurred.', 'error', false, 'payment_status_error_network');
+                if (paymentSubmitButton) paymentSubmitButton.disabled = false;
             }
         });
     }
 
 
-    // Contact Form Submission (remains the same)
+    // Contact Form Submission
     if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -348,5 +394,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    console.log("Uplas Pricing Page (upricing.js) refined and initialized for single card payment.");
+    console.log("Uplas Pricing Page (upricing.js) with Stripe.js conceptual integration initialized.");
 });
