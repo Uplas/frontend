@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en"> <head>
     <meta charset="UTF-8">
@@ -40,7 +41,7 @@
                         <span data-translate-key="mcourseD_hero_meta_outcome_adv_ai"><i class="fas fa-award course-hero__meta-icon" aria-hidden="true"></i> Outcome: Professional AI Certification</span>
                     </div>
                     <div class="course-hero__actions">
-                        <button id="enroll-now-main-cta" class="button button--primary button--large course-hero__cta" type="button" data-translate-key="mcourseD_hero_cta_enroll_adv_ai">
+                        <button id="enroll-now-main-cta" class="button button--primary button--large course-hero__cta select-plan-btn" type="button" data-plan-id="course_adv_ai_full" data-price-usd="199.00" data-name="Advanced AI (Full Course)" data-billing-cycle="One-time" data-translate-key="mcourseD_hero_cta_enroll_adv_ai">
                             <i class="fas fa-rocket" aria-hidden="true"></i> Launch Your AI Expertise Now
                         </button>
                     </div>
@@ -114,7 +115,7 @@
                             <p data-translate-key="mcourseD_curriculum_summary_time_adv_ai">Estimated time commitment: 60+ hours of guided instruction & 80+ hours of practical project work.</p>
                         </div>
                         <div class="module-accordion" id="module-accordion">
-                            
+
                             <div class="module module--accessible" id="module-0-intro">
                                 <h3 class="module__header">
                                     <button class="module__toggle-button" aria-expanded="true" aria-controls="module-0-content">
@@ -152,24 +153,35 @@
                                 </h3>
                                 <div class="module__content" id="module-1-content" role="region" hidden>
                                     <ul>
-                                        <li class="lesson lesson--locked" data-lesson-id="101" data-module-id="1" data-module-price-usd="2.00">
+                                        <li class="lesson lesson--locked" data-lesson-id="101" data-module-id="1">
                                             <i class="fas fa-book-reader lesson__icon" aria-hidden="true"></i>
                                             <span class="lesson__title" data-translate-key="mcourseD_lesson_101_title_adv_ai">1.1 Deconstructing Attention: The Engine of Modern AI (1h 15m)</span>
                                             <span class="lesson__type-badge" data-translate-key="lesson_type_video_reading">Video & Reading</span>
                                             <span class="lesson__status"><i class="fas fa-lock" aria-hidden="true"></i> <span data-translate-key="status_locked">Locked</span></span>
-                                            <button class="button button--secondary button--extra-small lesson__action-button buy-module-btn" data-module-id="1" data-price-usd="2.00" data-name="Module 1: Transformers" data-translate-key="mcourseD_unlock_module_btn_dynamic">Unlock This Module (<span class="module-price-display" data-price-usd="2.00">$2.00</span>)</button>
+                                            <button class="button button--secondary button--extra-small lesson__action-button buy-module-btn select-plan-btn" data-module-id="module_1_transformers" data-price-usd="2.00" data-name="Module 1: Transformers" data-billing-cycle="One-time" data-translate-key="mcourseD_unlock_module_btn_dynamic">Unlock This Module (<span class="module-price-display" data-price-usd="2.00">$2.00</span>)</button>
                                         </li>
+                                        {/* Add more lessons for Module 1 here */}
                                     </ul>
                                 </div>
                             </div>
+                            {/* Add more modules here */}
                         </div>
                     </section>
 
                     <section class="course-tabs__panel" id="tab-panel-instructors" role="tabpanel" tabindex="0" aria-labelledby="tab-instructors" hidden>
+                        <h2 class="section-title section-title--sub" data-translate-key="mcourseD_instructors_title">Meet Your Expert Instructors</h2>
+                        {/* Placeholder for instructor profiles */}
+                        <p data-translate-key="mcourseD_instructors_placeholder">Instructor profiles will be listed here, showcasing their expertise and experience in the field of Artificial Intelligence.</p>
                     </section>
                     <section class="course-tabs__panel" id="tab-panel-reviews" role="tabpanel" tabindex="0" aria-labelledby="tab-reviews" hidden>
+                        <h2 class="section-title section-title--sub" data-translate-key="mcourseD_reviews_title">Student Reviews & Testimonials</h2>
+                        {/* Placeholder for reviews */}
+                        <p data-translate-key="mcourseD_reviews_placeholder">Read what past students have to say about this course and their learning experience with Uplas.</p>
                     </section>
                     <section class="course-tabs__panel" id="tab-panel-faq" role="tabpanel" tabindex="0" aria-labelledby="tab-faq" hidden>
+                        <h2 class="section-title section-title--sub" data-translate-key="mcourseD_faq_title">Frequently Asked Questions</h2>
+                        {/* Placeholder for course-specific FAQs */}
+                        <p data-translate-key="mcourseD_faq_placeholder">Find answers to common questions about this course, its prerequisites, certification, and more.</p>
                     </section>
 
                 </div>
@@ -222,6 +234,7 @@
                     <ul class="course-meta-list">
                         <li data-translate-key="mcourseD_inclusion_video"><i class="fas fa-video course-meta__icon" aria-hidden="true"></i> 60+ hours of expert-led HD video</li>
                         <li data-translate-key="mcourseD_inclusion_certificate"><i class="fas fa-trophy course-meta__icon" aria-hidden="true"></i> Uplas Professional AI Certificate</li>
+                        {/* Add more inclusions */}
                     </ul>
                 </div>
             </aside>
@@ -236,6 +249,7 @@
                         This premium content is available with our All-Access subscriptions.
                         <a href="upricing.html" class="link" data-translate-key="mcourseD_masterclass_upgrade_link">Upgrade Now</a> to watch.
                     </p>
+                    {/* Masterclass cards will be injected here by JS */}
                 </div>
                 <div class="masterclass-cta" style="text-align: center; margin-top: var(--spacing-xl); display:none;" id="masterclass-upgrade-cta-container">
                      <a href="upricing.html" class="button button--primary button--large" data-translate-key="mcourseD_masterclass_unlock_cta">Unlock All Masterclasses - Go Premium</a>
@@ -248,75 +262,72 @@
                 <button class="modal__close-button" id="payment-modal-close-btn" aria-label="Close payment dialog" title="Close">
                     <i class="fas fa-times" aria-hidden="true"></i>
                 </button>
-                <h2 id="payment-modal-main-title-h2" class="payment-modal__main-title" data-translate-key="payment_modal_title">Complete Your Secure Enrollment</h2>
+                <h2 id="payment-modal-main-title-h2" class="payment-modal__main-title" data-translate-key="payment_modal_title_card">Complete Your Secure Payment</h2>
                 <div class="payment-modal__summary">
                     <h3 class="payment-modal__summary-title" data-translate-key="payment_modal_summary_title">Your Order</h3>
                     <div class="payment-modal__summary-item">
                         <span class="payment-modal__summary-label" data-translate-key="payment_modal_summary_item">Item:</span>
-                        <span class="payment-modal__summary-value" id="summary-plan-name-span"></span>
+                        <span class="payment-modal__summary-value" id="summary-plan-name-span">Selected Plan Name</span>
                     </div>
                     <div class="payment-modal__summary-item" id="summary-billing-cycle-div" hidden>
                         <span class="payment-modal__summary-label" data-translate-key="payment_modal_summary_renews">Renews:</span>
-                        <span class="payment-modal__summary-value" id="summary-billing-cycle-span"></span>
+                        <span class="payment-modal__summary-value" id="summary-billing-cycle-span">Billing Cycle</span>
                     </div>
                     <div class="payment-modal__summary-item payment-modal__summary-item--total">
                         <span class="payment-modal__summary-label" data-translate-key="payment_modal_summary_amount_due">Amount Due Today:</span>
-                        <span class="payment-modal__summary-value payment-modal__summary-value--price" id="summary-plan-price-span" data-price-usd=""></span>
+                        <span class="payment-modal__summary-value payment-modal__summary-value--price" id="summary-plan-price-span" data-price-usd="0.00">$0.00</span>
                     </div>
                 </div>
 
-                <div class="payment-modal__methods">
-                    <fieldset>
-                        <legend class="payment-modal__methods-title" data-translate-key="payment_modal_select_method_legend">Choose Your Payment Method</legend>
-                        <div class="payment-gateway-selector" role="tablist" aria-label="Payment Methods">
-                            <button class="payment-gateway-selector__option" id="gateway-btn-mpesa" data-gateway="mpesa" role="tab" aria-selected="false" aria-controls="gateway-panel-mpesa">
-                                <img src="images/mpesa-logo.png" alt="M-Pesa" class="payment-gateway-selector__logo"> M-Pesa
-                            </button>
-                            <button class="payment-gateway-selector__option" id="gateway-btn-stripe" data-gateway="stripe" role="tab" aria-selected="false" aria-controls="gateway-panel-stripe">
-                                <img src="images/stripe-logo.png" alt="Stripe" class="payment-gateway-selector__logo"> <span data-translate-key="payment_method_card_stripe">Card (Stripe)</span>
-                            </button>
-                            <button class="payment-gateway-selector__option" id="gateway-btn-flutterwave" data-gateway="flutterwave" role="tab" aria-selected="false" aria-controls="gateway-panel-flutterwave">
-                                <img src="images/flutterwave-logo.png" alt="Flutterwave" class="payment-gateway-selector__logo"> <span data-translate-key="payment_method_card_flutterwave">Card & More (Flutterwave)</span>
-                            </button>
-                            <button class="payment-gateway-selector__option" id="gateway-btn-paypal" data-gateway="paypal" role="tab" aria-selected="false" aria-controls="gateway-panel-paypal">
-                                <img src="images/paypal-logo.png" alt="PayPal" class="payment-gateway-selector__logo"> PayPal
-                            </button>
-                            <button class="payment-gateway-selector__option" id="gateway-btn-bank" data-gateway="bank" role="tab" aria-selected="false" aria-controls="gateway-panel-bank">
-                                <i class="fas fa-university payment-gateway-selector__icon" aria-hidden="true"></i> <span data-translate-key="payment_method_bank_transfer">Bank Transfer</span>
-                            </button>
+                <div class="payment-modal__form-area">
+                    <form id="unified-card-payment-form" class="payment-form" novalidate>
+                        <div class="form__group">
+                            <label for="payment-cardholder-name" class="form__label" data-translate-key="form_label_cardholder_name">Cardholder Name</label>
+                            <input type="text" id="payment-cardholder-name" name="cardholderName" class="form__input" placeholder="e.g., Jane M. Doe" required autocomplete="cc-name">
+                            <span class="form__error-message" aria-live="polite"></span>
                         </div>
-                    </fieldset>
+                        <div class="form__group">
+                            <label for="payment-email" class="form__label" data-translate-key="form_label_email_receipt">Email for Receipt</label>
+                            <input type="email" id="payment-email" name="email" class="form__input" placeholder="you@example.com" required autocomplete="email">
+                            <span class="form__error-message" aria-live="polite"></span>
+                        </div>
 
-                    <div class="payment-modal__form-area">
-                        <div id="payment-instructions-div" class="payment-instructions" role="status" aria-live="polite" data-translate-key="payment_modal_instructions_default">
-                            Select your preferred payment method to continue.
+                        <div class="form__group">
+                            <label for="payment-card-number" class="form__label" data-translate-key="form_label_card_number">Card Number</label>
+                            <div class="input-with-icon">
+                                <input type="text" id="payment-card-number" name="cardNumber" class="form__input" placeholder="•••• •••• •••• ••••" required pattern="[\d\\s]{13,23}" inputmode="numeric" autocomplete="cc-number" title="Enter a valid card number">
+                                <span id="payment-card-type-icon" class="card-type-icon" aria-hidden="true"></span>
+                            </div>
+                            <span class="form__error-message" aria-live="polite"></span>
                         </div>
-                    
-                        <div class="payment-gateway-panel" id="gateway-panel-mpesa" data-gateway-panel="mpesa" role="tabpanel" aria-labelledby="gateway-btn-mpesa" hidden>
-                            <form id="mpesa-payment-form" class="payment-form" novalidate>
-                                <div class="form__group">
-                                    <label for="mpesa-phone-input" class="form__label" data-translate-key="form_label_mpesa_phone">Your Safaricom Phone Number</label>
-                                    <input type="tel" id="mpesa-phone-input" name="mpesaPhone" class="form__input" placeholder="e.g., 0712345678" required pattern="^(07|01)\d{8}$" autocomplete="tel" aria-describedby="mpesa-phone-hint">
-                                    <span class="form__error-message" id="mpesa-phone-error-msg"></span>
-                                    <small id="mpesa-phone-hint" class="form__hint" data-translate-key="form_hint_mpesa_phone">An M-Pesa STK push will be sent to this number.</small>
-                                </div>
-                            </form>
+
+                        <div class="form__row">
+                            <div class="form__group">
+                                <label for="payment-expiry-date" class="form__label" data-translate-key="form_label_expiry_date">Expiry Date</label>
+                                <input type="text" id="payment-expiry-date" name="expiryDate" class="form__input" placeholder="MM / YY" required pattern="(0[1-9]|1[0-2])\s*\/\s*([0-9]{2})" inputmode="numeric" autocomplete="cc-exp" title="Enter date as MM / YY">
+                                <span class="form__error-message" aria-live="polite"></span>
+                            </div>
+                            <div class="form__group">
+                                <label for="payment-cvv" class="form__label" data-translate-key="form_label_cvv">CVV</label>
+                                <input type="text" id="payment-cvv" name="cvv" class="form__input" placeholder="•••" required pattern="\d{3,4}" inputmode="numeric" autocomplete="cc-csc" title="Enter 3 or 4 digit CVV">
+                                <span class="form__error-message" aria-live="polite"></span>
+                            </div>
                         </div>
-                      
+
                         <div id="payment-form-global-status" class="form__status payment-status-message" role="alert"></div>
-                    </div>
-                </div>
 
-                <div class="payment-modal__action-area">
-                    <button id="payment-submit-button" type="button" class="button button--primary button--full-width button--large" disabled data-translate-key="payment_modal_submit_default">
-                        Select Payment Method to Continue
-                    </button>
+                        <div class="payment-modal__action-area">
+                            <button id="payment-submit-button" type="submit" class="button button--primary button--full-width button--large">
+                                <i class="fas fa-shield-alt"></i> <span data-translate-key="payment_modal_submit_pay_now">Pay Now</span>
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <p class="payment-modal__tos-notice">
-                    <span data-translate-key="payment_modal_tos_notice_part1">By clicking "Proceed to Payment" or completing your purchase, you agree to Uplas's</span>
-                    <a href="/terms" target="_blank" rel="noopener noreferrer" data-translate-key="payment_modal_tos_link">Terms of Service</a>
+                 <p class="payment-modal__tos-notice">
+                    <span data-translate-key="payment_modal_tos_notice_part1">By clicking "Pay Now", you agree to Uplas's</span>
+                    <a href="terms.html" target="_blank" rel="noopener noreferrer" data-translate-key="payment_modal_tos_link">Terms of Service</a>
                     <span data-translate-key="payment_modal_tos_notice_part2">and</span>
-                    <a href="/privacy" target="_blank" rel="noopener noreferrer" data-translate-key="payment_modal_privacy_link">Privacy Policy</a>.
+                    <a href="privacy.html" target="_blank" rel="noopener noreferrer" data-translate-key="payment_modal_privacy_link">Privacy Policy</a>.
                 </p>
             </div>
         </div>
@@ -328,9 +339,7 @@
     <script src="js/global.js"></script>
     <script src="js/apiUtils.js"></script>
     <script src="js/mcourseD.js"></script>
-    <script src="js/componentLoader.js"></script> 
+    <script src="js/componentLoader.js"></script>
     <script src="js/i18n.js"></script>
-    <script src="https://js.stripe.com/v3/"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD&disable-funding=credit,card"></script>
-</body>
+    </body>
 </html>
