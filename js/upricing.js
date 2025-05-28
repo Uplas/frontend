@@ -9,56 +9,54 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- Element Selectors ---
-    const contactForm = document.getElementById('contact-form'); //
-    const contactStatusDiv = document.getElementById('contact-status'); //
-    const selectPlanButtons = document.querySelectorAll('.select-plan-btn'); //
-    const contactSalesButton = document.querySelector('.enterprise-contact-sales-btn'); // Updated class for specificity
+    const contactForm = document.getElementById('contact-form');
+    const contactStatusDiv = document.getElementById('contact-status');
+    const selectPlanButtons = document.querySelectorAll('.select-plan-btn');
+    const contactSalesButton = document.querySelector('.enterprise-contact-sales-btn');
 
-    // Payment Modal Elements
-    const paymentModal = document.getElementById('payment-modal'); //
-    const closeModalButton = document.getElementById('payment-modal-close-btn'); //
-    const summaryPlanNameEl = document.getElementById('summary-plan-name-span'); //
-    const summaryPlanPriceEl = document.getElementById('summary-plan-price-span'); //
-    const summaryBillingCycleDiv = document.getElementById('summary-billing-cycle-div'); //
-    const summaryBillingCycleEl = document.getElementById('summary-billing-cycle-span'); //
-    const gatewaySelector = document.querySelector('.payment-gateway-selector'); //
-    const gatewayButtons = document.querySelectorAll('.payment-gateway-selector__option'); //
-    const gatewayPanels = document.querySelectorAll('.payment-gateway-panel'); //
-    const paymentInstructionsDiv = document.getElementById('payment-instructions-div'); //
-    const paymentFormGlobalStatus = document.getElementById('payment-form-global-status'); //
-    const paymentSubmitButton = document.getElementById('payment-submit-button'); //
-    
-    const mpesaForm = document.getElementById('mpesa-payment-form'); // Example
-    const mpesaPhoneInput = document.getElementById('mpesa-phone-input'); //
-    const mpesaPhoneErrorMsg = document.getElementById('mpesa-phone-error-msg'); // From mcourseD.html structure
-    const stripeCardholderNameInput = document.getElementById('stripe-cardholder-name'); // From mcourseD.html structure
+    // Unified Payment Modal Elements
+    const paymentModal = document.getElementById('payment-modal');
+    const closeModalButton = document.getElementById('payment-modal-close-btn');
+    const summaryPlanNameEl = document.getElementById('summary-plan-name-span');
+    const summaryPlanPriceEl = document.getElementById('summary-plan-price-span');
+    const summaryBillingCycleDiv = document.getElementById('summary-billing-cycle-div');
+    const summaryBillingCycleEl = document.getElementById('summary-billing-cycle-span');
+    const paymentFormGlobalStatus = document.getElementById('payment-form-global-status');
+    const paymentSubmitButton = document.getElementById('payment-submit-button'); // This is the "Pay Now" button
+
+    const unifiedCardPaymentForm = document.getElementById('unified-card-payment-form');
+    const paymentCardholderNameInput = document.getElementById('payment-cardholder-name');
+    const paymentEmailInput = document.getElementById('payment-email');
+    const paymentCardNumberInput = document.getElementById('payment-card-number');
+    const paymentCardTypeIcon = document.getElementById('payment-card-type-icon');
+    const paymentExpiryDateInput = document.getElementById('payment-expiry-date');
+    const paymentCvvInput = document.getElementById('payment-cvv');
+
 
     // --- State ---
-    let isModalOpen = false; //
-    let currentSelectedPlan = null; //
-    let currentPaymentGateway = null; //
+    let isModalOpen = false;
+    let currentSelectedPlan = null;
 
     // --- Utility Functions ---
-    // These are very similar to what's in uhome.js and could be globalized further in apiUtils.js or a formUtils.js
-    const displayFormStatus = (element, message, type, translateKey = null, variables = {}) => { //
+    const displayFormStatus = (element, message, type, translateKey = null, variables = {}) => {
         if (!element) return;
-        const text = (translateKey && typeof window.uplasTranslate === 'function') ? 
+        const text = (translateKey && typeof window.uplasTranslate === 'function') ?
                      window.uplasTranslate(translateKey, { fallback: message, variables }) : message;
         element.textContent = text;
         element.className = 'form__status'; // Reset
-        if (type) element.classList.add(`form__status--${type}`); // e.g., success, error, loading
+        if (type) element.classList.add(`form__status--${type}`);
         element.style.display = 'block';
         element.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
     };
 
-    const clearFormStatus = (element) => { //
+    const clearFormStatus = (element) => {
         if (!element) return;
         element.textContent = '';
         element.style.display = 'none';
         element.className = 'form__status';
     };
 
-    const validateInput = (inputElement) => { //
+    const validateInput = (inputElement) => {
         const group = inputElement.closest('.form__group');
         if (!group) return inputElement.checkValidity();
         const errorSpan = group.querySelector('.form__error-message');
@@ -72,9 +70,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (inputElement.validity.valueMissing) defaultMessage = "This field is required.";
                 else if (inputElement.validity.patternMismatch) defaultMessage = inputElement.title || "Please match the requested format.";
                 else if (inputElement.validity.typeMismatch) defaultMessage = `Please enter a valid ${inputElement.type}.`;
-                
-                const errorKey = inputElement.dataset.errorKeyRequired || inputElement.dataset.errorKeyPattern || inputElement.dataset.errorKeyType;
-                errorSpan.textContent = (typeof window.uplasTranslate === 'function' && errorKey) ? 
+
+                const errorKey = inputElement.dataset.errorKeyRequired || inputElement.dataset.errorKeyPattern || inputElement.dataset.errorKeyType || (inputElement.name + '_error');
+                errorSpan.textContent = (typeof window.uplasTranslate === 'function' && errorKey) ?
                                         window.uplasTranslate(errorKey, {fallback: defaultMessage}) : defaultMessage;
             }
             return false;
@@ -82,31 +80,79 @@ document.addEventListener('DOMContentLoaded', () => {
         return true;
     };
 
-    const focusFirstElement = (container) => { //
+    const focusFirstElement = (container) => {
         if (!container) return;
         const focusable = container.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
         focusable?.focus();
     };
 
+    // --- Card Type Detection and Formatting ---
+    function getCardType(cardNumber) {
+        const num = cardNumber.replace(/\s+/g, '');
+        if (/^4/.test(num)) return 'visa';
+        if (/^5[1-5]/.test(num)) return 'mastercard';
+        if (/^3[47]/.test(num)) return 'amex';
+        if (/^6(?:011|5)/.test(num)) return 'discover';
+        if (/^3(?:0[0-5]|[68])/.test(num)) return 'diners';
+        if (/^(?:2131|1800|35)/.test(num)) return 'jcb';
+        return 'unknown';
+    }
+
+    if (paymentCardNumberInput && paymentCardTypeIcon) {
+        paymentCardNumberInput.addEventListener('input', () => {
+            let value = paymentCardNumberInput.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            const cardType = getCardType(value);
+            paymentCardTypeIcon.className = 'card-type-icon'; // Reset
+            if (cardType !== 'unknown') {
+                paymentCardTypeIcon.classList.add(cardType, 'active');
+            }
+
+            let parts = [];
+            for (let i=0, len=value.length; i<len; i+=4) {
+                parts.push(value.substring(i, i+4));
+            }
+            if (parts.length) {
+                paymentCardNumberInput.value = parts.join(' ').substring(0, 23); // Limit length (e.g., 19 digits + 4 spaces)
+            } else {
+                // Allow user to clear input
+                paymentCardNumberInput.value = '';
+            }
+        });
+    }
+
+    if (paymentExpiryDateInput) {
+        paymentExpiryDateInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 2) {
+                value = value.substring(0, 2) + ' / ' + value.substring(2, 4);
+            } else if (value.length === 2 && e.inputType !== 'deleteContentBackward' && !e.target.value.includes(' / ')) {
+                value = value + ' / ';
+            }
+            e.target.value = value.substring(0, 7); // MM / YY
+        });
+    }
+
+
     // --- Payment Modal Logic ---
-    function updatePaymentModalSummary() { //
+    function updatePaymentModalSummary() {
         if (!currentSelectedPlan || !summaryPlanNameEl || !summaryPlanPriceEl || !summaryBillingCycleDiv || !summaryBillingCycleEl) {
             console.error("Payment modal summary elements not found or plan not selected.");
             return;
         }
         summaryPlanNameEl.textContent = currentSelectedPlan.name;
         summaryPlanPriceEl.dataset.priceUsd = currentSelectedPlan.priceUsd;
-        if (typeof window.updateUserCurrencyDisplay === 'function') { // From global.js
+        if (typeof window.updateUserCurrencyDisplay === 'function') {
             window.updateUserCurrencyDisplay();
-        } else { // Fallback formatting if global updater isn't ready
+        } else {
             const price = parseFloat(currentSelectedPlan.priceUsd);
             const currency = localStorage.getItem('uplas-currency') || 'USD';
             summaryPlanPriceEl.textContent = `${currency} ${price.toFixed(2)}`;
         }
 
         if (currentSelectedPlan.billingCycle && currentSelectedPlan.billingCycle.toLowerCase() !== 'one-time') {
-            const billingCycleText = (typeof window.uplasTranslate === 'function') ? 
-                                     window.uplasTranslate(`billing_cycle_${currentSelectedPlan.billingCycle.toLowerCase()}`, {fallback: currentSelectedPlan.billingCycle}) :
+            const billingCycleKey = `billing_cycle_${currentSelectedPlan.billingCycle.toLowerCase()}`;
+            const billingCycleText = (typeof window.uplasTranslate === 'function') ?
+                                     window.uplasTranslate(billingCycleKey, {fallback: currentSelectedPlan.billingCycle}) :
                                      currentSelectedPlan.billingCycle;
             summaryBillingCycleEl.textContent = billingCycleText;
             summaryBillingCycleDiv.hidden = false;
@@ -115,35 +161,30 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function openPaymentModal(planData) { //
+    function openPaymentModal(planData) {
         if (!paymentModal) {
             console.error("Payment modal element not found in the DOM.");
-            alert("Error: Payment functionality is currently unavailable."); // TODO: Translate
+            alert("Error: Payment functionality is currently unavailable.");
             return;
         }
         currentSelectedPlan = planData;
         updatePaymentModalSummary();
 
-        gatewayButtons.forEach(btn => btn.setAttribute('aria-selected', 'false'));
-        gatewayPanels.forEach(panel => panel.hidden = true);
-        
-        const defaultInstructionKey = 'payment_modal_instructions_default';
-        const defaultButtonKey = 'payment_modal_submit_default_select'; // More descriptive key
-
-        if (paymentInstructionsDiv) {
-             paymentInstructionsDiv.textContent = (typeof window.uplasTranslate === 'function') ? 
-                window.uplasTranslate(defaultInstructionKey, {fallback: 'Select your preferred payment method to continue.'}) : 
-                'Select your preferred payment method to continue.';
-        }
         if (paymentSubmitButton) {
+            const buttonTextKey = 'payment_modal_submit_pay_now';
             const buttonText = (typeof window.uplasTranslate === 'function') ?
-                               window.uplasTranslate(defaultButtonKey, {fallback: 'Select Payment Method'}) :
-                               'Select Payment Method';
-            paymentSubmitButton.innerHTML = `<i class="fas fa-lock"></i> ${buttonText}`;
-            paymentSubmitButton.disabled = true;
+                               window.uplasTranslate(buttonTextKey, {fallback: 'Pay Now'}) :
+                               'Pay Now';
+            paymentSubmitButton.innerHTML = `<i class="fas fa-shield-alt"></i> ${buttonText}`;
+            paymentSubmitButton.disabled = false;
         }
-        currentPaymentGateway = null;
-        if(paymentFormGlobalStatus) clearFormStatus(paymentFormGlobalStatus); // Use the utility
+        if(paymentFormGlobalStatus) clearFormStatus(paymentFormGlobalStatus);
+
+        unifiedCardPaymentForm?.reset();
+        unifiedCardPaymentForm?.querySelectorAll('.form__error-message').forEach(el => el.textContent = '');
+        unifiedCardPaymentForm?.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
+        if(paymentCardTypeIcon) paymentCardTypeIcon.className = 'card-type-icon';
+
 
         paymentModal.hidden = false;
         document.body.style.overflow = 'hidden';
@@ -152,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
         focusFirstElement(paymentModal);
     }
 
-    function closePaymentModal() { //
+    function closePaymentModal() {
         if (!paymentModal) return;
         paymentModal.classList.remove('active');
         setTimeout(() => {
@@ -160,69 +201,11 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.style.overflow = '';
             isModalOpen = false;
             currentSelectedPlan = null;
-        }, 300); // Match CSS transition duration
-    }
-
-    function updatePaymentFormForGateway(gateway) { //
-        if (!paymentInstructionsDiv || !paymentSubmitButton) return;
-        let instructionsText = "Follow instructions for the selected payment method."; // Default
-        let instructionsKey = 'payment_modal_instructions_default';
-        let submitTextContent = "Proceed";
-        let submitTextKey = 'payment_modal_submit_default_proceed'; // More descriptive key
-        paymentSubmitButton.disabled = false;
-
-        // Reset required state for all potentially gateway-specific inputs
-        [mpesaPhoneInput, stripeCardholderNameInput].forEach(input => {
-            if(input) input.required = false;
-        });
-        if (mpesaPhoneErrorMsg) mpesaPhoneErrorMsg.textContent = '';
-
-
-        switch (gateway) {
-            case 'mpesa':
-                instructionsKey = 'payment_modal_instructions_mpesa';
-                submitTextKey = 'payment_modal_submit_mpesa';
-                if(mpesaPhoneInput) mpesaPhoneInput.required = true;
-                break;
-            case 'stripe':
-                instructionsKey = 'payment_modal_instructions_stripe';
-                // For Stripe, the button text often includes the amount
-                submitTextKey = 'pay_amount_button_text'; // e.g., "Pay {amount}"
-                if(stripeCardholderNameInput) stripeCardholderNameInput.required = true;
-                // Stripe elements would be initialized/shown here by Stripe's JS SDK
-                break;
-            case 'flutterwave':
-                instructionsKey = 'payment_modal_instructions_flutterwave';
-                submitTextKey = 'payment_modal_submit_flutterwave';
-                break;
-            case 'paypal':
-                instructionsKey = 'payment_modal_instructions_paypal';
-                submitTextKey = 'payment_modal_submit_paypal';
-                // PayPal button would be rendered by its SDK here
-                break;
-            default:
-                paymentSubmitButton.disabled = true;
-                submitTextKey = 'payment_modal_submit_default_select';
-        }
-
-        if (typeof window.uplasTranslate === 'function') {
-            paymentInstructionsDiv.textContent = window.uplasTranslate(instructionsKey, {fallback: `Instructions for ${gateway || 'selected method'}.`});
-            
-            if (gateway === 'stripe' && currentSelectedPlan?.priceUsd) {
-                const formattedPriceForButton = summaryPlanPriceEl.textContent; // Already formatted by global currency updater
-                submitTextContent = window.uplasTranslate(submitTextKey, { fallback: "Pay {amount}", variables: { amount: formattedPriceForButton } });
-            } else {
-                submitTextContent = window.uplasTranslate(submitTextKey, { fallback: "Proceed" });
-            }
-        } else { // Fallback if translation function isn't ready
-            paymentInstructionsDiv.textContent = `Instructions for ${gateway || 'selected method'}.`;
-            submitTextContent = (gateway === 'stripe' && currentSelectedPlan?.priceUsd) ? `Pay ${summaryPlanPriceEl.textContent}` : "Proceed";
-        }
-        paymentSubmitButton.innerHTML = `<i class="fas fa-shield-alt"></i> ${submitTextContent}`;
+        }, 300);
     }
 
     // --- Event Listeners ---
-    selectPlanButtons.forEach(button => { //
+    selectPlanButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
             const planData = {
@@ -231,16 +214,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 priceUsd: button.dataset.priceUsd,
                 billingCycle: button.dataset.billingCycle
             };
-             if (!planData.priceUsd || isNaN(parseFloat(planData.priceUsd))) { // Check if price is valid
+             if (!planData.priceUsd || isNaN(parseFloat(planData.priceUsd))) {
                 console.error("Button is missing a valid data-price-usd attribute:", button);
-                alert("Error: Price information is missing or invalid for this item."); // TODO: Translate
+                alert("Error: Price information is missing or invalid for this item.");
                 return;
             }
             openPaymentModal(planData);
         });
     });
 
-    if (contactSalesButton && typeof window.uplasScrollToElement === 'function') { //
+    if (contactSalesButton && typeof window.uplasScrollToElement === 'function') {
         contactSalesButton.addEventListener('click', (e) => {
             e.preventDefault();
             window.uplasScrollToElement('#contact-section');
@@ -248,84 +231,79 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (closeModalButton) closeModalButton.addEventListener('click', closePaymentModal); //
-    document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && isModalOpen) closePaymentModal(); }); //
-    paymentModal?.addEventListener('click', (event) => { if (event.target === paymentModal) closePaymentModal(); }); //
+    if (closeModalButton) closeModalButton.addEventListener('click', closePaymentModal);
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && isModalOpen) closePaymentModal(); });
+    paymentModal?.addEventListener('click', (event) => { if (event.target === paymentModal) closePaymentModal(); });
 
-    if (gatewaySelector) { //
-        gatewaySelector.addEventListener('click', (event) => {
-            const selectedButton = event.target.closest('.payment-gateway-selector__option');
-            if (!selectedButton) return;
-            currentPaymentGateway = selectedButton.dataset.gateway;
-            gatewayButtons.forEach(btn => btn.setAttribute('aria-selected', (btn === selectedButton).toString()));
-            gatewayPanels.forEach(panel => { panel.hidden = (panel.dataset.gatewayPanel !== currentPaymentGateway); });
-            updatePaymentFormForGateway(currentPaymentGateway);
-            if(paymentFormGlobalStatus) clearFormStatus(paymentFormGlobalStatus);
-        });
-    }
 
-    if (paymentSubmitButton) { //
-        paymentSubmitButton.addEventListener('click', async () => {
-            if (!currentSelectedPlan || !currentPaymentGateway) {
-                displayFormStatus(paymentFormGlobalStatus, 'Please select a plan and payment method.', 'error', 'err_select_plan_method');
+    if (unifiedCardPaymentForm) {
+        unifiedCardPaymentForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentSelectedPlan) {
+                displayFormStatus(paymentFormGlobalStatus, 'No plan selected.', 'error', 'err_no_plan_selected');
                 return;
             }
-            
-            // Basic validation example for M-Pesa before proceeding
-            if (currentPaymentGateway === 'mpesa') {
-                if (mpesaPhoneInput && !validateInput(mpesaPhoneInput)) {
-                     displayFormStatus(paymentFormGlobalStatus, 'Please enter a valid M-Pesa phone number.', 'error', 'err_mpesa_phone_invalid');
-                    return;
-                }
+
+            let isFormValid = true;
+            [paymentCardholderNameInput, paymentEmailInput, paymentCardNumberInput, paymentExpiryDateInput, paymentCvvInput].forEach(input => {
+                if (input && !validateInput(input)) isFormValid = false;
+            });
+
+            if (!isFormValid) {
+                displayFormStatus(paymentFormGlobalStatus, 'Please correct the errors in the form.', 'error', 'err_correct_form_errors');
+                return;
             }
-            // Add similar client-side checks for other gateways if applicable before hitting backend
 
             displayFormStatus(paymentFormGlobalStatus, 'Processing your payment...', 'loading', true, 'payment_status_processing');
-            const submitBtn = paymentSubmitButton; // Cache ref
-            submitBtn.disabled = true;
+            if(paymentSubmitButton) paymentSubmitButton.disabled = true;
 
             const paymentData = {
                 planId: currentSelectedPlan.id,
                 planName: currentSelectedPlan.name,
-                amountUSD: parseFloat(currentSelectedPlan.priceUsd).toFixed(2), // Send consistent USD amount
-                currency: 'USD', // Always send USD to backend
+                amountUSD: parseFloat(currentSelectedPlan.priceUsd).toFixed(2),
+                currency: 'USD',
                 billingCycle: currentSelectedPlan.billingCycle,
-                gateway: currentPaymentGateway,
-                mpesaPhone: currentPaymentGateway === 'mpesa' ? mpesaPhoneInput?.value : undefined,
-                // Add other gateway specific data here
+                gateway: 'card_processor', // Your backend's identifier for this
+                cardholderName: paymentCardholderNameInput.value,
+                email: paymentEmailInput.value,
+                // IMPORTANT: In a real app, you would send a payment token from Stripe.js/Braintree etc. NOT raw card details.
+                // For simulation:
+                // paymentToken: "simulated_token_for_" + getCardType(paymentCardNumberInput.value)
             };
 
             try {
-                // Backend Integration: Use fetchAuthenticated from apiUtils.js
-                // const response = await fetchAuthenticated('/api/payments/subscribe', { 
-                //     method: 'POST', 
-                //     body: JSON.stringify(paymentData) 
+                console.log("Submitting Card Payment Data:", paymentData);
+                // TODO: Replace with actual fetchAuthenticated call to your backend, sending the payment token.
+                // const result = await fetchAuthenticated('/api/payments/charge-card', {
+                // method: 'POST',
+                // body: JSON.stringify(paymentData)
                 // });
-                // const result = response; // fetchAuthenticated should parse JSON
 
-                console.log("Submitting Payment Data:", paymentData); //
-                await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate API call
-                const result = { success: true, message_key: "payment_status_success_subscription" }; // Simulate success
+                await new Promise(resolve => setTimeout(resolve, 2500)); // Simulate API call
+                const result = { success: Math.random() > 0.1, message_key: "payment_status_success_subscription" };
 
                 if (result.success) {
-                    displayFormStatus(paymentFormGlobalStatus, 'Subscription successful!', 'success', false, result.message_key);
-                    setTimeout(closePaymentModal, 3000);
-                    // Backend Integration: Redirect to a thank you page or user dashboard
-                    // window.location.href = '/dashboard?plan_activated=' + currentSelectedPlan.id;
+                    displayFormStatus(paymentFormGlobalStatus, 'Payment successful! Thank you for your purchase.', 'success', false, result.message_key);
+                    setTimeout(() => {
+                        closePaymentModal();
+                        // Potentially redirect or update UI to reflect purchase
+                        // window.location.href = '/dashboard?plan_activated=' + currentSelectedPlan.id;
+                    }, 3000);
                 } else {
-                    displayFormStatus(paymentFormGlobalStatus, result.message || 'Payment failed. Please try again.', 'error', false, result.message_key || 'payment_status_error_generic');
-                    submitBtn.disabled = false; // Re-enable on failure
+                    displayFormStatus(paymentFormGlobalStatus, result.message || 'Payment failed. Please check your details or try another card.', 'error', false, result.message_key || 'payment_status_error_generic');
+                    if(paymentSubmitButton) paymentSubmitButton.disabled = false;
                 }
             } catch (error) {
-                console.error('Payment Submission Error:', error);
-                displayFormStatus(paymentFormGlobalStatus, error.message || 'A network error occurred during payment.', 'error', false, 'payment_status_error_network');
-                submitBtn.disabled = false; // Re-enable on error
+                console.error('Card Payment Submission Error:', error);
+                displayFormStatus(paymentFormGlobalStatus, error.message || 'A network error occurred. Please try again.', 'error', false, 'payment_status_error_network');
+                if(paymentSubmitButton) paymentSubmitButton.disabled = false;
             }
         });
     }
 
-    // Contact Form Submission
-    if (contactForm) { //
+
+    // Contact Form Submission (remains the same)
+    if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             if(contactStatusDiv) clearFormStatus(contactStatusDiv);
@@ -347,12 +325,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = Object.fromEntries(formData.entries());
 
             try {
-                // Backend Integration: Send 'data' to your contact form endpoint
-                // Example: const response = await fetchAuthenticated('/api/contact-us', { method: 'POST', body: JSON.stringify(data) });
-                // const result = response;
-                console.log("Submitting Contact Form Data:", data); //
+                console.log("Submitting Contact Form Data:", data);
                 await new Promise(resolve => setTimeout(resolve, 1500));
-                const result = { success: true, message_key: "contact_status_success" }; // Simulated success
+                const result = { success: true, message_key: "contact_status_success" };
 
                 if (result.success) {
                     displayFormStatus(contactStatusDiv, "Message sent successfully!", 'success', false, result.message_key);
@@ -367,14 +342,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (submitButton) submitButton.disabled = false;
             }
         });
-        contactForm.querySelectorAll('input[required], select[required], textarea[required]').forEach(input => { //
+        contactForm.querySelectorAll('input[required], select[required], textarea[required]').forEach(input => {
             input.addEventListener('input', () => validateInput(input));
         });
     }
 
-    // --- Initializations ---
-    // The global.js script should handle initial theme, language, and currency updates.
-    // The footer year update is now primarily handled by componentLoader.js after footer loads.
-
-    console.log("Uplas Pricing Page (upricing.js) refined and initialized."); //
+    console.log("Uplas Pricing Page (upricing.js) refined and initialized for single card payment.");
 });
