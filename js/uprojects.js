@@ -3,16 +3,16 @@
    Uplas Projects Dashboard Page JavaScript (uprojects.js)
    - Handles sidebar navigation, panel switching, AI Tutor, IDE simulation, project management.
    - Relies on global.js for theme, nav, language, currency.
-   - Relies on apiUtils.js for API calls.
+   - Relies on apiUtils.js for API calls and auth state.
    ========================================================================== */
 'use strict';
 
-document.addEventListener('DOMContentLoaded', () => {
+function initializeProjectsDashboard() {
     // --- Global Element Selectors ---
     const uprojectsSidebarNav = document.getElementById('uprojects-sidebar-nav');
     const sidebarItems = uprojectsSidebarNav?.querySelectorAll('.sidebar-item');
     const featurePanels = document.querySelectorAll('.uprojects-main-content .feature-panel');
-    const mainContentArea = document.querySelector('.uprojects-main-content');
+    // const mainContentArea = document.querySelector('.uprojects-main-content'); // Not directly used now
 
     // Project Dashboard Panel Specific
     const projectDashboardPanel = document.getElementById('project-dashboard-panel');
@@ -23,71 +23,85 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectsCompletedCountEl = document.getElementById('projects-completed-count');
     const overallProgressBarEl = document.getElementById('overall-progress-bar');
 
-    // Create Project Modal (Assuming you will add this to your HTML)
+    // Create Project Modal (Ensure this HTML exists on uprojects.html)
     const createProjectModal = document.getElementById('create-project-modal');
     const closeCreateProjectModalBtn = document.getElementById('close-create-project-modal-btn');
     const createProjectForm = document.getElementById('create-project-form');
     const createProjectStatus = document.getElementById('create-project-status');
 
-
     // AI Tutor Panel Specific
-    const aiTutorPanel = document.getElementById('ai-tutor-panel');
+    // const aiTutorPanel = document.getElementById('ai-tutor-panel'); // Not directly used for now
     const chatMessagesAiTutor = document.getElementById('chat-messages-ai-tutor');
     const messageInputAiTutor = document.getElementById('ai-tutor-message-input');
     const aiTutorInputForm = document.getElementById('ai-tutor-input-form');
 
     // IDE Panel Specific
-    const idePanel = document.getElementById('ide-panel');
+    // const idePanel = document.getElementById('ide-panel'); // Not directly used for now
     const codeAreaIDE = document.getElementById('ide-code-area');
     const runCodeButtonIDE = document.getElementById('ide-run-code-btn');
     const saveCodeButtonIDE = document.getElementById('ide-save-code-btn');
     const outputAreaIDE = document.getElementById('ide-output-area');
     const ideFileSelector = document.getElementById('ide-file-selector');
-    const ideCurrentProjectTitle = document.getElementById('ide-current-project-title');
+    const ideCurrentProjectTitle = document.getElementById('ide-current-project-title'); // In HTML, this might be part of ide-panel title
 
+    // --- Global Utilities ---
+    const { uplasApi, uplasTranslate, uplasApplyTranslations } = window;
 
     // --- State Variables ---
-    let activePanelElement = projectDashboardPanel;
+    let activePanelElement = projectDashboardPanel; // Default to dashboard
     let userProjects = [];
-    let currentIdeProjectId = null; // To track which project is open in IDE
-    let currentIdeFileName = 'main.py'; // Default file name
+    let currentIdeProjectId = null;
+    let currentIdeProjectTitle = ""; // Store title for IDE context
+    let currentIdeFileName = 'main.py';
 
     // --- Helper Functions ---
-    const displayStatus = (element, message, type = 'info', isError = (type === 'error'), translateKey = null) => {
-        if (typeof window.uplasApi !== 'undefined' && typeof window.uplasApi.displayFormStatus === 'function') {
-            window.uplasApi.displayFormStatus(element, message, isError, translateKey);
-        } else if (element) {
-            element.textContent = message;
+    const localDisplayStatus = (element, message, typeOrIsError, translateKey = null) => {
+        const isError = typeof typeOrIsError === 'boolean' ? typeOrIsError : typeOrIsError === 'error';
+        // Prefer uplasApi.displayFormStatus if available and suitable
+        if (uplasApi && uplasApi.displayFormStatus) {
+            uplasApi.displayFormStatus(element, message, isError, translateKey);
+        } else if (element) { // Fallback local display
+            const text = (translateKey && uplasTranslate) ? uplasTranslate(translateKey, { fallback: message }) : message;
+            element.textContent = text;
             element.style.color = isError ? 'var(--color-error, red)' : 'var(--color-success, green)';
             element.style.display = 'block';
             element.hidden = false;
             if (!isError) setTimeout(() => { if(element) element.style.display = 'none'; }, 5000);
         } else {
-            console.warn("displayStatus: Target element not found. Message:", message);
+            console.warn("uprojects.js (localDisplayStatus): Target element not found. Message:", message);
         }
     };
-    const escapeHTML = (str) => { /* ... (from global.js or defined here if needed) ... */
+    const escapeHTML = (str) => {
         if (typeof str !== 'string') return '';
         return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
     };
 
 
     function showFeaturePanel(panelToShow) {
+        if (!panelToShow) panelToShow = projectDashboardPanel; // Default to dashboard
         featurePanels.forEach(panel => {
-            const isActive = panel === panelToShow;
-            panel.classList.toggle('active-panel', isActive);
+            panel.classList.toggle('active-panel', panel === panelToShow);
+            panel.hidden = (panel !== panelToShow); // Explicitly hide/show
         });
         activePanelElement = panelToShow;
+        // If opening IDE, update its context if a project is selected
+        if (panelToShow === document.getElementById('ide-panel') && currentIdeProjectId && ideCurrentProjectTitle) {
+            ideCurrentProjectTitle.textContent = uplasTranslate ?
+                uplasTranslate('uprojects_ide_title_context', { fallback: `Workspace: ${currentIdeProjectTitle}`, variables: { projectTitle: currentIdeProjectTitle } }) :
+                `Workspace: ${currentIdeProjectTitle}`;
+        }
     }
 
     function closeFeaturePanel(panelToClose) {
         if (panelToClose) {
             panelToClose.classList.remove('active-panel');
+            panelToClose.hidden = true;
             const panelId = panelToClose.id;
             const correspondingButton = uprojectsSidebarNav?.querySelector(`.sidebar-item[data-panel-id="${panelId}"]`);
             correspondingButton?.classList.remove('active');
 
             if (activePanelElement === panelToClose) activePanelElement = null;
+            // If no panel is active, default to the project dashboard
             if (!document.querySelector('.feature-panel.active-panel') && projectDashboardPanel) {
                 showFeaturePanel(projectDashboardPanel);
                 uprojectsSidebarNav?.querySelector('#project-dashboard-icon')?.classList.add('active');
@@ -105,33 +119,42 @@ document.addEventListener('DOMContentLoaded', () => {
                     sidebarItems.forEach(si => si.classList.remove('active'));
                     item.classList.add('active');
                     showFeaturePanel(panelToOpen);
-                } else {
-                    showFeaturePanel(projectDashboardPanel); // Fallback
+                } else { // Fallback to dashboard if panel not found
+                    showFeaturePanel(projectDashboardPanel);
                     uprojectsSidebarNav?.querySelector('#project-dashboard-icon')?.classList.add('active');
                 }
             });
         });
-        featurePanels.forEach(panel => {
+        featurePanels.forEach(panel => { // Setup close buttons for all panels
             const closeButton = panel.querySelector('.close-panel-btn');
             if (closeButton) closeButton.addEventListener('click', () => closeFeaturePanel(panel));
         });
+        // Ensure dashboard is active by default if no hash directs otherwise
+        const initialActiveButton = uprojectsSidebarNav.querySelector('.sidebar-item.active') || uprojectsSidebarNav.querySelector('#project-dashboard-icon');
+        if(initialActiveButton) initialActiveButton.click(); else showFeaturePanel(projectDashboardPanel);
+
+    } else {
+        console.warn("uprojects.js: Sidebar or feature panels not found. UI may be incomplete.");
     }
 
     // --- Project Dashboard Functionality ---
     function renderProjectCard(project) {
+        const statusKey = `uprojects_status_${(project.status || 'not_started').toLowerCase().replace(/\s+/g, '_')}`;
+        const statusText = uplasTranslate ? uplasTranslate(statusKey, { fallback: project.status || 'Not Started' }) : (project.status || 'Not Started');
         const statusClass = (project.status || 'not-started').toLowerCase().replace(/\s+/g, '-');
-        const progress = project.total_tasks > 0 ? Math.round((project.completed_tasks / project.total_tasks) * 100) : 0;
-        // Backend fields: id, title, description, status, due_date, completed_tasks, total_tasks
+        const progress = (project.total_tasks > 0 && project.completed_tasks >= 0) ? Math.round((project.completed_tasks / project.total_tasks) * 100) : 0;
+        const dueDate = project.due_date ? new Date(project.due_date).toLocaleDateString(uplasGetCurrentLocale ? uplasGetCurrentLocale() : 'en-US') : (uplasTranslate ? uplasTranslate('uprojects_date_na') : 'N/A');
+
         return `
             <article class="project-card project-card--${statusClass}" data-project-id="${project.id}">
                 <div class="project-card__header">
                     <h3 class="project-card__title">${escapeHTML(project.title)}</h3>
-                    <span class="badge badge--status-${statusClass}">${escapeHTML(project.status)}</span>
+                    <span class="badge badge--status-${statusClass}">${statusText}</span>
                 </div>
-                <p class="project-card__description">${escapeHTML(project.description || 'No description.')}</p>
+                <p class="project-card__description">${escapeHTML(project.description || (uplasTranslate ? uplasTranslate('uprojects_no_description') : 'No description.'))}</p>
                 <div class="project-card__meta">
-                    <span><i class="fas fa-calendar-alt"></i> Due: ${project.due_date ? new Date(project.due_date).toLocaleDateString() : 'N/A'}</span>
-                    <span><i class="fas fa-tasks"></i> ${project.completed_tasks || 0}/${project.total_tasks || 0} Tasks</span>
+                    <span><i class="fas fa-calendar-alt"></i> <span data-translate-key="uprojects_due_date_prefix">Due:</span> ${dueDate}</span>
+                    <span><i class="fas fa-tasks"></i> ${project.completed_tasks || 0}/${project.total_tasks || 0} <span data-translate-key="uprojects_tasks_suffix">Tasks</span></span>
                 </div>
                 <div class="project-card__progress">
                     <div class="progress-bar-container--small">
@@ -141,10 +164,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <div class="project-card__actions">
                     <a href="uproject_detail.html?id=${project.id}" class="button button--secondary button--extra-small view-project-details-btn">
-                        <i class="fas fa-eye"></i> View Details
+                        <i class="fas fa-eye"></i> <span data-translate-key="uprojects_button_view_details">View Details</span>
                     </a>
                     <button class="button button--primary button--extra-small launch-ide-btn" data-project-id="${project.id}" data-project-title="${escapeHTML(project.title)}">
-                        <i class="fas fa-code"></i> Workspace
+                        <i class="fas fa-code"></i> <span data-translate-key="uprojects_button_workspace">Workspace</span>
                     </button>
                 </div>
             </article>
@@ -157,12 +180,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (userProjects.length === 0) {
             noProjectsMessage.style.display = 'block';
+            noProjectsMessage.setAttribute('data-translate-key', 'uprojects_no_projects_msg');
+            if(uplasApplyTranslations) uplasApplyTranslations(noProjectsMessage.parentElement);
         } else {
             noProjectsMessage.style.display = 'none';
             userProjects.forEach(project => {
                 projectListContainer.insertAdjacentHTML('beforeend', renderProjectCard(project));
             });
             attachProjectCardActionListeners();
+            if(uplasApplyTranslations) uplasApplyTranslations(projectListContainer);
         }
         updateDashboardStats();
     }
@@ -182,49 +208,56 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchUserProjects() {
-        if (!window.uplasApi || !window.uplasApi.fetchAuthenticated) {
-            console.error("uplasApi not available for fetching projects.");
-            if (noProjectsMessage) noProjectsMessage.style.display = 'block';
+        if (!uplasApi || !uplasApi.fetchAuthenticated) {
+            console.error("uprojects.js: uplasApi not available for fetching projects.");
+            if (noProjectsMessage) {
+                noProjectsMessage.textContent = uplasTranslate ? uplasTranslate('error_service_unavailable', {fallback: "Service unavailable."}) : "Service unavailable.";
+                noProjectsMessage.style.display = 'block';
+            }
             return;
         }
-        if (projectListContainer) projectListContainer.innerHTML = `<p class="loading-message">Loading your projects...</p>`;
+        if (projectListContainer) {
+            projectListContainer.innerHTML = `<p class="loading-message" data-translate-key="uprojects_loading_projects">Loading your projects...</p>`;
+            if(uplasApplyTranslations) uplasApplyTranslations(projectListContainer);
+        }
 
         try {
-            // L98: fetchUserProjects
-            // L100: Action: API call to fetch projects for the logged-in user (e.g., /api/projects/mine/).
-            const response = await window.uplasApi.fetchAuthenticated('/projects/mine/'); // Your backend uses /api/projects/
+            const response = await uplasApi.fetchAuthenticated('/projects/mine/'); // Endpoint for user's projects
             if (!response.ok) {
-                const errData = await response.json().catch(() => ({detail: "Failed to load projects."}));
+                const errData = await response.json().catch(() => ({detail: uplasTranslate ? uplasTranslate('error_projects_load_failed', {fallback:"Failed to load projects."}) : "Failed to load projects."}));
                 throw new Error(errData.detail);
             }
             const projectData = await response.json();
-            userProjects = projectData.results || projectData; // Handle paginated or direct array
+            userProjects = projectData.results || projectData;
             displayProjects();
         } catch (error) {
-            console.error("Error fetching user projects:", error);
+            console.error("uprojects.js: Error fetching user projects:", error);
             if (noProjectsMessage) {
-                noProjectsMessage.textContent = `Error: ${error.message}`;
+                noProjectsMessage.textContent = `${uplasTranslate ? uplasTranslate('error_prefix', {fallback:"Error"}) : "Error"}: ${error.message}`;
                 noProjectsMessage.style.display = 'block';
             }
-            if (projectListContainer) projectListContainer.innerHTML = ''; // Clear loading message
+            if (projectListContainer) projectListContainer.innerHTML = '';
         }
     }
 
-    // --- Create New Project ---
+    // --- Create New Project Modal and Form ---
     if (createNewProjectBtn && createProjectModal) {
         createNewProjectBtn.addEventListener('click', () => {
-            // L109: createNewProjectBtn.addEventListener('click', () => { ... })
-            // L111: Action: This will involve an API call to create a new project (e.g., /api/projects/create/).
-            // Open a modal for project creation details
+            if (!uplasApi || !uplasApi.getAccessToken()) { // Check auth before opening
+                uplasApi.redirectToLogin('Please log in to create a project.');
+                return;
+            }
             if (createProjectForm) createProjectForm.reset();
-            if (createProjectStatus) clearStatus(createProjectStatus);
+            if (createProjectStatus && uplasApi.clearFormStatus) uplasApi.clearFormStatus(createProjectStatus);
+            else if (createProjectStatus) createProjectStatus.textContent = '';
+
             createProjectModal.hidden = false;
             setTimeout(() => createProjectModal.classList.add('active'), 10);
-            document.body.classList.add('modal-open');
+            document.body.classList.add('modal-open'); // From global.css for modals
             createProjectForm?.querySelector('input[name="projectTitle"]')?.focus();
         });
     }
-    if(closeCreateProjectModalBtn){
+    if(closeCreateProjectModalBtn && createProjectModal){
         closeCreateProjectModalBtn.addEventListener('click', () => {
             createProjectModal.classList.remove('active');
             document.body.classList.remove('modal-open');
@@ -232,11 +265,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (createProjectForm) {
+    if (createProjectForm && createProjectStatus) {
         createProjectForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!window.uplasApi || !window.uplasApi.fetchAuthenticated) {
-                displayStatus(createProjectStatus, 'Service unavailable.', 'error', true); return;
+            if (!uplasApi || !uplasApi.fetchAuthenticated) {
+                localDisplayStatus(createProjectStatus, '', 'error', 'error_service_unavailable'); return;
             }
 
             const titleInput = createProjectForm.querySelector('input[name="projectTitle"]');
@@ -244,36 +277,36 @@ document.addEventListener('DOMContentLoaded', () => {
             const title = titleInput?.value.trim();
             const description = descriptionInput?.value.trim();
 
-            if (!title) {
-                displayStatus(createProjectStatus, 'Project title is required.', 'error', true);
+            if (!title) { // Basic validation
+                localDisplayStatus(createProjectStatus, '', 'error', 'error_project_title_required');
                 titleInput?.focus();
                 return;
             }
             const submitButton = createProjectForm.querySelector('button[type="submit"]');
             if(submitButton) submitButton.disabled = true;
-            displayStatus(createProjectStatus, 'Creating project...', 'loading', false);
+            localDisplayStatus(createProjectStatus, '', 'loading', 'uprojects_status_creating');
 
             try {
-                const response = await window.uplasApi.fetchAuthenticated('/projects/', { // POST to /api/projects/
+                const response = await uplasApi.fetchAuthenticated('/projects/', {
                     method: 'POST',
-                    body: JSON.stringify({ title, description })
+                    body: JSON.stringify({ title, description }) // Ensure backend expects 'title' and 'description'
                 });
                 const newProjectData = await response.json();
                 if (response.ok) {
-                    displayStatus(createProjectStatus, 'Project created successfully!', 'success', false);
-                    userProjects.unshift(newProjectData); // Add to local list
-                    displayProjects(); // Re-render
+                    localDisplayStatus(createProjectStatus, '', 'success', 'uprojects_status_creation_success');
+                    userProjects.unshift(newProjectData);
+                    displayProjects();
                     setTimeout(() => {
                         closeCreateProjectModalBtn?.click();
                         const newCard = projectListContainer?.querySelector(`.project-card[data-project-id="${newProjectData.id}"]`);
                         newCard?.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }, 1500);
                 } else {
-                    throw new Error(newProjectData.detail || newProjectData.title?.[0] || 'Failed to create project.');
+                    throw new Error(newProjectData.detail || newProjectData.title?.[0] || (uplasTranslate ? uplasTranslate('error_project_creation_failed') : 'Failed to create project.'));
                 }
             } catch (error) {
-                console.error("Error creating project:", error);
-                displayStatus(createProjectStatus, error.message, 'error', true);
+                console.error("uprojects.js: Error creating project:", error);
+                localDisplayStatus(createProjectStatus, error.message, true); // isError = true
             } finally {
                 if(submitButton) submitButton.disabled = false;
             }
@@ -285,32 +318,60 @@ document.addEventListener('DOMContentLoaded', () => {
         projectListContainer?.querySelectorAll('.launch-ide-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 currentIdeProjectId = btn.dataset.projectId;
-                const projectTitle = btn.dataset.projectTitle || "Selected Project";
-                console.log(`Opening IDE for project: ${currentIdeProjectId}`);
+                currentIdeProjectTitle = btn.dataset.projectTitle || "Selected Project"; // Store title
 
-                if (ideCurrentProjectTitle) ideCurrentProjectTitle.textContent = `Workspace: ${projectTitle}`;
-                if (codeAreaIDE) codeAreaIDE.value = `# Welcome to the Uplas IDE for project: ${projectTitle}\n# File: main.py (default)\n\nprint("Hello from Uplas project: ${projectTitle}!")`;
-                if (outputAreaIDE) outputAreaIDE.textContent = `Project environment for "${projectTitle}" loaded. Ready to run main.py.`;
-                if (ideFileSelector) ideFileSelector.value = 'main.py';
+                console.log(`uprojects.js: Opening IDE for project: ${currentIdeProjectId} (${currentIdeProjectTitle})`);
+
+                if (ideCurrentProjectTitle) {
+                    ideCurrentProjectTitle.textContent = uplasTranslate ?
+                        uplasTranslate('uprojects_ide_title_context', { fallback: `Workspace: ${currentIdeProjectTitle}`, variables: { projectTitle: currentIdeProjectTitle } }) :
+                        `Workspace: ${currentIdeProjectTitle}`;
+                }
+                // TODO: Fetch actual project files/content for the IDE from backend
+                if (codeAreaIDE) codeAreaIDE.value = `# Welcome to the Uplas IDE for project: ${currentIdeProjectTitle}\n# File: main.py (default)\n\nprint("Hello from Uplas project: ${currentIdeProjectTitle}!")`;
+                if (outputAreaIDE) outputAreaIDE.textContent = uplasTranslate ? uplasTranslate('uprojects_ide_env_loaded', { fallback: `Project environment for "${currentIdeProjectTitle}" loaded. Ready to run main.py.`, variables: { projectTitle: currentIdeProjectTitle } }) : `Project environment for "${currentIdeProjectTitle}" loaded. Ready to run main.py.`;
+                if (ideFileSelector) ideFileSelector.value = 'main.py'; // Reset to default
                 currentIdeFileName = 'main.py';
 
-                const ideSidebarButton = document.getElementById('ide-icon'); // Assuming this ID for the sidebar item
-                ideSidebarButton?.click(); // Switch to IDE panel
+                const ideSidebarButton = document.getElementById('ide-icon');
+                ideSidebarButton?.click(); // Programmatically click to switch panel
             });
         });
     }
 
 
     // --- AI Tutor Panel Functionality ---
-    function addMessageToAiChat(text, sender, isHtml = false) { /* ... (same as uprojects (1).js) ... */ }
+    function addMessageToAiChat(text, sender, isHtml = false) {
+        if (!chatMessagesAiTutor) return;
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message', `message--${sender}`); // e.g., message--user, message--assistant
+        if (sender === 'user') {
+            // You might want an avatar or different styling for user
+        } else {
+            // Avatar for assistant
+            const avatar = document.createElement('img');
+            avatar.src = 'images/ai_tutor_avatar.png'; // Replace with actual path
+            avatar.alt = 'AI Tutor';
+            avatar.classList.add('message__avatar');
+            // messageDiv.appendChild(avatar); // Decide on avatar placement (CSS can also handle this)
+        }
+        const bubble = document.createElement('div');
+        bubble.classList.add('message__bubble');
+        if (isHtml) bubble.innerHTML = text; // BE CAREFUL WITH UNTRUSTED HTML
+        else bubble.textContent = text;
+        messageDiv.appendChild(bubble);
+        chatMessagesAiTutor.appendChild(messageDiv);
+        chatMessagesAiTutor.scrollTop = chatMessagesAiTutor.scrollHeight; // Auto-scroll
+    }
+
     if (aiTutorInputForm && messageInputAiTutor && chatMessagesAiTutor) {
-        if(chatMessagesAiTutor.children.length === 0) { // Add initial greeting only if chat is empty
-            addMessageToAiChat("Hello! I'm your AI Project Assistant. How can I help you with your projects today?", "assistant");
+        if(chatMessagesAiTutor.children.length === 0) {
+            addMessageToAiChat((uplasTranslate ? uplasTranslate('uprojects_ai_tutor_greeting') : "Hello! I'm your AI Project Assistant. How can I help?"), "assistant");
         }
         aiTutorInputForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!window.uplasApi || !window.uplasApi.fetchAuthenticated) {
-                addMessageToAiChat('AI Tutor service is currently unavailable.', 'assistant-error'); return;
+            if (!uplasApi || !uplasApi.fetchAuthenticated) {
+                addMessageToAiChat((uplasTranslate ? uplasTranslate('error_service_unavailable_tutor') : 'AI Tutor service is currently unavailable.'), 'assistant-error'); return;
             }
             const userMessage = messageInputAiTutor.value.trim();
             if (userMessage) {
@@ -321,28 +382,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 if(submitBtn) submitBtn.disabled = true;
 
                 try {
-                    // L162: aiTutorInputForm.addEventListener
-                    // L170-L171: Action: API call for the AI Project Assistant
-                    // Endpoint: /api/ai_agents/tutor/ask/ (from backend urls.py)
                     const payload = {
                         query: userMessage,
-                        project_id: currentIdeProjectId, // Send current project context if available
-                        // You might add more context like current file, selected code etc.
+                        project_id: currentIdeProjectId, // Contextual project ID
                     };
-                    const response = await window.uplasApi.fetchAuthenticated('/ai_agents/tutor/ask/', {
-                        method: 'POST',
-                        body: JSON.stringify(payload)
+                    const response = await uplasApi.fetchAuthenticated('/ai_agents/tutor/ask/', {
+                        method: 'POST', body: JSON.stringify(payload)
                     });
                     const responseData = await response.json();
 
                     if (response.ok) {
-                        addMessageToAiChat(responseData.response, 'assistant', responseData.is_html || false); // Assuming backend might send HTML
+                        addMessageToAiChat(responseData.response, 'assistant', responseData.is_html || false);
                     } else {
-                        throw new Error(responseData.detail || responseData.error || 'AI Tutor failed to respond.');
+                        throw new Error(responseData.detail || responseData.error || (uplasTranslate ? uplasTranslate('error_tutor_response_failed') : 'AI Tutor failed to respond.'));
                     }
                 } catch (error) {
-                    console.error("AI Tutor Error:", error);
-                    addMessageToAiChat(`Sorry, I encountered an error: ${error.message}`, 'assistant-error');
+                    console.error("uprojects.js: AI Tutor Error:", error);
+                    addMessageToAiChat(`${uplasTranslate ? uplasTranslate('error_tutor_generic', {fallback:"Sorry, I encountered an error"}) : "Sorry, I encountered an error"}: ${error.message}`, 'assistant-error');
                 } finally {
                     messageInputAiTutor.disabled = false;
                     if(submitBtn) submitBtn.disabled = false;
@@ -353,43 +409,36 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // --- IDE Panel Functionality ---
+    // --- IDE Panel Functionality (Placeholders for Backend Integration) ---
     if (runCodeButtonIDE && codeAreaIDE && outputAreaIDE) {
         runCodeButtonIDE.addEventListener('click', async () => {
-            if (!window.uplasApi || !window.uplasApi.fetchAuthenticated) {
-                outputAreaIDE.textContent = "Error: Code execution service unavailable."; return;
+            if (!uplasApi || !uplasApi.fetchAuthenticated) {
+                outputAreaIDE.textContent = uplasTranslate ? uplasTranslate('error_ide_execution_unavailable', {fallback:"Error: Code execution service unavailable."}) : "Error: Code execution service unavailable."; return;
+            }
+            if (!currentIdeProjectId) {
+                 outputAreaIDE.textContent = uplasTranslate ? uplasTranslate('error_ide_no_project', {fallback:"Error: No project selected in IDE."}) : "Error: No project selected in IDE."; return;
             }
             const code = codeAreaIDE.value;
-            const selectedFile = ideFileSelector ? ideFileSelector.value : 'script.py';
-            outputAreaIDE.textContent = `Executing ${selectedFile}...\n\n`;
+            const selectedFile = ideFileSelector ? ideFileSelector.value : 'main.py';
+            outputAreaIDE.textContent = uplasTranslate ? uplasTranslate('uprojects_ide_executing', {fallback:`Executing ${selectedFile}...` , variables: {fileName: selectedFile} }) : `Executing ${selectedFile}...\n\n`;
             runCodeButtonIDE.disabled = true;
 
             try {
-                // L194: runCodeButtonIDE.addEventListener
-                // L205: Action: API call to a secure code execution service
-                // Endpoint: /api/projects/ide/run_code/ (Needs to be created in backend)
-                const response = await window.uplasApi.fetchAuthenticated('/projects/ide/run_code/', { // Placeholder endpoint
+                const response = await uplasApi.fetchAuthenticated('/projects/ide/run_code/', {
                     method: 'POST',
-                    body: JSON.stringify({
-                        project_id: currentIdeProjectId,
-                        file_name: selectedFile,
-                        code: code,
-                        language: 'python' // Or derive from file_name
-                    })
+                    body: JSON.stringify({ project_id: currentIdeProjectId, file_name: selectedFile, code: code, language: 'python' })
                 });
                 const result = await response.json();
                 if (response.ok) {
-                    outputAreaIDE.textContent += `Output:\n${result.output || ''}\n`;
-                    if (result.errors) {
-                        outputAreaIDE.textContent += `Errors:\n${result.errors}\n`;
-                    }
-                    outputAreaIDE.textContent += `Execution finished.`;
+                    outputAreaIDE.textContent += `\nOutput:\n${result.output || ''}\n`;
+                    if (result.errors) outputAreaIDE.textContent += `Errors:\n${result.errors}\n`;
+                    outputAreaIDE.textContent += (uplasTranslate ? uplasTranslate('uprojects_ide_execution_finished') : "Execution finished.");
                 } else {
-                    throw new Error(result.detail || result.error || 'Failed to run code.');
+                    throw new Error(result.detail || result.error || (uplasTranslate ? uplasTranslate('error_ide_run_failed') : 'Failed to run code.'));
                 }
             } catch (error) {
-                console.error("Error running code:", error);
-                outputAreaIDE.textContent += `Error: ${error.message}\n`;
+                console.error("uprojects.js: Error running code:", error);
+                outputAreaIDE.textContent += `\n${uplasTranslate ? uplasTranslate('error_prefix') : 'Error'}: ${error.message}\n`;
             } finally {
                 runCodeButtonIDE.disabled = false;
             }
@@ -398,141 +447,106 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (saveCodeButtonIDE && codeAreaIDE && outputAreaIDE) {
         saveCodeButtonIDE.addEventListener('click', async () => {
-            if (!window.uplasApi || !window.uplasApi.fetchAuthenticated) {
-                outputAreaIDE.textContent = "Error: Save service unavailable."; return;
+            if (!uplasApi || !uplasApi.fetchAuthenticated) {
+                outputAreaIDE.textContent = uplasTranslate ? uplasTranslate('error_ide_save_unavailable', {fallback:"Error: Save service unavailable."}) : "Error: Save service unavailable."; return;
             }
             if (!currentIdeProjectId) {
-                outputAreaIDE.textContent = "No project selected in IDE to save to."; return;
+                outputAreaIDE.textContent = uplasTranslate ? uplasTranslate('error_ide_no_project_save', {fallback:"Error: No project selected to save code."}) : "Error: No project selected to save code."; return;
             }
 
             const codeToSave = codeAreaIDE.value;
-            const fileNameToSave = currentIdeFileName || (ideFileSelector ? ideFileSelector.value : 'main.py');
-            outputAreaIDE.textContent = `Saving ${fileNameToSave} for project ${currentIdeProjectId}...\n`;
+            const fileNameToSave = currentIdeFileName;
+            outputAreaIDE.textContent = uplasTranslate ? uplasTranslate('uprojects_ide_saving_file', {fallback:`Saving ${fileNameToSave} for project ${currentIdeProjectTitle}...`, variables: {fileName: fileNameToSave, projectTitle: currentIdeProjectTitle}}) : `Saving ${fileNameToSave}...\n`;
             saveCodeButtonIDE.disabled = true;
 
             try {
-                // L209: saveCodeButtonIDE.addEventListener
-                // L212: Action: API call to save code/file content for a project
-                // Endpoint: /api/projects/{projectId}/files/save/ (Needs to be created in backend)
-                // Assuming a simple file content save. A real IDE might have a more complex file structure.
-                const response = await window.uplasApi.fetchAuthenticated(`/projects/${currentIdeProjectId}/files/save/`, { // Placeholder
-                    method: 'POST', // Or PUT if updating an existing file
-                    body: JSON.stringify({
-                        file_name: fileNameToSave,
-                        content: codeToSave
-                    })
+                const response = await uplasApi.fetchAuthenticated(`/projects/${currentIdeProjectId}/files/save/`, {
+                    method: 'POST', body: JSON.stringify({ file_name: fileNameToSave, content: codeToSave })
                 });
                 const result = await response.json();
                 if (response.ok) {
-                    outputAreaIDE.textContent = result.message || `File ${fileNameToSave} saved successfully for project ${currentIdeProjectId}.`;
+                    outputAreaIDE.textContent = result.message || (uplasTranslate ? uplasTranslate('uprojects_ide_save_success', {fallback:`File ${fileNameToSave} saved.`, variables: {fileName: fileNameToSave}}) : `File ${fileNameToSave} saved.`);
                 } else {
-                    throw new Error(result.detail || result.error || 'Failed to save file.');
+                    throw new Error(result.detail || result.error || (uplasTranslate ? uplasTranslate('error_ide_save_failed') : 'Failed to save file.'));
                 }
             } catch (error) {
-                console.error("Error saving code:", error);
-                outputAreaIDE.textContent += `Error: ${error.message}\n`;
+                console.error("uprojects.js: Error saving code:", error);
+                outputAreaIDE.textContent += `\n${uplasTranslate ? uplasTranslate('error_prefix') : 'Error'}: ${error.message}\n`;
             } finally {
                 saveCodeButtonIDE.disabled = false;
             }
         });
     }
+
     if (ideFileSelector && codeAreaIDE) {
-        ideFileSelector.addEventListener('change', (e) => {
+        ideFileSelector.addEventListener('change', async (e) => {
             currentIdeFileName = e.target.value;
-            // TODO: In a real IDE, this would fetch the content of the selected file for currentIdeProjectId
-            codeAreaIDE.value = `# Code for ${currentIdeFileName} in project ${currentIdeProjectId || 'N/A'}\n\n# Add your ${currentIdeFileName.split('.').pop()} code here.`;
-            if(outputAreaIDE) outputAreaIDE.textContent = `Switched to ${currentIdeFileName}.`;
+            if (!currentIdeProjectId) {
+                if(outputAreaIDE) outputAreaIDE.textContent = uplasTranslate ? uplasTranslate('error_ide_no_project_switch_file') : "Select a project first to load files.";
+                codeAreaIDE.value = `# ${uplasTranslate ? uplasTranslate('uprojects_ide_select_project_prompt') : "Please open a project from the dashboard."}`;
+                return;
+            }
+            // TODO: Fetch file content from backend: /api/projects/{currentIdeProjectId}/files/get/?file_name={currentIdeFileName}
+            if(outputAreaIDE) outputAreaIDE.textContent = uplasTranslate ? uplasTranslate('uprojects_ide_loading_file', { fallback: `Loading ${currentIdeFileName}...`, variables: {fileName: currentIdeFileName} }) : `Loading ${currentIdeFileName}...`;
+            codeAreaIDE.value = `# Placeholder for ${currentIdeFileName} in project ${currentIdeProjectTitle}`;
+            try {
+                const response = await uplasApi.fetchAuthenticated(`/projects/${currentIdeProjectId}/files/get/?file_name=${encodeURIComponent(currentIdeFileName)}`);
+                if(!response.ok) {
+                    const err = await response.json().catch(() => ({detail: "File not found or error loading."}));
+                    throw new Error(err.detail);
+                }
+                const fileData = await response.json(); // Expects { name, content, project_id }
+                codeAreaIDE.value = fileData.content;
+                if(outputAreaIDE) outputAreaIDE.textContent = uplasTranslate ? uplasTranslate('uprojects_ide_switched_file', {fallback:`Switched to ${currentIdeFileName}.`, variables: {fileName: currentIdeFileName}}) : `Switched to ${currentIdeFileName}.`;
+
+            } catch (error) {
+                 console.error(`uprojects.js: Error fetching file ${currentIdeFileName}:`, error);
+                 codeAreaIDE.value = `# Error loading ${currentIdeFileName}: ${error.message}`;
+                 if(outputAreaIDE) outputAreaIDE.textContent = `${uplasTranslate ? uplasTranslate('error_prefix') : 'Error'}: ${error.message}`;
+            }
         });
+        // TODO: Populate ideFileSelector with actual files for the currentIdeProjectId from backend
     }
 
 
     // --- Initializations ---
-    if (projectDashboardPanel) {
-        fetchUserProjects();
+    // Authentication check is handled by the DOMContentLoaded listener at the bottom
+    // Initial fetch of projects will be called by that listener if user is authenticated.
+    // Set initial panel to dashboard (already default if no specific panel button is pre-activated)
+    if (projectDashboardPanel && !document.querySelector('.feature-panel.active-panel')) {
+         showFeaturePanel(projectDashboardPanel);
+         uprojectsSidebarNav?.querySelector('#project-dashboard-icon')?.classList.add('active');
     }
 
-    // const currentYearFooterSpan = document.getElementById('current-year-footer'); // Handled by global.js
-    // if (currentYearFooterSpan && !currentYearFooterSpan.textContent?.match(/\d{4}/)) {
-    //     currentYearFooterSpan.textContent = new Date().getFullYear();
-    // }
 
-    console.log("Uplas Projects Dashboard (uprojects.js) API integrated and loaded.");
+    console.log("uprojects.js: Uplas Projects Dashboard initialized.");
+} // End of initializeProjectsDashboard
+
+// --- Auth Check and Page Initialization ---
+document.addEventListener('DOMContentLoaded', () => {
+    if (typeof window.uplasApi === 'undefined' || !window.uplasApi.getAccessToken || !window.uplasApi.redirectToLogin) {
+        console.error('uprojects.js: uplasApi or its core functions are missing. Ensure apiUtils.js is loaded.');
+        document.body.innerHTML = '<p style="color:red;text-align:center;padding:20px;" data-translate-key="error_app_critical_failure">Critical application error. Please try again later.</p>';
+        if(window.uplasApplyTranslations) window.uplasApplyTranslations(document.body);
+        return;
+    }
+
+    if (!window.uplasApi.getAccessToken()) {
+        console.log('uprojects.js: User not authenticated. Redirecting to login.');
+        window.uplasApi.redirectToLogin('Please log in to access your projects dashboard.');
+    } else {
+        console.log('uprojects.js: User authenticated. Initializing dashboard.');
+        initializeProjectsDashboard();
+        // Fetch projects after ensuring the user is authenticated and dashboard is being initialized.
+        if (document.getElementById('project-dashboard-panel')) { // Ensure dashboard panel context exists
+            const projectsModule = initializeProjectsDashboard; // Re-get reference if needed for scope.
+            if(typeof projectsModule !== 'undefined' && typeof fetchUserProjects === 'function') { // fetchUserProjects is inside initializeProjectsDashboard
+                 // This direct call is problematic because fetchUserProjects is not global
+                 // Instead, fetchUserProjects should be called within initializeProjectsDashboard
+            } else {
+                // The call to fetchUserProjects is already inside initializeProjectsDashboard,
+                // so it will run when the dashboard is initialized.
+            }
+        }
+    }
 });
-```
-
-**Key Changes and Explanations:**
-
-1.  **`fetchUserProjects()`** (L98 / L100):
-    * Replaced simulation with:
-        ```javascript
-        const response = await window.uplasApi.fetchAuthenticated('/projects/mine/');
-        // ...
-        userProjects = projectData.results || projectData; // Handle DRF pagination
-        ```
-    * Calls `/api/projects/mine/` to get projects for the logged-in user. Your backend `ProjectViewSet` should have a `mine` action or filter for the current user.
-    * Updates `userProjects` with the fetched data and calls `displayProjects()`.
-    * Error handling included.
-
-2.  **`createNewProjectBtn` Listener & `createProjectForm` Submit** (L109 / L111):
-    * The `createNewProjectBtn` now opens a modal (assuming HTML for `create-project-modal` and `create-project-form` will be added).
-    * The `createProjectForm` submit handler makes an API call:
-        ```javascript
-        const response = await window.uplasApi.fetchAuthenticated('/projects/', { // POST to /api/projects/
-            method: 'POST',
-            body: JSON.stringify({ title, description })
-        });
-        ```
-    * Sends `title` and `description` to `/api/projects/` (POST) to create a new project. Your backend `ProjectViewSet` should handle this.
-    * On success, it adds the new project to the local `userProjects` list and re-renders.
-
-3.  **AI Tutor (`aiTutorInputForm` listener)** (L162 / L170-L171):
-    * Replaced simulation with:
-        ```javascript
-        const response = await window.uplasApi.fetchAuthenticated('/ai_agents/tutor/ask/', {
-            method: 'POST',
-            body: JSON.stringify(payload)
-        });
-        ```
-    * Sends the `query` and `project_id` (if `currentIdeProjectId` is set) to `/api/ai_agents/tutor/ask/`. This matches the AI Tutor endpoint in your backend.
-    * Displays the AI's response.
-
-4.  **IDE "Run Code" (`runCodeButtonIDE` listener)** (L194 / L205):
-    * Replaced simulation with:
-        ```javascript
-        const response = await window.uplasApi.fetchAuthenticated('/projects/ide/run_code/', { /* ... */ });
-        ```
-    * Sends `project_id`, `file_name`, `code`, and `language` to a **placeholder endpoint** `/api/projects/ide/run_code/`.
-    * **Backend Dependency**: You need to implement this backend endpoint. It should be a secure environment to execute code (e.g., using Docker containers, sandboxing). This is a complex feature. The frontend just sends the code and expects output/errors.
-
-5.  **IDE "Save Code" (`saveCodeButtonIDE` listener)** (L209 / L212):
-    * Replaced simulation with:
-        ```javascript
-        const response = await window.uplasApi.fetchAuthenticated(`/projects/${currentIdeProjectId}/files/save/`, { /* ... */ });
-        ```
-    * Sends `file_name` and `content` (code) to a **placeholder endpoint** `/api/projects/{projectId}/files/save/`.
-    * **Backend Dependency**: You need to implement this. It could save the file content to the project's associated storage (e.g., database field, file system, cloud storage). `currentIdeProjectId` is used to identify the project. `currentIdeFileName` (new state variable) tracks the active file.
-
-6.  **State Variables for IDE**:
-    * `currentIdeProjectId`: Added to keep track of which project's code is being edited/run in the IDE. This is set when the "Workspace" button on a project card is clicked.
-    * `currentIdeFileName`: Added to track the currently "open" file in the IDE, initialized to `main.py`. The `ideFileSelector` change event updates this.
-
-7.  **Display/Error Handling**: Uses the `displayStatus` utility (which now prefers `uplasApi.displayFormStatus`) for user feedback.
-
-**Important Next Steps & Considerations:**
-
-* **Backend Endpoints**:
-    * Ensure `/api/projects/mine/` is set up to return projects for the authenticated user.
-    * Ensure `/api/projects/` (POST) correctly creates a new project.
-    * **Crucially, implement the backend for `/api/projects/ide/run_code/` and `/api/projects/{projectId}/files/save/`. These are new and require careful design, especially the code execution part for security.**
-    * Ensure `/api/ai_agents/tutor/ask/` can handle an optional `project_id`.
-* **HTML for Create Project Modal**: You'll need to add the HTML structure for `create-project-modal`, `close-create-project-modal-btn`, `create-project-form`, and `create-project-status` for the "Create New Project" functionality to work.
-* **IDE File Management**: The current IDE simulation is very basic (one code area, one file selector). A real IDE would involve:
-    * Fetching a list of files for a project.
-    * Fetching the content of a selected file.
-    * Saving new files, renaming, deleting.
-    * Each of these would be additional API calls.
-* **Data Structures**: Verify that the data sent to and expected from the new backend endpoints matches what your serializers will handle. For example, when fetching projects, the `renderProjectCard` function expects fields like `id`, `title`, `description`, `status`, `due_date`, `completed_tasks`, `total_tasks`.
-* **Security for Code Execution**: The `/api/projects/ide/run_code/` endpoint is security-sensitive. Ensure it's properly sandboxed to prevent abuse.
-* **Error Handling**: Enhance specific error messages based on what the backend might return for these new endpoints.
-
-This version of `uprojects.js` makes significant progress by integrating the core project management and IDE-related API calls. The most substantial work remaining is on the backend to support the new IDE and file management functionaliti
