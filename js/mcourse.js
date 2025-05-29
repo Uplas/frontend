@@ -13,7 +13,7 @@ function initializeInteractiveCoursePage() {
     const courseModuleTopicNav = document.getElementById('course-module-topic-nav');
     const currentTopicTitleText = document.getElementById('current-topic-title-main');
     const qnaContentArea = document.getElementById('qna-content-area');
-    const aiInitialMessageText = document.getElementById('ai-initial-message-text');
+    const aiInitialMessageText = document.getElementById('ai-initial-message-text'); // For initial content display
 
     const ttsVoiceCharacterSelect = document.getElementById('tts-voice-character-select');
     const playTtsBtn = document.getElementById('play-tts-btn');
@@ -41,375 +41,380 @@ function initializeInteractiveCoursePage() {
     const bookmarkTopicBtn = document.getElementById('bookmark-topic-btn');
     const discussTopicBtn = document.getElementById('discuss-topic-btn');
     const topicResourcesList = document.getElementById('topic-resources-list');
-    // const currentYearFooter = document.getElementById('current-year-footer'); // Handled by global.js
 
     // --- State ---
     let currentCourseId = "adv_ai"; // Default, will be updated from URL params
     let currentTopicId = "1.1";   // Default, will be updated from URL params
     let ttsAudioElement = null;
     let isTtsPlaying = false;
-    let currentTopicData = null; // Will be populated by API call
+    let currentTopicData = null; // Populated by API: { title, content_html, questions: [{id, text, type}], resources: [{name, url}], is_completed, is_locked, course_slug }
+    let courseNavigationData = null; // Populated by API: { modules: [{id, title, topics: [{id, title, is_completed, is_locked, slug}]}] }
+    let userCourseProgress = null; // Populated by API: { percentage, xp_points, badges_count }
     let currentQuestionIndex = 0;
-    let userAnswers = {};
+    let userAnswers = {}; // Tracks answers for the current topic
     let isAiTutorModalOpen = false;
 
     // --- Utility Functions ---
-    const displayStatus = (message, type = 'info', area = qnaContentArea) => {
-        if (typeof window.uplasApi !== 'undefined' && typeof window.uplasApi.displayFormStatus === 'function') {
-            // Using displayFormStatus for general messages in QnA area might need CSS adjustments
-            // For now, let's use appendMessageToQnA for QnA, and a specific status for forms
-            if (area === qnaContentArea) {
-                appendMessageToQnA(message, type === 'error' ? 'ai-error' : 'ai-info');
-            } else if (area) { // if it's a form or specific feedback area
-                window.uplasApi.displayFormStatus(area, message, type === 'error');
-            }
-        } else {
-            console.warn("uplasApi.displayFormStatus not available. Message:", message);
-            if (area === qnaContentArea) appendMessageToQnA(message, 'ai-info'); // Fallback
-        }
+    const escapeHTML = (str) => { /* ... (same as previous version) ... */
+        if (typeof str !== 'string') return '';
+        return str.replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
     };
 
-    const appendMessageToQnA = (text, type = 'ai-question', isHtml = false) => {
-        if (!qnaContentArea) return;
+    const displayMessageInArea = (areaElement, message, type, translateKey = null, isHtml = false) => {
+        if (!areaElement) return;
         const bubbleWrapper = document.createElement('div');
-        bubbleWrapper.classList.add('message-bubble-wrapper', type.startsWith('ai-') || type.startsWith('user-tutor') || type === 'ai-tutor' ? 'ai-message-wrapper' : 'user-message-wrapper');
-        if(type === 'user-tutor') bubbleWrapper.classList.replace('ai-message-wrapper', 'user-message-wrapper');
-
+        bubbleWrapper.classList.add('message-bubble-wrapper', type.startsWith('ai-') || type === 'ai-tutor-response' ? 'ai-message-wrapper' : 'user-message-wrapper');
 
         const bubble = document.createElement('div');
-        bubble.classList.add('message-bubble', `${type}-bubble`);
+        bubble.classList.add('message-bubble', `${type}-bubble`); // e.g., ai-question-bubble, user-answer-bubble
 
         if (isHtml) {
-            bubble.innerHTML = text; // Use with trusted HTML
+            bubble.innerHTML = message; // Use with trusted HTML from backend (e.g., topic content_html)
         } else {
             const p = document.createElement('p');
-            p.textContent = text;
+            const textToDisplay = (translateKey && window.uplasTranslate) ? window.uplasTranslate(translateKey, { fallback: message }) : message;
+            p.textContent = textToDisplay;
             bubble.appendChild(p);
         }
         bubbleWrapper.appendChild(bubble);
-        qnaContentArea.appendChild(bubbleWrapper);
-        qnaContentArea.scrollTop = qnaContentArea.scrollHeight;
-    };
-    // AI Tutor specific append (slightly different styling/source)
-    const appendMessageToAiTutor = (text, type = 'ai-tutor-response') => {
-        if (!aiTutorMessagesArea) return;
-        const bubbleWrapper = document.createElement('div');
-         bubbleWrapper.classList.add('message-bubble-wrapper', type === 'user-tutor-query' ? 'user-message-wrapper' : 'ai-message-wrapper');
-
-        const bubble = document.createElement('div');
-        bubble.classList.add('message-bubble', type === 'user-tutor-query' ? 'user-tutor-bubble' : 'ai-tutor-bubble'); // Specific class for AI tutor
-
-        const p = document.createElement('p');
-        p.textContent = text;
-        bubble.appendChild(p);
-
-        bubbleWrapper.appendChild(bubble);
-        aiTutorMessagesArea.appendChild(bubbleWrapper);
-        aiTutorMessagesArea.scrollTop = aiTutorMessagesArea.scrollHeight;
+        areaElement.appendChild(bubbleWrapper);
+        areaElement.scrollTop = areaElement.scrollHeight;
     };
 
-
-    const showAnswerFeedback = (message, isCorrect) => {
-        if (!answerFeedbackArea) return;
-        answerFeedbackArea.textContent = message;
-        answerFeedbackArea.className = 'answer-feedback-display'; // Reset
-        answerFeedbackArea.classList.add(isCorrect ? 'feedback--correct' : 'feedback--incorrect');
-        answerFeedbackArea.style.display = 'block';
-    };
-    const clearAnswerFeedback = () => {
-        if (answerFeedbackArea) {
-            answerFeedbackArea.textContent = '';
-            answerFeedbackArea.style.display = 'none';
-        }
-    };
-    const escapeHTML = (str) => {
-        if (typeof str !== 'string') return '';
-        return str.replace(/[&<>'"]/g,
-            tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
-        );
-    };
-
-    // --- Course Navigation & Content Loading ---
-    async function fetchAndSetCurrentTopicData(courseIdToFetch, topicIdToFetch) {
-        if (!window.uplasApi || !window.uplasApi.fetchAuthenticated) {
-            console.error("uplasApi.fetchAuthenticated is not available.");
-            displayStatus("Error: Could not load topic data. API utility missing.", 'error');
-            return false;
-        }
-        console.log(`Fetching data for course ${courseIdToFetch}, topic ${topicIdToFetch}`);
-        currentTopicData = null; // Reset before fetch
-
+    // --- API Data Fetching ---
+    async function fetchCourseNavigation(courseIdToFetch) {
+        if (!window.uplasApi) return null;
         try {
-            // L58: fetchAndSetCurrentTopicData
-            // Action: Replace this with an actual API call to /api/courses/{courseId}/topics/{topicId}/.
-            const response = await window.uplasApi.fetchAuthenticated(`/courses/courses/${courseIdToFetch}/topics/${topicIdToFetch}/`);
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({ detail: `Failed to load topic. Status: ${response.status}` }));
-                throw new Error(errorData.detail || `HTTP error! Status: ${response.status}`);
-            }
-            currentTopicData = await response.json();
-            console.log("Fetched Topic Data:", currentTopicData);
-            // Assuming currentTopicData has: title, content_html (for initial message), questions array, resources array, is_completed, is_locked
+            const response = await window.uplasApi.fetchAuthenticated(`/courses/courses/${courseIdToFetch}/navigation/`);
+            if (!response.ok) throw new Error(`Failed to load course navigation. Status: ${response.status}`);
+            courseNavigationData = await response.json(); // Expects { modules: [...] }
+            console.log("mcourse: Fetched Course Navigation:", courseNavigationData);
             return true;
         } catch (error) {
-            console.error(`Error fetching topic data for ${courseIdToFetch}/${topicIdToFetch}:`, error);
-            displayStatus(`Error loading topic: ${error.message}`, 'error');
-            currentTopicData = null; // Ensure it's null on error
+            console.error("mcourse: Error fetching course navigation:", error);
+            // Display error in a dedicated area if needed, or rely on individual topic load failures
+            if (courseModuleTopicNav) courseModuleTopicNav.innerHTML = `<p class="error-message" data-translate-key="mcourse_err_nav_load_failed">Course navigation failed to load.</p>`;
+            if (window.uplasApplyTranslations) window.uplasApplyTranslations(courseModuleTopicNav);
             return false;
         }
     }
 
+    async function fetchUserCourseProgress(courseIdToFetch) {
+        if (!window.uplasApi) return null;
+        try {
+            const response = await window.uplasApi.fetchAuthenticated(`/courses/courses/${courseIdToFetch}/progress/`);
+            if (!response.ok) throw new Error(`Failed to load user progress. Status: ${response.status}`);
+            userCourseProgress = await response.json(); // Expects { percentage_completed, xp_points, badges_count }
+            console.log("mcourse: Fetched User Course Progress:", userCourseProgress);
+            return true;
+        } catch (error) {
+            console.error("mcourse: Error fetching user course progress:", error);
+            // Silently fail for progress, or show small error
+            return false;
+        }
+    }
+
+    async function fetchAndSetCurrentTopicData(courseIdToFetch, topicIdToFetch) {
+        if (!window.uplasApi) return false;
+        currentTopicData = null;
+        try {
+            const response = await window.uplasApi.fetchAuthenticated(`/courses/courses/${courseIdToFetch}/topics/${topicIdToFetch}/`);
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ detail: "Unknown error" }));
+                throw new Error(errorData.detail || `Failed to load topic content. Status: ${response.status}`);
+            }
+            currentTopicData = await response.json();
+            console.log("mcourse: Fetched Topic Data:", currentTopicData);
+            return true;
+        } catch (error) {
+            console.error(`mcourse: Error fetching topic ${topicIdToFetch}:`, error);
+            displayMessageInArea(qnaContentArea, error.message, 'ai-error');
+            return false;
+        }
+    }
+
+    // --- UI Update Functions ---
+    function buildCourseNavigationUI() {
+        if (!courseModuleTopicNav || !courseNavigationData || !courseNavigationData.modules) {
+             if (courseModuleTopicNav) courseModuleTopicNav.innerHTML = `<p data-translate-key="mcourse_nav_unavailable">Navigation unavailable.</p>`;
+             if (window.uplasApplyTranslations && courseModuleTopicNav) window.uplasApplyTranslations(courseModuleTopicNav);
+            return;
+        }
+        courseModuleTopicNav.innerHTML = ''; // Clear existing
+        courseNavigationData.modules.forEach(module => {
+            const moduleGroup = document.createElement('div');
+            moduleGroup.className = 'module-group';
+            moduleGroup.innerHTML = `
+                <button class="module-title-btn" aria-expanded="false" aria-controls="module-${module.id}-topics-nav">
+                    ${escapeHTML(module.title)}
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <ul id="module-${module.id}-topics-nav" class="topic-list-nav" hidden></ul>
+            `;
+            const topicsList = moduleGroup.querySelector('ul');
+            module.topics.forEach(topic => {
+                const topicLi = document.createElement('li');
+                let statusIcon = '';
+                if (topic.is_completed) statusIcon = '<i class="fas fa-check-circle topic-status-icon"></i>';
+                else if (topic.is_locked) statusIcon = '<i class="fas fa-lock topic-status-icon"></i>';
+
+                topicLi.innerHTML = `<a href="#" class="topic-link-nav ${topic.is_completed ? 'completed' : ''} ${topic.is_locked ? 'locked' : ''}" data-topic-id="${topic.id}" data-course-id="${currentCourseId}" data-course-slug="${currentTopicData?.course_slug || courseNavigationData.course_slug || currentCourseId}">
+                    ${escapeHTML(topic.title)} ${statusIcon}
+                </a>`;
+                topicsList.appendChild(topicLi);
+            });
+            courseModuleTopicNav.appendChild(moduleGroup);
+        });
+        if (window.uplasApplyTranslations) window.uplasApplyTranslations(courseModuleTopicNav);
+        updateNavigationHighlights(); // Highlight current topic after building
+    }
+
+    function updateNavigationHighlights() {
+        if (!courseModuleTopicNav) return;
+        courseModuleTopicNav.querySelectorAll('.topic-link-nav.active').forEach(el => el.classList.remove('active'));
+        const currentLink = courseModuleTopicNav.querySelector(`.topic-link-nav[data-topic-id="${currentTopicId}"]`);
+        if (currentLink) {
+            currentLink.classList.add('active');
+            const parentModuleBtn = currentLink.closest('.module-group')?.querySelector('.module-title-btn');
+            if (parentModuleBtn && parentModuleBtn.getAttribute('aria-expanded') === 'false') {
+                parentModuleBtn.click(); // Expand parent module if current topic is in it
+            }
+        }
+    }
+
+    function updateProgressIndicatorsUI() {
+        if (!userCourseProgress) return;
+        if (topicProgressPercentageEl) topicProgressPercentageEl.textContent = `${userCourseProgress.percentage_completed || 0}%`;
+        if (topicProgressBarEl) {
+            topicProgressBarEl.style.width = `${userCourseProgress.percentage_completed || 0}%`;
+            topicProgressBarEl.setAttribute('aria-valuenow', userCourseProgress.percentage_completed || 0);
+        }
+        if (userXpPointsEl) userXpPointsEl.textContent = userCourseProgress.xp_points || 0;
+        if (userBadgesCountEl) userBadgesCountEl.textContent = userCourseProgress.badges_count || 0;
+    }
+
+    function updateTopicResourcesDisplay() {
+        if (!topicResourcesList) return;
+        topicResourcesList.innerHTML = '';
+        if (currentTopicData && currentTopicData.resources && currentTopicData.resources.length > 0) {
+            currentTopicData.resources.forEach(resource => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="${escapeHTML(resource.url)}" target="_blank" rel="noopener noreferrer">
+                                  <i class="fas ${resource.type === 'video' ? 'fa-video' : (resource.type === 'pdf' ? 'fa-file-pdf' : 'fa-link')}"></i>
+                                  ${escapeHTML(resource.name)}
+                              </a>`;
+                topicResourcesList.appendChild(li);
+            });
+        } else {
+            topicResourcesList.innerHTML = `<li data-translate-key="mcourse_no_resources_for_topic">No specific resources for this topic.</li>`;
+        }
+        if (window.uplasApplyTranslations) window.uplasApplyTranslations(topicResourcesList);
+    }
+
+
+    // --- Core Topic Loading and Q&A Flow ---
     async function loadTopicContent(topicIdToLoad, courseIdToLoad) {
         currentTopicId = topicIdToLoad;
         currentCourseId = courseIdToLoad;
         currentQuestionIndex = 0;
-        userAnswers = {};
+        userAnswers = {}; // Reset answers for new topic
+
+        // Show loading states
+        if (qnaContentArea) qnaContentArea.innerHTML = `<p class="loading-message" data-translate-key="mcourse_loading_topic">Loading topic...</p>`;
+        if (window.uplasApplyTranslations && qnaContentArea) window.uplasApplyTranslations(qnaContentArea);
+        if (aiInitialMessageText) aiInitialMessageText.innerHTML = ''; // Clear specific initial message area
+        if (userAnswerForm) userAnswerForm.hidden = true;
 
         const topicLoaded = await fetchAndSetCurrentTopicData(currentCourseId, currentTopicId);
 
-        if (currentTopicTitleText) {
-            const title = currentTopicData?.title || `Topic ${currentTopicId}`; // Use fetched title
-            currentTopicTitleText.textContent = title;
-            document.title = title + " | Uplas";
-            // currentTopicTitleText.dataset.translateKey = currentTopicData?.titleKey; // If backend provides translation keys
+        if (currentTopicTitleText && currentTopicData?.title) {
+            currentTopicTitleText.textContent = currentTopicData.title;
+            document.title = `${currentTopicData.title} | Uplas`;
+        } else if (currentTopicTitleText) {
+            currentTopicTitleText.textContent = `Topic ${currentTopicId}`;
+            document.title = `Topic ${currentTopicId} | Uplas`;
         }
 
-        if (qnaContentArea) qnaContentArea.innerHTML = '';
-        if (aiInitialMessageText) aiInitialMessageText.innerHTML = '';
 
+        if (qnaContentArea) qnaContentArea.innerHTML = ''; // Clear loading message
         if (audioPlayerContainer) audioPlayerContainer.innerHTML = '';
         if (ttvPlayerContainer) { ttvPlayerContainer.innerHTML = ''; ttvPlayerContainer.style.display = 'none'; }
         isTtsPlaying = false;
-        if (playTtsBtn) playTtsBtn.innerHTML = `<i class="fas fa-play"></i> <span data-translate-key="button_listen">Listen</span>`;
+        if (playTtsBtn) {
+            playTtsBtn.innerHTML = `<i class="fas fa-play"></i> <span data-translate-key="button_listen">Listen</span>`;
+            if(window.uplasApplyTranslations) window.uplasApplyTranslations(playTtsBtn);
+        }
         clearAnswerFeedback();
 
         if (!topicLoaded || !currentTopicData) {
-            // Error message was already displayed by fetchAndSetCurrentTopicData
             if (userAnswerForm) userAnswerForm.hidden = true;
-            if (window.uplasApplyTranslations) window.uplasApplyTranslations(); // Translate error messages if any
+            // Error already shown by fetchAndSetCurrentTopicData
             return;
         }
 
-        if (currentTopicData.is_locked) { // Assuming backend field name
-            qnaContentArea.innerHTML = `<div class="locked-content-message">
-                <i class="fas fa-lock"></i>
-                <h3 data-translate-key="mcourse_topic_locked_title">Topic Locked</h3>
-                <p data-translate-key="mcourse_topic_locked_desc">Please complete previous topics or check your subscription.</p>
-                <a href="upricing.html" class="button button--primary" data-translate-key="mcourse_button_view_plans">View Plans</a>
-            </div>`;
-            if (userAnswerForm) userAnswerForm.hidden = true;
+        if (currentTopicData.is_locked) {
+            displayMessageInArea(qnaContentArea, '', 'info', 'mcourse_topic_locked_full_html', true); // Assuming key for full HTML
+            // mcourse_topic_locked_full_html: <div class="locked-content-message">...</div>
         } else {
             if (userAnswerForm) userAnswerForm.hidden = false;
-            // Display initial content/message from topic data if available
-            // Backend might provide 'content_html' or 'initial_message'
-            if (currentTopicData.content_html && aiInitialMessageText) {
-                 aiInitialMessageText.innerHTML = currentTopicData.content_html; // Assumes safe HTML from backend
-            } else if (currentTopicData.initial_message && aiInitialMessageText) {
-                 aiInitialMessageText.textContent = currentTopicData.initial_message;
+            if (currentTopicData.content_html) { // Prefer HTML for initial content
+                displayMessageInArea(qnaContentArea, currentTopicData.content_html, 'ai-initial', null, true);
+            } else if (currentTopicData.initial_message) { // Fallback to plain text
+                displayMessageInArea(qnaContentArea, currentTopicData.initial_message, 'ai-initial');
             }
             renderCurrentQuestion();
         }
-        updateTopicResourcesDisplay(); // Uses currentTopicData.resources
+        updateTopicResourcesDisplay();
         updateNavigationHighlights();
-        updateProgressIndicators(); // Might need data from API
-        if (window.uplasApplyTranslations) window.uplasApplyTranslations();
+        updateProgressIndicatorsUI(); // Use dedicated UI update for progress
+        if (window.uplasApplyTranslations && qnaContentArea) window.uplasApplyTranslations(qnaContentArea); // Translate any keys in initial content
     }
 
     function renderCurrentQuestion() {
-        if (!currentTopicData || !currentTopicData.questions || currentTopicData.questions.length === 0) {
-            appendMessageToQnA(window.uplasTranslate ? window.uplasTranslate('mcourse_no_questions_for_topic') : "No questions for this topic.", 'ai-info');
+        if (!currentTopicData) return; // Should not happen if loadTopicContent succeeded
+
+        if (!currentTopicData.questions || currentTopicData.questions.length === 0) {
+            displayMessageInArea(qnaContentArea, '', 'ai-info', 'mcourse_no_questions_for_topic');
             if (userAnswerForm) userAnswerForm.hidden = true;
+            if (!currentTopicData.is_completed) markTopicAsCompleted(); // Auto-complete if no questions
             return;
         }
+
         if (currentQuestionIndex >= currentTopicData.questions.length) {
-            appendMessageToQnA(window.uplasTranslate ? window.uplasTranslate('mcourse_topic_completed_message') : "Topic completed!", 'ai-info');
+            displayMessageInArea(qnaContentArea, '', 'ai-info', 'mcourse_topic_completed_message');
             if (userAnswerForm) { userAnswerForm.reset(); userAnswerForm.hidden = true; }
-            if (!currentTopicData.is_completed) { // Mark complete only if not already marked
-                markTopicAsCompleted(currentCourseId, currentTopicId);
-            }
+            if (!currentTopicData.is_completed) markTopicAsCompleted();
             return;
         }
 
         if (userAnswerForm) userAnswerForm.hidden = false;
-        const question = currentTopicData.questions[currentQuestionIndex]; // question object from backend
-        const questionText = question.text || "AI asks a question..."; // Use 'text' field from backend
+        const question = currentTopicData.questions[currentQuestionIndex];
+        const questionText = question.text || (window.uplasTranslate ? window.uplasTranslate('mcourse_ai_asks_default', {fallback: "AI asks a question..."}) : "AI asks a question...");
 
-        // If it's the very first interaction and there's an initial message placeholder, use it.
-        // Otherwise, append.
-        if (currentQuestionIndex === 0 && qnaContentArea.children.length === 0 && aiInitialMessageText && aiInitialMessageText.innerHTML.trim() !== "") {
-            // Initial message already set from currentTopicData.content_html or initial_message
-            // Now, append the first actual question if it's different or if no initial message was set.
-            if (!aiInitialMessageText.innerHTML.includes(questionText)) { // Avoid duplicating if initial message *was* the question
-                 appendMessageToQnA(questionText, 'ai-question');
-            }
-        } else {
-            appendMessageToQnA(questionText, 'ai-question');
-        }
+        displayMessageInArea(qnaContentArea, questionText, 'ai-question');
 
-
-        if (userAnswerInput) { userAnswerInput.disabled = false; userAnswerInput.focus(); }
+        if (userAnswerInput) { userAnswerInput.value = ''; userAnswerInput.disabled = false; userAnswerInput.focus(); }
         if (submitAnswerBtn) submitAnswerBtn.disabled = false;
     }
 
     async function handleUserAnswerSubmit(e) {
         e.preventDefault();
-        if (!userAnswerInput || !submitAnswerBtn || !window.uplasApi || !window.uplasApi.fetchAuthenticated) {
-            console.error("Required elements or uplasApi not available for answer submission.");
-            return;
-        }
+        if (!userAnswerInput || !submitAnswerBtn || !window.uplasApi || !currentTopicData?.questions?.[currentQuestionIndex]) return;
 
         const answerText = userAnswerInput.value.trim();
-        if (!answerText || !currentTopicData || !currentTopicData.questions || currentTopicData.questions.length === 0) return;
+        if (!answerText) return;
 
-        appendMessageToQnA(escapeHTML(answerText), 'user-answer');
-        const originalAnswerInput = userAnswerInput.value; // Keep original for resubmission if needed
+        displayMessageInArea(qnaContentArea, escapeHTML(answerText), 'user-answer');
+        const originalAnswerInput = userAnswerInput.value;
         userAnswerInput.value = '';
         userAnswerInput.disabled = true;
         submitAnswerBtn.disabled = true;
         submitAnswerBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span data-translate-key="button_submitting">Submitting...</span>`;
-        if (window.uplasApplyTranslations) window.uplasApplyTranslations();
+        if(window.uplasApplyTranslations) window.uplasApplyTranslations(submitAnswerBtn);
         clearAnswerFeedback();
 
         const currentQuestion = currentTopicData.questions[currentQuestionIndex];
-        userAnswers[currentQuestion.id] = answerText; // Store user's raw answer locally
+        userAnswers[currentQuestion.id || currentQuestionIndex] = answerText;
 
         try {
-            // L114: handleUserAnswerSubmit
-            // L125: AI Model Integration: Send answerText for feedback
-            // Action: API call to /api/courses/{courseId}/topics/{topicId}/questions/{questionId}/submit_answer/
             const response = await window.uplasApi.fetchAuthenticated(
                 `/courses/courses/${currentCourseId}/topics/${currentTopicId}/questions/${currentQuestion.id}/submit_answer/`,
-                {
-                    method: 'POST',
-                    body: JSON.stringify({ answer: answerText }),
-                }
+                { method: 'POST', body: JSON.stringify({ answer: answerText }) }
             );
-
             if (!response.ok) {
-                const errorData = await response.json().catch(() => ({ detail: `Failed to submit answer. Status: ${response.status}` }));
-                throw new Error(errorData.detail || `HTTP error! Status: ${response.status}`);
+                const errorData = await response.json().catch(() => ({ detail: "Failed to submit answer."}));
+                throw new Error(errorData.detail);
             }
+            const feedbackData = await response.json();
 
-            const feedbackData = await response.json(); // Expects { feedback: "...", is_correct: true/false }
-            showAnswerFeedback(feedbackData.feedback, feedbackData.is_correct);
-            appendMessageToQnA(feedbackData.feedback, 'ai-feedback'); // Show feedback in QnA
+            // Use displayFormStatus for feedbackArea, and displayMessageInArea for QnA
+            window.uplasApi.displayFormStatus(answerFeedbackArea, feedbackData.feedback, !feedbackData.is_correct);
+            displayMessageInArea(qnaContentArea, feedbackData.feedback, 'ai-feedback');
 
             if (feedbackData.is_correct) {
                 currentQuestionIndex++;
+                await fetchUserCourseProgress(currentCourseId); // Update progress after correct answer
+                updateProgressIndicatorsUI();
                 renderCurrentQuestion();
             } else {
-                // Optionally allow retry or provide hints
-                userAnswerInput.value = originalAnswerInput; // Restore input for editing
+                userAnswerInput.value = originalAnswerInput;
                 userAnswerInput.disabled = false;
                 userAnswerInput.focus();
             }
-
         } catch (error) {
-            console.error("Error submitting answer:", error);
-            displayStatus(`Error submitting answer: ${error.message}`, 'error', answerFeedbackArea);
-            appendMessageToQnA(`Error: ${error.message}`, 'ai-error');
-            userAnswerInput.value = originalAnswerInput; // Restore input on error
+            console.error("mcourse: Error submitting answer:", error);
+            window.uplasApi.displayFormStatus(answerFeedbackArea, error.message, true);
+            displayMessageInArea(qnaContentArea, `Error: ${error.message}`, 'ai-error');
+            userAnswerInput.value = originalAnswerInput;
             userAnswerInput.disabled = false;
         } finally {
             submitAnswerBtn.disabled = false;
             submitAnswerBtn.innerHTML = `<i class="fas fa-paper-plane"></i> <span data-translate-key="button_submit_answer">Submit</span>`;
-            if (window.uplasApplyTranslations) window.uplasApplyTranslations();
+            if(window.uplasApplyTranslations) window.uplasApplyTranslations(submitAnswerBtn);
         }
     }
 
-    function updateNavigationHighlights() { /* ... (implementation from mcourse (1).js) ... */ }
-    function updateTopicResourcesDisplay() { /* ... (implementation from mcourse (1).js, ensure currentTopicData.resources is used) ... */ }
-    function buildCourseNavigation() { /* ... (This needs real data, for now uses MOCK or relies on currentTopicData if it contains full course structure) ... */ }
-
-    async function markTopicAsCompleted(courseIdForCompletion, topicIdForCompletion) {
-        if (!window.uplasApi || !window.uplasApi.fetchAuthenticated) {
-            console.error("uplasApi not available for marking topic complete.");
-            return;
-        }
-        console.log(`Marking topic ${topicIdForCompletion} of course ${courseIdForCompletion} as complete.`);
-
+    async function markTopicAsCompleted() {
+        if (!window.uplasApi || !currentTopicData || currentTopicData.is_completed) return;
+        console.log(`mcourse: Marking topic ${currentTopicId} of course ${currentCourseId} as complete.`);
         try {
-            // L149: markTopicAsCompleted
-            // Action: API call to /api/courses/{courseId}/topics/{topicId}/complete/
             const response = await window.uplasApi.fetchAuthenticated(
-                `/courses/courses/${courseIdForCompletion}/topics/${topicIdForCompletion}/complete/`,
-                {
-                    method: 'POST',
-                    // body: JSON.stringify({ status: 'completed' }), // Backend might not need a body
-                }
+                `/courses/courses/${currentCourseId}/topics/${currentTopicId}/complete/`,
+                { method: 'POST' }
             );
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({ detail: `Failed to mark topic complete. Status: ${response.status}` }));
-                throw new Error(errorData.detail || `HTTP error! Status: ${response.status}`);
-            }
+            if (!response.ok) throw new Error(`Failed to mark topic complete. Status: ${response.status}`);
             const result = await response.json();
-            console.log("Topic marked as completed on backend:", result);
+            console.log("mcourse: Topic marked as completed on backend:", result);
 
-            // Update local state if backend confirms
-            if (currentTopicData && currentTopicData.id === topicIdForCompletion) { // Check if it's the current topic
-                 currentTopicData.is_completed = true;
-            }
-            // Ideally, re-fetch course progress or navigation data to get accurate completion states
-            // For now, just update mock or local state for immediate UI feedback
-            // MOCK_COURSE_CONTENT update (remove if backend drives navigation fully)
-            if (MOCK_COURSE_CONTENT[courseIdForCompletion]) {
-                for (const modId in MOCK_COURSE_CONTENT[courseIdForCompletion]) {
-                    if (MOCK_COURSE_CONTENT[courseIdForCompletion][modId].topics[topicIdForCompletion]) {
-                        MOCK_COURSE_CONTENT[courseIdForCompletion][modId].topics[topicIdForCompletion].isCompleted = true;
-                        break;
-                    }
-                }
-            }
-
-            buildCourseNavigation(); // Rebuild to show checkmark
-            updateNavigationHighlights();
-            updateProgressIndicators(); // Update overall progress
-
+            currentTopicData.is_completed = true; // Update local state
+            await fetchCourseNavigation(currentCourseId); // Re-fetch navigation to show updates
+            buildCourseNavigationUI();
+            await fetchUserCourseProgress(currentCourseId); // Re-fetch progress
+            updateProgressIndicatorsUI();
         } catch (error) {
-            console.error("Error marking topic as completed:", error);
-            displayStatus(`Error updating topic completion: ${error.message}`, 'error');
+            console.error("mcourse: Error marking topic as completed:", error);
+            displayMessageInArea(qnaContentArea, `Error updating topic completion: ${error.message}`, 'ai-error');
         }
     }
 
-    function updateProgressIndicators() { /* ... (implementation from mcourse (1).js, ideally fetch this from backend) ... */ }
 
     // --- TTS & TTV Controls ---
-    if (playTtsBtn) {
-        playTtsBtn.addEventListener('click', async () => {
-            if (!window.uplasApi || !window.uplasApi.fetchAuthenticated) {
-                displayStatus("TTS service not available.", 'error'); return;
+    if (playTtsBtn && ttsVoiceCharacterSelect && audioPlayerContainer) {
+        playTtsBtn.addEventListener('click', async () => { /* ... (same as previous, using uplasApi) ... */
+            if (!window.uplasApi) { displayMessageInArea(qnaContentArea, "TTS service unavailable.", 'ai-error', "error_service_unavailable_tts"); return; }
+            const lastBubble = qnaContentArea.querySelector('.message-bubble:last-of-type p'); // Target last message
+            let textToSpeak = aiInitialMessageText?.textContent.trim(); // Default to initial message if exists
+            if (qnaContentArea.children.length > 0 && lastBubble) { // If QnA has messages, use the last one
+                textToSpeak = lastBubble.textContent;
+            } else if (!textToSpeak && currentTopicData?.questions?.[currentQuestionIndex]?.text) { // Fallback to current question if no messages displayed
+                textToSpeak = currentTopicData.questions[currentQuestionIndex].text;
+            } else if (!textToSpeak) {
+                textToSpeak = window.uplasTranslate ? window.uplasTranslate('mcourse_tts_no_content', {fallback:"No content to read."}) : "No content to read.";
             }
-            const lastBubble = qnaContentArea.querySelector('.message-bubble:last-child p');
-            const textToSpeak = lastBubble ? lastBubble.textContent : (aiInitialMessageText?.textContent || "No content selected.");
-            const voice = ttsVoiceCharacterSelect ? ttsVoiceCharacterSelect.value : 'alloy';
+
+            const voice = ttsVoiceCharacterSelect.value;
 
             if (isTtsPlaying && ttsAudioElement) {
                 ttsAudioElement.pause(); isTtsPlaying = false;
                 playTtsBtn.innerHTML = `<i class="fas fa-play"></i> <span data-translate-key="button_listen">Listen</span>`;
-                if (window.uplasApplyTranslations) window.uplasApplyTranslations();
+                if(window.uplasApplyTranslations) window.uplasApplyTranslations(playTtsBtn);
                 return;
             }
             playTtsBtn.disabled = true;
             playTtsBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span data-translate-key="button_loading">Loading...</span>`;
-            if (window.uplasApplyTranslations) window.uplasApplyTranslations();
+             if(window.uplasApplyTranslations) window.uplasApplyTranslations(playTtsBtn);
 
             try {
-                // L181: playTtsBtn listener
-                // L190: AI Model Integration: TTS API Call to /api/ai_agents/tts/
                 const response = await window.uplasApi.fetchAuthenticated('/ai_agents/tts/', {
-                    method: 'POST',
-                    body: JSON.stringify({ text: textToSpeak, voice: voice }),
+                    method: 'POST', body: JSON.stringify({ text: textToSpeak, voice: voice }),
                 });
                 if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({ detail: `TTS generation failed. Status: ${response.status}` }));
-                    throw new Error(errorData.detail || `HTTP error! Status: ${response.status}`);
+                    const err = await response.json().catch(()=>({detail: "TTS generation failed."}));
+                    throw new Error(err.detail);
                 }
-                const data = await response.json(); // Expects { audio_url: "..." }
-
-                if (audioPlayerContainer) audioPlayerContainer.innerHTML = '';
-                ttsAudioElement = new Audio(data.audio_url); // Use URL from backend
+                const data = await response.json();
+                audioPlayerContainer.innerHTML = '';
+                ttsAudioElement = new Audio(data.audio_url);
                 ttsAudioElement.controls = true;
                 audioPlayerContainer.appendChild(ttsAudioElement);
                 await ttsAudioElement.play();
@@ -418,109 +423,112 @@ function initializeInteractiveCoursePage() {
                 ttsAudioElement.onended = () => {
                     isTtsPlaying = false;
                     playTtsBtn.innerHTML = `<i class="fas fa-play"></i> <span data-translate-key="button_listen">Listen</span>`;
-                    if (window.uplasApplyTranslations) window.uplasApplyTranslations();
+                    if(window.uplasApplyTranslations) window.uplasApplyTranslations(playTtsBtn);
                 };
             } catch (error) {
-                console.error("TTS Error:", error);
-                displayStatus(`TTS Error: ${error.message}`, 'error');
+                console.error("mcourse: TTS Error:", error);
+                displayMessageInArea(qnaContentArea, `TTS Error: ${error.message}`, 'ai-error');
                 playTtsBtn.innerHTML = `<i class="fas fa-play"></i> <span data-translate-key="button_listen">Listen</span>`;
             } finally {
                 playTtsBtn.disabled = false;
-                if (window.uplasApplyTranslations) window.uplasApplyTranslations();
+                if(window.uplasApplyTranslations) window.uplasApplyTranslations(playTtsBtn);
             }
         });
     }
-    if (generateTtvBtn) {
-        generateTtvBtn.addEventListener('click', async () => {
-            if (!window.uplasApi || !window.uplasApi.fetchAuthenticated) {
-                displayStatus("TTV service not available.", 'error'); return;
+
+    if (generateTtvBtn && ttvPlayerContainer) {
+        generateTtvBtn.addEventListener('click', async () => { /* ... (same as previous, using uplasApi) ... */
+             if (!window.uplasApi) { displayMessageInArea(qnaContentArea, "TTV service unavailable.", 'ai-error', "error_service_unavailable_ttv"); return; }
+            const lastBubble = qnaContentArea.querySelector('.message-bubble:last-of-type p');
+            let textForVideo = aiInitialMessageText?.textContent.trim();
+            if (qnaContentArea.children.length > 0 && lastBubble) {
+                textForVideo = lastBubble.textContent;
+            } else if (!textForVideo && currentTopicData?.questions?.[currentQuestionIndex]?.text) {
+                textForVideo = currentTopicData.questions[currentQuestionIndex].text;
+            } else if (!textForVideo) {
+                 textForVideo = window.uplasTranslate ? window.uplasTranslate('mcourse_ttv_no_content', {fallback:"No content for video."}) : "No content for video.";
             }
-            const lastBubble = qnaContentArea.querySelector('.message-bubble:last-child p');
-            const textForVideo = lastBubble ? lastBubble.textContent : (aiInitialMessageText?.textContent || "No content for video.");
 
             generateTtvBtn.disabled = true;
             generateTtvBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> <span data-translate-key="button_generating_video">Generating...</span>`;
-            if (window.uplasApplyTranslations) window.uplasApplyTranslations();
-            if (ttvPlayerContainer) { ttvPlayerContainer.innerHTML = ''; ttvPlayerContainer.style.display = 'none'; }
+             if(window.uplasApplyTranslations) window.uplasApplyTranslations(generateTtvBtn);
+            ttvPlayerContainer.innerHTML = ''; ttvPlayerContainer.style.display = 'none';
 
             try {
-                // L210: generateTtvBtn listener
-                // L219: AI Model Integration: TTV API Call to /api/ai_agents/ttv/
                 const response = await window.uplasApi.fetchAuthenticated('/ai_agents/ttv/', {
-                    method: 'POST',
-                    body: JSON.stringify({ text: textForVideo }),
+                    method: 'POST', body: JSON.stringify({ text: textForVideo }),
                 });
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({ detail: `TTV generation failed. Status: ${response.status}` }));
-                    throw new Error(errorData.detail || `HTTP error! Status: ${response.status}`);
+                 if (!response.ok) {
+                    const err = await response.json().catch(()=>({detail: "TTV generation failed."}));
+                    throw new Error(err.detail);
                 }
-                const data = await response.json(); // Expects { video_url: "..." }
-
-                if (ttvPlayerContainer) {
-                    ttvPlayerContainer.innerHTML = `<video controls autoplay width="100%" src="${data.video_url}"><source src="${data.video_url}" type="video/mp4">Video not supported.</video>`;
-                    ttvPlayerContainer.style.display = 'block';
-                }
+                const data = await response.json();
+                ttvPlayerContainer.innerHTML = `<video controls autoplay width="100%" src="${data.video_url}"><source src="${data.video_url}" type="video/mp4">Video playback not supported.</video>`;
+                ttvPlayerContainer.style.display = 'block';
             } catch (error) {
-                console.error("TTV Error:", error);
-                displayStatus(`TTV Error: ${error.message}`, 'error');
+                console.error("mcourse: TTV Error:", error);
+                displayMessageInArea(qnaContentArea, `TTV Error: ${error.message}`, 'ai-error');
             } finally {
                 generateTtvBtn.disabled = false;
                 generateTtvBtn.innerHTML = `<i class="fas fa-video"></i> <span data-translate-key="button_watch_video">Watch Video</span>`;
-                if (window.uplasApplyTranslations) window.uplasApplyTranslations();
+                if(window.uplasApplyTranslations) window.uplasApplyTranslations(generateTtvBtn);
             }
         });
     }
 
     // --- AI Tutor Modal ---
-    const toggleAiTutorModal = (show) => { /* ... (implementation from mcourse (1).js) ... */ };
+    const toggleAiTutorModal = (show) => {
+        if (!aiTutorChatModal) return;
+        isAiTutorModalOpen = show;
+        aiTutorChatModal.hidden = !show;
+        document.body.classList.toggle('modal-open', show);
+        if (show) {
+            aiTutorChatModal.classList.add('active');
+            if (aiTutorMessagesArea && aiTutorMessagesArea.children.length <= 1) { // Assuming initial system message might be there
+                const topicTitle = currentTopicData?.title || "the current topic";
+                const welcomeKey = 'ai_tutor_welcome_message_contextual';
+                const welcomeMessage = window.uplasTranslate ? window.uplasTranslate(welcomeKey, { fallback: `Hello! How can I help you with "${topicTitle}" today?`, variables: { topicTitle } }) : `Hello! How can I help you with "${topicTitle}" today?`;
+                displayMessageInArea(aiTutorMessagesArea, welcomeMessage, 'ai-tutor-response');
+            }
+            aiTutorMessageInput?.focus();
+        } else {
+            aiTutorChatModal.classList.remove('active');
+        }
+    };
     if (openAiTutorBtn) openAiTutorBtn.addEventListener('click', () => toggleAiTutorModal(true));
     if (closeAiTutorModalBtn) closeAiTutorModalBtn.addEventListener('click', () => toggleAiTutorModal(false));
     aiTutorChatModal?.addEventListener('click', (e) => { if (e.target === aiTutorChatModal) toggleAiTutorModal(false); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && isAiTutorModalOpen) toggleAiTutorModal(false); });
 
-    if (aiTutorInputForm) {
-        aiTutorInputForm.addEventListener('submit', async (e) => {
+    if (aiTutorInputForm && aiTutorMessageInput && aiTutorMessagesArea) {
+        aiTutorInputForm.addEventListener('submit', async (e) => { /* ... (same as previous, using uplasApi) ... */
             e.preventDefault();
-            if (!aiTutorMessageInput || !aiTutorMessagesArea || !window.uplasApi || !window.uplasApi.fetchAuthenticated) {
-                console.error("AI Tutor elements or uplasApi not available.");
-                return;
-            }
+            if (!window.uplasApi) return;
             const userQuery = aiTutorMessageInput.value.trim();
             if (!userQuery) return;
 
-            appendMessageToAiTutor(escapeHTML(userQuery), 'user-tutor-query');
-            const originalQuery = aiTutorMessageInput.value; // Keep for potential resubmission
+            displayMessageInArea(aiTutorMessagesArea, escapeHTML(userQuery), 'user-tutor-query');
+            const originalQuery = aiTutorMessageInput.value;
             aiTutorMessageInput.value = '';
             aiTutorMessageInput.disabled = true;
             const tutorSubmitBtn = aiTutorInputForm.querySelector('button[type="submit"]');
             if(tutorSubmitBtn) tutorSubmitBtn.disabled = true;
 
-
             try {
-                // L240: aiTutorInputForm listener
-                // L248: AI Model Integration: Send query to /api/ai_agents/tutor/ask/
-                const payload = {
-                    query: userQuery,
-                    course_id: currentCourseId,
-                    topic_id: currentTopicId,
-                    // context: "Previous chat messages could be stringified here or handled by backend session"
-                };
+                const payload = { query: userQuery, course_id: currentCourseId, topic_id: currentTopicId };
                 const response = await window.uplasApi.fetchAuthenticated('/ai_agents/tutor/ask/', {
-                    method: 'POST',
-                    body: JSON.stringify(payload),
+                    method: 'POST', body: JSON.stringify(payload),
                 });
-
-                if (!response.ok) {
-                    const errorData = await response.json().catch(() => ({ detail: `AI Tutor request failed. Status: ${response.status}` }));
-                    throw new Error(errorData.detail || `HTTP error! Status: ${response.status}`);
+                 if (!response.ok) {
+                    const err = await response.json().catch(()=>({detail: "AI Tutor request failed."}));
+                    throw new Error(err.detail);
                 }
-                const data = await response.json(); // Expects { response: "AI tutor answer" }
-                appendMessageToAiTutor(data.response, 'ai-tutor-response');
-
+                const data = await response.json();
+                displayMessageInArea(aiTutorMessagesArea, data.response, 'ai-tutor-response');
             } catch (error) {
-                console.error("AI Tutor Error:", error);
-                appendMessageToAiTutor(`Error: ${error.message}`, 'ai-tutor-error');
-                aiTutorMessageInput.value = originalQuery; // Restore query on error
+                console.error("mcourse: AI Tutor Error:", error);
+                displayMessageInArea(aiTutorMessagesArea, `Tutor Error: ${error.message}`, 'ai-tutor-error');
+                aiTutorMessageInput.value = originalQuery;
             } finally {
                  aiTutorMessageInput.disabled = false;
                  if(tutorSubmitBtn) tutorSubmitBtn.disabled = false;
@@ -531,51 +539,108 @@ function initializeInteractiveCoursePage() {
 
     // --- Event Listeners ---
     if (userAnswerForm) userAnswerForm.addEventListener('submit', handleUserAnswerSubmit);
-    if (courseModuleTopicNav) { /* ... (event delegation from mcourse (1).js) ... */ }
-    window.addEventListener('popstate', (event) => { /* ... (popstate handling from mcourse (1).js) ... */ });
+
+    if (courseModuleTopicNav) {
+        courseModuleTopicNav.addEventListener('click', (e) => {
+            const link = e.target.closest('.topic-link-nav');
+            const button = e.target.closest('.module-title-btn');
+
+            if (link) {
+                e.preventDefault();
+                const topicId = link.dataset.topicId;
+                const courseId = link.dataset.courseId || currentCourseId; // Use specific or current
+                const courseSlug = link.dataset.courseSlug || currentTopicData?.course_slug || courseNavigationData?.course_slug || currentCourseId;
+
+                if (link.classList.contains('locked')) {
+                     window.uplasApi.displayFormStatus(
+                        qnaContentArea.parentNode, // Display in the main interaction area's parent for visibility
+                        '', // Message is in HTML, handled by translation of the key
+                        true, // isError
+                        'mcourse_alert_topic_locked_nav_html' // Key for potentially rich HTML message
+                        // mcourse_alert_topic_locked_nav_html: "<p>This topic is currently locked. Please complete previous topics or <a href='upricing.html'>check your subscription.</a></p>"
+                     );
+                    return;
+                }
+                if (topicId && courseId) {
+                    loadTopicContent(topicId, courseId);
+                    const newUrl = `mcourse.html?courseId=${encodeURIComponent(courseSlug)}&lessonId=${encodeURIComponent(topicId)}`;
+                    history.pushState({ courseId, topicId, courseSlug }, '', newUrl);
+                }
+            } else if (button) {
+                const contentId = button.getAttribute('aria-controls');
+                const content = document.getElementById(contentId);
+                const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                button.setAttribute('aria-expanded', (!isExpanded).toString());
+                if (content) content.hidden = isExpanded;
+                const icon = button.querySelector('i');
+                if (icon) icon.className = `fas fa-chevron-${isExpanded ? 'down' : 'up'}`;
+            }
+        });
+    }
+
+    window.addEventListener('popstate', (event) => {
+        if (event.state && event.state.topicId && event.state.courseId) {
+            loadTopicContent(event.state.topicId, event.state.courseId);
+        } else {
+            // Fallback if state is incomplete, reload initial or a default
+            const params = new URLSearchParams(window.location.search);
+            loadTopicContent(params.get('lessonId') || "1.1", params.get('courseId') || "adv_ai");
+        }
+    });
 
     // --- Initial Load ---
     const initialParams = new URLSearchParams(window.location.search);
-    const initialCourseId = initialParams.get('courseId') || "adv_ai"; // Default or from URL
-    const initialTopicId = initialParams.get('lessonId') || initialParams.get('topicId') || "1.1";
+    const initialCourseIdFromUrl = initialParams.get('courseId') || "adv_ai"; // Use courseId from URL, or default
+    // The 'lessonId' from URL should map to our 'topicId' concept
+    const initialTopicIdFromUrl = initialParams.get('lessonId') || initialParams.get('topicId') || "1.1"; // Default
 
-    currentCourseId = initialCourseId; // Set global currentCourseId
+    currentCourseId = initialCourseIdFromUrl; // Set global currentCourseId from URL
 
     const initialSetup = async () => {
-        // Mock data for navigation is still used here.
-        // A real app would fetch course structure for navigation separately.
-        if (typeof buildCourseNavigation === "function") buildCourseNavigation();
-        await loadTopicContent(initialTopicId, initialCourseId); // Load the specific topic
+        const navLoaded = await fetchCourseNavigation(currentCourseId);
+        if (navLoaded) buildCourseNavigationUI();
+
+        await fetchUserCourseProgress(currentCourseId); // Fetch progress early
+        updateProgressIndicatorsUI();
+
+        await loadTopicContent(initialTopicIdFromUrl, currentCourseId); // Load the specific topic
     };
 
-    // Ensure i18n and other global setup might be ready
+    // Handle language change after initial load
     if (typeof window.uplasOnLanguageChange === 'function') {
         let initialLoadDone = false;
-        window.uplasOnLanguageChange(async () => {
+        window.uplasOnLanguageChange(async (newLocale) => {
             if (initialLoadDone) { // Re-render content if language changes after initial load
-                if (typeof buildCourseNavigation === "function") buildCourseNavigation(); // Rebuild nav with new lang
-                await loadTopicContent(currentTopicId, currentCourseId); // Reload current topic
+                console.log("mcourse: Language changed to", newLocale, "re-rendering content.");
+                if (courseNavigationData) buildCourseNavigationUI(); // Rebuild nav with new lang if data exists
+                if (currentTopicData) { // If a topic is loaded, reload its content with new lang context
+                     // This might involve re-fetching if content is language-specific from backend
+                     // For now, just re-apply translations to existing data.
+                    await loadTopicContent(currentTopicId, currentCourseId);
+                }
+                updateProgressIndicatorsUI(); // These might have translatable parts
+                if (window.uplasApplyTranslations) window.uplasApplyTranslations(document.body); // Full re-translate
             }
         });
-        // If i18nManager is already initialized by global.js, uplasTranslate should be ready
+        // Ensure i18n is ready before first full render attempt
         if (typeof window.uplasTranslate === 'function') {
             initialSetup().then(() => initialLoadDone = true);
-        } else {
-            setTimeout(() => { // Fallback wait
+        } else { // Fallback if i18n not ready immediately
+            setTimeout(() => {
                 initialSetup().then(() => initialLoadDone = true);
-            }, 700);
+            }, 500);
         }
     } else {
-        initialSetup();
+        initialSetup(); // Proceed if i18n change handler is not setup
     }
 
-    console.log("Uplas Interactive Learning Page (mcourse.js) logic initialized.");
-}
+    console.log("mcourse.js: Uplas Interactive Learning Page logic initialized.");
+} // End of initializeInteractiveCoursePage
 
 // --- DOMContentLoaded Main Execution ---
 document.addEventListener('DOMContentLoaded', () => {
     if (typeof window.uplasApi === 'undefined' || typeof window.uplasApi.getAccessToken !== 'function') {
-        console.error('uplasApi or uplasApi.getAccessToken function is not defined. Ensure apiUtils.js is loaded correctly before mcourse.js.');
+        console.error('mcourse.js: uplasApi or uplasApi.getAccessToken function is not defined. Ensure apiUtils.js is loaded correctly before mcourse.js.');
         const mainContentArea = document.getElementById('main-content-area') || document.body;
         mainContentArea.innerHTML = '<p style="text-align:center; padding: 20px; color: red;" data-translate-key="error_auth_utility_missing">Core authentication utility is missing. Page cannot load correctly.</p>';
         if (typeof window.uplasApplyTranslations === 'function') window.uplasApplyTranslations(mainContentArea);
@@ -585,44 +650,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const authToken = window.uplasApi.getAccessToken();
 
     if (!authToken) {
-        console.log('User not authenticated for interactive course. Redirecting to login.');
+        console.log('mcourse.js: User not authenticated. Redirecting to login.');
         const currentPath = window.location.pathname + window.location.search + window.location.hash;
-        // Use uplasApi.redirectToLogin if available for consistent message handling
         if (typeof window.uplasApi.redirectToLogin === 'function') {
-            window.uplasApi.redirectToLogin(`You need to be logged in to access the course. Original page: ${currentPath}`);
-        } else {
+            window.uplasApi.redirectToLogin(`You need to be logged in to access this course. Original page: ${currentPath}`);
+        } else { // Fallback if redirectToLogin is somehow missing
             window.location.href = `index.html#auth-section&returnUrl=${encodeURIComponent(currentPath)}`;
         }
     } else {
-        console.log('User authenticated. Initializing interactive course page.');
+        console.log('mcourse.js: User authenticated. Initializing interactive course page.');
         initializeInteractiveCoursePage();
     }
 });
-```
-
-**Key Considerations and Next Steps:**
-
-1.  **`MOCK_COURSE_CONTENT` and Navigation**:
-    * The functions `buildCourseNavigation`, `updateNavigationHighlights`, and `updateProgressIndicators` still rely on `MOCK_COURSE_CONTENT`.
-    * **Suggestion**: You'll need to create new API endpoints in your Django backend (e.g., in `apps/courses/`) to serve:
-        * The overall course structure (modules, topics, their completion status, lock status) for building the navigation. This could be an endpoint like `/api/courses/courses/${courseId}/navigation/`.
-        * User progress data (XP, badges, overall completion percentage for a course).
-    * Then, update these functions in `mcourse.js` to fetch and use this live data.
-
-2.  **`currentTopicData` Structure**:
-    * The code now assumes `currentTopicData` (fetched from `/api/courses/courses/${courseId}/topics/${topicId}/`) will have fields like `title`, `is_locked`, `is_completed`, `content_html` (or `initial_message`), `questions` (array), and `resources` (array).
-    * Ensure your Django `TopicSerializer` and `QuestionSerializer` provide data in this structure. For example, `questions` should be an array of objects, each with at least an `id` and `text`.
-
-3.  **Error Display**: The `displayStatus` function is a basic way to show errors. You might want a more sophisticated notification system.
-
-4.  **Loading Indicators**: The current loading indicators are simple text changes on buttons. You could implement more visual spinners or overlays for a better UX during API calls.
-
-5.  **Translating Dynamic Content**:
-    * For content fetched from the API (like topic titles, question text, AI responses), if these need to be translatable, your backend API should ideally return content in the currently selected language (based on an `Accept-Language` header or a language parameter in the API call).
-    * Alternatively, if the backend returns translation keys, `window.uplasTranslate` would be used extensively after fetching data. The current `loadTopicContent` makes a basic attempt at this if `titleKey` is present.
-
-6.  **AI Tutor Context**: The `aiTutorInputForm` submit handler has a placeholder for `context`. A more advanced implementation might send the recent Q&A history or specific topic content as context to the AI tutor backend.
-
-7.  **Security**: Ensure all backend endpoints, especially those handling user input or AI model interactions, have appropriate authentication, authorization, and input validation.
-
-This version of `mcourse.js` makes significant progress by integrating the core API calls. The next major step for this page would be to replace the mock navigation and progress data with live data from your backe
