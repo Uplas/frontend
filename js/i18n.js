@@ -13,33 +13,31 @@ const i18nManager = (() => {
      */
     async function loadTranslations(locale = currentLocale) {
         try {
-            // Check if translations for this locale are already loaded and not empty
             if (translations[locale] && Object.keys(translations[locale]).length > 0) {
-                // console.log(`Translations for ${locale} already loaded and cached.`);
+                // console.log(`i18n: Translations for ${locale} already loaded.`);
                 return true;
             }
 
-            const response = await fetch(`locales/${locale}.json`);
+            const response = await fetch(`locales/${locale}.json`); // Fetches the locale file.
             if (!response.ok) {
-                console.error(`Could not load translations for ${locale}. Status: ${response.status}`);
-                // Attempt to fall back to English if the requested locale failed and isn't English
+                console.error(`i18n: Could not load translations for ${locale}. Status: ${response.status}`);
                 if (locale !== 'en') {
-                    console.warn(`Falling back to English translations for ${locale}.`);
-                    return loadTranslations('en'); // This will set translations['en']
+                    console.warn(`i18n: Falling back to English translations for ${locale}.`);
+                    return loadTranslations('en'); // Attempt to load English as a fallback.
                 }
-                translations[locale] = {}; // Store empty to prevent re-fetching a known bad file
+                translations[locale] = {}; // Mark as failed to prevent re-fetch
                 return false;
             }
             translations[locale] = await response.json();
-            // console.log(`Translations successfully loaded for ${locale}.`);
+            // console.log(`i18n: Translations successfully loaded for ${locale}.`);
             return true;
         } catch (error) {
-            console.error(`Error loading translation file for ${locale}:`, error);
+            console.error(`i18n: Error loading translation file for ${locale}:`, error);
             if (locale !== 'en') {
-                console.warn(`Falling back to English translations due to error for ${locale}.`);
+                console.warn(`i18n: Falling back to English translations due to error for ${locale}.`);
                 return loadTranslations('en');
             }
-            translations[locale] = {}; // Store empty on error to prevent re-fetching
+            translations[locale] = {};
             return false;
         }
     }
@@ -53,7 +51,7 @@ const i18nManager = (() => {
      * @returns {string} The translated (and interpolated) string, or fallback, or the key itself.
      */
     function translate(key, options = {}, locale = currentLocale) {
-        const langTranslations = translations[locale] || translations['en'] || {}; 
+        const langTranslations = translations[locale] || translations['en'] || {};
         let translationString = langTranslations[key] || options.fallback || key;
 
         if (options.variables && typeof translationString === 'string') {
@@ -64,93 +62,122 @@ const i18nManager = (() => {
                 }
             }
         }
-        return String(translationString); // Ensure it's always a string
+        return String(translationString);
     }
 
     /**
-     * Applies translations to all elements on the page with `data-translate-key`
-     * and other translation-related data attributes.
+     * Applies translations to elements within a given root element (or the whole document)
+     * that have `data-translate-key` and other translation-related data attributes.
+     * @param {HTMLElement} [rootElement=document.body] - The root element to apply translations within.
      * @param {string} [localeToApply=currentLocale] - The locale to apply.
      */
-    function applyTranslationsToPage(localeToApply = currentLocale) {
+    function applyTranslationsToPage(rootElement = document.body, localeToApply = currentLocale) {
+        if (!rootElement) {
+            console.warn("i18n: applyTranslationsToPage called with no rootElement.");
+            return;
+        }
         let effectiveLocale = localeToApply;
 
         if (!translations[effectiveLocale] || Object.keys(translations[effectiveLocale]).length === 0) {
             if (effectiveLocale !== 'en' && translations['en'] && Object.keys(translations['en']).length > 0) {
-                console.warn(`Translations for ${effectiveLocale} not available or empty. Using English as fallback for page application.`);
+                // console.warn(`i18n: Translations for ${effectiveLocale} not available/empty. Using English for element:`, rootElement);
                 effectiveLocale = 'en';
             } else {
-                console.error(`Critical: No usable translations (neither for ${effectiveLocale} nor English) available for applyTranslationsToPage.`);
-                return; 
+                console.error(`i18n: Critical - No usable translations (neither for ${effectiveLocale} nor English) for applyTranslations.`);
+                return;
             }
         }
+        // Set lang attribute on html element only if translating the whole document
+        if (rootElement === document.body || rootElement === document.documentElement) {
+            document.documentElement.lang = effectiveLocale;
+        }
 
-        document.documentElement.lang = effectiveLocale; 
-
-        document.querySelectorAll('[data-translate-key]').forEach(element => {
+        rootElement.querySelectorAll('[data-translate-key]').forEach(element => {
             const key = element.getAttribute('data-translate-key');
             const fallbackText = element.getAttribute('data-translate-fallback') || element.textContent.trim() || key;
             const translatedValue = translate(key, { fallback: fallbackText }, effectiveLocale);
 
-            if (element.children.length > 0 && element.childNodes.length > 1) {
-                let mainTextNode = null;
+            // More careful handling of elements with children (e.g., icons inside buttons)
+            let textNodeToUpdate = null;
+            if (element.childNodes.length > 0) {
                 for (let i = 0; i < element.childNodes.length; i++) {
                     const node = element.childNodes[i];
                     if (node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0) {
-                        // Prioritize a text node that isn't just whitespace around a child element
-                        if ((i === 0 || element.childNodes[i-1].nodeType !== Node.ELEMENT_NODE) && 
-                            (i === element.childNodes.length - 1 || element.childNodes[i+1].nodeType !== Node.ELEMENT_NODE)) {
-                            mainTextNode = node;
-                            break;
+                        // Prefer a text node that isn't just whitespace around other elements
+                        const prevSibling = node.previousSibling;
+                        const nextSibling = node.nextSibling;
+                        const isStandaloneText = 
+                            (!prevSibling || prevSibling.nodeType !== Node.ELEMENT_NODE || !prevSibling.textContent.trim()) &&
+                            (!nextSibling || nextSibling.nodeType !== Node.ELEMENT_NODE || !nextSibling.textContent.trim());
+
+                        if (isStandaloneText || !textNodeToUpdate) { // Prioritize standalone or take first found
+                           textNodeToUpdate = node;
+                           if(isStandaloneText) break; // Found a good candidate
                         }
-                        if (!mainTextNode) mainTextNode = node; // Fallback to any text node
                     }
                 }
-                if (mainTextNode) {
-                    mainTextNode.textContent = translatedValue;
-                } else if (['TITLE', 'OPTION'].includes(element.tagName)) {
-                     element.textContent = translatedValue;
-                } else {
-                    // If no distinct text node, it might be a wrapper. Cautiously set textContent.
-                    // This might overwrite icons if not careful with HTML structure.
-                    // Best practice: data-translate-key on the specific text-bearing span.
-                    // For simple cases like <button><i class="icon"></i> Text</button>, this might need specific handling
-                    // if `Text` is the only textNode, but it might be safer to wrap "Text" in a <span> with the key.
-                    // console.warn(`Complex element <${element.tagName.toLowerCase()}> with key '${key}'. Consider specific text span for translation.`);
-                    element.textContent = translatedValue; // Fallback with potential to overwrite - review HTML structure for these.
-                }
+            }
+
+            if (textNodeToUpdate) {
+                textNodeToUpdate.textContent = translatedValue;
+            } else if (['TITLE', 'OPTION', 'TEXTAREA', 'BUTTON'].includes(element.tagName) && element.children.length === 0) {
+                 // For simple elements or buttons without child icons, setting textContent is fine
+                 element.textContent = translatedValue;
+            } else if (element.children.length === 0) { // If no children at all, set textContent
+                 element.textContent = translatedValue;
             } else {
-                element.textContent = translatedValue;
+                // Fallback: If it's a complex element and no clear text node was found,
+                // search for a child span specifically marked for text content if any, or log a warning.
+                const textSpan = element.querySelector('.translatable-text-content');
+                if (textSpan) {
+                    textSpan.textContent = translatedValue;
+                } else if (element.tagName !== 'SELECT' && element.tagName !== 'NAV' && element.tagName !== 'UL' && element.tagName !== 'DIV' && element.tagName !== 'MAIN' && element.tagName !== 'HEADER' && element.tagName !== 'FOOTER' && element.tagName !== 'ASIDE' && element.tagName !== 'SECTION' && element.tagName !== 'ARTICLE' && element.tagName !== 'FORM') {
+                    // Avoid setting textContent on major structural or container elements
+                    // unless they are explicitly meant to only contain this text.
+                    // console.warn(`i18n: Element <${element.tagName.toLowerCase()}> with key '${key}' has children but no clear text node or '.translatable-text-content' span. Text not directly set to avoid overwriting children. Original content: "${element.innerHTML.substring(0,50)}..."`);
+                }
             }
         });
 
-        document.querySelectorAll('[data-translate-placeholder-key]').forEach(element => {
+        rootElement.querySelectorAll('[data-translate-placeholder-key]').forEach(element => {
             const key = element.getAttribute('data-translate-placeholder-key');
             element.placeholder = translate(key, { fallback: element.placeholder }, effectiveLocale);
         });
-        document.querySelectorAll('[data-translate-title-key]').forEach(element => {
+        rootElement.querySelectorAll('[data-translate-title-key]').forEach(element => {
             const key = element.getAttribute('data-translate-title-key');
             element.title = translate(key, { fallback: element.title }, effectiveLocale);
         });
-        document.querySelectorAll('[data-translate-aria-label-key]').forEach(element => {
+        rootElement.querySelectorAll('[data-translate-aria-label-key]').forEach(element => {
             const key = element.getAttribute('data-translate-aria-label-key');
             element.setAttribute('aria-label', translate(key, { fallback: element.getAttribute('aria-label') }, effectiveLocale));
         });
-         document.querySelectorAll('[data-translate-alt-key]').forEach(element => {
+        rootElement.querySelectorAll('[data-translate-alt-key]').forEach(element => {
             const key = element.getAttribute('data-translate-alt-key');
             element.alt = translate(key, { fallback: element.alt }, effectiveLocale);
         });
 
-        onLanguageChangeCallbacks.forEach(cb => cb(effectiveLocale));
+        // If we translated the whole document body, then run global callbacks.
+        // If only a part of the page was translated (e.g., a loaded component),
+        // global callbacks might not need to run, or specific callbacks for that component.
+        // For simplicity, we'll run all callbacks, they should be idempotent.
+        if (rootElement === document.body || rootElement === document.documentElement) {
+            onLanguageChangeCallbacks.forEach(cb => cb(effectiveLocale));
+        }
     }
 
     /**
-     * Sets the current locale, loads its translations, and applies them.
+     * Sets the current locale, loads its translations, and applies them to the whole page.
      * @param {string} newLocale - The new locale to set.
      */
     async function setLocale(newLocale) {
-        if (!newLocale || (currentLocale === newLocale && translations[newLocale] && Object.keys(translations[newLocale]).length > 0)) {
-            // console.log(`Locale ${newLocale} is already set and loaded, or invalid.`);
+        if (!newLocale || typeof newLocale !== 'string') {
+            console.warn(`i18n: Invalid locale provided to setLocale: ${newLocale}. Using current: ${currentLocale}`);
+            return;
+        }
+        if (currentLocale === newLocale && translations[newLocale] && Object.keys(translations[newLocale]).length > 0) {
+            // console.log(`i18n: Locale ${newLocale} is already set and loaded.`);
+            // Optionally, re-apply translations if DOM might have changed dynamically without i18n knowing
+            // applyTranslationsToPage(document.body, currentLocale);
             return;
         }
 
@@ -158,22 +185,21 @@ const i18nManager = (() => {
         
         const effectiveLocale = (translations[newLocale] && Object.keys(translations[newLocale]).length > 0) 
                                ? newLocale 
-                               : 'en'; // Fallback to 'en' if newLocale failed or is empty
+                               : 'en';
 
-        if (currentLocale !== effectiveLocale || !loadedSuccessfully) { // Apply if locale actually changed or if a reload was attempted
-            currentLocale = effectiveLocale;
+        if (currentLocale !== effectiveLocale || !loadedSuccessfully || Object.keys(translations[effectiveLocale] || {}).length === 0) {
+            currentLocale = effectiveLocale; // Update to the locale that actually has translations (or 'en' fallback)
             localStorage.setItem('uplas-lang', currentLocale);
-            applyTranslationsToPage(currentLocale);
             
+            // Ensure the language selector reflects the true current locale
             const languageSelector = document.getElementById('language-selector');
             if (languageSelector && languageSelector.value !== currentLocale) {
                 languageSelector.value = currentLocale;
             }
-        } else if (loadedSuccessfully && currentLocale === newLocale) {
-            // Locale was already current and successfully re-confirmed/loaded (e.g. from cache)
-            // Still apply translations in case DOM changed
-            applyTranslationsToPage(currentLocale);
         }
+        // Always apply translations, even if locale didn't change but was reloaded (e.g. from cache check)
+        // or if it fell back to English.
+        applyTranslationsToPage(document.body, currentLocale); // Apply to whole page
     }
 
     function getCurrentLocale() {
@@ -188,35 +214,32 @@ const i18nManager = (() => {
 
     async function init(defaultLocale = 'en') {
         const savedLocale = localStorage.getItem('uplas-lang') || defaultLocale;
-        currentLocale = savedLocale; // Set initial currentLocale
+        currentLocale = savedLocale;
 
-        await loadTranslations(savedLocale); // Attempt to load
+        await loadTranslations(currentLocale);
         
-        // Determine effective locale after load attempt (might have fallen back to 'en')
         const effectiveLocaleAfterLoad = (translations[currentLocale] && Object.keys(translations[currentLocale]).length > 0) 
                                           ? currentLocale 
                                           : 'en';
         
         if (currentLocale !== effectiveLocaleAfterLoad) {
-            console.warn(`Initial locale '${currentLocale}' failed or was empty, falling back to '${effectiveLocaleAfterLoad}'.`);
+            console.warn(`i18n: Initial locale '${currentLocale}' failed or was empty, falling back to '${effectiveLocaleAfterLoad}'.`);
             currentLocale = effectiveLocaleAfterLoad;
-            localStorage.setItem('uplas-lang', currentLocale); // Update storage if fallback occurred
+            localStorage.setItem('uplas-lang', currentLocale);
         }
         
-        // Ensure English is loaded if it's the effective (or fallback) locale and wasn't already loaded
         if (currentLocale === 'en' && (!translations['en'] || Object.keys(translations['en']).length === 0)) {
-            await loadTranslations('en');
+            await loadTranslations('en'); // Ensure English is loaded if it's the final effective locale
         }
 
         if (!translations[currentLocale] || Object.keys(translations[currentLocale]).length === 0) {
-            console.error(`CRITICAL: No translations could be loaded for effective locale '${currentLocale}'. UI will not be translated.`);
+            console.error(`i18n: CRITICAL - No translations could be loaded for effective locale '${currentLocale}'. UI will not be translated.`);
         } else {
-            applyTranslationsToPage(currentLocale);
+            applyTranslationsToPage(document.body, currentLocale); // Apply to whole page
         }
 
-        // Expose functions to global window object
         window.uplasTranslate = translate;
-        window.uplasChangeLanguage = setLocale;
+        window.uplasSetLanguage = setLocale; // Renamed for clarity from changeLanguage
         window.uplasApplyTranslations = applyTranslationsToPage; 
         window.uplasOnLanguageChange = onLanguageChange;
         window.uplasGetCurrentLocale = getCurrentLocale;
@@ -226,17 +249,18 @@ const i18nManager = (() => {
 
     return {
         init,
-        setLocale,
+        setLocale, // Keep internal name consistent
         translate,
-        applyTranslationsToPage,
+        applyTranslationsToPage, // Keep internal name consistent
         getCurrentLocale,
         onLanguageChange,
-        loadTranslations // Exposed for potential preloading or advanced use
+        loadTranslations
     };
 })();
 
-// Initialization is typically called from a global script like global.js
-// after DOMContentLoaded. For example:
-// if (typeof i18nManager !== 'undefined' && typeof i18nManager.init === 'function') {
-//     i18nManager.init('en'); 
-// }
+// Example Initialization (typically called from global.js or main app script)
+// document.addEventListener('DOMContentLoaded', () => {
+//     if (typeof i18nManager !== 'undefined' && typeof i18nManager.init === 'function') {
+//         i18nManager.init('en'); 
+//     }
+// });
