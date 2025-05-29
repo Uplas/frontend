@@ -30,59 +30,50 @@ document.addEventListener('DOMContentLoaded', () => {
     const signupPasswordInput = signupForm?.querySelector('#signup-password');
     const signupConfirmPasswordInput = signupForm?.querySelector('#signup-confirm-password');
     const signupPasswordMismatchSpan = signupForm?.querySelector('#signup-password-mismatch');
-    const signupStatusDiv = document.getElementById('signup-status'); // Used by local displayFormStatusMessage
+    const signupStatusDiv = document.getElementById('signup-status');
     const signupTermsCheckbox = document.getElementById('signup-terms');
 
     // Login Form Specific Elements
     const loginEmailInput = loginForm?.querySelector('#login-email');
     const loginPasswordInput = loginForm?.querySelector('#login-password');
-    const loginStatusDiv = document.getElementById('login-status'); // Used by local displayFormStatusMessage
+    const loginStatusDiv = document.getElementById('login-status');
 
     // --- State Variables ---
     let currentSignupStep = 0;
+    const { uplasApi, uplasTranslate, uplasApplyTranslations, uplasScrollToElement } = window; // Destructure global utilities
 
     // --- Utility Functions ---
-    // Use uplasApi.displayFormStatus if available, otherwise use local fallback.
-    const displayStatus = (formElement, message, type, translateKey = null) => {
-        if (typeof window.uplasApi !== 'undefined' && typeof window.uplasApi.displayFormStatus === 'function') {
-            window.uplasApi.displayFormStatus(formElement, message, type === 'error', translateKey);
+    const displayStatus = (formElement, message, typeOrIsError, translateKey = null) => {
+        const isError = typeof typeOrIsError === 'boolean' ? typeOrIsError : typeOrIsError === 'error';
+        const statusType = typeof typeOrIsError === 'string' ? typeOrIsError : (isError ? 'error' : 'success');
+
+        if (uplasApi && uplasApi.displayFormStatus) {
+            uplasApi.displayFormStatus(formElement, message, isError, translateKey);
         } else {
-            // Fallback to local implementation if uplasApi is not ready or available
-            displayFormStatusMessageLocal(formElement, message, type, translateKey);
+            // Fallback local display
+            let statusDiv = (formElement === signupForm) ? signupStatusDiv :
+                            (formElement === loginForm) ? loginStatusDiv :
+                            formElement?.querySelector('.form__status');
+
+            if (!statusDiv) {
+                console.warn("uhome.js (local displayStatus): Form status display element not found for form:", formElement);
+                return;
+            }
+            const text = (translateKey && uplasTranslate) ? uplasTranslate(translateKey, { fallback: message }) : message;
+            statusDiv.textContent = text;
+            statusDiv.className = 'form__status'; // Reset
+            statusDiv.classList.add(`form__status--${statusType}`);
+            statusDiv.style.display = 'block';
+            statusDiv.setAttribute('aria-live', isError ? 'assertive' : 'polite');
+            if(statusType === 'success') setTimeout(() => { if(statusDiv) statusDiv.style.display = 'none';}, 7000);
+
         }
-    };
-
-    const displayFormStatusMessageLocal = (formElement, message, type, translateKey = null) => {
-        let statusDiv;
-        if (formElement === signupForm) statusDiv = signupStatusDiv;
-        else if (formElement === loginForm) statusDiv = loginStatusDiv;
-        else statusDiv = formElement?.querySelector('.form__status'); // General fallback
-
-        if (!statusDiv) {
-            console.warn("uhome.js (local): Form status display element not found for form:", formElement);
-            return;
-        }
-
-        let text = message;
-        if (translateKey && typeof window.uplasTranslate === 'function') {
-            text = window.uplasTranslate(translateKey, { fallback: message });
-        }
-
-        statusDiv.textContent = text;
-        statusDiv.className = 'form__status'; // Reset classes
-        if (type) statusDiv.classList.add(`form__status--${type}`);
-        statusDiv.style.display = 'block';
-        statusDiv.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
     };
 
     const clearFormStatusMessage = (formElement) => {
-        // This function might not be needed if displayStatus handles clearing or timed display.
-        // For now, keeping the local clear logic.
-        let statusDiv;
-        if (formElement === signupForm) statusDiv = signupStatusDiv;
-        else if (formElement === loginForm) statusDiv = loginStatusDiv;
-        else statusDiv = formElement?.querySelector('.form__status');
-
+        let statusDiv = (formElement === signupForm) ? signupStatusDiv :
+                        (formElement === loginForm) ? loginStatusDiv :
+                        formElement?.querySelector('.form__status');
         if (statusDiv) {
             statusDiv.textContent = '';
             statusDiv.style.display = 'none';
@@ -114,8 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     errorKey = inputElement.dataset.errorKeyType || 'error_type_mismatch';
                     defaultMessage = `Please enter a valid ${inputElement.type}.`;
                 }
-                errorSpan.textContent = (typeof window.uplasTranslate === 'function' && errorKey) ?
-                                        window.uplasTranslate(errorKey, { fallback: defaultMessage }) : defaultMessage;
+                errorSpan.textContent = (uplasTranslate && errorKey) ?
+                                        uplasTranslate(errorKey, { fallback: defaultMessage }) : defaultMessage;
             }
             return false;
         }
@@ -124,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Form Switching Logic (Tabs & URL Hash) ---
-    authToggleButtons.forEach(button => {
+    authToggleButtons.forEach(button => { /* ... (same as uhome (4).js, no changes needed here) ... */
         button.addEventListener('click', () => {
             const targetFormId = button.dataset.form;
             const targetForm = document.getElementById(targetFormId);
@@ -137,57 +128,71 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (targetForm) {
                 targetForm.classList.add('form--active');
-                // Clear status messages when switching forms
                 if (targetFormId === 'signup-form' && signupForm) {
-                    resetSignupFormSteps(); // Also clears its own status
+                    resetSignupFormSteps();
                 } else if (loginForm) {
                     clearFormStatusMessage(loginForm);
                 }
                 const firstInput = targetForm.querySelector('input:not([type="hidden"]):not([disabled]), select:not([disabled]), textarea:not([disabled])');
                 firstInput?.focus();
+                 // Update URL hash without triggering hashchange listener if not needed for initial load
+                if(window.location.hash !== `#${targetFormId}` && window.location.hash !== `#auth-section&form=${targetFormId}`) {
+                   // history.pushState(null, '', `#${targetFormId}`); // Or #auth-section&form=...
+                }
             }
         });
     });
 
-    const handleHashChange = () => {
+    const handleHashChange = () => { /* ... (same as uhome (4).js, slightly refined scrolling) ... */
         const hash = window.location.hash;
-        if (hash === '#auth-section') {
-             if (authSection) {
-                if (typeof window.uplasScrollToElement === 'function') {
-                    window.uplasScrollToElement('#auth-section');
-                } else {
-                    authSection.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-            const subHashMatch = hash.match(/#auth-section&form=(login-form|signup-form)/);
-            const formToShow = subHashMatch ? subHashMatch[1] : (document.querySelector('.auth-toggle-button.active')?.dataset.form || 'signup-form');
-            const targetButton = document.querySelector(`.auth-toggle-button[data-form="${formToShow}"]`);
-            targetButton?.click();
+        let formToActivate = null;
 
+        if (hash.startsWith('#auth-section')) {
+            if (authSection) {
+                if (uplasScrollToElement) uplasScrollToElement('#auth-section');
+                else authSection.scrollIntoView({ behavior: 'smooth' });
+            }
+            const subHashMatch = hash.match(/&form=(login-form|signup-form)/);
+            formToActivate = subHashMatch ? subHashMatch[1] : (document.querySelector('.auth-toggle-button.active')?.dataset.form || 'signup-form');
         } else if (hash === '#signup-form' || hash === '#login-form') {
-            const targetButton = document.querySelector(`.auth-toggle-button[data-form="${hash.substring(1)}"]`);
-            targetButton?.click();
+            formToActivate = hash.substring(1);
+            if (authSection) { // Scroll to auth section if directly linking to a form
+                 if (uplasScrollToElement) uplasScrollToElement('#auth-section');
+                else authSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        if (formToActivate) {
+            const targetButton = document.querySelector(`.auth-toggle-button[data-form="${formToActivate}"]`);
+            if (targetButton && !targetButton.classList.contains('active')) { // Click only if not already active
+                targetButton.click();
+            }
         }
     };
     window.addEventListener('hashchange', handleHashChange);
+    // Initial call to handleHashChange is done after initial UI setup.
 
 
     // --- Multi-Step Signup Form Logic ---
-    const resetSignupFormSteps = () => {
+    const resetSignupFormSteps = () => { /* ... (same as uhome (4).js) ... */
         currentSignupStep = 0;
         if (signupFormSteps && signupFormSteps.length > 0) {
             showSignupStep(currentSignupStep);
-            signupForm?.reset();
+            signupForm?.reset(); // Resets form fields
+            // Clear validation states
             signupForm?.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
             signupForm?.querySelectorAll('.form__error-message').forEach(el => el.textContent = '');
+            if(signupPasswordMismatchSpan) signupPasswordMismatchSpan.textContent = '';
+
+
             if (signupOtherIndustryGroup) signupOtherIndustryGroup.classList.add('form__group--hidden');
-            if (signupIndustrySelect) signupIndustrySelect.value = "";
-            if (signupCountryCodeSelect) signupCountryCodeSelect.value = "+254";
-            clearFormStatusMessage(signupForm); // Clear any previous submission status
+            if (signupIndustrySelect) signupIndustrySelect.value = ""; // Explicitly reset select
+            if (signupCountryCodeSelect) signupCountryCodeSelect.value = "+254"; // Default country code
+            clearFormStatusMessage(signupForm);
         }
     };
 
-    const showSignupStep = (stepIndex) => {
+    const showSignupStep = (stepIndex) => { /* ... (same as uhome (4).js) ... */
         if (!signupFormSteps || !signupFormSteps[stepIndex]) return;
         signupFormSteps.forEach((stepElement, index) => {
             stepElement.classList.toggle('form-step--active', index === stepIndex);
@@ -198,175 +203,188 @@ document.addEventListener('DOMContentLoaded', () => {
         currentSignupStep = stepIndex;
     };
 
-    const validateCurrentSignupStep = () => {
+    const validateCurrentSignupStep = () => { /* ... (same as uhome (4).js, uses uplasTranslate for error messages) ... */
         const currentStepElement = signupFormSteps?.[currentSignupStep];
-        if (!currentStepElement) return true;
+        if (!currentStepElement) return true; // Should not happen if logic is correct
         let isStepValid = true;
 
         const inputsToValidate = currentStepElement.querySelectorAll('input[required]:not([type="hidden"]), select[required]:not([type="hidden"]), textarea[required]:not([type="hidden"])');
 
         inputsToValidate.forEach(input => {
+            // Skip validation for 'otherIndustry' if its group is hidden
             if (input.id === 'signup-other-industry' && signupOtherIndustryGroup?.classList.contains('form__group--hidden')) {
                 input.classList.remove('invalid');
                 const errorSpan = input.closest('.form__group')?.querySelector('.form__error-message');
                 if (errorSpan) errorSpan.textContent = '';
-                return;
+                return; // Don't validate if hidden and not required based on parent select
             }
             if (!validateIndividualInput(input)) isStepValid = false;
         });
 
-        if (currentStepElement.dataset.step === '5') { // Final step (password & terms)
+        if (currentStepElement.dataset.step === '5') { // Password and Terms step
             if (signupPasswordInput && signupConfirmPasswordInput && signupPasswordInput.value !== signupConfirmPasswordInput.value) {
                 signupConfirmPasswordInput.classList.add('invalid');
                 if (signupPasswordMismatchSpan) {
-                     signupPasswordMismatchSpan.textContent = typeof window.uplasTranslate === 'function' ?
-                        window.uplasTranslate('error_passwords_do_not_match', { fallback: "Passwords do not match."}) : "Passwords do not match.";
+                    signupPasswordMismatchSpan.textContent = (uplasTranslate) ?
+                        uplasTranslate('error_passwords_do_not_match', { fallback: "Passwords do not match."}) : "Passwords do not match.";
                 }
                 isStepValid = false;
             } else {
                 if (signupPasswordMismatchSpan) signupPasswordMismatchSpan.textContent = "";
-                if(signupConfirmPasswordInput && signupPasswordInput?.value === signupConfirmPasswordInput.value && signupConfirmPasswordInput.value !== "") {
+                 // Only remove 'invalid' if passwords match AND confirm password is not empty
+                if(signupConfirmPasswordInput && signupPasswordInput?.value === signupConfirmPasswordInput.value && signupConfirmPasswordInput.value) {
                      signupConfirmPasswordInput.classList.remove('invalid');
                 }
             }
 
             if (signupTermsCheckbox && !signupTermsCheckbox.checked) {
                 const termsErrorSpan = signupTermsCheckbox.closest('.form__group')?.querySelector('.form__error-message');
-                if(termsErrorSpan) {
-                    termsErrorSpan.textContent = typeof window.uplasTranslate === 'function' ?
-                        window.uplasTranslate('error_terms_required', { fallback: "You must agree to the terms and conditions."}) : "You must agree to the terms and conditions.";
+                if (termsErrorSpan) {
+                    termsErrorSpan.textContent = (uplasTranslate) ?
+                        uplasTranslate('error_terms_required', { fallback: "You must agree to the terms and conditions."}) : "You must agree to the terms and conditions.";
                 }
-                signupTermsCheckbox.classList.add('invalid');
+                // It's good practice to also visually indicate the checkbox or its label is in error
+                signupTermsCheckbox.classList.add('invalid'); // You might need CSS for .form__group--checkbox input.invalid
                 isStepValid = false;
-            } else if (signupTermsCheckbox) {
+            } else if (signupTermsCheckbox) { // If checkbox exists and is checked (or not required)
                 const termsErrorSpan = signupTermsCheckbox.closest('.form__group')?.querySelector('.form__error-message');
-                if(termsErrorSpan) termsErrorSpan.textContent = "";
+                if (termsErrorSpan) termsErrorSpan.textContent = "";
                 signupTermsCheckbox.classList.remove('invalid');
             }
         }
         return isStepValid;
     };
 
-    const handleNextSignupStep = () => {
+    const handleNextSignupStep = () => { /* ... (same as uhome (4).js) ... */
         if (!signupFormSteps || currentSignupStep >= signupFormSteps.length - 1) return;
         if (validateCurrentSignupStep()) {
             showSignupStep(currentSignupStep + 1);
+             clearFormStatusMessage(signupForm); // Clear general form status when moving next
+        } else {
+             // Optionally, display a generic "please correct errors" at the top/bottom of the step
+             // displayStatus(signupForm, 'Please correct the highlighted errors in this step.', 'error', 'error_step_validation_failed');
         }
     };
 
-    const handlePrevSignupStep = () => {
+    const handlePrevSignupStep = () => { /* ... (same as uhome (4).js) ... */
         if (currentSignupStep > 0) {
             showSignupStep(currentSignupStep - 1);
-            clearFormStatusMessage(signupForm); // Clear status when going back
+            clearFormStatusMessage(signupForm);
         }
     };
 
-    signupForm?.querySelectorAll('.form__button--next').forEach(button => {
-        button.addEventListener('click', handleNextSignupStep);
-    });
-    signupForm?.querySelectorAll('.form__button--prev').forEach(button => {
-        button.addEventListener('click', handlePrevSignupStep);
-    });
-
-    if (signupIndustrySelect && signupOtherIndustryGroup && signupOtherIndustryInput) {
-        signupIndustrySelect.addEventListener('change', () => {
+    signupForm?.querySelectorAll('.form__button--next').forEach(button => button.addEventListener('click', handleNextSignupStep));
+    signupForm?.querySelectorAll('.form__button--prev').forEach(button => button.addEventListener('click', handlePrevSignupStep));
+    if (signupIndustrySelect) { /* ... (same as uhome (4).js, `validateIndividualInput` handles clearing error) ... */
+         signupIndustrySelect.addEventListener('change', () => {
             const showOther = signupIndustrySelect.value === 'Other';
-            signupOtherIndustryGroup.classList.toggle('form__group--hidden', !showOther);
-            signupOtherIndustryInput.required = showOther;
-            if (!showOther) {
-                signupOtherIndustryInput.value = '';
-                validateIndividualInput(signupOtherIndustryInput); // Re-validate (should clear error if any)
+            if(signupOtherIndustryGroup) signupOtherIndustryGroup.classList.toggle('form__group--hidden', !showOther);
+            if(signupOtherIndustryInput) {
+                signupOtherIndustryInput.required = showOther;
+                if (!showOther) {
+                    signupOtherIndustryInput.value = '';
+                    validateIndividualInput(signupOtherIndustryInput); // Re-validate to clear potential error
+                }
             }
         });
     }
-
-    if (signupPasswordInput && signupConfirmPasswordInput && signupPasswordMismatchSpan) {
+    if (signupPasswordInput && signupConfirmPasswordInput && signupPasswordMismatchSpan) { /* ... (same as uhome (4).js, uses uplasTranslate) ... */
         const checkPasswordMatch = () => {
-            if (signupPasswordInput.value !== "" && signupConfirmPasswordInput.value !== "" && signupPasswordInput.value !== signupConfirmPasswordInput.value) {
-                signupPasswordMismatchSpan.textContent = typeof window.uplasTranslate === 'function' ?
-                    window.uplasTranslate('error_passwords_do_not_match', { fallback: "Passwords do not match."}) : "Passwords do not match.";
+            if (signupPasswordInput.value && signupConfirmPasswordInput.value && signupPasswordInput.value !== signupConfirmPasswordInput.value) {
+                signupPasswordMismatchSpan.textContent = (uplasTranslate) ?
+                    uplasTranslate('error_passwords_do_not_match') : "Passwords do not match.";
                 signupConfirmPasswordInput.classList.add('invalid');
             } else {
                 signupPasswordMismatchSpan.textContent = '';
-                if (signupPasswordInput.value === signupConfirmPasswordInput.value) {
+                if (signupPasswordInput.value === signupConfirmPasswordInput.value && signupConfirmPasswordInput.value) {
+                     // Only remove invalid if they match AND confirm is not empty
                     signupConfirmPasswordInput.classList.remove('invalid');
                 }
             }
         };
         signupConfirmPasswordInput.addEventListener('input', checkPasswordMatch);
-        signupPasswordInput.addEventListener('input', checkPasswordMatch);
+        signupPasswordInput.addEventListener('input', checkPasswordMatch); // Check also when primary password changes
     }
 
+
     // --- Populate Country Codes ---
-    const populateSignupCountryCodes = () => {
-        if (!signupCountryCodeSelect) return;
+    const populateSignupCountryCodes = () => { /* ... (same as uhome (4).js, no changes needed) ... */
+         if (!signupCountryCodeSelect) return;
+        // In a real app, this list would be more comprehensive or fetched.
         const countryCodes = [
             { code: '+1', flag: '🇺🇸', name: 'United States' }, { code: '+44', flag: '🇬🇧', name: 'United Kingdom' },
             { code: '+254', flag: '🇰🇪', name: 'Kenya' }, { code: '+234', flag: '🇳🇬', name: 'Nigeria' },
             { code: '+27', flag: '🇿🇦', name: 'South Africa' }, { code: '+91', flag: '🇮🇳', name: 'India' },
-            { code: '+61', flag: '🇦🇺', name: 'Australia' }, { code: '+1', flag: '🇨🇦', name: 'Canada (alt)' },
-             // Add more as needed
+            { code: '+61', flag: '🇦🇺', name: 'Australia' }, { code: '+1', flag: '🇨🇦', name: 'Canada' }, // Using primary for Canada
+            { code: '+49', flag: '🇩🇪', name: 'Germany' }, { code: '+33', flag: '🇫🇷', name: 'France' },
+            { code: '+86', flag: '🇨🇳', name: 'China' }, { code: '+81', flag: '🇯🇵', name: 'Japan' },
+            { code: '+55', flag: '🇧🇷', name: 'Brazil' },
+            // Add more relevant codes or a full list
         ];
+        // Ensure placeholder is translatable
         signupCountryCodeSelect.innerHTML = `<option value="" disabled data-translate-key="form_select_country_code_placeholder">Code</option>`;
         countryCodes.forEach(country => {
             const option = document.createElement('option');
             option.value = country.code;
+            // Displaying flag and code is user-friendly
             option.textContent = `${country.flag} ${country.code}`;
+            option.setAttribute('aria-label', `${country.name} (${country.code})`);
             signupCountryCodeSelect.appendChild(option);
         });
         signupCountryCodeSelect.value = '+254'; // Default to Kenya
+        if(uplasApplyTranslations) uplasApplyTranslations(signupCountryCodeSelect); // Translate the placeholder
     };
     populateSignupCountryCodes();
 
 
     // --- Signup Form Submission ---
-    const handleSignupSubmit = async (e) => {
+    const handleSignupSubmit = async (e) => { /* ... (same as uhome (4).js, uses uplasApi, error keys) ... */
         e.preventDefault();
         if (!signupForm || !validateCurrentSignupStep()) {
-            displayStatus(signupForm, 'Please correct the errors above.', 'error', 'error_correct_form_errors');
+            displayStatus(signupForm, '', 'error', 'error_correct_form_errors'); // Message from translation key
             return;
         }
-        clearFormStatusMessage(signupForm); // Clear previous messages
-        displayStatus(signupForm, 'Processing signup...', 'loading', 'signup_status_processing');
+        clearFormStatusMessage(signupForm);
+        displayStatus(signupForm, '', 'loading', 'signup_status_processing');
         const submitButton = signupForm.querySelector('button[type="submit"]');
         if (submitButton) submitButton.disabled = true;
 
-        // Ensure uplasApi is available
-        if (typeof window.uplasApi === 'undefined' || typeof window.uplasApi.registerUser !== 'function') {
+        if (!uplasApi || !uplasApi.registerUser) {
             console.error("uhome.js: uplasApi.registerUser is not available!");
-            displayStatus(signupForm, 'Registration service unavailable. Please try again later.', 'error', 'error_service_unavailable');
+            displayStatus(signupForm, '', 'error', 'error_service_unavailable');
             if (submitButton) submitButton.disabled = false;
             return;
         }
 
         const formData = new FormData(signupForm);
         const dataToSend = {
-            full_name: formData.get('fullName'), // Ensure 'name' attributes match
+            full_name: formData.get('fullName'),
             email: formData.get('email'),
             organization: formData.get('organization') || null,
             industry: formData.get('industry') === 'Other' ? formData.get('otherIndustry') : formData.get('industry'),
             profession: formData.get('profession'),
             whatsapp_number: `${formData.get('countryCode')}${formData.get('phone')}`,
             password: formData.get('password'),
-            password2: formData.get('confirmPassword') // Ensure name="confirmPassword" matches
+            password2: formData.get('confirmPassword')
         };
 
         try {
-            console.log("Submitting Signup Data to Backend via uplasApi:", dataToSend);
-            // Actual API call using uplasApi.registerUser
-            // The backend endpoint for registration is /api/users/register/
-            const responseData = await window.uplasApi.registerUser(dataToSend);
+            const responseData = await uplasApi.registerUser(dataToSend);
+            // Assuming registerUser throws an error on failure, so if we reach here, it's success.
+            // The responseData from your backend for successful registration is user data.
+            displayStatus(signupForm, responseData.message || (uplasTranslate ? uplasTranslate('signup_status_success_verify_whatsapp') : 'Signup successful! Please check for verification instructions.'), 'success');
+            // signupForm.reset(); // Consider if form should reset or direct user to login
+            // resetSignupFormSteps();
+            // Optionally, switch to login tab or show a "Please Login" message.
+            const loginButton = document.querySelector('.auth-toggle-button[data-form="login-form"]');
+            loginButton?.click(); // Switch to login form
+            if (loginEmailInput) loginEmailInput.value = dataToSend.email; // Pre-fill email in login
+            if (loginPasswordInput) loginPasswordInput.focus();
 
-            // Assuming backend returns a success message, or specific data on success
-            // For example, if backend sends: { "message": "User registered successfully. Please verify your email/WhatsApp." }
-            // Your backend's register endpoint might not return a message_key directly,
-            // so we might need to define one here or rely on a generic success message.
-            displayStatus(signupForm, responseData.message || 'Signup successful! Please check for verification instructions.', 'success', 'signup_status_success_verify_whatsapp');
-            // signupForm.reset(); // Optional: reset form on success
-            // resetSignupFormSteps(); // Optional: go back to step 1
         } catch (error) {
-            console.error('Signup Error from uplasApi:', error);
-            displayStatus(signupForm, error.message || 'An unknown error occurred during registration.', 'error', 'error_network');
+            console.error('uhome.js: Signup Error from uplasApi:', error);
+            // error.message should contain the formatted error from uplasApi or backend
+            displayStatus(signupForm, error.message, 'error', 'error_network'); // Use generic network error key if message is too technical
         } finally {
             if (submitButton) submitButton.disabled = false;
         }
@@ -375,7 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- Login Form Submission ---
-    const handleLoginSubmit = async (e) => {
+    const handleLoginSubmit = async (e) => { /* ... (same as uhome (4).js, uses uplasApi, error keys) ... */
         e.preventDefault();
         if (!loginForm) return;
         clearFormStatusMessage(loginForm);
@@ -385,18 +403,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (loginPasswordInput && !validateIndividualInput(loginPasswordInput)) isFormValid = false;
 
         if (!isFormValid) {
-            displayStatus(loginForm, 'Please correct the errors above.', 'error', 'error_correct_form_errors');
+            displayStatus(loginForm, '', 'error', 'error_correct_form_errors');
             return;
         }
 
-        displayStatus(loginForm, 'Attempting login...', 'loading', 'login_status_attempting');
+        displayStatus(loginForm, '', 'loading', 'login_status_attempting');
         const submitButton = loginForm.querySelector('button[type="submit"]');
         if (submitButton) submitButton.disabled = true;
 
-        // Ensure uplasApi is available
-        if (typeof window.uplasApi === 'undefined' || typeof window.uplasApi.loginUser !== 'function') {
+        if (!uplasApi || !uplasApi.loginUser) {
             console.error("uhome.js: uplasApi.loginUser is not available!");
-            displayStatus(loginForm, 'Login service unavailable. Please try again later.', 'error', 'error_service_unavailable');
+            displayStatus(loginForm, '', 'error', 'error_service_unavailable');
             if (submitButton) submitButton.disabled = false;
             return;
         }
@@ -405,31 +422,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = loginPasswordInput.value;
 
         try {
-            console.log("Submitting Login Data to Backend via uplasApi:", { email });
-            // Actual API call using uplasApi.loginUser
-            // The backend endpoint for login is /api/users/login/
-            // uplasApi.loginUser handles storing tokens (access, refresh) and basic user data.
-            // It also dispatches 'authChanged' event.
-            const loginResult = await window.uplasApi.loginUser(email, password);
+            // uplasApi.loginUser handles storing tokens and user data, and dispatches 'authChanged'
+            const loginResult = await uplasApi.loginUser(email, password);
 
-            displayStatus(loginForm, loginResult.message || 'Login successful! Redirecting...', 'success', 'login_status_success_redirect');
+            displayStatus(loginForm, loginResult.message || (uplasTranslate ? uplasTranslate('login_status_success_redirect') : 'Login successful! Redirecting...'), 'success');
 
-            // Redirect logic
             const urlParams = new URLSearchParams(window.location.search);
-            const returnUrl = urlParams.get('returnUrl'); // Check for a returnUrl query parameter
+            const returnUrl = urlParams.get('returnUrl');
 
             setTimeout(() => {
                 if (returnUrl) {
                     window.location.href = returnUrl;
                 } else {
-                    window.location.href = 'ucourses_list.html'; // Default redirect to courses list
+                    window.location.href = 'uprojects.html'; // Default redirect to user projects/dashboard
                 }
-            }, 1500); // Delay for user to see success message
+            }, 1500);
 
         } catch (error) {
-            console.error('Login Error from uplasApi:', error);
-            // error.message should contain the detail from backend or a generic message from uplasApi
-            displayStatus(loginForm, error.message || 'An unknown error occurred during login.', 'error', 'login_status_error_invalid_credentials');
+            console.error('uhome.js: Login Error from uplasApi:', error);
+            displayStatus(loginForm, error.message, 'error', 'login_status_error_invalid_credentials');
         } finally {
             if (submitButton) submitButton.disabled = false;
         }
@@ -437,139 +448,75 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loginForm) loginForm.addEventListener('submit', handleLoginSubmit);
 
     // --- Initial UI Setup ---
-    const initialActiveAuthButton = document.querySelector('.auth-toggle-buttons .auth-toggle-button.active');
-    if (initialActiveAuthButton) {
-        const initialFormId = initialActiveAuthButton.dataset.form;
-        const initialFormElement = document.getElementById(initialFormId);
-        if (initialFormElement) {
-            initialFormElement.classList.add('form--active');
-            const firstInput = initialFormElement.querySelector('input:not([type="hidden"]), select, textarea');
-            firstInput?.focus();
-            if (initialFormId === 'signup-form') {
-                resetSignupFormSteps();
-            }
+    function initializeFormVisibility() {
+        const hash = window.location.hash;
+        let activeForm = 'signup-form'; // Default
+        if (hash.includes('login-form')) {
+            activeForm = 'login-form';
+        } else if (hash.includes('signup-form')) {
+            activeForm = 'signup-form';
         }
-    } else if (signupForm) {
-        const signupButton = document.querySelector('.auth-toggle-button[data-form="signup-form"]');
-        signupButton?.classList.add('active');
-        signupForm.classList.add('form--active');
-        resetSignupFormSteps();
-        const firstInput = signupForm.querySelector('input:not([type="hidden"]), select, textarea');
-        firstInput?.focus();
+
+        const targetButton = document.querySelector(`.auth-toggle-button[data-form="${activeForm}"]`);
+        if(targetButton) {
+            targetButton.click(); // This will handle making the form active and resetting signup if needed
+        } else { // Fallback if no button matches (e.g., if hash is just #auth-section)
+            const defaultButton = document.querySelector('.auth-toggle-button[data-form="signup-form"]');
+            defaultButton?.click();
+        }
+        handleHashChange(); // Ensure scrolling and correct form display if #auth-section is part of hash
     }
-    handleHashChange(); // Apply form switch if #login-form or #signup-form is in URL
+    initializeFormVisibility();
+
 
     // Add listeners to clear validation on input
     document.querySelectorAll('#signup-form input[required], #signup-form select[required], #login-form input[required], #signup-form textarea[required]').forEach(input => {
         input.addEventListener('input', () => {
-            if(input.checkValidity()){
-                input.classList.remove('invalid');
-                const errorSpan = input.closest('.form__group')?.querySelector('.form__error-message');
-                if (errorSpan) errorSpan.textContent = '';
+            if (input.id === 'signup-terms') { // For checkbox, validate on change instead
+                return;
             }
-            // Specific logic for password confirmation
+            validateIndividualInput(input); // Validate on input for immediate feedback
+             // Specific logic for password confirmation (also re-check on primary password input)
             if(input.id === 'signup-confirm-password' || input.id === 'signup-password') {
-                if(signupPasswordInput?.value === signupConfirmPasswordInput?.value && signupConfirmPasswordInput?.value !== "") {
-                    if(signupPasswordMismatchSpan) signupPasswordMismatchSpan.textContent = '';
-                    signupConfirmPasswordInput?.classList.remove('invalid');
-                     const confirmErrorSpan = signupConfirmPasswordInput?.closest('.form__group')?.querySelector('.form__error-message');
-                     if(confirmErrorSpan && confirmErrorSpan.textContent.includes("Passwords do not match")) { // Be careful with translated strings here
-                        confirmErrorSpan.textContent = '';
-                     }
+                if(signupPasswordInput && signupConfirmPasswordInput && signupPasswordMismatchSpan) {
+                     if (signupPasswordInput.value && signupConfirmPasswordInput.value && signupPasswordInput.value !== signupConfirmPasswordInput.value) {
+                        signupPasswordMismatchSpan.textContent = (uplasTranslate) ? uplasTranslate('error_passwords_do_not_match') : "Passwords do not match.";
+                        signupConfirmPasswordInput.classList.add('invalid');
+                    } else {
+                        signupPasswordMismatchSpan.textContent = '';
+                        // Remove 'invalid' from confirm only if it matches AND is not empty
+                        if (signupPasswordInput.value === signupConfirmPasswordInput.value && signupConfirmPasswordInput.value) {
+                           signupConfirmPasswordInput.classList.remove('invalid');
+                        }
+                    }
                 }
             }
-            if (input.id === 'signup-terms' && input.checked) {
-                 input.classList.remove('invalid');
-                 const termsErrorSpan = input.closest('.form__group')?.querySelector('.form__error-message');
-                if(termsErrorSpan) termsErrorSpan.textContent = "";
-            }
         });
+        // For checkbox, validate on change
+        if (input.id === 'signup-terms') {
+            input.addEventListener('change', () => validateIndividualInput(input));
+        }
     });
 
-    // Update copyright year (This should ideally be handled by global.js after footer loads)
-    // If global.js isn't handling it, or this is a fallback:
-    const currentYearFooterSpan = document.getElementById('current-year-footer');
-    if (currentYearFooterSpan) {
-        const yearTextKey = currentYearFooterSpan.dataset.translateKey;
-        let yearTextContent = currentYearFooterSpan.textContent;
 
-        if (yearTextKey && typeof window.uplasTranslate === 'function') {
-            yearTextContent = window.uplasTranslate(yearTextKey, { fallback: "{currentYear}" });
+    // Update copyright year (This is also in global.js, but ensures it's handled if footer is static here)
+    const currentYearFooterSpan = document.getElementById('current-year-footer');
+    if (currentYearFooterSpan && typeof window.updateDynamicFooterYear === 'function') {
+        // Prefer global.js's version if available, as it might be more tied to i18n updates
+        // window.updateDynamicFooterYear(); // This function is now part of componentLoader.js and called there
+    } else if (currentYearFooterSpan) { // Fallback if global function not ready/available
+        const yearTextKey = currentYearFooterSpan.dataset.translateKey || 'footer_copyright_dynamic';
+        let yearTextContent = currentYearFooterSpan.textContent || "{currentYear}";
+
+        if (yearTextKey && uplasTranslate) {
+            yearTextContent = uplasTranslate(yearTextKey, { fallback: "{currentYear}" });
         }
-        
-        if (yearTextContent && yearTextContent.includes("{currentYear}")) {
+        if (yearTextContent.includes("{currentYear}")) {
             currentYearFooterSpan.textContent = yearTextContent.replace("{currentYear}", new Date().getFullYear());
-        } else if (yearTextContent && !yearTextContent.match(/\d{4}/)) {
+        } else if (!yearTextContent.match(/\d{4}/)) {
              currentYearFooterSpan.textContent = `© ${new Date().getFullYear()} ${yearTextContent.trim()}`;
-        } else if (yearTextContent && yearTextContent.trim() === "{currentYear}") {
-            currentYearFooterSpan.textContent = `© ${new Date().getFullYear()}`;
-        } else if (!yearTextContent.trim()) {
-            currentYearFooterSpan.textContent = `© ${new Date().getFullYear()}`;
         }
     }
 
-    console.log("Uplas uhome.js (Homepage JS) Refined and Initialized.");
+    console.log("uhome.js: Uplas Homepage JS refined and initialized.");
 });
-```
-
-**Explanation of Changes and Key Points:**
-
-1.  **`displayStatus` Utility**:
-    * A new `displayStatus` function is introduced at the top of `uhome.js`.
-    * It first checks if `window.uplasApi.displayFormStatus` (from `apiUtils.js`) is available. If yes, it uses that for consistency across the application.
-    * If `uplasApi.displayFormStatus` is *not* available (e.g., if `apiUtils.js` hasn't loaded or there's an issue), it falls back to the `displayFormStatusMessageLocal` function (which is the original `displayFormStatusMessage` from your `uhome (3).js` renamed). This provides resilience.
-
-2.  **`handleSignupSubmit`**:
-    * **API Call**: Replaced the simulated response with:
-        ```javascript
-        const responseData = await window.uplasApi.registerUser(dataToSend);
-        ```
-    * **Success Handling**: The success message is now more generic, as `registerUser` in `apiUtils.js` is designed to return the backend's response. Your backend's `/api/users/register/` endpoint (from `apps/users/views.py RegisterView`) returns user data upon successful registration but doesn't automatically log them in or send a specific `message_key`. The frontend message reflects this.
-        ```javascript
-        displayStatus(signupForm, responseData.message || 'Signup successful! Please check for verification instructions.', 'success', 'signup_status_success_verify_whatsapp');
-        ```
-        (Note: `responseData.message` might not exist directly; your backend sends user data. You might want to adjust the success message or how `registerUser` in `apiUtils` handles the response if a specific message is desired from the backend.)
-    * **Error Handling**: Catches errors from `uplasApi.registerUser`. The `error.message` will contain the detailed error string processed by `apiUtils.js` (which often includes backend error details).
-        ```javascript
-        displayStatus(signupForm, error.message || 'An unknown error occurred during registration.', 'error', 'error_network');
-        ```
-    * **Input Names**: Ensured `formData.get()` uses names that should match your HTML form input `name` attributes (e.g., `fullName`, `confirmPassword`).
-
-3.  **`handleLoginSubmit`**:
-    * **API Call**: Replaced the simulation with:
-        ```javascript
-        const loginResult = await window.uplasApi.loginUser(email, password);
-        ```
-    * **Token and UserData Storage**: **Removed** the lines:
-        ```javascript
-        // localStorage.setItem('accessToken', result.access);
-        // if(result.refresh) localStorage.setItem('refreshToken', result.refresh);
-        // if(result.user) localStorage.setItem('userData', JSON.stringify(result.user));
-        ```
-        This is because `window.uplasApi.loginUser` (as defined in the refined `apiUtils.js`) now handles storing the access token, refresh token, and basic user data in `localStorage` internally.
-    * **`authChanged` Event**: The `window.dispatchEvent(new CustomEvent('authChanged', ...))` line can also be removed from `handleLoginSubmit` if you've ensured that `window.uplasApi.loginUser` dispatches this event (as recommended for `apiUtils.js`). This avoids dispatching it twice. If `uplasApi.loginUser` does *not* dispatch it, then you should keep this line in `uhome.js`. For this integration, I'm assuming `uplasApi.loginUser` handles the event dispatch.
-    * **Success Handling**: Uses `loginResult.message` (if provided by `uplasApi.loginUser`, though `loginUser` typically returns the full backend response).
-        ```javascript
-        displayStatus(loginForm, loginResult.message || 'Login successful! Redirecting...', 'success', 'login_status_success_redirect');
-        ```
-    * **Error Handling**: Catches `error.message` from `uplasApi.loginUser`.
-        ```javascript
-        displayStatus(loginForm, error.message || 'An unknown error occurred during login.', 'error', 'login_status_error_invalid_credentials');
-        ```
-    * **Redirect Logic**: The redirect logic using `returnUrl` or defaulting to `ucourses_list.html` is preserved.
-
-4.  **Availability Checks**: Added checks for `window.uplasApi` before attempting to call its functions in both handlers to prevent errors if `apiUtils.js` fails to load or initialize `uplasApi` correctly.
-
-**Important Reminders:**
-
-* **Script Loading Order**: Ensure `apiUtils.js` (which defines `window.uplasApi`) is loaded *before* `uhome.js` in your HTML.
-    ```html
-    <script src="js/apiUtils.js"></script>
-    <script src="js/global.js"></script> <script src="js/uhome.js"></script>
-    ```
-* **Backend Endpoints**: The code assumes your Django backend has:
-    * A user registration endpoint at `/api/users/register/` (handled by `apps.users.views.RegisterView`).
-    * A login endpoint at `/api/users/login/` (handled by `apps.users.views.MyTokenObtainPairView`).
-* **Error Messages from Backend**: The quality of error messages displayed to the user will depend on how your Django backend formats error responses (e.g., using a `detail` key or field-specific errors) and how `window.uplasApi.registerUser` and `window.uplasApi.loginUser` process these into the `error.message` they throw.
-
-This version of `uhome.js` should now correctly use your centralized API utility for handling user authenticati
