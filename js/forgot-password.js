@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Frontend validation
         if (!email) {
-            // Using error keys for translation by uplasApi.displayFormStatus
             uplasApi.displayFormStatus(statusDiv, 'Email address is required.', true, 'error_email_required');
             emailInput.classList.add('invalid');
             isValid = false;
@@ -44,7 +43,6 @@ document.addEventListener('DOMContentLoaded', () => {
             isValid = false;
         } else {
             emailInput.classList.remove('invalid');
-            // Clear specific error span for the input if it exists
             const errorSpan = emailInput.closest('.form__group')?.querySelector('.form__error-message');
             if (errorSpan) errorSpan.textContent = '';
         }
@@ -67,13 +65,15 @@ document.addEventListener('DOMContentLoaded', () => {
         uplasApi.displayFormStatus(statusDiv, 'Processing your request...', false, 'forgot_password_status_sending');
 
         try {
-            const response = await uplasApi.fetchAuthenticated('/users/request-password-reset/', { // Ensure this matches your backend API route
+            // **BACKEND INTEGRATION POINT**
+            // Endpoint: /users/request-password-reset/ (Method: POST, Body: {email: "user@example.com"})
+            const response = await uplasApi.fetchAuthenticated('/users/request-password-reset/', {
                 method: 'POST',
                 body: JSON.stringify({ email: email }),
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                isPublic: true
+                isPublic: true // This endpoint should not require authentication
             });
 
             const result = await response.json();
@@ -106,11 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 emailInput.classList.remove('invalid');
                 const errorSpan = emailInput.closest('.form__group')?.querySelector('.form__error-message');
                 if (errorSpan) errorSpan.textContent = '';
-                // Optionally clear general form status only if it was related to this input
-                // uplasApi.clearFormStatus(statusDiv);
+                uplasApi.clearFormStatus(statusDiv);
             }
         }
     });
 
-    console.log('Forgot Password page JavaScript initialized.');
+    console.log('Forgot Password page JavaScript initialized and ready for backend integration.');
 });
