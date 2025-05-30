@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Frontend validation
         if (!email) {
+            // Using error keys for translation by uplasApi.displayFormStatus
             uplasApi.displayFormStatus(statusDiv, 'Email address is required.', true, 'error_email_required');
             emailInput.classList.add('invalid');
             isValid = false;
@@ -43,6 +44,9 @@ document.addEventListener('DOMContentLoaded', () => {
             isValid = false;
         } else {
             emailInput.classList.remove('invalid');
+            // Clear specific error span for the input if it exists
+            const errorSpan = emailInput.closest('.form__group')?.querySelector('.form__error-message');
+            if (errorSpan) errorSpan.textContent = '';
         }
 
         if (!isValid) {
@@ -51,30 +55,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const submitButton = forgotPasswordForm.querySelector('button[type="submit"]');
-        let originalButtonHTML = ''; // To store original button content (text + icon)
+        let originalButtonHTML = '';
 
         if (submitButton) {
             originalButtonHTML = submitButton.innerHTML;
             submitButton.disabled = true;
-            // Using a consistent loading message approach
             const loadingText = typeof uplasTranslate === 'function' ? uplasTranslate('status_sending', { fallback: 'Sending...' }) : 'Sending...';
             submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${loadingText}`;
         }
 
-        // Displaying a general processing message in the status div
         uplasApi.displayFormStatus(statusDiv, 'Processing your request...', false, 'forgot_password_status_sending');
 
         try {
-            // **BACKEND INTEGRATION POINT**
-            // This is where you call your backend API endpoint to request a password reset.
-            // Endpoint: /users/request-password-reset/ (Method: POST, Body: {email: "user@example.com"})
-            const response = await uplasApi.fetchAuthenticated('/users/request-password-reset/', {
+            const response = await uplasApi.fetchAuthenticated('/users/request-password-reset/', { // Ensure this matches your backend API route
                 method: 'POST',
                 body: JSON.stringify({ email: email }),
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                isPublic: true // This endpoint should not require authentication
+                isPublic: true
             });
 
             const result = await response.json();
@@ -82,10 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 uplasApi.displayFormStatus(statusDiv,
                     result.message || (typeof uplasTranslate === 'function' ? uplasTranslate('forgot_password_success_message', { fallback: 'If an account with that email exists, a password reset link has been sent.' }) : 'If an account with that email exists, a password reset link has been sent.'),
-                    false); // false for isError (success message)
-                forgotPasswordForm.reset(); // Clear the form email input on success
+                    false);
+                forgotPasswordForm.reset();
             } else {
-                // Handle specific errors from the backend or a generic one
                 throw new Error(result.detail || result.error || (typeof uplasTranslate === 'function' ? uplasTranslate('forgot_password_error_generic', { fallback: 'Could not process your request. Please try again later.' }) : 'Could not process your request. Please try again later.'));
             }
 
@@ -93,24 +91,22 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Forgot Password Submission Error:', error);
             uplasApi.displayFormStatus(statusDiv,
                 error.message || (typeof uplasTranslate === 'function' ? uplasTranslate('error_network', { fallback: 'A network error occurred. Please check your connection and try again.' }) : 'A network error occurred. Please check your connection and try again.'),
-                true); // true for isError
+                true);
         } finally {
             if (submitButton) {
                 submitButton.disabled = false;
-                submitButton.innerHTML = originalButtonHTML; // Restore original button text/HTML
+                submitButton.innerHTML = originalButtonHTML;
             }
         }
     });
 
-    // Add event listener to clear specific input error styling on input
     emailInput.addEventListener('input', () => {
         if (emailInput.classList.contains('invalid')) {
-            // A simple check or use your global validateInput if available
             if (emailInput.value.trim() && /^\S+@\S+\.\S+$/.test(emailInput.value.trim())) {
                 emailInput.classList.remove('invalid');
                 const errorSpan = emailInput.closest('.form__group')?.querySelector('.form__error-message');
                 if (errorSpan) errorSpan.textContent = '';
-                // Optionally clear general form status if error was specific to this field
+                // Optionally clear general form status only if it was related to this input
                 // uplasApi.clearFormStatus(statusDiv);
             }
         }
