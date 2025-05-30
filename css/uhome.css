@@ -4,7 +4,11 @@
    ================================================ */
 
 /* Import Global Styles & Variables */
-@import url('global.css'); /* This should already include variables.css */
+/* global.css already imports variables.css, so this is okay.
+   Alternatively, ensure variables.css is imported first if global.css might not be present/parsed yet.
+   However, standard practice is for global.css to include variables.css or for HTML to link variables.css first.
+*/
+@import url('global.css');
 
 /* --- Hero Section --- */
 .hero-section {
@@ -82,7 +86,7 @@
     .hero-section__cta-group { justify-content: flex-start; }
 }
 
-/* --- Benefits Section (New) --- */
+/* --- Benefits Section --- */
 .benefits-section {
     padding: var(--spacing-xxl) 0;
     background-color: var(--current-card-bg);
@@ -114,7 +118,7 @@
     box-shadow: var(--box-shadow-md);
 }
 .benefit-item__icon {
-    width: 70px; 
+    width: 70px;
     height: 70px;
     border-radius: 50%;
     margin: 0 auto var(--spacing-md) auto;
@@ -123,7 +127,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem; 
+    font-size: 2rem;
     color: var(--color-primary);
     border: 2px solid var(--color-primary-light);
 }
@@ -153,7 +157,7 @@
     padding: var(--spacing-xxl) 0;
     background-color: var(--current-bg-color);
 }
-#course-description-image-section {
+#course-description-image-section { /* Specific ID styling */
     background-color: var(--current-card-bg);
     padding-top: var(--spacing-xxl);
     padding-bottom: var(--spacing-xxl);
@@ -243,7 +247,7 @@
     box-shadow: var(--box-shadow-sm);
 }
 .dark-mode .auth-toggle-button.active {
-    color: var(--color-black); 
+    color: var(--color-black);
 }
 
 .form-wrapper {
@@ -267,13 +271,14 @@
     from { opacity: 0; transform: translateY(15px); }
     to { opacity: 1; transform: translateY(0); }
 }
-.form__title { /* This is a general .form__title, used by both signup/login and contact */
-    text-align: center;
-    margin-bottom: var(--spacing-lg);
-    font-size: var(--font-size-xl);
+/* .form__title is in global.css, but for auth section specifically: */
+.auth-section .form__title {
     color: var(--current-text-color);
 }
-.dark-mode .form__title { color: var(--color-primary-light); }
+.dark-mode .auth-section .form__title {
+    color: var(--color-primary-light);
+}
+
 
 /* Styles for multi-step form within .auth-section */
 .auth-section .form-step { display: none; }
@@ -287,6 +292,7 @@
     from { opacity: 1; transform: translateX(0); }
     to { opacity: 0; transform: translateX(-20px); display:none; }
 }
+
 .form__step-indicator {
     font-size: var(--font-size-sm);
     color: var(--current-text-color-secondary);
@@ -295,23 +301,36 @@
     font-weight: var(--font-weight-medium);
 }
 .phone-input-container { display: flex; gap: var(--spacing-xs); }
-.form__select--country-code { flex: 0 0 130px; }
-.form__input--phone { flex-grow: 1; }
+.form__select--country-code { flex: 0 0 130px; } /* from global */
+.form__input--phone { flex-grow: 1; } /* from global */
 
-.form__group--checkbox {
+.form__group--checkbox { /* from global */
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
     margin-top: var(--spacing-md);
 }
+/* Refined checkbox specific styling for uhome context, ensuring visibility */
 .form__group--checkbox input[type="checkbox"] {
-    width: auto;
-    height: 1em;
-    flex-shrink: 0;
-    accent-color: var(--color-primary);
-    margin-top: 2px;
+    /* width: auto; Let global.css handle default size or make it slightly larger */
+    /* height: 1em; Let global.css handle default size or make it slightly larger */
+    width: 1.2rem; /* Explicit size for easier clicking */
+    height: 1.2rem;
+    flex-shrink: 0; /* Important in flex container */
+    /* accent-color is now globally set, can be overridden if needed */
+    /* accent-color: var(--color-primary); */
+    margin-top: 1px; /* Fine-tune vertical alignment if global setting isn't perfect */
+    /* Ensure it's not inheriting unwanted styles that hide it */
+    border: var(--border-width) solid var(--current-input-border-color); /* Example: if global reset was too harsh */
+    background-color: var(--current-input-bg);
 }
-.form__label--checkbox {
+.dark-mode .form__group--checkbox input[type="checkbox"] {
+    border-color: var(--color-dark-border-primary);
+    background-color: var(--color-dark-bg-input);
+}
+
+
+.form__label--checkbox { /* from global */
     font-weight: var(--font-weight-regular);
     font-size: var(--font-size-sm);
     margin-bottom: 0;
@@ -326,11 +345,13 @@
     gap: var(--spacing-md);
     margin-top: var(--spacing-lg);
 }
-.form__button { width: 100%; }
+.form__button { width: 100%; } /* from global */
 .form__button-group .form__button { flex: 1; }
 .form__button--prev i { margin-right: var(--spacing-xs); }
 .form__button--next i { margin-left: var(--spacing-xs); }
 
+/* .form__status is in global.css */
+/* .form__link is in global.css */
 .form__group--subtle-text { text-align: right; margin-top: var(--spacing-sm); }
 
 
@@ -359,8 +380,8 @@
 .faq-item__question::-webkit-details-marker { display: none; }
 .faq-item__question::after {
     content: '\f078';
-    font-family: 'Font Awesome 6 Free', 'FontAwesome';
-    font-weight: 900;
+    font-family: 'Font Awesome 6 Free', 'FontAwesome'; /* Ensure correct FontAwesome 6 family */
+    font-weight: 900; /* Solid icon */
     position: absolute;
     right: var(--spacing-lg);
     top: 50%;
