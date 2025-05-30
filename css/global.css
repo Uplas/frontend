@@ -30,12 +30,12 @@ html {
 /* Adjust root font size for smaller screens for better overall scaling of rem units */
 @media (max-width: 767px) {
     html {
-        font-size: 15px; 
+        font-size: 15px;
     }
 }
 @media (max-width: 480px) {
     html {
-        font-size: 14px; 
+        font-size: 14px;
     }
 }
 
@@ -51,7 +51,7 @@ body {
     line-height: var(--line-height-base);
     transition: background-color var(--transition-base), color var(--transition-base);
     padding-top: var(--header-height, 70px); /* Default header height */
-    overflow-x: hidden; 
+    overflow-x: hidden;
 }
 @media (max-width: 991px) {
     body {
@@ -60,7 +60,7 @@ body {
 }
 
 
-body.mobile-nav-active { overflow-y: hidden; } 
+body.mobile-nav-active { overflow-y: hidden; }
 
 /* --- Typography --- */
 h1, h2, h3, h4, h5, h6 {
@@ -187,7 +187,25 @@ li { margin-bottom: var(--spacing-xs); }
     margin-bottom: var(--spacing-xs);
     font-size: var(--font-size-sm); color: var(--current-text-color);
 }
-.form__input, .form__select, .form__textarea {
+
+/* Global input reset - excluding checkboxes and radios from full appearance stripping */
+input:not([type="checkbox"]):not([type="radio"]),
+button, /* Buttons already have .button style, but this reset can be a base */
+textarea,
+select {
+    font: inherit;
+    border: none;
+    background: none;
+    color: inherit;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Default styling for text-like inputs, selects, textareas */
+.form__input,
+.form__select,
+.form__textarea {
     width: 100%; padding: var(--spacing-sm) var(--spacing-md);
     border: var(--border-width) solid var(--current-input-border-color);
     border-radius: var(--border-radius-md);
@@ -196,19 +214,75 @@ li { margin-bottom: var(--spacing-xs); }
     font-size: 0.95rem; line-height: 1.5;
     transition: border-color var(--transition-short), box-shadow var(--transition-short);
 }
+/* Apply to specific input types if .form__input is too broad for some custom inputs */
+input[type="text"].form__input,
+input[type="email"].form__input,
+input[type="password"].form__input,
+input[type="tel"].form__input,
+input[type="number"].form__input,
+input[type="search"].form__input,
+input[type="url"].form__input {
+    /* These inherit .form__input styles */
+}
+
+
 .form__input::placeholder, .form__textarea::placeholder { color: var(--current-input-placeholder-color); opacity: 0.8; }
-.form__input:focus, .form__select:focus, .form__textarea:focus {
+
+.form__input:focus,
+.form__select:focus,
+.form__textarea:focus {
     border-color: var(--color-primary); box-shadow: var(--box-shadow-focus); outline: none;
 }
-.form__input.invalid, .form__select.invalid, .form__textarea.invalid { border-color: var(--color-error) !important; box-shadow: var(--box-shadow-focus-error) !important; }
-.form__error-message { display: block; color: var(--color-error); font-size: var(--font-size-xs); margin-top: var(--spacing-xxs); min-height: 1.2em; }
-.form__select {
-    appearance: none; -webkit-appearance: none; -moz-appearance: none;
-    background-repeat: no-repeat; background-position: right var(--spacing-md) center; background-size: 1em;
-    padding-right: calc(var(--spacing-md) + 1.5em);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    color: var(--current-text-color-secondary);
+.form__input.invalid,
+.form__select.invalid,
+.form__textarea.invalid {
+    border-color: var(--color-error) !important;
+    box-shadow: var(--box-shadow-focus-error) !important;
 }
+
+/* Checkboxes and Radios - ensure they are visible and stylable */
+input[type="checkbox"],
+input[type="radio"] {
+    appearance: auto; /* Let browser render default and allow styling */
+    -webkit-appearance: auto;
+    -moz-appearance: auto;
+    width: 1.2em; /* A good default size */
+    height: 1.2em;
+    accent-color: var(--color-primary); /* Style the checkmark/dot */
+    margin-right: var(--spacing-xs);
+    vertical-align: middle; /* Better alignment with label text */
+    border: var(--border-width) solid var(--current-input-border-color); /* Optional: if you want a border */
+    background-color: var(--current-input-bg); /* Optional: if you want a background */
+    cursor: pointer;
+    border-radius: var(--border-radius-sm); /* For checkbox border */
+}
+input[type="radio"] {
+    border-radius: 50%; /* For radio border */
+}
+input[type="checkbox"]:focus,
+input[type="radio"]:focus {
+    /* Use the global focus-visible for consistency */
+}
+input[type="checkbox"].invalid,
+input[type="radio"].invalid {
+    border-color: var(--color-error) !important;
+    box-shadow: var(--box-shadow-focus-error) !important;
+}
+
+
+.form__error-message { display: block; color: var(--color-error); font-size: var(--font-size-xs); margin-top: var(--spacing-xxs); min-height: 1.2em; }
+
+.form__select { /* Custom select arrow for non-checkbox/radio inputs */
+    background-repeat: no-repeat; background-position: right var(--spacing-md) center; background-size: 1em;
+    padding-right: calc(var(--spacing-md) + 1.5em); /* Space for arrow */
+    /* SVG for select arrow, color adapts to --current-text-color-secondary */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='var(--current-text-color-secondary)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+/* Update SVG stroke for dark mode using CSS variables if possible, otherwise this might need two versions or inline SVG with currentColor */
+.dark-mode .form__select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='var(--color-dark-text-secondary)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
 
 .form__status {
     margin-top: var(--spacing-md); padding: var(--spacing-sm) var(--spacing-md);
@@ -332,7 +406,7 @@ li { margin-bottom: var(--spacing-xs); }
     border: 1px solid var(--current-border-color); border-radius: var(--border-radius-md);
     padding: var(--spacing-xs) var(--spacing-sm) var(--spacing-xs) calc(var(--spacing-sm) + 20px);
     font-size: var(--font-size-xs); font-weight: var(--font-weight-medium);
-    appearance: none; -webkit-appearance: none; -moz-appearance: none;
+    /* appearance: none; -webkit-appearance: none; -moz-appearance: none; */ /* Handled by .form__select now */
     cursor: pointer; min-width: 80px; height: 32px; line-height: 1;
 }
 .header-select:hover { border-color: var(--color-primary); }
@@ -350,7 +424,7 @@ li { margin-bottom: var(--spacing-xs); }
     display: none;
     background: none; border: none; color: var(--current-text-color);
     font-size: 1.6rem; cursor: pointer; padding: var(--spacing-xs);
-    z-index: 1051; 
+    z-index: 1051;
 }
 .nav__toggle:hover { color: var(--current-link-hover-color); }
 
@@ -411,21 +485,21 @@ li { margin-bottom: var(--spacing-xs); }
 /* --- Mobile Navigation Styles & Other Responsive Adjustments --- */
 @media (max-width: 991px) {
     .nav {
-        display: none; 
-        position: fixed; 
-        top: var(--header-height-mobile, 60px); 
+        display: none;
+        position: fixed;
+        top: var(--header-height-mobile, 60px);
         left: 0;
-        right: 0; 
+        right: 0;
         width: 100%;
-        height: calc(100vh - var(--header-height-mobile, 60px)); 
+        height: calc(100vh - var(--header-height-mobile, 60px));
         background-color: var(--current-header-bg);
         box-shadow: var(--box-shadow-md);
         flex-direction: column;
-        padding: var(--spacing-md) 0; 
-        overflow-y: auto; 
-        z-index: 999; 
+        padding: var(--spacing-md) 0;
+        overflow-y: auto;
+        z-index: 999;
     }
-    .nav.nav--active { 
+    .nav.nav--active {
         display: flex;
         animation: slideDownNav 0.3s ease-out forwards;
     }
@@ -442,40 +516,40 @@ li { margin-bottom: var(--spacing-xs); }
         border-radius: 0;
     }
     .nav__list li:last-child .nav__link { border-bottom: none; }
-    .nav__link:not(.nav__link--cta)::after { display: none; } 
-    .nav__link--cta { 
+    .nav__link:not(.nav__link--cta)::after { display: none; }
+    .nav__link--cta {
         margin: var(--spacing-sm) var(--spacing-lg);
         text-align: center;
-        background-color: var(--color-primary); 
-        color: var(--color-white) !important; 
+        background-color: var(--color-primary);
+        color: var(--color-white) !important;
         border-color: var(--color-primary);
     }
      .dark-mode .nav__link--cta {
-        color: var(--color-black) !important; 
+        color: var(--color-black) !important;
     }
 
-    .nav__toggle { display: flex; } 
+    .nav__toggle { display: flex; }
 
-    .header-actions .language-currency-selectors { display: none; } 
+    .header-actions .language-currency-selectors { display: none; }
 
     .footer__container {
         text-align: center;
         gap: var(--spacing-lg);
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
     .footer__section { margin-bottom: var(--spacing-lg); }
     .footer__list { display: inline-block; text-align: left; }
     .social-media { justify-content: center; }
 }
 
-@media (max-width: 480px) { 
+@media (max-width: 480px) {
     .section-title {
-        font-size: clamp(1.6rem, 6vw, var(--font-size-xl)); 
+        font-size: clamp(1.6rem, 6vw, var(--font-size-xl));
     }
     .section-subtitle {
-        font-size: clamp(0.9rem, 3.5vw, var(--font-size-md)); 
+        font-size: clamp(0.9rem, 3.5vw, var(--font-size-md));
     }
-    .button { 
+    .button {
         padding: calc(var(--spacing-sm) * 0.9) calc(var(--spacing-lg) * 0.9);
         font-size: calc(var(--font-size-sm) * 0.95);
     }
@@ -485,7 +559,7 @@ li { margin-bottom: var(--spacing-xs); }
     }
     .form__input, .form__select, .form__textarea {
         padding: calc(var(--spacing-sm) * 0.9) calc(var(--spacing-md) * 0.9);
-        font-size: 0.9rem; 
+        font-size: 0.9rem;
     }
 }
 
@@ -499,7 +573,7 @@ li { margin-bottom: var(--spacing-xs); }
     opacity: 0; visibility: hidden;
     transition: opacity 0.3s ease-out, visibility 0s 0.3s;
 }
-.modal-overlay[hidden] { display: none !important; } 
+.modal-overlay[hidden] { display: none !important; }
 .modal-overlay.active { opacity: 1; visibility: visible; transition-delay: 0s; }
 
 .modal__content {
@@ -511,10 +585,10 @@ li { margin-bottom: var(--spacing-xs); }
 }
 .modal-overlay.active .modal__content { transform: scale(1); }
 
-@media (max-width: 767px) { 
+@media (max-width: 767px) {
     .modal__content {
-        width: 95vw; 
-        padding: var(--spacing-lg); 
+        width: 95vw;
+        padding: var(--spacing-lg);
     }
 }
 
@@ -575,7 +649,7 @@ li { margin-bottom: var(--spacing-xs); }
 .payment-modal__content .form__row .form__group { flex: 1; }
 @media (max-width: 576px) {
     .payment-modal__content .form__row {
-        flex-direction: column; 
+        flex-direction: column;
     }
 }
 
