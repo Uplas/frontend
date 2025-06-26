@@ -284,9 +284,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             console.warn("Global.js: uplasApi not available for updateLoginStateUI.");
             // Default to logged-out view if API utils not ready
             const userAvatarHeader = getElement('user-avatar-header', 'User Avatar in Header', false);
-            const loginSignupHeaderLinkContainer = getElement('auth-header-link-container', 'Login/Signup Link Container in Header', false);
+            const navLoggedIn = getElement('nav-logged-in', 'Logged In Navigation', false);
+            const navLoggedOut = getElement('nav-logged-out', 'Logged Out Navigation', false);
             if (userAvatarHeader) userAvatarHeader.style.display = 'none';
-            if (loginSignupHeaderLinkContainer) loginSignupHeaderLinkContainer.style.display = 'list-item'; // Or 'block'/'flex'
+            if (navLoggedIn) navLoggedIn.style.display = 'none';
+            if (navLoggedOut) navLoggedOut.style.display = 'flex';
             return;
         }
         if (!headerLoadedSuccessfully) {
@@ -298,13 +300,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const userData = window.uplasApi.getUserData(); // This is from localStorage, updated by initializeUserSession or login
 
         const userAvatarHeader = getElement('user-avatar-header', 'User Avatar in Header', false);
-        const loginSignupHeaderLinkContainer = getElement('auth-header-link-container', 'Login/Signup Link Container in Header', false);
+        const navLoggedIn = getElement('nav-logged-in', 'Logged In Navigation', false);
+        const navLoggedOut = getElement('nav-logged-out', 'Logged Out Navigation', false);
         // Assuming these might be in a dropdown, not strictly required for basic state:
         const userFullNameDisplay = getElement('user-full-name-display', 'User Full Name Display in Dropdown', false);
         const userEmailDisplay = getElement('user-email-display', 'User Email Display in Dropdown', false);
 
-        if (!userAvatarHeader || !loginSignupHeaderLinkContainer) {
-            console.error("Global.js: FAILED to find 'user-avatar-header' or 'auth-header-link-container'. UI update aborted. Check header.html IDs.");
+        if (!userAvatarHeader || !navLoggedIn || !navLoggedOut) {
+            console.error("Global.js: FAILED to find 'user-avatar-header', 'nav-logged-in', or 'nav-logged-out'. UI update aborted. Check header.html IDs.");
             return;
         }
 
@@ -316,11 +319,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (userEmailDisplay) userEmailDisplay.textContent = userData.email || '';
 
             userAvatarHeader.style.display = 'flex';
-            loginSignupHeaderLinkContainer.style.display = 'none';
+            navLoggedIn.style.display = 'flex';
+            navLoggedOut.style.display = 'none';
         } else {
             console.log("Global.js: User IS NOT authenticated. Updating UI.");
             userAvatarHeader.style.display = 'none';
-            loginSignupHeaderLinkContainer.style.display = 'list-item';
+            navLoggedIn.style.display = 'none';
+            navLoggedOut.style.display = 'flex';
             if (userFullNameDisplay) userFullNameDisplay.textContent = '';
             if (userEmailDisplay) userEmailDisplay.textContent = '';
         }
