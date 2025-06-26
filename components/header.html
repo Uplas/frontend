@@ -1,17 +1,18 @@
 <div class="container header__container">
     <a href="index.html" class="logo" aria-label="Uplas Homepage">
-        <!-- <img src="#" alt="Uplas Platform Logo" class="logo__img"> -->
         <span class="logo__text">Uplas</span>
     </a>
     <nav class="nav" id="main-navigation" aria-label="Main site navigation">
-        <ul class="nav__list">
+        <ul class="nav__list" id="nav-logged-out">
             <li class="nav__item"><a href="index.html" class="nav__link" data-translate-key="nav_home">Home</a></li>
             <li class="nav__item"><a href="ucourse.html" class="nav__link" data-translate-key="nav_courses">Courses</a></li>
             <li class="nav__item"><a href="upricing.html" class="nav__link" data-translate-key="nav_pricing">Pricing</a></li>
             <li class="nav__item"><a href="ublog.html" class="nav__link" data-translate-key="nav_blog">Blog</a></li>
-            <li class="nav__item nav__item--cta-placeholder" id="auth-header-link-container">
-                 <a href="index.html#auth-section" class="nav__link nav__link--cta" data-translate-key="nav_login_signup">Login/Sign Up</a>
-            </li>
+        </ul>
+        <ul class="nav__list" id="nav-logged-in" style="display: none;">
+            <li class="nav__item"><a href="uprojects.html" class="nav__link" data-translate-key="nav_dashboard">Dashboard</a></li>
+            <li class="nav__item"><a href="ucourse.html" class="nav__link" data-translate-key="nav_my_courses">My Courses</a></li>
+            <li class="nav__item"><a href="ucommunity.html" class="nav__link" data-translate-key="nav_community">Community</a></li>
         </ul>
     </nav>
     <div class="header-actions">
@@ -52,6 +53,9 @@
         </button>
         <div class="user-profile-placeholder-header" id="user-avatar-header" style="display: none;">
             <button class="user-avatar-button-header" aria-label="User menu">JD</button>
+        </div>
+        <div class="nav__item nav__item--cta-placeholder" id="auth-header-link-container">
+            <a href="index.html#auth-section" class="nav__link nav__link--cta" data-translate-key="nav_login_signup">Login/Sign Up</a>
         </div>
     </div>
     <button class="nav__toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-navigation">
