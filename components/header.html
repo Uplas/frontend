@@ -2,20 +2,27 @@
     <a href="index.html" class="logo" aria-label="Uplas Homepage">
         <span class="logo__text">Uplas</span>
     </a>
+
+    <!-- Main Navigation -->
     <nav class="nav" id="main-navigation" aria-label="Main site navigation">
+        <!-- Logged-Out Navigation -->
         <ul class="nav__list" id="nav-logged-out">
             <li class="nav__item"><a href="index.html" class="nav__link" data-translate-key="nav_home">Home</a></li>
             <li class="nav__item"><a href="ucourse.html" class="nav__link" data-translate-key="nav_courses">Courses</a></li>
             <li class="nav__item"><a href="upricing.html" class="nav__link" data-translate-key="nav_pricing">Pricing</a></li>
             <li class="nav__item"><a href="ublog.html" class="nav__link" data-translate-key="nav_blog">Blog</a></li>
         </ul>
+        <!-- Logged-In Navigation -->
         <ul class="nav__list" id="nav-logged-in" style="display: none;">
             <li class="nav__item"><a href="uprojects.html" class="nav__link" data-translate-key="nav_dashboard">Dashboard</a></li>
             <li class="nav__item"><a href="ucourse.html" class="nav__link" data-translate-key="nav_my_courses">My Courses</a></li>
             <li class="nav__item"><a href="ucommunity.html" class="nav__link" data-translate-key="nav_community">Community</a></li>
         </ul>
     </nav>
+
+    <!-- Header Actions -->
     <div class="header-actions">
+        <!-- Language & Currency -->
         <div class="language-currency-selectors">
             <div class="select-wrapper">
                 <label for="language-selector" class="sr-only" data-translate-key="sr_select_language">Select Language</label>
@@ -40,24 +47,48 @@
                     <option value="AUD">AUD (A$)</option>
                     <option value="CAD">CAD (C$)</option>
                     <option value="CHF">CHF (Fr)</option>
-                    <option value="CNY">CNY (¥)</option> <option value="INR">INR (₹)</option>
+                    <option value="CNY">CNY (¥)</option>
+                    <option value="INR">INR (₹)</option>
                     <option value="KES">KES (KSh)</option>
                     <option value="BTC">BTC (₿)</option>
                 </select>
             </div>
         </div>
+
+        <!-- Theme Toggle -->
         <button id="theme-toggle" class="button button--theme" aria-label="Switch color theme" title="Toggle theme">
             <i class="fas fa-moon theme-icon theme-icon--dark"></i>
             <i class="fas fa-sun theme-icon theme-icon--light"></i>
             <span class="sr-only" data-translate-key="toggle_theme_sr">Toggle Dark/Light Mode</span>
         </button>
-        <div class="user-profile-placeholder-header" id="user-avatar-header" style="display: none;">
-            <button class="user-avatar-button-header" aria-label="User menu">JD</button>
+
+        <!-- User Profile Dropdown (Logged-In State) -->
+        <div class="user-profile-container" id="user-profile-container" style="display: none;">
+            <button class="user-avatar-button" id="user-avatar-button" aria-haspopup="true" aria-expanded="false" aria-controls="user-profile-dropdown">
+                <span id="user-avatar-initials">JD</span>
+            </button>
+            <div class="user-profile-dropdown" id="user-profile-dropdown" role="menu" style="display: none;">
+                <div class="dropdown-header" role="presentation">
+                    <p id="user-full-name-display" class="user-name">John Doe</p>
+                    <p id="user-email-display" class="user-email">john.doe@example.com</p>
+                </div>
+                <div class="dropdown-divider" role="separator"></div>
+                <a href="#" class="dropdown-item" role="menuitem" data-translate-key="nav_profile">Profile</a>
+                <a href="#" class="dropdown-item" role="menuitem" data-translate-key="nav_settings">Settings</a>
+                <div class="dropdown-divider" role="separator"></div>
+                <button id="logout-button" class="dropdown-item dropdown-item--button" role="menuitem">
+                    <i class="fas fa-sign-out-alt"></i> <span data-translate-key="nav_logout">Logout</span>
+                </button>
+            </div>
         </div>
+
+        <!-- Login/Sign Up Button (Logged-Out State) -->
         <div class="nav__item nav__item--cta-placeholder" id="auth-header-link-container">
             <a href="index.html#auth-section" class="nav__link nav__link--cta" data-translate-key="nav_login_signup">Login/Sign Up</a>
         </div>
     </div>
+
+    <!-- Mobile Navigation Toggle -->
     <button class="nav__toggle" id="mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="main-navigation">
         <i class="fas fa-bars" aria-hidden="true"></i>
         <span class="sr-only" data-translate-key="toggle_navigation_sr">Menu</span>
