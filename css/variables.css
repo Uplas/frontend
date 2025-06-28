@@ -3,25 +3,20 @@
    Uplas Global CSS Variables (variables.css)
    ================================================ */
 
-/* css/variables.css */
-/* ================================================
-   Uplas Global CSS Variables (variables.css)
-   ================================================ */
-
 :root {
-    /* Core Color Palette (Uplas Brand Identity) */
-    --color-primary: #00b4d8;
-    --color-primary-dark: #0077b6;
-    --color-primary-light: #72d2e8;
-    --color-primary-ultralight: rgba(0, 180, 216, 0.1);
+    /* Core Color Palette (NEW) */
+    --color-primary: #007BFF;         /* Professional Blue */
+    --color-primary-dark: #0056b3;
+    --color-primary-light: #66b2ff;
+    --color-primary-ultralight: rgba(0, 123, 255, 0.1);
 
-    --color-secondary: #3d405b;
-    --color-secondary-dark: #2c2e43;
-    --color-secondary-light: #5a6181;
+    --color-secondary: #495057;       /* Dark Grey for accents */
+    --color-secondary-dark: #343a40;
+    --color-secondary-light: #6c757d;
 
-    --color-accent: #f4a261;
-    --color-accent-dark: #e76f51;
-    --color-accent-light: #f6b98a;
+    --color-accent: #28a745;         /* Green for success/accent */
+    --color-accent-dark: #218838;
+    --color-accent-light: #73c888;
 
     /* Functional Colors */
     --color-success: #28a745;
@@ -33,40 +28,35 @@
     --color-info: var(--color-primary);
     --color-info-light: var(--color-primary-ultralight);
 
-    /* Neutral & Grayscale Palette */
+    /* Neutral & Grayscale Palette (NEW Light Theme) */
     --color-white: #ffffff;
-    --color-black: #121212;
-    --color-gray-100: #f8f9fa;      /* Very light gray, use for subtle section backgrounds */
-    --color-gray-200: #ffffff;      /* Main light page background */
-    --color-gray-300: #e9ecef;      /* Light gray for borders, dividers */
-    --color-gray-400: #dee2e6;      /* Slightly darker gray for borders */
-    --color-gray-500: #ced4da;      /* Medium gray for input borders */
-    --color-gray-600: #adb5bd;      /* Text secondary on light backgrounds */
-    --color-gray-700: #5a5f73;      /* Softer secondary text for light mode */
-    --color-gray-800: #333745;      /* Primary text on light backgrounds (Softer Black) */
-    --color-gray-900: #212529;      /* Darker gray, near black */
+    --color-black: #000000;
+    --color-light-bg: #f8f9fa;      /* Light mode background */
+    --color-light-card: #ffffff;
+    --color-light-border: #dee2e6;
+    --color-light-text-primary: #212529;
+    --color-light-text-secondary: #6c757d;
 
-    /* Dark Mode Specific Base Colors */
-    --color-dark-bg-primary: #1a1c23;
-    --color-dark-bg-secondary: #222430;
-    --color-dark-bg-panel: #2d2f3e;
-    --color-dark-bg-input: #3a3f51;
-    --color-dark-border-primary: #404552;
-    --color-dark-border-secondary: #505562;
-    --color-dark-text-primary: var(--color-gray-100);
-    --color-dark-text-secondary: var(--color-gray-600);
-
+    /* Dark Mode Specific Base Colors (NEW Dark Theme) */
+    --color-dark-bg-primary: #0d1117;  /* Luxury Black */
+    --color-dark-bg-secondary: #161b22;
+    --color-dark-bg-panel: #21262d;
+    --color-dark-bg-input: #0d1117;
+    --color-dark-border-primary: #30363d;
+    --color-dark-border-secondary: #21262d;
+    --color-dark-text-primary: #c9d1d9;
+    --color-dark-text-secondary: #8b949e;
 
     /* Typography */
     --font-primary: 'Poppins', sans-serif;
-    --font-size-base: 16px;         /* Base for rem units */
-    --font-size-xs: 0.75rem;        /* 12px */
-    --font-size-sm: 0.875rem;       /* 14px */
-    --font-size-md: 1rem;           /* 16px */
-    --font-size-lg: 1.125rem;       /* 18px */
-    --font-size-xl: 1.5rem;         /* 24px */
-    --font-size-xxl: 2rem;          /* 32px */
-    --font-size-hero: clamp(2.0rem, 5.5vw, 3.3rem); /* Responsive hero title */
+    --font-size-base: 16px;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.5rem;
+    --font-size-xxl: 2rem;
+    --font-size-hero: clamp(2.0rem, 5.5vw, 3.3rem);
 
     --line-height-base: 1.65;
     --line-height-heading: 1.3;
@@ -78,14 +68,14 @@
     --font-weight-bold: 700;
 
     /* Spacing */
-    --spacing-xxs: 0.25rem;  /* 4px */
-    --spacing-xs: 0.5rem;   /* 8px */
-    --spacing-sm: 0.75rem;  /* 12px */
-    --spacing-md: 1rem;     /* 16px */
-    --spacing-lg: 1.5rem;   /* 24px */
-    --spacing-xl: 2rem;     /* 32px */
-    --spacing-xxl: 3rem;    /* 48px */
-    --spacing-xxxl: 4rem;   /* 64px */
+    --spacing-xxs: 0.25rem;
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-xxl: 3rem;
+    --spacing-xxxl: 4rem;
 
     /* Borders & Shadows */
     --border-radius-sm: 4px;
@@ -111,28 +101,27 @@
 
     /* Layout Specific */
     --header-height: 70px;
-    --header-height-mobile: 60px; /* For smaller screens */
+    --header-height-mobile: 60px;
     --container-max-width: 1200px;
     --container-padding-x: var(--spacing-lg);
-    --container-padding-x-mobile: var(--spacing-md); /* For smaller screens */
-
+    --container-padding-x-mobile: var(--spacing-md);
 
     /* === THEME-DEPENDENT VARIABLES (Light Mode Defaults) === */
-    --current-bg-color: var(--color-gray-200);
-    --current-text-color: var(--color-gray-800);
-    --current-text-color-secondary: var(--color-gray-700);
-    --current-card-bg: var(--color-white);
-    --current-border-color: var(--color-gray-400);
-    --current-border-color-light: var(--color-gray-300);
+    --current-bg-color: var(--color-light-bg);
+    --current-text-color: var(--color-light-text-primary);
+    --current-text-color-secondary: var(--color-light-text-secondary);
+    --current-card-bg: var(--color-light-card);
+    --current-border-color: var(--color-light-border);
+    --current-border-color-light: #e9ecef;
     --current-input-bg: var(--color-white);
-    --current-input-border-color: var(--color-gray-500);
-    --current-input-text-color: var(--color-gray-800);
-    --current-input-placeholder-color: var(--color-gray-600);
+    --current-input-border-color: #ced4da;
+    --current-input-text-color: var(--color-light-text-primary);
+    --current-input-placeholder-color: #6c757d;
     --current-link-color: var(--color-primary);
     --current-link-hover-color: var(--color-primary-dark);
     --current-header-bg: var(--color-white);
     --current-footer-bg: var(--color-secondary-dark);
-    --current-footer-text-color: var(--color-gray-600);
+    --current-footer-text-color: #adb5bd;
 
     /* Button Theming */
     --current-button-primary-bg: var(--color-primary);
@@ -141,14 +130,14 @@
     --current-button-primary-border: var(--color-primary);
 
     --current-button-secondary-bg: transparent;
-    --current-button-secondary-text: var(--color-secondary);
-    --current-button-secondary-border: var(--color-secondary);
-    --current-button-secondary-hover-bg: var(--color-secondary);
+    --current-button-secondary-text: var(--color-primary);
+    --current-button-secondary-border: var(--color-primary);
+    --current-button-secondary-hover-bg: var(--color-primary);
     --current-button-secondary-hover-text: var(--color-white);
 }
 
 .dark-mode {
-    --current-bg-color: var(--color-dark-bg-secondary);
+    --current-bg-color: var(--color-dark-bg-primary);
     --current-text-color: var(--color-dark-text-primary);
     --current-text-color-secondary: var(--color-dark-text-secondary);
     --current-card-bg: var(--color-dark-bg-panel);
@@ -166,14 +155,14 @@
 
     /* Button Theming - Dark Mode */
     --current-button-primary-bg: var(--color-primary);
-    --current-button-primary-text: var(--color-black);
+    --current-button-primary-text: var(--color-white);
     --current-button-primary-hover-bg: var(--color-primary-light);
     --current-button-primary-border: var(--color-primary);
 
     --current-button-secondary-text: var(--color-primary-light);
     --current-button-secondary-border: var(--color-primary-light);
     --current-button-secondary-hover-bg: var(--color-primary-light);
-    --current-button-secondary-hover-text: var(--color-black);
+    --current-button-secondary-hover-text: var(--color-dark-bg-primary);
 }
 
 
