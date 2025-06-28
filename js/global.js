@@ -1,6 +1,6 @@
-// js/global.js
+/ js/global.js
 // Initializes i18n, loads dynamic components (header/footer),
-// handles global UI (theme, language, currency, mobile nav), and user auth state including logout.
+// handles global UI (theme, language, currency, mobile nav), and user auth state.
 'use strict';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -17,206 +17,388 @@ document.addEventListener('DOMContentLoaded', async () => {
         return element;
     };
 
-    // --- 1. Load Header and Footer Components ---
+    // --- 1. Determine Current Page Filename ---
+    const pathSegments = window.location.pathname.split('/');
+    let currentPageFile = pathSegments.pop() || 'index.html';
+    if (currentPageFile.trim() === "" || currentPageFile === "/") {
+        currentPageFile = "index.html";
+    }
+    console.log(`Global.js: Current page identified as: '${currentPageFile}'`);
+
+    // --- 2. Load Header and Footer Components ---
     let headerLoadedSuccessfully = false;
-    if (typeof window.loadHTMLComponent === 'function') {
+    let footerLoadedSuccessfully = false;
+
+    // Ensure componentLoader.js is available
+    if (typeof window.loadHTMLComponent !== 'function') {
+        console.error("Global.js: CRITICAL - loadHTMLComponent function is not defined. Dynamic components will NOT load.");
+    } else {
         const headerPlaceholder = getElement('site-header-placeholder', 'Header Placeholder', true);
+        const footerPlaceholder = getElement('site-footer-placeholder', 'Footer Placeholder', true);
+
         if (headerPlaceholder) {
             try {
-                headerLoadedSuccessfully = await window.loadHTMLComponent('components/header.html', 'site-header-placeholder');
-                if (headerLoadedSuccessfully) console.log("Global.js: Header component loaded successfully.");
+                console.log("Global.js: Attempting to load header component.");
+                headerLoadedSuccessfully = await window.loadHTMLComponent('components/header.html', 'site-header-placeholder', currentPageFile);
+                if (headerLoadedSuccessfully) {
+                    console.log("Global.js: Header component loaded and injected successfully.");
+                } else {
+                    console.error("Global.js: loadHTMLComponent reported FAILURE for header.");
+                }
             } catch (error) {
                 console.error("Global.js: ERROR caught while loading header component:", error);
+                // headerLoadedSuccessfully remains false
             }
+        } else {
+            console.error("Global.js: Header placeholder NOT FOUND - Cannot load header.");
         }
-        const footerPlaceholder = getElement('site-footer-placeholder', 'Footer Placeholder', true);
+
         if (footerPlaceholder) {
             try {
-                await window.loadHTMLComponent('components/footer.html', 'site-footer-placeholder');
+                console.log("Global.js: Attempting to load footer component.");
+                footerLoadedSuccessfully = await window.loadHTMLComponent('components/footer.html', 'site-footer-placeholder');
+                if (footerLoadedSuccessfully) {
+                    console.log("Global.js: Footer component loaded and injected successfully.");
+                } else {
+                    console.error("Global.js: loadHTMLComponent reported FAILURE for footer.");
+                }
             } catch (error) {
                 console.error("Global.js: ERROR caught while loading footer component:", error);
+                // footerLoadedSuccessfully remains false
             }
+        } else {
+            console.error("Global.js: Footer placeholder NOT FOUND - Cannot load footer.");
+        }
+    }
+
+    // --- 3. Initialize Internationalization (i18n) ---
+    let i18nInitialized = false;
+    if (typeof i18nManager !== 'undefined' && typeof i18nManager.init === 'function') {
+        try {
+            console.log("Global.js: Initializing i18nManager.");
+            await i18nManager.init(localStorage.getItem('uplas-lang') || 'en');
+            i18nInitialized = true;
+            console.log("Global.js: i18nManager initialized.");
+        } catch (error) {
+            console.error("Global.js: ERROR caught during i18nManager initialization:", error);
         }
     } else {
-        console.error("Global.js: CRITICAL - loadHTMLComponent function is not defined.");
+        console.error("Global.js: CRITICAL - i18nManager is not available. Translations will not function.");
     }
 
-    // --- 2. Initialize Internationalization (i18n) ---
-    if (typeof i18nManager !== 'undefined' && typeof i18nManager.init === 'function') {
-        await i18nManager.init(localStorage.getItem('uplas-lang') || 'en');
-    } else {
-        console.error("Global.js: CRITICAL - i18nManager is not available.");
-    }
-
-    // --- 3. Initialize User Session (using uplasApi) ---
+    // --- 4. Initialize User Session (using uplasApi) ---
+    let currentUser = null;
     const uplasApiAvailable = typeof window.uplasApi !== 'undefined' && typeof window.uplasApi.initializeUserSession === 'function';
+
     if (uplasApiAvailable) {
-        await window.uplasApi.initializeUserSession();
+        try {
+            console.log("Global.js: Initializing user session via uplasApi.");
+            currentUser = await window.uplasApi.initializeUserSession();
+            if (currentUser) {
+                console.log("Global.js: User session active for:", currentUser.email);
+            } else {
+                console.log("Global.js: No active user session found by uplasApi.");
+            }
+        } catch (error) {
+            console.error("Global.js: ERROR caught during user session initialization with uplasApi:", error);
+            currentUser = null;
+        }
     } else {
-        console.warn("Global.js: uplasApi not available. Auth checks will be limited.");
+        console.warn("Global.js: window.uplasApi or initializeUserSession not available. Auth checks will be limited. Ensure apiUtils.js is loaded correctly and provides these.");
     }
 
-    // --- 4. Setup Global UI Elements & Event Listeners ---
-    // These functions will only execute fully if the header was loaded.
+    // --- 5. Setup Global UI Elements & Event Listeners ---
+    // These functions will internally check if their target elements exist.
 
     function setupThemeToggle() {
         const themeToggleButton = getElement('theme-toggle', 'Theme Toggle Button', false);
-        if (!themeToggleButton) return;
-        
-        const applyTheme = (theme) => {
-            document.body.classList.toggle('dark-mode', theme === 'dark');
-            const moonIcon = themeToggleButton.querySelector('.theme-icon--dark');
-            const sunIcon = themeToggleButton.querySelector('.theme-icon--light');
-            if (moonIcon) moonIcon.style.display = theme === 'dark' ? 'none' : 'inline-block';
-            if (sunIcon) sunIcon.style.display = theme === 'dark' ? 'inline-block' : 'none';
-        };
-        
+        if (!themeToggleButton) {
+            console.log("Global.js: Theme toggle button not found, skipping setup.");
+            return;
+        }
+
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+        // Define applyTheme within setupThemeToggle to ensure it's only used if the button exists
+        function applyTheme(theme) {
+            const currentThemeBtn = getElement('theme-toggle', 'Theme Toggle Button in applyTheme', false); // Re-fetch in case of dynamic load
+            const isDark = theme === 'dark';
+            document.body.classList.toggle('dark-mode', isDark);
+
+            if (currentThemeBtn) {
+                const moonIcon = currentThemeBtn.querySelector('.theme-icon--dark');
+                const sunIcon = currentThemeBtn.querySelector('.theme-icon--light');
+                if (moonIcon) moonIcon.style.display = isDark ? 'none' : 'inline-block';
+                if (sunIcon) sunIcon.style.display = isDark ? 'inline-block' : 'none';
+
+                const trans = window.uplasTranslate || ((key, opts) => opts.fallback);
+                const ariaKey = isDark ? 'toggle_theme_light' : 'toggle_theme_dark'; // Adjusted keys to reflect action
+                const ariaDefault = isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+                currentThemeBtn.setAttribute('aria-label', trans(ariaKey, { fallback: ariaDefault }));
+                currentThemeBtn.setAttribute('title', trans(ariaKey, { fallback: ariaDefault }));
+            }
+        }
+        window.applyGlobalTheme = applyTheme; // Expose for i18n updates
+
         themeToggleButton.addEventListener('click', () => {
-            const newTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+            const currentThemeIsDark = document.body.classList.contains('dark-mode');
+            const newTheme = currentThemeIsDark ? 'light' : 'dark';
             localStorage.setItem('uplas-theme', newTheme);
             applyTheme(newTheme);
         });
 
-        const savedTheme = localStorage.getItem('uplas-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        applyTheme(savedTheme);
+        const savedTheme = localStorage.getItem('uplas-theme');
+        applyTheme(savedTheme || (prefersDarkScheme.matches ? 'dark' : 'light'));
+        console.log("Global.js: Theme management setup complete.");
     }
 
     function setupLanguageSelector() {
-        const languageSelector = getElement('language-selector', 'Language Selector', false);
-        if (!languageSelector || typeof i18nManager === 'undefined') return;
-        
-        languageSelector.value = i18nManager.getCurrentLocale();
-        languageSelector.addEventListener('change', (event) => {
-            i18nManager.setLocale(event.target.value);
-        });
-    }
-
-    function setupMobileNav() {
-        const mobileMenuButton = getElement('mobile-nav-toggle', 'Mobile Nav Toggle', false);
-        const mainNavigation = getElement('main-navigation', 'Main Navigation', false);
-        if (!mobileMenuButton || !mainNavigation) return;
-
-        mobileMenuButton.addEventListener('click', () => {
-            const isExpanded = mainNavigation.classList.toggle('nav--active');
-            mobileMenuButton.setAttribute('aria-expanded', isExpanded);
-            const icon = mobileMenuButton.querySelector('i');
-            if (icon) {
-                icon.classList.toggle('fa-bars', !isExpanded);
-                icon.classList.toggle('fa-times', isExpanded);
-            }
-        });
-    }
-    
-    function setupUserActions() {
-        const container = getElement('user-profile-container', 'User Profile Container', false);
-        const avatarButton = getElement('user-avatar-button', 'User Avatar Button', false);
-        const dropdown = getElement('user-profile-dropdown', 'User Profile Dropdown', false);
-        const logoutButton = getElement('logout-button', 'Logout Button', false);
-
-        if (!container || !avatarButton || !dropdown || !logoutButton) {
-            console.log("Global.js: User profile action elements not found, skipping setup.");
+        const languageSelector = getElement('language-selector', 'Language Selector Dropdown', false);
+        if (!languageSelector) {
+            console.log("Global.js: Language selector not found, skipping setup.");
             return;
         }
 
-        // Dropdown Toggle Logic
-        avatarButton.addEventListener('click', (event) => {
-            event.stopPropagation();
-            const isExpanded = dropdown.style.display === 'block';
-            dropdown.style.display = isExpanded ? 'none' : 'block';
-            avatarButton.setAttribute('aria-expanded', !isExpanded);
-        });
+        if (i18nInitialized && typeof i18nManager.getCurrentLocale === 'function' && typeof i18nManager.setLocale === 'function') {
+            languageSelector.value = i18nManager.getCurrentLocale();
+            languageSelector.addEventListener('change', (event) => {
+                i18nManager.setLocale(event.target.value); // setLocale should internally call applyTranslationsToPage
+            });
 
-        // Close dropdown if clicking outside
-        document.addEventListener('click', (event) => {
-            if (!container.contains(event.target)) {
-                dropdown.style.display = 'none';
-                avatarButton.setAttribute('aria-expanded', 'false');
-            }
-        });
+            // i18nManager.onLanguageChange handles applying translations and other callbacks
+            i18nManager.onLanguageChange((newLocale) => {
+                if (languageSelector.value !== newLocale) {
+                    languageSelector.value = newLocale;
+                }
+                if (window.applyGlobalTheme) window.applyGlobalTheme(document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+                if (footerLoadedSuccessfully && typeof window.updateDynamicFooterYear === 'function') window.updateDynamicFooterYear();
+                 // Potentially re-translate other dynamic parts of header/footer if necessary
+                if (headerLoadedSuccessfully && typeof window.uplasApplyTranslations === 'function') {
+                    const headerElement = getElement('page-header', 'Page Header for re-translation', false);
+                    if(headerElement) window.uplasApplyTranslations(headerElement);
+                }
+            });
+            console.log("Global.js: Language management setup complete.");
+        } else {
+            languageSelector.style.display = 'none';
+            console.warn("Global.js: i18nManager not fully available for language selector setup.");
+        }
+    }
 
-        // Logout Button Logic
-        logoutButton.addEventListener('click', () => {
-            if (uplasApiAvailable && typeof window.uplasApi.logout === 'function') {
-                console.log("Global.js: Executing logout.");
-                window.uplasApi.logout(); // This should clear tokens from localStorage
-                updateLoginStateUI(); // Update UI immediately
-                window.location.href = '/index.html'; // Redirect to home
-            } else {
-                console.error("Global.js: uplasApi.logout function is not available!");
-                alert("Could not log out. API utility is missing.");
+    function setupCurrencyManagement() {
+        const currencySelector = getElement('currency-selector', 'Currency Selector Dropdown', false);
+        if (!currencySelector) {
+            console.log("Global.js: Currency selector not found, skipping setup.");
+            return;
+        }
+
+        let currentGlobalCurrency = localStorage.getItem('uplas-currency') || 'USD';
+        const globalSimulatedExchangeRates = { USD: 1, EUR: 0.92, KES: 130.50, GBP: 0.79, INR: 83.00, JPY: 157.00, AUD: 1.50, CAD: 1.37, CHF: 0.90, CNY: 7.25, BTC: 0.000015 };
+        window.simulatedExchangeRates = globalSimulatedExchangeRates;
+        window.currentGlobalCurrency = currentGlobalCurrency;
+
+        function formatPriceForDisplayInternal(price, currencyCode, locale) {
+            try {
+                return new Intl.NumberFormat(locale || (i18nInitialized ? i18nManager.getCurrentLocale() : 'en-US'), {
+                    style: 'currency', currency: currencyCode, minimumFractionDigits: 2, maximumFractionDigits: 2
+                }).format(price);
+            } catch (e) {
+                console.warn(`Currency formatting error for ${currencyCode} with locale ${locale}: ${e.message}. Falling back.`);
+                // Fallback formatting
+                const symbolMap = { USD: '$', EUR: '€', KES: 'KSh', GBP: '£', INR: '₹', JPY: '¥', AUD: 'A$', CAD: 'C$', CHF: 'Fr', CNY: '¥', BTC: '₿' };
+                return `${symbolMap[currencyCode] || currencyCode} ${Number(price).toFixed(2)}`;
             }
-        });
-        
-        console.log("Global.js: User actions (profile dropdown, logout) setup complete.");
+        }
+        window.formatPriceForDisplay = formatPriceForDisplayInternal;
+
+        function updateAllDisplayedPrices() {
+            const activeCurrency = window.currentGlobalCurrency;
+            const rate = globalSimulatedExchangeRates[activeCurrency] || 1;
+            const baseRateUSD = globalSimulatedExchangeRates['USD'] || 1; // Should always be 1
+
+            document.querySelectorAll('[data-price-usd]').forEach(element => {
+                const priceUSD = parseFloat(element.getAttribute('data-price-usd'));
+                if (!isNaN(priceUSD)) {
+                    element.textContent = formatPriceForDisplayInternal((priceUSD / baseRateUSD) * rate, activeCurrency);
+                }
+            });
+        }
+        window.updateUserCurrencyDisplay = updateAllDisplayedPrices;
+
+        function changeGlobalCurrency(selectedCurrency) {
+            if (!selectedCurrency || !globalSimulatedExchangeRates[selectedCurrency]) {
+                console.warn(`Currency ${selectedCurrency} not supported.`);
+                return;
+            }
+            window.currentGlobalCurrency = selectedCurrency;
+            localStorage.setItem('uplas-currency', selectedCurrency);
+            updateAllDisplayedPrices();
+            if (currencySelector.value !== selectedCurrency) { // Ensure consistent state
+                currencySelector.value = selectedCurrency;
+            }
+            window.dispatchEvent(new CustomEvent('currencyChanged', { detail: { newCurrency: selectedCurrency } }));
+        }
+        window.changeUserGlobalCurrency = changeGlobalCurrency;
+
+        currencySelector.value = currentGlobalCurrency;
+        currencySelector.addEventListener('change', (event) => changeGlobalCurrency(event.target.value));
+
+        updateAllDisplayedPrices(); // Initial call
+        console.log("Global.js: Currency management setup complete.");
+    }
+
+    function setupMobileNav() {
+        const mobileMenuButton = getElement('mobile-nav-toggle', 'Mobile Navigation Toggle Button', false);
+        const mainNavigation = getElement('main-navigation', 'Main Navigation Menu', false);
+
+        if (mobileMenuButton && mainNavigation) {
+            mobileMenuButton.addEventListener('click', () => {
+                const isExpanded = mainNavigation.classList.toggle('nav--active');
+                mobileMenuButton.classList.toggle('active');
+                mobileMenuButton.setAttribute('aria-expanded', isExpanded.toString());
+                document.body.classList.toggle('mobile-nav-active', isExpanded);
+
+                const icon = mobileMenuButton.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-bars', !isExpanded);
+                    icon.classList.toggle('fa-times', isExpanded);
+                }
+            });
+            console.log("Global.js: Mobile navigation setup complete.");
+        } else {
+            console.log("Global.js: Mobile navigation elements not found, skipping setup.");
+        }
     }
 
     function getUserInitials(fullName) {
         if (!fullName || typeof fullName !== 'string') return 'U';
         const nameParts = fullName.trim().split(/\s+/).filter(Boolean);
-        if (nameParts.length === 1) return nameParts[0][0].toUpperCase();
+        if (nameParts.length === 1 && nameParts[0].length > 0) return nameParts[0][0].toUpperCase();
         if (nameParts.length > 1) return (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase();
         return 'U';
     }
 
-    function updateLoginStateUI() {
-        console.log("Global.js: Updating login state UI.");
+    function updateLoginStateUIInternal() {
+        console.log("Global.js: Attempting to update login state UI.");
+        if (!uplasApiAvailable) {
+            console.warn("Global.js: uplasApi not available for updateLoginStateUI.");
+            // Default to logged-out view if API utils not ready
+            const userAvatarHeader = getElement('user-avatar-header', 'User Avatar in Header', false);
+            const navLoggedIn = getElement('nav-logged-in', 'Logged In Navigation', false);
+            const navLoggedOut = getElement('nav-logged-out', 'Logged Out Navigation', false);
+            if (userAvatarHeader) userAvatarHeader.style.display = 'none';
+            if (navLoggedIn) navLoggedIn.style.display = 'none';
+            if (navLoggedOut) navLoggedOut.style.display = 'flex';
+            return;
+        }
         if (!headerLoadedSuccessfully) {
-            console.warn("Global.js: Header not loaded, aborting UI update.");
+            console.warn("Global.js: Header not loaded, cannot reliably update login state UI yet.");
             return;
         }
 
+        const accessToken = window.uplasApi.getAccessToken();
+        const userData = window.uplasApi.getUserData(); // This is from localStorage, updated by initializeUserSession or login
+
+        const userAvatarHeader = getElement('user-avatar-header', 'User Avatar in Header', false);
         const navLoggedIn = getElement('nav-logged-in', 'Logged In Navigation', false);
         const navLoggedOut = getElement('nav-logged-out', 'Logged Out Navigation', false);
-        const profileContainer = getElement('user-profile-container', 'User Profile Container', false);
-        const authLinkContainer = getElement('auth-header-link-container', 'Login/Signup Link', false);
+        // Assuming these might be in a dropdown, not strictly required for basic state:
+        const userFullNameDisplay = getElement('user-full-name-display', 'User Full Name Display in Dropdown', false);
+        const userEmailDisplay = getElement('user-email-display', 'User Email Display in Dropdown', false);
 
-        if (!navLoggedIn || !navLoggedOut || !profileContainer || !authLinkContainer) {
-            console.error("Global.js: One or more critical navigation elements not found. UI update aborted.");
+        if (!userAvatarHeader || !navLoggedIn || !navLoggedOut) {
+            console.error("Global.js: FAILED to find 'user-avatar-header', 'nav-logged-in', or 'nav-logged-out'. UI update aborted. Check header.html IDs.");
             return;
         }
 
-        const userData = uplasApiAvailable ? window.uplasApi.getUserData() : null;
+        if (accessToken && userData) {
+            console.log("Global.js: User IS authenticated. Updating UI with data:", userData);
+            const avatarButton = userAvatarHeader.querySelector('.user-avatar-button-header');
+            if (avatarButton) avatarButton.textContent = getUserInitials(userData.full_name);
+            if (userFullNameDisplay) userFullNameDisplay.textContent = userData.full_name || 'User';
+            if (userEmailDisplay) userEmailDisplay.textContent = userData.email || '';
 
-        if (userData) {
-            // --- Logged-In State ---
+            userAvatarHeader.style.display = 'flex';
             navLoggedIn.style.display = 'flex';
-            profileContainer.style.display = 'block';
             navLoggedOut.style.display = 'none';
-            authLinkContainer.style.display = 'none';
-
-            getElement('user-avatar-initials', 'Avatar Initials', false).textContent = getUserInitials(userData.full_name);
-            getElement('user-full-name-display', 'User Full Name', false).textContent = userData.full_name || 'Valued User';
-            getElement('user-email-display', 'User Email', false).textContent = userData.email || '';
-            
         } else {
-            // --- Logged-Out State ---
+            console.log("Global.js: User IS NOT authenticated. Updating UI.");
+            userAvatarHeader.style.display = 'none';
             navLoggedIn.style.display = 'none';
-            profileContainer.style.display = 'none';
             navLoggedOut.style.display = 'flex';
-            authLinkContainer.style.display = 'block';
+            if (userFullNameDisplay) userFullNameDisplay.textContent = '';
+            if (userEmailDisplay) userEmailDisplay.textContent = '';
         }
         console.log("Global.js: Login state UI update finished.");
     }
-    window.updateLoginStateUI = updateLoginStateUI; // Expose globally
+    window.updateLoginStateUI = updateLoginStateUIInternal; // Expose for external calls if needed
 
-    // --- 5. Run All Setup Functions ---
+
+    // --- Smooth Scroll ---
+    window.uplasScrollToElement = function(selector) {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    // --- Run UI Setup Functions ---
+    // Only run these if the header component has been successfully loaded and injected
     if (headerLoadedSuccessfully) {
         setupThemeToggle();
         setupLanguageSelector();
+        setupCurrencyManagement();
         setupMobileNav();
-        setupUserActions(); // New function for dropdown and logout
-        updateLoginStateUI(); // Initial UI state check
+        // Initial call to updateLoginStateUIInternal will happen after user session initialization
+        // or if header is loaded and uplasApi is available but no session was found.
     } else {
-        console.warn("Global.js: Header did not load. Most UI setup functions were skipped.");
+        console.warn("Global.js: Header did NOT load successfully. Dependent global UI features setup skipped.");
+    }
+    
+    // This call ensures that even if the user session was initialized *before* the header was ready,
+    // the UI gets updated once the header *is* ready.
+    if (headerLoadedSuccessfully && uplasApiAvailable) {
+        updateLoginStateUIInternal();
     }
 
-    // --- 6. Setup Global Event Listeners ---
+
+    // --- Setup Global Event Listeners ---
     if (uplasApiAvailable) {
         window.addEventListener('authChanged', (event) => {
             console.log("Global.js: 'authChanged' event received.", event.detail);
-            updateLoginStateUI();
+            if (headerLoadedSuccessfully) { // Only update UI if header elements are present
+                updateLoginStateUIInternal();
+            }
+            currentUser = event.detail.user; // Update local currentUser state
         });
     }
-    
+
+    // --- Display Auth Redirect Message ---
+    function displayAuthRedirectMessage() {
+        if (!uplasApiAvailable || typeof window.uplasApi.AUTH_REDIRECT_MESSAGE_KEY === 'undefined' || typeof window.uplasApi.displayFormStatus !== 'function') return;
+
+        const authRedirectMsg = sessionStorage.getItem(window.uplasApi.AUTH_REDIRECT_MESSAGE_KEY);
+        if (authRedirectMsg) {
+            // Try to display on auth-section if available, otherwise fallback to a general alert/log
+            const authSection = getElement('auth-section', 'Auth Section for Message', false);
+            if (authSection) {
+                window.uplasApi.displayFormStatus(authSection, authRedirectMsg, true); // Display as error
+            } else {
+                // If no auth-section, maybe a global notification area, or alert for critical messages
+                console.warn("Auth Redirect Message:", authRedirectMsg, "(auth-section not found to display it prominently)");
+                // Example: alert(authRedirectMsg); // Use sparingly
+            }
+            sessionStorage.removeItem(window.uplasApi.AUTH_REDIRECT_MESSAGE_KEY);
+            console.log("Global.js: Auth redirect message processed.");
+        }
+    }
+    // Display message after other initializations, so UI elements are more likely to be ready
+    // It's fine to call this even if the message display depends on elements loaded by componentLoader
+    // as getElement will handle cases where elements are not yet ready.
+    if(i18nInitialized && uplasApiAvailable) { //Ensure i18n is ready for potential translated messages by displayFormStatus
+         displayAuthRedirectMessage();
+    }
+
+
     console.log("Global.js: DOMContentLoaded processing complete.");
 });
