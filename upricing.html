@@ -1,315 +1,182 @@
 <!DOCTYPE html>
-<html lang="en"> <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-translate-key="upricing_page_title">Uplas Pricing & Plans | Flexible AI Learning</title>
-    <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon">
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Plans - Uplas</title>
+
+    <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Main Stylesheets -->
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/upricing.css">
-
-    <meta name="description" content="Explore Uplas pricing plans. Choose from flexible options like pay-per-module, full course access, yearly platform access, or community membership. Find the perfect plan for your AI learning journey.">
-    <meta name="theme-color" content="#00b4d8">
 </head>
-<body class="light-mode">
 
-    <div id="site-header-placeholder">
-        </div>
+<body>
 
-    <main class="main-content">
-        <section class="pricing-hero-section" aria-labelledby="pricing-hero-title">
+    <!-- Header Placeholder -->
+    <header id="site-header-placeholder" class="page-header"></header>
+
+    <main>
+        <!-- ==================== HERO SECTION ==================== -->
+        <section class="hero-section text-center">
             <div class="container">
-                <h1 id="pricing-hero-title" class="pricing-hero__title" data-translate-key="upricing_hero_title">Find the Perfect Plan for Your Future Career Ambitions</h1>
-                <p class="pricing-hero__subtitle" data-translate-key="upricing_hero_subtitle">Transparent pricing, incredible value. Choose how you want to learn and grow with Uplas.</p>
+                <h1 class="hero-title" data-translate-key="pricing_hero_title">Find the Perfect Plan</h1>
+                <p class="hero-subtitle" data-translate-key="pricing_hero_subtitle">Choose the plan that aligns with your learning goals and budget. Start for free.</p>
             </div>
         </section>
 
-        <section class="pricing-plans-section" aria-labelledby="pricing-plans-title">
+        <!-- ==================== PRICING PLANS SECTION ==================== -->
+        <section class="pricing-section section-padding">
             <div class="container">
-                <h2 id="pricing-plans-title" class="section-title" data-translate-key="upricing_plans_title">Our Flexible Plans</h2>
-                <div class="pricing-cards-grid">
+                <div class="pricing-cards-container">
 
+                    <!-- Basic Plan -->
                     <div class="pricing-card">
-                        <h3 class="pricing-card__title" data-translate-key="upricing_plan_payg_module_title">Pay Per Module</h3>
-                        <div class="pricing-card__price">
-                            <span class="price-value" data-price-usd="2.00">$2.00</span>
-                            <span class="price-term" data-translate-key="upricing_plan_per_module">/ Module</span>
+                        <div class="pricing-card-header">
+                            <h3 class="plan-name" data-translate-key="pricing_basic_name">Basic Plan</h3>
+                            <p class="plan-description" data-translate-key="pricing_basic_desc">For individuals starting their journey in tech.</p>
                         </div>
-                        <p class="pricing-card__description" data-translate-key="upricing_plan_payg_module_desc">Unlock specific knowledge bites. Perfect for targeted learning and quick skill acquisition.</p>
-                        <ul class="pricing-card__features">
-                            <li data-translate-key="upricing_feature_module_access"><i class="fas fa-check"></i> Access to selected module content</li>
-                            <li data-translate-key="upricing_feature_module_qna"><i class="fas fa-check"></i> Personalized Q&A within module</li>
-                            <li data-translate-key="upricing_feature_module_tts_ttv"><i class="fas fa-check"></i> TTS & TTV for module content</li>
+                        <div class="pricing-card-price">
+                            <span class="price-amount" data-price-usd="19">$19</span>
+                            <span class="price-period" data-translate-key="pricing_monthly">/month</span>
+                        </div>
+                        <ul class="pricing-card-features">
+                            <li><i class="fas fa-check-circle"></i> <span data-translate-key="feature_access_core">Access to all core courses</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span data-translate-key="feature_community_access">Community forum access</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span data-translate-key="feature_email_support">Standard email support</span></li>
+                            <li><i class="fas fa-times-circle text-muted"></i> <span data-translate-key="feature_no_live_sessions">No live Q&A sessions</span></li>
+                            <li><i class="fas fa-times-circle text-muted"></i> <span data-translate-key="feature_no_premium_support">No premium project templates</span></li>
                         </ul>
-                        <a href="ucourse.html" class="button button--secondary pricing-card__cta" data-translate-key="upricing_cta_browse_modules">Browse Modules</a>
-                    </div>
-
-                    <div class="pricing-card">
-                        <h3 class="pricing-card__title" data-translate-key="upricing_plan_payg_course_title">Full Course Access</h3>
-                        <div class="pricing-card__price">
-                            <span class="price-value" data-price-usd="14.00">$14.00</span>
-                            <span class="price-term" data-translate-key="upricing_plan_per_course">/ Course</span>
-                        </div>
-                        <p class="pricing-card__description" data-translate-key="upricing_plan_payg_course_desc">Master a complete subject. Ideal for in-depth understanding and skill development in a specific area.</p>
-                        <ul class="pricing-card__features">
-                            <li data-translate-key="upricing_feature_course_all_modules"><i class="fas fa-check"></i> All modules within the selected course</li>
-                            <li data-translate-key="upricing_feature_course_projects"><i class="fas fa-check"></i> Course-specific projects</li>
-                            <li data-translate-key="upricing_feature_course_certificate"><i class="fas fa-check"></i> Certificate of Completion</li>
-                        </ul>
-                        <a href="ucourse.html" class="button button--secondary pricing-card__cta" data-translate-key="upricing_cta_browse_courses">Browse Courses</a>
-                    </div>
-
-                    <div class="pricing-card">
-                        <h3 class="pricing-card__title" data-translate-key="upricing_plan_full_platform_monthly_title">Full Platform Access (Monthly)</h3>
-                        <div class="pricing-card__price">
-                            <span class="price-value" data-price-usd="25.00">$25.00</span> <span class="price-term" data-translate-key="upricing_plan_per_month">/ Month</span>
-                        </div>
-                        <p class="pricing-card__description" data-translate-key="upricing_plan_full_platform_monthly_desc">Unlimited access to all content and features, billed monthly for flexibility.</p>
-                        <ul class="pricing-card__features">
-                            <li data-translate-key="upricing_feature_platform_all_courses"><i class="fas fa-check"></i> All Courses & Modules</li>
-                            <li data-translate-key="upricing_feature_platform_all_projects"><i class="fas fa-check"></i> All AI-Generated Projects</li>
-                            <li data-translate-key="upricing_feature_platform_community"><i class="fas fa-check"></i> Full Community Access</li>
-                            <li data-translate-key="upricing_feature_platform_masterclass"><i class="fas fa-check"></i> Exclusive Video Masterclasses</li>
-                            <li data-translate-key="upricing_feature_platform_priority_support"><i class="fas fa-check"></i> Priority Support</li>
-                        </ul>
-                        <button class="button button--primary pricing-card__cta select-plan-btn"
-                                data-plan-id="full_platform_monthly"
-                                data-name="Full Platform Access (Monthly)"
-                                data-price-usd="25.00"
-                                data-billing-cycle="Monthly"
-                                data-translate-key="upricing_cta_get_monthly_access">Get Monthly Access</button>
-                    </div>
-
-                    <div class="pricing-card">
-                        <h3 class="pricing-card__title" data-translate-key="upricing_plan_full_platform_quarterly_title">Full Platform Access (Quarterly)</h3>
-                        <div class="pricing-card__price">
-                            <span class="price-value" data-price-usd="70.00">$70.00</span> <span class="price-term" data-translate-key="upricing_plan_per_quarter">/ Quarter</span>
-                        </div>
-                        <p class="pricing-card__description" data-translate-key="upricing_plan_full_platform_quarterly_desc">Enjoy full access with savings, billed every three months.</p>
-                        <ul class="pricing-card__features">
-                            <li data-translate-key="upricing_feature_platform_all_courses"><i class="fas fa-check"></i> All Courses & Modules</li>
-                            <li data-translate-key="upricing_feature_platform_all_projects"><i class="fas fa-check"></i> All AI-Generated Projects</li>
-                            <li data-translate-key="upricing_feature_platform_community"><i class="fas fa-check"></i> Full Community Access</li>
-                            <li data-translate-key="upricing_feature_platform_masterclass"><i class="fas fa-check"></i> Exclusive Video Masterclasses</li>
-                            <li data-translate-key="upricing_feature_platform_priority_support"><i class="fas fa-check"></i> Priority Support</li>
-                        </ul>
-                        <button class="button button--primary pricing-card__cta select-plan-btn"
-                                data-plan-id="full_platform_quarterly"
-                                data-name="Full Platform Access (Quarterly)"
-                                data-price-usd="70.00"
-                                data-billing-cycle="Quarterly"
-                                data-translate-key="upricing_cta_get_quarterly_access">Get Quarterly Access</button>
-                    </div>
-
-                    <div class="pricing-card pricing-card--featured">
-                        <span class="pricing-card__badge" data-translate-key="upricing_badge_best_value">Best Value</span>
-                        <h3 class="pricing-card__title" data-translate-key="upricing_plan_full_platform_title">Full Platform Access (Yearly)</h3> <div class="pricing-card__price">
-                            <span class="price-value" data-price-usd="200.00">$200.00</span>
-                            <span class="price-term" data-translate-key="upricing_plan_per_year">/ Year</span>
-                        </div>
-                        <p class="pricing-card__description" data-translate-key="upricing_plan_full_platform_desc">Unlimited access to all current and future courses, community, and premium features.</p>
-                        <ul class="pricing-card__features">
-                            <li data-translate-key="upricing_feature_platform_all_courses"><i class="fas fa-check"></i> All Courses & Modules</li>
-                            <li data-translate-key="upricing_feature_platform_all_projects"><i class="fas fa-check"></i> All AI-Generated Projects</li>
-                            <li data-translate-key="upricing_feature_platform_community"><i class="fas fa-check"></i> Full Community Access</li>
-                            <li data-translate-key="upricing_feature_platform_masterclass"><i class="fas fa-check"></i> Exclusive Video Masterclasses</li>
-                            <li data-translate-key="upricing_feature_platform_priority_support"><i class="fas fa-check"></i> Priority Support</li>
-                        </ul>
-                        <button class="button button--primary pricing-card__cta select-plan-btn"
-                                data-plan-id="full_platform_yearly"
-                                data-name="Full Platform Access (Yearly)"
-                                data-price-usd="200.00"
-                                data-billing-cycle="Yearly"
-                                data-translate-key="upricing_cta_get_full_access">Get Full Access</button>
-                    </div>
-
-                    <div class="pricing-card">
-                        <h3 class="pricing-card__title" data-translate-key="upricing_plan_community_title">Community Access</h3>
-                        <div class="pricing-card__price">
-                            <span class="price-value" data-price-usd="3.99">$3.99</span>
-                            <span class="price-term" data-translate-key="upricing_plan_per_month">/ Month</span>
-                        </div>
-                        <p class="pricing-card__description" data-translate-key="upricing_plan_community_desc">Join our vibrant network. Connect, collaborate, and stay updated with the latest in AI.</p>
-                        <ul class="pricing-card__features">
-                            <li data-translate-key="upricing_feature_community_forums"><i class="fas fa-check"></i> Access to all discussion forums</li>
-                            <li data-translate-key="upricing_feature_community_groups"><i class="fas fa-check"></i> Industry-specific groups</li>
-                            <li data-translate-key="upricing_feature_community_networking"><i class="fas fa-check"></i> Networking opportunities</li>
-                        </ul>
-                        <button class="button button--primary pricing-card__cta select-plan-btn"
-                                data-plan-id="community_monthly"
-                                data-name="Community Access (Monthly)"
-                                data-price-usd="3.99"
-                                data-billing-cycle="Monthly"
-                                data-translate-key="upricing_cta_join_community">Join Community</button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="enterprise-plan-section">
-            <div class="container enterprise-plan__container">
-                <div class="enterprise-plan__text-content">
-                    <h2 class="section-title section-title--left-align" data-translate-key="upricing_enterprise_title">Enterprise Solutions</h2>
-                    <p data-translate-key="upricing_enterprise_desc">Empower your entire team with tailored AI upskilling programs. We offer volume discounts, custom content integration, dedicated support, and team management features to meet your organization's unique needs.</p>
-                    <a href="#contact-section" class="button button--primary button--large enterprise-contact-sales-btn" data-translate-key="upricing_cta_contact_sales">Contact Sales</a>
-                </div>
-                <div class="enterprise-plan__image-container">
-                    <img src="https://placehold.co/600x450/5a6181/FFFFFF?text=Enterprise+Solutions&font=poppins" alt="Team collaborating on AI projects in a modern office environment." class="enterprise-plan__image">
-                </div>
-            </div>
-        </section>
-
-        <section id="contact-section" class="contact-section" aria-labelledby="contact-heading">
-            <div class="container">
-                <h2 id="contact-heading" class="section-title" data-translate-key="upricing_contact_title">Have Questions or Need an Enterprise Plan?</h2>
-                <p class="section-subtitle" data-translate-key="upricing_contact_subtitle">Our team is ready to assist you. Reach out for custom solutions or any inquiries.</p>
-                <div class="contact-form-container">
-                    <form id="contact-form" class="form contact-form-stacked" novalidate>
-                        <h3 class="form__title form__title--centered" data-translate-key="upricing_contact_form_title">Send Us a Message</h3>
-                        <div class="form__row">
-                            <div class="form__group">
-                                <label for="contact-name" class="form__label" data-translate-key="form_label_fullname">Full Name</label>
-                                <input type="text" id="contact-name" name="name" class="form__input" required>
-                                <span class="form__error-message" aria-live="polite"></span>
-                            </div>
-                            <div class="form__group">
-                                <label for="contact-email" class="form__label" data-translate-key="form_label_email">Email Address</label>
-                                <input type="email" id="contact-email" name="email" class="form__input" required>
-                                <span class="form__error-message" aria-live="polite"></span>
-                            </div>
-                        </div>
-                        <div class="form__group">
-                            <label for="contact-company" class="form__label" data-translate-key="form_label_company_optional">Company Name (Optional)</label>
-                            <input type="text" id="contact-company" name="company" class="form__input">
-                        </div>
-                        <div class="form__group">
-                            <label for="contact-subject" class="form__label" data-translate-key="form_label_subject">Subject</label>
-                            <select id="contact-subject" name="subject" class="form__select" required>
-                                <option value="" disabled selected data-translate-key="form_select_subject_placeholder">Select a subject...</option>
-                                <option value="enterprise" data-translate-key="subject_enterprise">Enterprise Solutions Inquiry</option>
-                                <option value="pricing" data-translate-key="subject_pricing">Pricing Question</option>
-                                <option value="support" data-translate-key="subject_support">Technical Support</option>
-                                <option value="other" data-translate-key="subject_other">Other</option>
-                            </select>
-                            <span class="form__error-message" aria-live="polite"></span>
-                        </div>
-                        <div class="form__group">
-                            <label for="contact-message" class="form__label" data-translate-key="form_label_message">Your Message</label>
-                            <textarea id="contact-message" name="message" rows="5" class="form__textarea" required></textarea>
-                            <span class="form__error-message" aria-live="polite"></span>
-                        </div>
-                        <div class="form__submit-container">
-                            <button type="submit" class="button button--primary button--large contact-form__submit-btn" data-translate-key="form_button_send_message">
-                                <i class="fas fa-paper-plane"></i> Send Message
+                        <div class="pricing-card-cta">
+                            <button class="button button--primary paystack-button"
+                                    data-price="19"
+                                    data-plan-name="Basic"
+                                    data-billing-cycle="monthly"
+                                    data-plan-id="plan_basic_monthly">
+                                <span data-translate-key="btn_select_plan">Select Plan</span>
                             </button>
                         </div>
-                        <div id="contact-status" class="form__status" aria-live="assertive"></div>
-                    </form>
-                </div>
-            </div>
-        </section>
-
-        <section class="faq-section" aria-labelledby="faq-pricing-title">
-            <div class="container">
-                <h2 id="faq-pricing-title" class="section-title" data-translate-key="upricing_faq_title">Pricing FAQs</h2>
-                <div class="faq-accordion">
-                    <details class="faq-item">
-                        <summary class="faq-item__question" data-translate-key="upricing_faq1_q">What payment methods do you accept?</summary>
-                        <div class="faq-item__answer">
-                            <p data-translate-key="upricing_faq1_a_updated">We accept major credit/debit cards (Visa, Mastercard, American Express, etc.) processed securely. We also support PayPal for selected regions, and direct bank transfers for larger plans or enterprise solutions.</p>
-                        </div>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-item__question" data-translate-key="upricing_faq2_q">Is there a free trial?</summary>
-                        <div class="faq-item__answer">
-                            <p data-translate-key="upricing_faq2_a">While we don't offer a traditional time-limited free trial for full plans, some introductory modules or lessons within courses may be available for free preview. You can also explore our free resources on the blog and community forums to get a feel for Uplas.</p>
-                        </div>
-                    </details>
-                    <details class="faq-item">
-                        <summary class="faq-item__question" data-translate-key="upricing_faq3_q">Can I cancel my subscription anytime?</summary>
-                        <div class="faq-item__answer">
-                            <p data-translate-key="upricing_faq3_a">Yes, for monthly and yearly subscriptions, you can cancel anytime. Your access will continue until the end of your current billing period. We also offer a 30-day risk-free guarantee on our yearly Full Platform Access plan.</p>
-                        </div>
-                    </details>
-                </div>
-            </div>
-        </section>
-
-        <div id="payment-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="payment-modal-main-title-h2" hidden>
-            <div class="modal__content payment-modal__content">
-                <button class="modal__close-button" id="payment-modal-close-btn" aria-label="Close payment dialog" title="Close">
-                    <i class="fas fa-times" aria-hidden="true"></i>
-                </button>
-                <h2 id="payment-modal-main-title-h2" class="payment-modal__main-title" data-translate-key="payment_modal_title_card">Complete Your Secure Payment</h2>
-                <div class="payment-modal__summary">
-                    <h3 class="payment-modal__summary-title" data-translate-key="payment_modal_summary_title">Your Order</h3>
-                    <div class="payment-modal__summary-item">
-                        <span class="payment-modal__summary-label" data-translate-key="payment_modal_summary_item">Item:</span>
-                        <span class="payment-modal__summary-value" id="summary-plan-name-span">Selected Plan Name</span>
                     </div>
-                    <div class="payment-modal__summary-item" id="summary-billing-cycle-div" hidden>
-                        <span class="payment-modal__summary-label" data-translate-key="payment_modal_summary_renews">Renews:</span>
-                        <span class="payment-modal__summary-value" id="summary-billing-cycle-span">Billing Cycle</span>
-                    </div>
-                    <div class="payment-modal__summary-item payment-modal__summary-item--total">
-                        <span class="payment-modal__summary-label" data-translate-key="payment_modal_summary_amount_due">Amount Due Today:</span>
-                        <span class="payment-modal__summary-value payment-modal__summary-value--price" id="summary-plan-price-span" data-price-usd="0.00">$0.00</span>
-                    </div>
-                </div>
 
-                <div class="payment-modal__form-area">
-                    <form id="unified-card-payment-form" class="payment-form" novalidate>
-                        <div class="form__group">
-                            <label for="payment-cardholder-name" class="form__label" data-translate-key="form_label_cardholder_name">Cardholder Name</label>
-                            <input type="text" id="payment-cardholder-name" name="cardholderName" class="form__input" placeholder="e.g., Jane M. Doe" required autocomplete="cc-name" data-error-key-required="error_cardholder_name_required">
-                            <span class="form__error-message" aria-live="polite"></span>
+                    <!-- Pro Plan -->
+                    <div class="pricing-card popular">
+                        <div class="popular-badge" data-translate-key="badge_most_popular">Most Popular</div>
+                        <div class="pricing-card-header">
+                            <h3 class="plan-name" data-translate-key="pricing_pro_name">Pro Plan</h3>
+                            <p class="plan-description" data-translate-key="pricing_pro_desc">For professionals looking to accelerate their career.</p>
                         </div>
-                        <div class="form__group">
-                            <label for="payment-email" class="form__label" data-translate-key="form_label_email_receipt">Email for Receipt</label>
-                            <input type="email" id="payment-email" name="email" class="form__input" placeholder="you@example.com" required autocomplete="email" data-error-key-required="error_email_required" data-error-key-type="error_email_invalid">
-                            <span class="form__error-message" aria-live="polite"></span>
+                        <div class="pricing-card-price">
+                            <span class="price-amount" data-price-usd="49">$49</span>
+                            <span class="price-period" data-translate-key="pricing_monthly">/month</span>
                         </div>
-
-                        <div class="form__group">
-                            <label for="stripe-card-element" class="form__label" data-translate-key="form_label_card_details">Card Details</label>
-                            <div id="stripe-card-element" class="form__input">
-                                </div>
-                            <div id="stripe-card-errors" role="alert" class="form__error-message"></div>
-                        </div>
-                        <div id="payment-form-global-status" class="form__status payment-status-message" role="alert" hidden></div>
-
-                        <div class="payment-modal__action-area">
-                            <button id="payment-submit-button" type="submit" class="button button--primary button--full-width button--large">
-                                <i class="fas fa-shield-alt"></i> <span data-translate-key="payment_modal_submit_pay_now">Pay Now</span>
+                        <ul class="pricing-card-features">
+                            <li><i class="fas fa-check-circle"></i> <span data-translate-key="feature_everything_basic">Everything in Basic, plus:</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span data-translate-key="feature_live_sessions">Weekly live Q&A sessions</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span data-translate-key="feature_premium_support">Priority email & chat support</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span data-translate-key="feature_premium_templates">Access to premium project templates</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span data-translate-key="feature_career_guidance">Career guidance resources</span></li>
+                        </ul>
+                        <div class="pricing-card-cta">
+                            <button class="button button--accent paystack-button"
+                                    data-price="49"
+                                    data-plan-name="Pro"
+                                    data-billing-cycle="monthly"
+                                    data-plan-id="plan_pro_monthly">
+                                <span data-translate-key="btn_select_plan">Select Plan</span>
                             </button>
                         </div>
-                    </form>
+                    </div>
+
+                    <!-- Enterprise Plan -->
+                    <div class="pricing-card">
+                        <div class="pricing-card-header">
+                            <h3 class="plan-name" data-translate-key="pricing_enterprise_name">Enterprise</h3>
+                            <p class="plan-description" data-translate-key="pricing_enterprise_desc">For organizations and teams requiring advanced features.</p>
+                        </div>
+                        <div class="pricing-card-price">
+                            <span class="price-amount-custom" data-translate-key="pricing_custom">Custom</span>
+                        </div>
+                        <ul class="pricing-card-features">
+                            <li><i class="fas fa-check-circle"></i> <span data-translate-key="feature_everything_pro">Everything in Pro, plus:</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span data-translate-key="feature_team_management">Team management dashboard</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span data-translate-key="feature_dedicated_manager">Dedicated Account Manager</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span data-translate-key="feature_custom_integrations">Custom integrations (LMS/SSO)</span></li>
+                            <li><i class="fas fa-check-circle"></i> <span data-translate-key="feature_advanced_analytics">Advanced team analytics</span></li>
+                        </ul>
+                        <div class="pricing-card-cta">
+                             <button class="button button--secondary enterprise-contact-sales-btn">
+                                <span data-translate-key="btn_contact_sales">Contact Sales</span>
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
-                 <p class="payment-modal__tos-notice">
-                    <span data-translate-key="payment_modal_tos_notice_part1">By clicking "Pay Now", you agree to Uplas's</span>
-                    <a href="terms.html" target="_blank" rel="noopener noreferrer" data-translate-key="payment_modal_tos_link">Terms of Service</a>
-                    <span data-translate-key="payment_modal_tos_notice_part2">and</span>
-                    <a href="privacy.html" target="_blank" rel="noopener noreferrer" data-translate-key="payment_modal_privacy_link">Privacy Policy</a>.
-                </p>
             </div>
-        </div>
+        </section>
+        
+        <!-- ==================== CONTACT SECTION FOR ENTERPRISE ==================== -->
+        <section id="contact-section" class="contact-section section-padding">
+            <div class="container medium-container">
+                <div class="section-header text-center">
+                    <h2 class="section-title" data-translate-key="contact_title">Contact Our Sales Team</h2>
+                    <p class="section-subtitle" data-translate-key="contact_subtitle">Let's discuss how Uplas can be tailored for your organization's success.</p>
+                </div>
+                <form id="contact-form" class="contact-form" novalidate>
+                    <div id="contact-status" class="form-status-message" style="display:none;"><p></p></div>
+                    <div class="form-group">
+                        <label for="contact-name" class="form-label" data-translate-key="form_label_name">Full Name</label>
+                        <input type="text" id="contact-name" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email" class="form-label" data-translate-key="form_label_email">Work Email</label>
+                        <input type="email" id="contact-email" name="email" class="form-control" required>
+                    </div>
+                     <div class="form-group">
+                        <label for="contact-company" class="form-label" data-translate-key="form_label_company">Company Name</label>
+                        <input type="text" id="contact-company" name="company" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-message" class="form-label" data-translate-key="form_label_message">Message</label>
+                        <textarea id="contact-message" name="message" class="form-control" rows="5" required></textarea>
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" class="button button--primary">
+                            <span data-translate-key="btn_submit_request">Submit Request</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
     </main>
 
-    <div id="site-footer-placeholder">
-        </div>
+    <!-- Footer Placeholder -->
+    <footer id="site-footer-placeholder" class="page-footer"></footer>
 
+    <!-- Core Scripts -->
     <script src="js/componentLoader.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/apiUtils.js"></script>
+    
+    <!-- Paystack Inline Script - MUST be loaded before page-specific script -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    
+    <!-- Global and Page-Specific Scripts -->
     <script src="js/global.js"></script>
-    <script src="https://js.stripe.com/v3/"></script> <script src="js/upricing.js"></script>
+    <script src="js/upricing.js"></script>
 
 </body>
+
 </html>
