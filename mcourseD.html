@@ -1,323 +1,151 @@
 <!DOCTYPE html>
-<html lang="en"> <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-translate-key="mcourseD_page_title_default">Advanced AI: From Theory to Deployment | Uplas</title>
-    <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon">
+    <title>Course Detail - Advanced JavaScript - Uplas</title>
 
+    <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Main Stylesheets -->
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/mcourseD.css">
+</head>
+<body>
+    
+    <!-- Header Placeholder -->
+    <header id="site-header-placeholder" class="page-header"></header>
 
-    <meta name="description" content="Deep dive into Advanced AI with Uplas. Master complex algorithms, neural networks, and MLOps. Enroll now for expert-led instruction and hands-on projects.">
-    <meta name="theme-color" content="#00b4d8"> </head>
-<body class="light-mode"> <div id="site-header-placeholder">
-    </div>
-    <main class="course-detail-page" id="main-content" role="main">
-
-        <section class="course-hero" aria-labelledby="course-hero-main-title">
-            <div class="course-hero__content container">
-                <div class="course-hero__text-content">
-                    <nav aria-label="Breadcrumb" class="course-hero__breadcrumb">
-                        <ol>
-                            <li><a href="ucourses_list.html" data-translate-key="breadcrumb_all_courses">All Courses</a></li>
-                            <li><i class="fas fa-angle-right" aria-hidden="true"></i></li>
-                            <li><span aria-current="page" data-translate-key="breadcrumb_current_course_adv_ai">Advanced AI: Theory to Deployment</span></li>
-                        </ol>
-                    </nav>
-                    <h1 id="course-hero-main-title" class="course-hero__title" data-translate-key="mcourseD_hero_title_adv_ai">Advanced AI: From Theory to Real-World Deployment</h1>
-                    <p class="course-hero__subtitle" data-translate-key="mcourseD_hero_subtitle_adv_ai">Elevate your expertise. Master complex algorithms, neural networks, and cutting-edge MLOps strategies. This is where your AI leadership journey begins.</p>
-                    <div class="course-hero__meta">
-                        <span data-translate-key="mcourseD_hero_meta_instructors_adv_ai"><i class="fas fa-chalkboard-teacher course-hero__meta-icon" aria-hidden="true"></i> Instructors: Dr. Alistair Finch & Prof. Lena Ivanova</span>
-                        <span data-translate-key="mcourseD_hero_meta_duration_adv_ai"><i class="fas fa-hourglass-half course-hero__meta-icon" aria-hidden="true"></i> Duration: 16 Weeks (Est. 10-12 hrs/week)</span>
-                        <span data-translate-key="mcourseD_hero_meta_level_adv_ai"><i class="fas fa-layer-group course-hero__meta-icon" aria-hidden="true"></i> Level: Expert / Advanced</span>
-                        <span data-translate-key="mcourseD_hero_meta_outcome_adv_ai"><i class="fas fa-award course-hero__meta-icon" aria-hidden="true"></i> Outcome: Professional AI Certification</span>
-                    </div>
-                    <div class="course-hero__actions">
-                        <button id="enroll-now-main-cta" class="button button--primary button--large course-hero__cta select-plan-btn" type="button" data-plan-id="course_adv_ai_full" data-price-usd="199.00" data-name="Advanced AI (Full Course)" data-billing-cycle="One-time" data-translate-key="mcourseD_hero_cta_enroll_adv_ai">
-                            <i class="fas fa-rocket" aria-hidden="true"></i> Launch Your AI Expertise Now
-                        </button>
-                    </div>
-                </div>
-                <div class="course-hero__media-content">
-                    <img src="images/ai_course_hero_banner_dynamic.jpg" alt="Dynamic visual representing advanced AI concepts and neural network pathways" class="course-hero__image">
-                </div>
-            </div>
-        </section>
-
-        <div class="course-layout container">
-            <div class="course-layout__main-content">
-                <nav class="course-tabs" aria-label="Course Information Sections">
-                    <div class="course-tabs__nav" role="tablist">
-                        <button class="course-tabs__button active" role="tab" aria-selected="true" aria-controls="tab-panel-overview" id="tab-overview" data-translate-key="mcourseD_tab_overview">
-                            <i class="fas fa-info-circle" aria-hidden="true"></i> Overview
-                        </button>
-                        <button class="course-tabs__button" role="tab" aria-selected="false" aria-controls="tab-panel-curriculum" id="tab-curriculum" data-translate-key="mcourseD_tab_curriculum">
-                            <i class="fas fa-sitemap" aria-hidden="true"></i> Curriculum
-                        </button>
-                        <button class="course-tabs__button" role="tab" aria-selected="false" aria-controls="tab-panel-instructors" id="tab-instructors" data-translate-key="mcourseD_tab_instructors">
-                            <i class="fas fa-users" aria-hidden="true"></i> Instructors
-                        </button>
-                        <button class="course-tabs__button" role="tab" aria-selected="false" aria-controls="tab-panel-reviews" id="tab-reviews" data-translate-key="mcourseD_tab_reviews">
-                            <i class="fas fa-star-half-alt" aria-hidden="true"></i> Reviews
-                        </button>
-                        <button class="course-tabs__button" role="tab" aria-selected="false" aria-controls="tab-panel-faq" id="tab-faq" data-translate-key="mcourseD_tab_faq">
-                            <i class="fas fa-question-circle" aria-hidden="true"></i> FAQ
-                        </button>
-                    </div>
-                </nav>
-
-                <div class="course-tab-content">
-                    <section class="course-tabs__panel active" id="tab-panel-overview" role="tabpanel" tabindex="0" aria-labelledby="tab-overview">
-                        <article>
-                            <h2 class="section-title section-title--sub" data-translate-key="mcourseD_overview_what_you_master">Transform Your Capabilities: What You Will Master</h2>
-                            <ul class="learn-list">
-                                <li data-translate-key="mcourseD_overview_mastery1_adv_ai"><i class="fas fa-brain learn-list__icon" aria-hidden="true"></i> Architect and implement state-of-the-art neural networks, including Transformers and GANs.</li>
-                                <li data-translate-key="mcourseD_overview_mastery2_adv_ai"><i class="fas fa-cogs learn-list__icon" aria-hidden="true"></i> Command MLOps principles for building robust, scalable, and maintainable AI deployment pipelines.</li>
-                                <li data-translate-key="mcourseD_overview_mastery3_adv_ai"><i class="fas fa-chart-line learn-list__icon" aria-hidden="true"></i> Apply advanced reinforcement learning techniques to solve complex, dynamic decision-making problems.</li>
-                                <li data-translate-key="mcourseD_overview_mastery4_adv_ai"><i class="fas fa-balance-scale learn-list__icon" aria-hidden="true"></i> Critically evaluate and implement ethical AI frameworks, ensuring fairness, transparency, and accountability.</li>
-                                <li data-translate-key="mcourseD_overview_mastery5_adv_ai"><i class="fas fa-project-diagram learn-list__icon" aria-hidden="true"></i> Confidently lead and execute end-to-end AI projects, from initial concept and data strategy to production deployment and impact analysis.</li>
-                            </ul>
-
-                            <h2 class="section-title section-title--sub" data-translate-key="mcourseD_overview_deep_dive_title_adv_ai">Elevate Your Expertise: A Deep Dive into Advanced AI</h2>
-                            <p data-translate-key="mcourseD_overview_deep_dive_p1_adv_ai">Step into the future with "Advanced AI: From Theory to Deployment," Uplas's premier program designed for seasoned professionals poised to lead in the artificial intelligence domain. This is more than a course; it's an immersive journey into the sophisticated mechanics of state-of-the-art AI. We move beyond the fundamentals, empowering you with the deep knowledge and practical skills to architect the next generation of intelligent systems.</p>
-                            <p data-translate-key="mcourseD_overview_deep_dive_p2_adv_ai">You'll master complex neural network architectures, navigate the full MLOps lifecycle for robust deployments, and explore the frontiers of reinforcement learning. Our curriculum is a potent blend of rigorous theory, intensive hands-on labs (Python, TensorFlow, PyTorch, Cloud AI), and a capstone project that mirrors real-world AI challenges – your opportunity to build a portfolio-defining solution. Crucially, we instill a profound understanding of AI ethics, bias mitigation, and responsible innovation, shaping you into not just a skilled technologist, but a visionary AI leader. Are you ready to architect the future of intelligence with Uplas?</p>
-
-                            <h3 class="section-title--tertiary" data-translate-key="mcourseD_overview_who_for_title_adv_ai">Is This Advanced Program For You?</h3>
-                            <p data-translate-key="mcourseD_overview_who_for_intro_adv_ai">This program is tailored for individuals with a strong existing foundation, including:</p>
-                            <ul>
-                                <li data-translate-key="mcourseD_overview_who_for_item1_adv_ai">Senior Software Engineers & Architects aiming for AI leadership roles.</li>
-                                <li data-translate-key="mcourseD_overview_who_for_item2_adv_ai">Experienced Data Scientists & Machine Learning Engineers seeking deep specialization.</li>
-                                <li data-translate-key="mcourseD_overview_who_for_item3_adv_ai">AI Researchers looking to bridge cutting-edge theory with practical, impactful applications.</li>
-                                <li data-translate-key="mcourseD_overview_who_for_item4_adv_ai">Technology Executives & Product Leaders responsible for driving AI strategy and innovation.</li>
-                            </ul>
-                            <h3 class="section-title--tertiary" data-translate-key="mcourseD_overview_prereqs_title_adv_ai">Essential Foundations for Success:</h3>
-                            <ul>
-                                <li data-translate-key="mcourseD_overview_prereqs_item1_adv_ai">Advanced Python proficiency & mastery of core data science libraries (NumPy, Pandas, Scikit-learn).</li>
-                                <li data-translate-key="mcourseD_overview_prereqs_item2_adv_ai">Proven experience with foundational machine learning algorithms, model development, and rigorous evaluation.</li>
-                                <li data-translate-key="mcourseD_overview_prereqs_item3_adv_ai">A strong command of linear algebra, multivariate calculus, and advanced probability/statistics.</li>
-                                <li data-translate-key="mcourseD_overview_prereqs_item4_adv_ai">Prior hands-on experience with at least one major deep learning framework (TensorFlow or PyTorch) is highly recommended.</li>
-                            </ul>
-                        </article>
-                    </section>
-
-                    <section class="course-tabs__panel" id="tab-panel-curriculum" role="tabpanel" tabindex="0" aria-labelledby="tab-curriculum" hidden>
-                        <h2 class="section-title section-title--sub" data-translate-key="mcourseD_curriculum_title">Comprehensive Curriculum: Your Roadmap to AI Mastery</h2>
-                        <div class="curriculum-summary">
-                            <p><strong data-translate-key="mcourseD_curriculum_summary_stats_adv_ai">12 In-Depth Modules &bull; 60+ Engaging Lessons & Hands-On Labs &bull; 1 Capstone Project</strong></p>
-                            <p data-translate-key="mcourseD_curriculum_summary_time_adv_ai">Estimated time commitment: 60+ hours of guided instruction & 80+ hours of practical project work.</p>
-                        </div>
-                        <div class="module-accordion" id="module-accordion">
-
-                            <div class="module module--accessible" id="module-0-intro">
-                                <h3 class="module__header">
-                                    <button class="module__toggle-button" aria-expanded="true" aria-controls="module-0-content">
-                                        <span data-translate-key="mcourseD_module_intro_title_adv_ai">Introduction: Setting the Stage for Advanced AI</span>
-                                        <span class="module__meta"><span class="module__duration" data-translate-key="duration_45_mins">45 mins</span> &bull; <span class="module__lesson-count" data-translate-key="lesson_count_2">2 Lessons</span> &bull; <span class="badge badge--free" data-translate-key="badge_free_preview">Free Preview</span></span>
-                                        <span class="module__toggle-icon"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
-                                    </button>
-                                </h3>
-                                <div class="module__content" id="module-0-content" role="region">
-                                    <ul>
-                                        <li class="lesson lesson--unlocked" data-lesson-id="001">
-                                            <i class="fas fa-play-circle lesson__icon" aria-hidden="true"></i>
-                                            <span class="lesson__title" data-translate-key="mcourseD_lesson_001_title_adv_ai">Welcome to Advanced AI: Course Overview & Goals (15m)</span>
-                                            <span class="lesson__type-badge" data-translate-key="lesson_type_video">Video</span>
-                                            <span class="lesson__status"><i class="fas fa-unlock" aria-hidden="true"></i> <span data-translate-key="status_unlocked">Unlocked</span></span>
-                                            <a href="mcourse.html?lessonId=001&courseId=adv_ai" class="button button--primary button--extra-small lesson__action-button" data-translate-key="button_start_lesson">Start Lesson</a>
-                                        </li>
-                                        <li class="lesson lesson--unlocked" data-lesson-id="002">
-                                            <i class="fas fa-tools lesson__icon" aria-hidden="true"></i>
-                                            <span class="lesson__title" data-translate-key="mcourseD_lesson_002_title_adv_ai">Setting Up Your Elite AI Development Environment (30m)</span>
-                                            <span class="lesson__type-badge" data-translate-key="lesson_type_setup_guide">Setup Guide</span>
-                                            <span class="lesson__status"><i class="fas fa-unlock" aria-hidden="true"></i> <span data-translate-key="status_unlocked">Unlocked</span></span>
-                                            <a href="mcourse.html?lessonId=002&courseId=adv_ai" class="button button--primary button--extra-small lesson__action-button" data-translate-key="button_start_lesson">Start Lesson</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="module" id="module-1">
-                                <h3 class="module__header">
-                                    <button class="module__toggle-button" aria-expanded="false" aria-controls="module-1-content">
-                                        <span data-translate-key="mcourseD_module_1_title_adv_ai">Module 1: Transformers & The Self-Attention Revolution</span>
-                                        <span class="module__meta"><span class="module__duration" data-translate-key="duration_5_hours">5 hours</span> &bull; <span class="module__lesson-count" data-translate-key="lesson_count_4">4 Lessons</span></span>
-                                        <span class="module__toggle-icon"><i class="fas fa-chevron-down" aria-hidden="true"></i></span>
-                                    </button>
-                                </h3>
-                                <div class="module__content" id="module-1-content" role="region" hidden>
-                                    <ul>
-                                        <li class="lesson lesson--locked" data-lesson-id="101" data-module-id="1">
-                                            <i class="fas fa-book-reader lesson__icon" aria-hidden="true"></i>
-                                            <span class="lesson__title" data-translate-key="mcourseD_lesson_101_title_adv_ai">1.1 Deconstructing Attention: The Engine of Modern AI (1h 15m)</span>
-                                            <span class="lesson__type-badge" data-translate-key="lesson_type_video_reading">Video & Reading</span>
-                                            <span class="lesson__status"><i class="fas fa-lock" aria-hidden="true"></i> <span data-translate-key="status_locked">Locked</span></span>
-                                            <button class="button button--secondary button--extra-small lesson__action-button buy-module-btn select-plan-btn" data-module-id="module_1_transformers" data-price-usd="2.00" data-name="Module 1: Transformers" data-billing-cycle="One-time" data-translate-key="mcourseD_unlock_module_btn_dynamic">Unlock This Module (<span class="module-price-display" data-price-usd="2.00">$2.00</span>)</button>
-                                        </li>
-                                        {/* Add more lessons for Module 1 here */}
-                                    </ul>
-                                </div>
-                            </div>
-                            {/* Add more modules here */}
-                        </div>
-                    </section>
-
-                    <section class="course-tabs__panel" id="tab-panel-instructors" role="tabpanel" tabindex="0" aria-labelledby="tab-instructors" hidden>
-                        <h2 class="section-title section-title--sub" data-translate-key="mcourseD_instructors_title">Meet Your Expert Instructors</h2>
-                        <p data-translate-key="mcourseD_instructors_placeholder">Instructor profiles will be listed here...</p>
-                    </section>
-                    <section class="course-tabs__panel" id="tab-panel-reviews" role="tabpanel" tabindex="0" aria-labelledby="tab-reviews" hidden>
-                        <h2 class="section-title section-title--sub" data-translate-key="mcourseD_reviews_title">Student Reviews & Testimonials</h2>
-                        <p data-translate-key="mcourseD_reviews_placeholder">Read what past students have to say...</p>
-                    </section>
-                    <section class="course-tabs__panel" id="tab-panel-faq" role="tabpanel" tabindex="0" aria-labelledby="tab-faq" hidden>
-                        <h2 class="section-title section-title--sub" data-translate-key="mcourseD_faq_title">Frequently Asked Questions</h2>
-                        <p data-translate-key="mcourseD_faq_placeholder">Find answers to common questions...</p>
-                    </section>
-
-                </div>
-            </div>
-
-            <aside class="course-layout__sidebar">
-                <div class="pricing-widget course-section" aria-labelledby="sidebar-pricing-title">
-                    <div class="pricing-widget__video-preview-container">
-                        <img src="images/ai_course_sidebar_thumb_video.jpg" alt="Watch a preview of the Advanced AI course" class="pricing-widget__course-image">
-                        <button class="button--play-preview" aria-label="Play Course Preview Video">
-                            <i class="fas fa-play"></i>
-                        </button>
-                        <h3 id="sidebar-pricing-title" class="pricing-widget__title-overlay" data-translate-key="mcourseD_sidebar_course_title_adv_ai">Advanced AI: Theory to Deployment</h3>
-                    </div>
-
-                    <div class="pricing-widget__options-container">
-                        <div class="pricing-widget__main-option">
-                            <p class="pricing-widget__label" data-translate-key="mcourseD_sidebar_one_time_purchase">One-Time Purchase</p>
-                            <p class="pricing-widget__current-price" id="sidebar-current-price-display" data-price-usd="199.00">$199.00</p>
-                            <button id="sidebar-enroll-course-btn" class="button button--primary button--full-width button--large select-plan-btn" data-plan-id="course_adv_ai_full" data-price-usd="199.00" data-name="Advanced AI (Full Course)" data-billing-cycle="One-time" data-translate-key="mcourseD_sidebar_buy_course_btn">
-                                <i class="fas fa-shopping-cart" aria-hidden="true"></i> Buy This Course
-                            </button>
-                            <p class="pricing-widget__access-note" data-translate-key="mcourseD_sidebar_access_note">Includes lifetime access & all updates.</p>
-                        </div>
-
-                        <p class="pricing-widget__or-separator"><span data-translate-key="or_separator">OR SUBSCRIBE FOR FULL ACCESS</span></p>
-
-                        <div class="pricing-options-sidebar">
-                             <button class="pricing-card-sidebar select-plan-btn" data-plan-id="monthly_sub" data-price-usd="29.99" data-name="Monthly All-Access Pass" data-billing-cycle="Monthly">
-                                <span class="pricing-card-sidebar__title" data-translate-key="pricing_monthly_title">Monthly All-Access</span>
-                                <span class="pricing-card-sidebar__price"><span data-price-usd="29.99">$29.99</span> <small data-translate-key="pricing_per_month">/month</small></span>
-                            </button>
-                            <button class="pricing-card-sidebar select-plan-btn" data-plan-id="yearly_sub" data-price-usd="249.99" data-name="Yearly All-Access Pass" data-billing-cycle="Yearly">
-                                <span class="pricing-card-sidebar__title" data-translate-key="pricing_yearly_title">Yearly All-Access</span>
-                                <span class="pricing-card-sidebar__price"><span data-price-usd="249.99">$249.99</span> <small data-translate-key="pricing_per_year">/year</small></span>
-                                <span class="badge badge--save" data-translate-key="badge_best_value">Best Value</span>
-                            </button>
-                        </div>
-                        <a href="upricing.html" class="pricing-widget__all-plans-link" data-translate-key="mcourseD_sidebar_explore_subscriptions_link">
-                            <i class="fas fa-tags" aria-hidden="true"></i> Explore All Subscription Benefits
-                        </a>
-                        <div class="pricing-widget__guarantee" data-translate-key="mcourseD_sidebar_guarantee">
-                            <i class="fas fa-shield-alt" aria-hidden="true"></i> 30-Day Risk-Free Guarantee
-                        </div>
-                    </div>
-                </div>
-
-                <div class="course-meta-widget course-section" aria-labelledby="sidebar-meta-title">
-                    <h3 id="sidebar-meta-title" class="widget-title" data-translate-key="mcourseD_sidebar_inclusions_title">Course Inclusions</h3>
-                    <ul class="course-meta-list">
-                        <li data-translate-key="mcourseD_inclusion_video"><i class="fas fa-video course-meta__icon" aria-hidden="true"></i> 60+ hours of expert-led HD video</li>
-                        <li data-translate-key="mcourseD_inclusion_certificate"><i class="fas fa-trophy course-meta__icon" aria-hidden="true"></i> Uplas Professional AI Certificate</li>
-                    </ul>
-                </div>
-            </aside>
-        </div>
-
-        <section class="video-masterclass-section" id="video-masterclass-section" aria-labelledby="masterclass-section-title">
+    <main>
+        <!-- ==================== COURSE HERO ==================== -->
+        <section class="course-hero">
             <div class="container">
-                <h2 class="section-title" id="masterclass-section-title" data-translate-key="mcourseD_masterclass_title">Exclusive Video Masterclasses</h2>
-                <p class="section-subtitle" data-translate-key="mcourseD_masterclass_subtitle">Gain insights from industry leaders and AI pioneers in these special sessions, available to our premium subscribers.</p>
-                <div class="masterclass-grid" id="masterclass-grid-container">
-                    <p class="masterclass-no-access-message" data-translate-key="mcourseD_masterclass_no_access" style="display:none;">
-                        This premium content is available with our All-Access subscriptions.
-                        <a href="upricing.html" class="link" data-translate-key="mcourseD_masterclass_upgrade_link">Upgrade Now</a> to watch.
-                    </p>
-                </div>
-                <div class="masterclass-cta" style="text-align: center; margin-top: var(--spacing-xl); display:none;" id="masterclass-upgrade-cta-container">
-                     <a href="upricing.html" class="button button--primary button--large" data-translate-key="mcourseD_masterclass_unlock_cta">Unlock All Masterclasses - Go Premium</a>
+                <div class="course-hero-content">
+                    <h1 class="course-title" data-translate-key="course_js_adv_title">Advanced JavaScript: From Fundamentals to Professional</h1>
+                    <p class="course-subtitle" data-translate-key="course_js_adv_subtitle">Master modern JavaScript concepts, advanced patterns, and build complex, real-world applications.</p>
+                    <div class="course-meta">
+                        <span><i class="fas fa-user-shield"></i> <span data-translate-key="instructor_name_prefix">Instructor:</span> Jane Doe</span>
+                        <span><i class="fas fa-clock"></i> <span data-translate-key="course_duration_prefix">Duration:</span> 24 Hours</span>
+                        <span><i class="fas fa-layer-group"></i> <span data-translate-key="course_level_prefix">Level:</span> Advanced</span>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <div id="payment-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="payment-modal-main-title-h2" hidden>
-            <div class="modal__content payment-modal__content">
-                <button class="modal__close-button" id="payment-modal-close-btn" aria-label="Close payment dialog" title="Close">
-                    <i class="fas fa-times" aria-hidden="true"></i>
-                </button>
-                <h2 id="payment-modal-main-title-h2" class="payment-modal__main-title" data-translate-key="payment_modal_title_card">Complete Your Secure Payment</h2>
-                <div class="payment-modal__summary">
-                    <h3 class="payment-modal__summary-title" data-translate-key="payment_modal_summary_title">Your Order</h3>
-                    <div class="payment-modal__summary-item">
-                        <span class="payment-modal__summary-label" data-translate-key="payment_modal_summary_item">Item:</span>
-                        <span class="payment-modal__summary-value" id="summary-plan-name-span">Selected Plan Name</span>
-                    </div>
-                    <div class="payment-modal__summary-item" id="summary-billing-cycle-div" hidden>
-                        <span class="payment-modal__summary-label" data-translate-key="payment_modal_summary_renews">Renews:</span>
-                        <span class="payment-modal__summary-value" id="summary-billing-cycle-span">Billing Cycle</span>
-                    </div>
-                    <div class="payment-modal__summary-item payment-modal__summary-item--total">
-                        <span class="payment-modal__summary-label" data-translate-key="payment_modal_summary_amount_due">Amount Due Today:</span>
-                        <span class="payment-modal__summary-value payment-modal__summary-value--price" id="summary-plan-price-span" data-price-usd="0.00">$0.00</span>
-                    </div>
-                </div>
-
-                <div class="payment-modal__form-area">
-                    <form id="unified-card-payment-form" class="payment-form" novalidate>
-                        <div class="form__group">
-                            <label for="payment-cardholder-name" class="form__label" data-translate-key="form_label_cardholder_name">Cardholder Name</label>
-                            <input type="text" id="payment-cardholder-name" name="cardholderName" class="form__input" placeholder="e.g., Jane M. Doe" required autocomplete="cc-name" data-error-key-required="error_cardholder_name_required">
-                            <span class="form__error-message" aria-live="polite"></span>
-                        </div>
-                        <div class="form__group">
-                            <label for="payment-email" class="form__label" data-translate-key="form_label_email_receipt">Email for Receipt</label>
-                            <input type="email" id="payment-email" name="email" class="form__input" placeholder="you@example.com" required autocomplete="email" data-error-key-required="error_email_required" data-error-key-type="error_email_invalid">
-                            <span class="form__error-message" aria-live="polite"></span>
+        <!-- ==================== COURSE CONTENT & ENROLLMENT ==================== -->
+        <section class="course-main-content section-padding">
+            <div class="container grid-container">
+                
+                <!-- Left Column: Course Details & Curriculum -->
+                <div class="course-details-column">
+                    <h2 data-translate-key="course_about_title">About This Course</h2>
+                    <p data-translate-key="course_about_p1">This course is designed for developers who already have a basic understanding of JavaScript and want to take their skills to the next level. We will dive deep into asynchronous programming, design patterns, performance optimization, and modern tooling.</p>
+                    
+                    <h3 class="curriculum-title" data-translate-key="course_curriculum_title">Curriculum</h3>
+                    <div class="curriculum-list">
+                        
+                        <!-- Module 1: Unlocked -->
+                        <div class="curriculum-item active">
+                            <div class="curriculum-item-header">
+                                <span data-translate-key="module_1_title">Module 1: Asynchronous JavaScript Deep Dive</span>
+                                <span class="curriculum-toggle-icon"><i class="fas fa-minus"></i></span>
+                            </div>
+                            <div class="curriculum-item-content" style="max-height: 500px; padding-top: 1rem; padding-bottom: 1rem;">
+                                <ul>
+                                    <li><i class="fas fa-play-circle"></i> <span>Promises and the Event Loop</span></li>
+                                    <li><i class="fas fa-play-circle"></i> <span>Mastering Async/Await</span></li>
+                                    <li><i class="fas fa-book"></i> <span>Reading: Advanced Error Handling</span></li>
+                                </ul>
+                            </div>
                         </div>
 
-                        <div class="form__group">
-                            <label for="stripe-card-element" class="form__label" data-translate-key="form_label_card_details">Card Details</label>
-                            <div id="stripe-card-element" class="form__input">
+                        <!-- Module 2: Locked -->
+                        <div class="curriculum-item">
+                            <div class="curriculum-item-header">
+                                <span data-translate-key="module_2_title">Module 2: Modern Design Patterns</span>
+                                <span class="curriculum-toggle-icon"><i class="fas fa-plus"></i></span>
+                            </div>
+                             <div class="curriculum-item-content">
+                                <p data-translate-key="module_locked_desc">This module is locked. Purchase it to gain access to its content.</p>
+                                <div class="module-purchase-action">
+                                    <span class="module-price" data-price-usd="9.99">$9.99</span>
+                                    <button class="button button--secondary paystack-button"
+                                            data-price="9.99"
+                                            data-plan-name="Module 2: Modern Design Patterns"
+                                            data-module-id="mod_js_adv_2">
+                                        <span data-translate-key="btn_unlock_module">Unlock This Module</span>
+                                    </button>
                                 </div>
-                            <div id="stripe-card-errors" role="alert" class="form__error-message"></div>
+                            </div>
                         </div>
-                        <div id="payment-form-global-status" class="form__status payment-status-message" role="alert" hidden></div>
+                        
+                        <!-- Module 3: Locked -->
+                        <div class="curriculum-item">
+                            <div class="curriculum-item-header">
+                                <span data-translate-key="module_3_title">Module 3: Performance Optimization & Tooling</span>
+                                <span class="curriculum-toggle-icon"><i class="fas fa-plus"></i></span>
+                            </div>
+                            <div class="curriculum-item-content">
+                                <p data-translate-key="module_locked_desc">This module is locked. Purchase it to gain access to its content.</p>
+                                <div class="module-purchase-action">
+                                    <span class="module-price" data-price-usd="14.99">$14.99</span>
+                                     <button class="button button--secondary paystack-button"
+                                            data-price="14.99"
+                                            data-plan-name="Module 3: Performance Optimization"
+                                            data-module-id="mod_js_adv_3">
+                                        <span data-translate-key="btn_unlock_module">Unlock This Module</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
 
-                        <div class="payment-modal__action-area">
-                            <button id="payment-submit-button" type="submit" class="button button--primary button--full-width button--large">
-                                <i class="fas fa-shield-alt"></i> <span data-translate-key="payment_modal_submit_pay_now">Pay Now</span>
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-                 <p class="payment-modal__tos-notice">
-                    <span data-translate-key="payment_modal_tos_notice_part1">By clicking "Pay Now", you agree to Uplas's</span>
-                    <a href="terms.html" target="_blank" rel="noopener noreferrer" data-translate-key="payment_modal_tos_link">Terms of Service</a>
-                    <span data-translate-key="payment_modal_tos_notice_part2">and</span>
-                    <a href="privacy.html" target="_blank" rel="noopener noreferrer" data-translate-key="payment_modal_privacy_link">Privacy Policy</a>.
-                </p>
+
+                <!-- Right Column: Enrollment Box -->
+                <aside class="course-enroll-column">
+                    <div class="course-enroll-box">
+                        <img src="https://placehold.co/600x400/3498db/ffffff?text=Course+Thumbnail" alt="Advanced JavaScript Course Thumbnail" class="course-thumbnail">
+                        <h3 data-translate-key="course_enroll_now">Enroll in this Course</h3>
+                        <div class="course-price" data-price-usd="99">$99.00</div>
+                        <p class="enroll-pitch" data-translate-key="course_enroll_pitch">Get full lifetime access to all modules, future updates, and our exclusive community channel.</p>
+                        <button class="button button--primary button--full-width paystack-button"
+                                data-price="99"
+                                data-plan-name="Advanced JavaScript Course"
+                                data-course-id="course_js_advanced_1">
+                            <span data-translate-key="btn_enroll_now">Enroll Now</span>
+                        </button>
+                    </div>
+                </aside>
+
             </div>
-        </div>
+        </section>
     </main>
 
-    <div id="site-footer-placeholder">
-    </div>
+    <!-- Footer Placeholder -->
+    <footer id="site-footer-placeholder" class="page-footer"></footer>
 
-    <script src="js/global.js"></script>
-    <script src="js/apiUtils.js"></script>
-    <script src="https://js.stripe.com/v3/"></script> <script src="js/mcourseD.js"></script>
+    <!-- Core Scripts -->
     <script src="js/componentLoader.js"></script>
     <script src="js/i18n.js"></script>
-    </body>
+    <script src="js/apiUtils.js"></script>
+
+    <!-- Paystack Inline Script - MUST be loaded before page-specific script -->
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    
+    <!-- Global and Page-Specific Scripts -->
+    <script src="js/global.js"></script>
+    <script src="js/mcourseD.js"></script>
+
+</body>
 </html>
