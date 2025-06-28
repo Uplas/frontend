@@ -4,126 +4,31 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Detail - Advanced JavaScript - Uplas</title>
+    <title>Course Detail - Uplas</title>
 
-    <!-- Preconnect for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
-
-    <!-- Google Fonts: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Main Stylesheets -->
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/mcourseD.css">
-</head>
+    </head>
 <body>
     
-    <!-- Header Placeholder -->
-    <header id="site-header-placeholder" class="page-header"></header>
-
-    <main>
-        <!-- ==================== COURSE HERO ==================== -->
-        <section class="course-hero">
-            <div class="container">
-                <div class="course-hero-content">
-                    <h1 class="course-title" data-translate-key="course_js_adv_title">Advanced JavaScript: From Fundamentals to Professional</h1>
-                    <p class="course-subtitle" data-translate-key="course_js_adv_subtitle">Master modern JavaScript concepts, advanced patterns, and build complex, real-world applications.</p>
-                    <div class="course-meta">
-                        <span><i class="fas fa-user-shield"></i> <span data-translate-key="instructor_name_prefix">Instructor:</span> Jane Doe</span>
-                        <span><i class="fas fa-clock"></i> <span data-translate-key="course_duration_prefix">Duration:</span> 24 Hours</span>
-                        <span><i class="fas fa-layer-group"></i> <span data-translate-key="course_level_prefix">Level:</span> Advanced</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ==================== COURSE CONTENT & ENROLLMENT ==================== -->
         <section class="course-main-content section-padding">
             <div class="container grid-container">
                 
-                <!-- Left Column: Course Details & Curriculum -->
                 <div class="course-details-column">
-                    <h2 data-translate-key="course_about_title">About This Course</h2>
-                    <p data-translate-key="course_about_p1">This course is designed for developers who already have a basic understanding of JavaScript and want to take their skills to the next level. We will dive deep into asynchronous programming, design patterns, performance optimization, and modern tooling.</p>
-                    
-                    <h3 class="curriculum-title" data-translate-key="course_curriculum_title">Curriculum</h3>
+                   
                     <div class="curriculum-list">
                         
-                        <!-- Module 1: Unlocked -->
-                        <div class="curriculum-item active">
-                            <div class="curriculum-item-header">
-                                <span data-translate-key="module_1_title">Module 1: Asynchronous JavaScript Deep Dive</span>
-                                <span class="curriculum-toggle-icon"><i class="fas fa-minus"></i></span>
-                            </div>
-                            <div class="curriculum-item-content" style="max-height: 500px; padding-top: 1rem; padding-bottom: 1rem;">
-                                <ul>
-                                    <li><i class="fas fa-play-circle"></i> <span>Promises and the Event Loop</span></li>
-                                    <li><i class="fas fa-play-circle"></i> <span>Mastering Async/Await</span></li>
-                                    <li><i class="fas fa-book"></i> <span>Reading: Advanced Error Handling</span></li>
-                                </ul>
-                            </div>
                         </div>
 
-                        <!-- Module 2: Locked -->
-                        <div class="curriculum-item">
-                            <div class="curriculum-item-header">
-                                <span data-translate-key="module_2_title">Module 2: Modern Design Patterns</span>
-                                <span class="curriculum-toggle-icon"><i class="fas fa-plus"></i></span>
-                            </div>
-                             <div class="curriculum-item-content">
-                                <p data-translate-key="module_locked_desc">This module is locked. Purchase it to gain access to its content.</p>
-                                <div class="module-purchase-action">
-                                    <span class="module-price" data-price-usd="9.99">$9.99</span>
-                                    <button class="button button--secondary paystack-button"
-                                            data-price="9.99"
-                                            data-plan-name="Module 2: Modern Design Patterns"
-                                            data-module-id="mod_js_adv_2">
-                                        <span data-translate-key="btn_unlock_module">Unlock This Module</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Module 3: Locked -->
-                        <div class="curriculum-item">
-                            <div class="curriculum-item-header">
-                                <span data-translate-key="module_3_title">Module 3: Performance Optimization & Tooling</span>
-                                <span class="curriculum-toggle-icon"><i class="fas fa-plus"></i></span>
-                            </div>
-                            <div class="curriculum-item-content">
-                                <p data-translate-key="module_locked_desc">This module is locked. Purchase it to gain access to its content.</p>
-                                <div class="module-purchase-action">
-                                    <span class="module-price" data-price-usd="14.99">$14.99</span>
-                                     <button class="button button--secondary paystack-button"
-                                            data-price="14.99"
-                                            data-plan-name="Module 3: Performance Optimization"
-                                            data-module-id="mod_js_adv_3">
-                                        <span data-translate-key="btn_unlock_module">Unlock This Module</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- Right Column: Enrollment Box -->
                 <aside class="course-enroll-column">
                     <div class="course-enroll-box">
-                        <img src="https://placehold.co/600x400/3498db/ffffff?text=Course+Thumbnail" alt="Advanced JavaScript Course Thumbnail" class="course-thumbnail">
-                        <h3 data-translate-key="course_enroll_now">Enroll in this Course</h3>
+                        <img src="https://placehold.co/600x400/3498db/ffffff?text=Course+Thumbnail" alt="Course Thumbnail" class="course-thumbnail">
+                        <h3>Enroll in this Course</h3>
                         <div class="course-price" data-price-usd="99">$99.00</div>
-                        <p class="enroll-pitch" data-translate-key="course_enroll_pitch">Get full lifetime access to all modules, future updates, and our exclusive community channel.</p>
+                        <p class="enroll-pitch">Get full lifetime access to all modules, future updates, and our exclusive community channel.</p>
                         <button class="button button--primary button--full-width paystack-button"
                                 data-price="99"
                                 data-plan-name="Advanced JavaScript Course"
                                 data-course-id="course_js_advanced_1">
-                            <span data-translate-key="btn_enroll_now">Enroll Now</span>
+                            <span>Enroll Now</span>
                         </button>
                     </div>
                 </aside>
@@ -132,19 +37,8 @@
         </section>
     </main>
 
-    <!-- Footer Placeholder -->
-    <footer id="site-footer-placeholder" class="page-footer"></footer>
-
-    <!-- Core Scripts -->
-    <script src="js/componentLoader.js"></script>
-    <script src="js/i18n.js"></script>
-    <script src="js/apiUtils.js"></script>
-
-    <!-- Paystack Inline Script - MUST be loaded before page-specific script -->
     <script src="https://js.paystack.co/v1/inline.js"></script>
     
-    <!-- Global and Page-Specific Scripts -->
-    <script src="js/global.js"></script>
     <script src="js/mcourseD.js"></script>
 
 </body>
