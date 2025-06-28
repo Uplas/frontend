@@ -5,28 +5,48 @@
    - Manages UI interactions like expanding modules.
    - Relies on global.js and apiUtils.js.
    ========================================================================== */
+// js/mcourseD.js
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("mcourseD.js: DOMContentLoaded event started.");
+    const paystackButtons = document.querySelectorAll('.paystack-button');
+    const PAYSTACK_PUBLIC_KEY = 'pk_test_a75debe223b378631e5b583ddf431631562b781e'; // Replace with your actual Paystack Public Key
 
-    // --- Global Utilities ---
-    const { uplasApi, uplasTranslate } = window;
-    const PAYSTACK_PUBLIC_KEY = 'pk_test_a75debe223b378631e5b583ddf431631562b781e'; // Use the same key as upricing.js
-
-    // --- Element Selectors ---
-    const paymentButtons = document.querySelectorAll('.paystack-button');
-    const curriculumItems = document.querySelectorAll('.curriculum-item-header');
-
-    // --- Verify Dependencies ---
-    if (!uplasApi || !uplasApi.fetchAuthenticated) {
-        console.error("mcourseD.js: CRITICAL - uplasApi is not available. Payment features will fail.");
+    if (!paystackButtons.length) {
         return;
     }
-    if (typeof PaystackPop === 'undefined') {
-        console.error("mcourseD.js: CRITICAL - PaystackPop is not defined. Ensure Paystack script is loaded.");
-        return;
-    }
+
+    const initiatePaystackPayment = (paymentDetails) => {
+        const handler = PaystackPop.setup({
+            key: paymentDetails.key,
+            email: paymentDetails.email,
+            amount: paymentDetails.amount,
+            ref: paymentDetails.ref,
+            currency: 'NGN', // Or your preferred currency
+            callback: function(response) {
+                alert('Payment successful! Reference: ' + response.reference);
+            },
+            onClose: function() {
+                alert('Transaction was not completed, window closed.');
+            },
+        });
+        handler.openIframe();
+    };
+
+    paystackButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            const price = event.target.dataset.price * 100; // Price in kobo/cents
+            const email = "customer@example.com"; // Replace with dynamically fetched user email
+
+            initiatePaystackPayment({
+                key: PAYSTACK_PUBLIC_KEY,
+                email: email,
+                amount: price,
+                ref: '' + Math.floor((Math.random() * 1000000000) + 1),
+            });
+        });
+    });
+});
 
     /**
      * @function initiatePaystackPayment
