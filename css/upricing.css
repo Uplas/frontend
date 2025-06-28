@@ -4,12 +4,12 @@
    - Relies on variables.css and global.css
    ========================================================================== */
 
-@import url('global.css'); /* Includes variables.css */
+@import url('global.css');
 
 /* --- Pricing Hero Section --- */
 .pricing-hero-section {
     padding: var(--spacing-xxl) 0;
-    background-color: var(--current-header-bg); 
+    background-color: var(--current-header-bg);
     text-align: center;
     border-bottom: 1px solid var(--current-border-color-light);
 }
@@ -37,6 +37,7 @@
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--spacing-xl);
     margin-top: var(--spacing-xl);
+    align-items: stretch; /* Make cards of equal height */
 }
 
 .pricing-card {
@@ -79,7 +80,6 @@
 }
 .dark-mode .pricing-card__badge { color: var(--color-black); }
 
-
 .pricing-card__title {
     font-size: var(--font-size-xl);
     font-weight: var(--font-weight-semibold);
@@ -119,7 +119,7 @@
     padding: 0;
     margin-bottom: var(--spacing-lg);
     text-align: left;
-    flex-grow: 1;
+    flex-grow: 1; /* Pushes the CTA button down */
 }
 .pricing-card__features li {
     font-size: var(--font-size-sm);
@@ -146,7 +146,7 @@
 
 .pricing-card__cta {
     width: 100%;
-    margin-top: auto; 
+    margin-top: auto; /* Pushes to the bottom */
 }
 
 /* --- Enterprise Plan Section --- */
