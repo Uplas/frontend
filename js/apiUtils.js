@@ -3,14 +3,13 @@
 'use strict';
 
 // --- Configuration ---
-const BASE_API_URL = (typeof UPLAS_CONFIG !== 'undefined' && UPLAS_CONFIG.BASE_API_URL)
-    ? UPLAS_CONFIG.BASE_API_URL
-    : 'https://api.uplas.com/api/v1'; // A more realistic default for production
+// This configuration assumes your backend API is served from the same domain.
+// If your API is on a different domain (e.g., https://api.uplas.me), you must configure CORS on your Django backend.
+const BASE_API_URL = '/api/v1'; // Example: /api/v1
 
 const ACCESS_TOKEN_KEY = 'uplasAccessToken';
 const REFRESH_TOKEN_KEY = 'uplasRefreshToken';
 const USER_DATA_KEY = 'uplasUserData';
-const AUTH_REDIRECT_MESSAGE_KEY = 'uplasAuthRedirectMessage';
 
 // --- Token & User Data Management ---
 
@@ -58,14 +57,14 @@ function isUserLoggedInInternal() {
 
 // --- UI & Redirection ---
 
-function redirectToLoginInternal(message, targetHash = '#auth-section') {
+function redirectToLoginInternal(message) {
     clearTokensAndUserDataInternal();
     if (message) {
-        sessionStorage.setItem(AUTH_REDIRECT_MESSAGE_KEY, message);
+        sessionStorage.setItem('uplasAuthRedirectMessage', message);
     }
-    const loginPath = '/index.html';
-    if (!window.location.pathname.endsWith(loginPath) || window.location.hash !== targetHash) {
-        window.location.href = `${loginPath}${targetHash}`;
+    const loginPath = '/index.html#auth-section';
+    if (window.location.pathname + window.location.hash !== loginPath) {
+        window.location.href = loginPath;
     }
 }
 
@@ -87,9 +86,7 @@ let tokenRefreshSubscribers = [];
 
 async function refreshTokenInternal() {
     if (isCurrentlyRefreshingToken) {
-        return new Promise(resolve => {
-            tokenRefreshSubscribers.push(resolve);
-        });
+        return new Promise(resolve => tokenRefreshSubscribers.push(resolve));
     }
     isCurrentlyRefreshingToken = true;
 
@@ -111,8 +108,8 @@ async function refreshTokenInternal() {
             const data = await response.json();
             storeTokensInternal(data.access, data.refresh);
             tokenRefreshSubscribers.forEach(resolve => resolve(data.access));
-            tokenRefreshSubscribers = [];
             isCurrentlyRefreshingToken = false;
+            tokenRefreshSubscribers = [];
             return data.access;
         } else {
             throw new Error('Token refresh failed');
@@ -120,8 +117,8 @@ async function refreshTokenInternal() {
     } catch (error) {
         console.error('apiUtils (refreshToken):', error);
         tokenRefreshSubscribers.forEach(resolve => resolve(null));
-        tokenRefreshSubscribers = [];
         isCurrentlyRefreshingToken = false;
+        tokenRefreshSubscribers = [];
         redirectToLoginInternal('Your session has expired. Please log in again.');
         return null;
     }
@@ -149,7 +146,7 @@ async function fetchAuthenticatedInternal(relativeUrl, options = {}) {
         const newAccessToken = await refreshTokenInternal();
         if (newAccessToken) {
             headers['Authorization'] = `Bearer ${newAccessToken}`;
-            response = await fetch(fullUrl, { ...options, headers }); // Retry the request
+            response = await fetch(fullUrl, { ...options, headers });
         } else {
             return Promise.reject(new Error('Session refresh failed.'));
         }
@@ -204,7 +201,7 @@ function logoutUser() {
 }
 
 async function initializeUserSession() {
-    if (getAccessTokenInternal()) {
+    if (isUserLoggedInInternal()) {
         try {
             const response = await fetchAuthenticatedInternal('/users/profile/');
             if (!response.ok) throw new Error('Invalid session');
@@ -217,6 +214,7 @@ async function initializeUserSession() {
             return null;
         }
     }
+    // Ensure UI is in logged-out state if no token
     window.dispatchEvent(new CustomEvent('authChanged', { detail: { loggedIn: false, user: null } }));
     return null;
 }
