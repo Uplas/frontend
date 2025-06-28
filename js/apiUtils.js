@@ -3,8 +3,6 @@
 'use strict';
 
 // --- Configuration ---
-// This configuration assumes your backend API is served from the same domain.
-// If your API is on a different domain (e.g., https://api.uplas.me), you must configure CORS on your Django backend.
 const BASE_API_URL = '/api/v1'; // Example: /api/v1
 
 const ACCESS_TOKEN_KEY = 'uplasAccessToken';
@@ -200,6 +198,33 @@ function logoutUser() {
     window.dispatchEvent(new CustomEvent('authChanged', { detail: { loggedIn: false, user: null } }));
 }
 
+async function requestPasswordReset(email) {
+    const response = await fetchAuthenticatedInternal('/users/request-password-reset/', {
+        method: 'POST',
+        body: JSON.stringify({ email }),
+        isPublic: true,
+    });
+    const data = await response.json();
+    if (!response.ok) {
+        throw new Error(data.detail || 'Failed to send reset email.');
+    }
+    return data;
+}
+
+async function confirmPasswordReset(uid, token, password) {
+    const response = await fetchAuthenticatedInternal('/users/password-reset-confirm/', {
+        method: 'POST',
+        body: JSON.stringify({ uidb64: uid, token: token, password: password }),
+        isPublic: true,
+    });
+    const data = await response.json();
+    if (!response.ok) {
+        const errorMsg = data.password?.[0] || data.detail || 'Failed to reset password.';
+        throw new Error(errorMsg);
+    }
+    return data;
+}
+
 async function initializeUserSession() {
     if (isUserLoggedInInternal()) {
         try {
@@ -210,11 +235,10 @@ async function initializeUserSession() {
             window.dispatchEvent(new CustomEvent('authChanged', { detail: { loggedIn: true, user: profileData } }));
             return profileData;
         } catch (error) {
-            logoutUser(); // Clears invalid/expired tokens
+            logoutUser();
             return null;
         }
     }
-    // Ensure UI is in logged-out state if no token
     window.dispatchEvent(new CustomEvent('authChanged', { detail: { loggedIn: false, user: null } }));
     return null;
 }
@@ -228,6 +252,8 @@ window.uplasApi = {
     registerUser,
     loginUser,
     logoutUser,
+    requestPasswordReset,
+    confirmPasswordReset,
     initializeUserSession,
 };
 
