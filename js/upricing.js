@@ -5,89 +5,53 @@
    - Relies on global.js for theme, nav, language, currency.
    - Assumes apiUtils.js (for fetchAuthenticated) and i18n.js (for uplasTranslate) are loaded.
    ========================================================================== */
+// js/upricing.js
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Element Selectors ---
-    const contactForm = document.getElementById('contact-form');
-    const contactStatusDiv = document.getElementById('contact-status');
-    const selectPlanButtons = document.querySelectorAll('.select-plan-btn'); // Includes course detail page buttons if on that page
-    const contactSalesButton = document.querySelector('.enterprise-contact-sales-btn');
+    const paystackButtons = document.querySelectorAll('.paystack-button');
+    const PAYSTACK_PUBLIC_KEY = 'pk_test_a75debe223b378631e5b583ddf431631562b781e'; // Replace with your actual Paystack Public Key
 
-    const paymentModal = document.getElementById('payment-modal');
-    const closeModalButton = document.getElementById('payment-modal-close-btn');
-    const summaryPlanNameEl = document.getElementById('summary-plan-name-span');
-    const summaryPlanPriceEl = document.getElementById('summary-plan-price-span');
-    const summaryBillingCycleDiv = document.getElementById('summary-billing-cycle-div');
-    const summaryBillingCycleEl = document.getElementById('summary-billing-cycle-span');
-    const paymentFormGlobalStatus = document.getElementById('payment-form-global-status');
-    const paymentSubmitButton = document.getElementById('payment-submit-button');
-
-    const unifiedCardPaymentForm = document.getElementById('unified-card-payment-form');
-    const paymentCardholderNameInput = document.getElementById('payment-cardholder-name');
-    const paymentEmailInput = document.getElementById('payment-email');
-
-    const stripeCardElementContainer = document.getElementById('stripe-card-element');
-    const stripeCardErrors = document.getElementById('stripe-card-errors');
-
-    // --- Global Utilities from window scope ---
-    const { uplasApi, uplasTranslate, uplasScrollToElement, formatPriceForDisplay, uplasGetCurrentLocale } = window;
-
-    // --- State ---
-    let isModalOpen = false;
-    let currentSelectedPlan = null;
-    let stripe = null;
-    let cardElement = null;
-
-    // --- Initialize Stripe ---
-    function initializeStripe() {
-        if (typeof Stripe === 'undefined') {
-            console.error('upricing.js: Stripe.js has not been loaded. Payment functionality will be limited.');
-            if (paymentSubmitButton) paymentSubmitButton.disabled = true;
-            selectPlanButtons.forEach(btn => btn.disabled = true);
-            if (paymentFormGlobalStatus) localDisplayFormStatus(paymentFormGlobalStatus, 'Payment system unavailable.', 'error', 'err_payment_system_unavailable_stripe');
-            return false;
-        }
-
-        const stripePublicKey = (typeof window.UPLAS_CONFIG !== 'undefined' && window.UPLAS_CONFIG.STRIPE_PUBLIC_KEY)
-            ? window.UPLAS_CONFIG.STRIPE_PUBLIC_KEY
-            : 'pk_test_YOUR_STRIPE_PUBLISHABLE_KEY'; // FALLBACK - **REPLACE THIS IN PRODUCTION/TESTING**
-
-        if (stripePublicKey === 'pk_test_YOUR_STRIPE_PUBLISHABLE_KEY') {
-            console.warn("upricing.js: Stripe.js: Using placeholder public key. Payments will FAIL. Please replace with your actual Stripe key in UPLAS_CONFIG or directly.");
-            if (paymentFormGlobalStatus) localDisplayFormStatus(paymentFormGlobalStatus, 'Payment system configuration error. Please contact support.', 'error', 'err_payment_config_missing');
-            // Disable payment buttons if using placeholder key
-            if (paymentSubmitButton) paymentSubmitButton.disabled = true;
-            selectPlanButtons.forEach(btn => btn.disabled = true); // Disable all plan selection buttons too
-            return false; // Crucial: stop further Stripe setup if key is placeholder
-        }
-
-        try {
-            stripe = Stripe(stripePublicKey);
-            const elements = stripe.elements();
-            const cardStyle = { /* ... (style object from your file) ... */ };
-            if (stripeCardElementContainer) {
-                cardElement = elements.create('card', { style: cardStyle, hidePostalCode: true });
-                cardElement.mount(stripeCardElementContainer);
-                cardElement.on('change', function(event) {
-                    if (stripeCardErrors) {
-                        stripeCardErrors.textContent = event.error ? event.error.message : '';
-                    }
-                });
-            } else {
-                console.error("upricing.js: Stripe card element container '#stripe-card-element' not found.");
-                if (paymentFormGlobalStatus) localDisplayFormStatus(paymentFormGlobalStatus, 'Payment UI is missing elements. Please contact support.', 'error', 'err_payment_ui_stripe_missing');
-                return false;
-            }
-        } catch (error) {
-            console.error("upricing.js: Error initializing Stripe elements:", error);
-            if (paymentFormGlobalStatus) localDisplayFormStatus(paymentFormGlobalStatus, 'Payment system failed to initialize. Please try again later.', 'error', 'err_stripe_init_failed');
-            return false;
-        }
-        return true;
+    if (!paystackButtons.length) {
+        return;
     }
-    const stripeInitialized = initializeStripe();
 
+    const initiatePaystackPayment = (paymentDetails) => {
+        const handler = PaystackPop.setup({
+            key: paymentDetails.key,
+            email: paymentDetails.email,
+            amount: paymentDetails.amount,
+            ref: paymentDetails.ref,
+            currency: 'NGN', // Or your preferred currency
+            callback: function(response) {
+                // Handle successful payment
+                alert('Payment successful! Reference: ' + response.reference);
+                // Here you would typically verify the transaction on your backend
+            },
+            onClose: function() {
+                alert('Transaction was not completed, window closed.');
+            },
+        });
+        handler.openIframe();
+    };
+
+    paystackButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            const planId = event.target.dataset.planId;
+            const price = event.target.dataset.price * 100; // Price in kobo/cents
+            const planName = event.target.dataset.name;
+            const email = "customer@example.com"; // Replace with dynamically fetched user email
+
+            initiatePaystackPayment({
+                key: PAYSTACK_PUBLIC_KEY,
+                email: email,
+                amount: price,
+                ref: '' + Math.floor((Math.random() * 1000000000) + 1), // Generate a random reference. You should probably use a better method for this.
+                // metadata for your own use
+            });
+        });
+    });
+});
     // --- Local Utility Functions (using uplasTranslate if available) ---
     const localDisplayFormStatus = (element, message, typeOrIsError, translateKey = null, variables = {}) => {
         // This local version is kept for upricing.js specific needs if uplasApi.displayFormStatus is not sufficient
