@@ -1,42 +1,69 @@
 /* css/header.css */
 /* ================================================
-   Uplas Header-Specific Overrides
+   Uplas Header-Specific Overrides (v2 - Large Logo)
    - Controls logo alignment, size, and spacing.
+   - Uses absolute positioning for a non-disruptive large logo.
    ================================================ */
 
 /* --- Logo Styling Overrides --- */
+
+/* The parent container needs a relative position for the absolute logo inside it */
+.header__container {
+    position: relative;
+}
+
 .logo {
-    /* Aligns the bottom of the image with the text for a seamless look */
-    align-items: baseline; 
+    /* Lifts the logo out of the normal document flow */
+    position: absolute;
     
-    /* Reduces the space between the image and the text by 50%+ */
-    gap: 1px; 
-    
-    /* The header's flexbox layout already pushes this to the far left. */
-    /* No extra code needed for left alignment. */
+    /* Centers the logo vertically within the header's space */
+    top: 50%;
+    transform: translateY(-50%);
+
+    /* Aligns the logo to the start of the container, respecting padding */
+    left: var(--container-padding-x); 
+
+    /* These styles remain to keep the U and 'plas' aligned */
+    display: flex;
+    align-items: baseline;
+    gap: 4px; /* Slightly increased gap to look good at a larger size */
 }
 
 .logo__img {
-    /* Constrains the logo's height to prevent it from stretching the header vertically */
-    height: 30px; 
+    /* === INCREASED 4X === */
+    /* Increased from 30px to 120px for a 4x size increase */
+    height: 120px; 
     
-    /* Fine-tunes the vertical position to perfectly align with the "plas" text */
-    transform: translateY(5px);
+    /* Removes the transform as vertical centering is now handled by the parent */
+    transform: none; 
 }
 
 .logo__text {
-    /* Adjusts the font size to visually match the height of the logo image */
-    font-size: 1.7rem; 
-    font-weight: 700; /* Makes the text bold to match a strong logo mark */
+    /* === INCREASED 4X === */
+    /* Increased font-size proportionally for a 4x effect */
+    font-size: 6.8rem; /* (1.7rem * 4) */
+    font-weight: 700;
 }
 
-/* Specific adjustments for mobile view to maintain the look */
+/* On mobile, we can scale it down slightly to not be overwhelming */
 @media (max-width: 991px) {
     .logo__img {
-        height: 26px;
-        transform: translateY(4px);
+        height: 104px; /* (26px * 4) */
     }
     .logo__text {
-        font-size: 1.5rem;
+        font-size: 6rem; /* (1.5rem * 4) */
+    }
+}
+
+/* On very small screens, make it more manageable */
+@media (max-width: 480px) {
+    .logo {
+        left: var(--container-padding-x-mobile);
+    }
+    .logo__img {
+        height: 80px;
+    }
+    .logo__text {
+        font-size: 4.5rem;
     }
 }
