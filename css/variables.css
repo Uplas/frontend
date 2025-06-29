@@ -36,6 +36,11 @@
     --color-light-border: #dfe6f0;
     --color-light-text-primary: #2c3e50; /* A softer, professional black */
     --color-light-text-secondary: #7f8c8d;
+   --current-header-bg: var(--color-white);
+    --current-footer-bg: var(--color-light-text-primary);
+    --current-footer-text-color: #bdc3c7;
+    --current-footer-heading-color: var(--color-black); /* Black for light mode */
+}
 
     /* Dark Mode Specific Base Colors */
     --color-dark-bg-primary: #0d1117;  /* Luxury Black */
@@ -126,6 +131,12 @@
     --current-button-primary-bg: var(--color-secondary);
     --current-button-primary-text: var(--color-black);
     --current-button-primary-hover-bg: var(--color-secondary-light);
+
+    --current-header-bg: var(--color-dark-bg-panel);
+    --current-footer-bg: var(--color-dark-bg-primary);
+    --current-footer-text-color: var(--color-dark-text-secondary);
+    /* === NEW: Specific variable for footer headings === */
+    --current-footer-heading-color: var(--color-white); /* White for dark mode */
 }
 
 
