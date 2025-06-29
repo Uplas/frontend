@@ -4,51 +4,34 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Detail | Uplas</title>
-
-    <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="css/variables.css">
+    <title>Course Detail - Uplas</title>
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/mcourseD.css">
 </head>
-<body class="light-mode">
-    
+<body>
     <div id="site-header-placeholder"></div>
 
     <main>
-        <section class="course-hero">
-            <div class="container">
-                <div class="course-hero-content">
-                    <h1 class="course-title" id="course-title">Loading Course...</h1>
-                    <p class="course-subtitle" id="course-subtitle"></p>
-                    <div class="course-meta" id="course-meta"></div>
-                </div>
-            </div>
-        </section>
-
         <section class="course-main-content section-padding">
             <div class="container grid-container">
                 <div class="course-details-column">
-                    <div id="course-content-loading">
-                        <p class="loading-message">Loading course details...</p>
-                    </div>
-                    <div id="course-content-container" style="display: none;">
-                        <h2 data-translate-key="course_about_title">About This Course</h2>
-                        <div id="course-description"></div>
-                        
-                        <h3 class="curriculum-title" data-translate-key="course_curriculum_title">Curriculum</h3>
-                        <div class="curriculum-list" id="curriculum-list">
-                            </div>
-                    </div>
+                    <div class="curriculum-list">
+                        </div>
                 </div>
 
                 <aside class="course-enroll-column">
-                    <div class="course-enroll-box" id="enrollment-box">
-                        </div>
+                    <div class="course-enroll-box">
+                        <img src="https://placehold.co/600x400/3498db/ffffff?text=Course+Thumbnail" alt="Course Thumbnail" class="course-thumbnail">
+                        <h3>Enroll in this Course</h3>
+                        <div class="course-price" data-price-usd="99">$99.00</div>
+                        <p class="enroll-pitch">Get full lifetime access to all modules, future updates, and our exclusive community channel.</p>
+                        <button class="button button--primary button--full-width paystack-button"
+                                data-price="99"
+                                data-plan-name="Advanced JavaScript Course"
+                                data-course-id="course_js_advanced_1">
+                            <span>Enroll Now</span>
+                        </button>
+                    </div>
                 </aside>
             </div>
         </section>
@@ -57,9 +40,7 @@
     <div id="site-footer-placeholder"></div>
 
     <script src="https://js.paystack.co/v1/inline.js"></script>
-    <script src="js/componentLoader.js"></script>
-    <script src="js/i18n.js"></script>
-    <script src="js/apiUtils.js"></script>
     <script src="js/global.js"></script>
-    <script src="js/mcourseD.js"></script> </body>
+    <script src="js/mcourseD.js"></script>
+</body>
 </html>
