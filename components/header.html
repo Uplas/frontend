@@ -2,7 +2,8 @@
 
 <div class="container header__container">
     <a href="index.html" class="logo" aria-label="Uplas Homepage">
-        <img src="images/logo-u.svg.png" alt="plas" class="logo__img">
+        <img src="images/logo-u.svg.png" alt="Uplas Logo" class="logo__img">
+        <span class="logo__text">plas</span>
     </a>
 
     <nav class="nav" id="main-navigation" aria-label="Main site navigation">
@@ -60,20 +61,7 @@
         </button>
 
         <div class="user-profile-container" id="user-profile-container" style="display: none;">
-            <button class="user-avatar-button" id="user-avatar-button" aria-haspopup="true" aria-expanded="false" aria-controls="user-profile-dropdown">
-                <span id="user-avatar-initials"></span>
-            </button>
-            <div class="user-profile-dropdown" id="user-profile-dropdown" role="menu" style="display: none;">
-                <div class="dropdown-header" role="presentation">
-                    <p id="user-full-name-display" class="user-name"></p>
-                    <p id="user-email-display" class="user-email"></p>
-                </div>
-                <div class="dropdown-divider" role="separator"></div>
-                <button id="logout-button" class="dropdown-item dropdown-item--button" role="menuitem">
-                    <i class="fas fa-sign-out-alt"></i> <span data-translate-key="nav_logout">Logout</span>
-                </button>
             </div>
-        </div>
 
         <div class="nav__item nav__item--cta-placeholder" id="auth-header-link-container">
             <a href="index.html#auth-section" class="button button--primary">Login / Sign Up</a>
@@ -85,4 +73,6 @@
         <span class="sr-only" data-translate-key="toggle_navigation_sr">Menu</span>
     </button>
 </div>
+
             
+           
