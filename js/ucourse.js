@@ -28,24 +28,23 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /**
-     * Renders the HTML for a single course card based on data from the backend.
-     * @param {object} course - The course data object from the API.
-     * @returns {string} The HTML string for the course card.
+     * Renders the HTML for a single course card.
      */
     const renderCourseCardHTML = (course) => {
         const title = escapeHTML(course.title || 'Untitled Course');
         const description = escapeHTML(course.short_description || 'Learn more...');
         const imageUrl = course.thumbnail_url || `https://placehold.co/600x400/00b4d8/FFFFFF?text=${encodeURIComponent(title.substring(0, 12))}`;
+        // The link now points directly to the detail page for anyone to click.
         const courseUrl = `mcourseD.html?courseId=${course.slug || course.id}`;
         const difficulty = escapeHTML(course.difficulty || 'N/A');
         const categoryName = escapeHTML(course.category?.name || 'General');
         const duration = escapeHTML(course.duration_hours ? `${course.duration_hours} Hours` : 'N/A');
-        const isLocked = !course.is_enrolled && course.is_premium;
-
-        const cardClass = isLocked ? 'course-card--locked' : 'course-card--available';
+        
+        // The lock icon is now purely visual; the authentication happens on the next page.
+        const isLocked = course.is_premium; 
 
         return `
-            <article class="course-card ${cardClass}" data-course-id="${course.slug || course.id}">
+            <article class="course-card" data-course-id="${course.slug || course.id}">
                 <a href="${courseUrl}" class="course-card__link">
                     <div class="course-card__image-container">
                         <img src="${imageUrl}" alt="${title}" class="course-card__image" loading="lazy">
@@ -63,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span><i class="fas fa-clock"></i> Approx. ${duration}</span>
                             <span><i class="fas fa-layer-group"></i> ${categoryName}</span>
                         </div>
-                        <span class="course-card__cta ${isLocked ? 'course-card__cta--locked' : ''}">View Details <i class="fas fa-arrow-right"></i></span>
+                        <span class="course-card__cta">View Details <i class="fas fa-arrow-right"></i></span>
                     </div>
                 </a>
             </article>
@@ -71,13 +70,12 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     /**
-     * Renders pagination controls based on the API response.
-     * @param {object} paginationData - The pagination object from the API (count, next, previous).
+     * Renders pagination controls.
      */
     const updatePaginationControls = (paginationData) => {
         if (!paginationContainer) return;
         paginationContainer.innerHTML = '';
-        const { count, next, previous, page_size, current_page } = paginationData;
+        const { count, page_size, current_page } = paginationData;
         const totalPages = Math.ceil(count / page_size);
 
         if (totalPages <= 1) {
@@ -86,29 +84,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         paginationContainer.style.display = 'flex';
 
-        // Previous Button
         const prevButton = document.createElement('button');
         prevButton.innerHTML = `<i class="fas fa-chevron-left"></i> Prev`;
-        prevButton.disabled = !previous;
+        prevButton.disabled = current_page === 1;
         prevButton.addEventListener('click', () => fetchAndRenderCourses(current_page - 1));
         paginationContainer.appendChild(prevButton);
 
-        // Page Info
         const pageInfo = document.createElement('span');
         pageInfo.textContent = `Page ${current_page} of ${totalPages}`;
         paginationContainer.appendChild(pageInfo);
 
-        // Next Button
         const nextButton = document.createElement('button');
         nextButton.innerHTML = `Next <i class="fas fa-chevron-right"></i>`;
-        nextButton.disabled = !next;
+        nextButton.disabled = current_page === totalPages;
         nextButton.addEventListener('click', () => fetchAndRenderCourses(current_page + 1));
         paginationContainer.appendChild(nextButton);
     };
 
     /**
-     * Fetches course data from the backend and renders the results.
-     * @param {number} page - The page number to fetch.
+     * Fetches and renders courses from the backend.
      */
     const fetchAndRenderCourses = async (page = 1) => {
         if (isLoadingCourses || !coursesGrid || !uplasApi) return;
@@ -124,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentSearchTerm) queryParams += `&search=${encodeURIComponent(currentSearchTerm)}`;
 
         try {
+            // This API call is now public
             const response = await uplasApi.fetchAuthenticated(`/courses/${queryParams}`, { isPublic: true });
             const data = await response.json();
 
@@ -138,9 +133,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             updatePaginationControls({
                 count: data.count,
-                next: data.next,
-                previous: data.previous,
-                page_size: 10, // Assuming a page size of 10, or get from API
+                next: !!data.next,
+                previous: !!data.previous,
+                page_size: 10,
                 current_page: currentPage
             });
 
@@ -152,24 +147,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- Event Handlers ---
+    // --- Event Handlers & Listeners ---
     const handleFilterChange = () => {
         currentCategory = categoryFilter?.value || 'all';
         currentDifficulty = difficultyFilter?.value || 'all';
-        fetchAndRenderCourses(1); // Reset to page 1 on filter change
+        fetchAndRenderCourses(1);
     };
 
     const handleSearch = () => {
         currentSearchTerm = searchInput?.value.trim() || '';
-        fetchAndRenderCourses(1); // Reset to page 1 on search
+        if (clearSearchButton) {
+            clearSearchButton.style.display = currentSearchTerm ? 'inline-flex' : 'none';
+        }
+        fetchAndRenderCourses(1);
     };
     
-    // --- Event Listeners ---
     if (searchInput) {
         let searchDebounce;
         searchInput.addEventListener('input', () => {
             clearTimeout(searchDebounce);
-            searchDebounce = setTimeout(handleSearch, 500); // Debounce search
+            searchDebounce = setTimeout(handleSearch, 500);
         });
     }
     if (clearSearchButton) {
@@ -181,7 +178,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (categoryFilter) categoryFilter.addEventListener('change', handleFilterChange);
     if (difficultyFilter) difficultyFilter.addEventListener('change', handleFilterChange);
 
-    // Initial Load
+    // --- Initial Load ---
+    // The authentication check is removed. The page loads courses for everyone.
     fetchAndRenderCourses();
-    console.log("ucourse.js: Initialized for dynamic course loading.");
+    console.log("ucourse.js: Initialized for PUBLIC course Browse.");
 });
