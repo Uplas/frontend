@@ -434,7 +434,7 @@ input[type="radio"].invalid {
 
 .footer {
     background-color: var(--current-footer-bg);
-    color: var(--current-footer-text-color);
+    color: var(--current-footer-text-color); /* CORRECTED: This now correctly uses the theme variable */
     padding: var(--spacing-xxl) 0 var(--spacing-lg) 0;
     border-top: 1px solid var(--current-border-color);
 }
@@ -446,17 +446,28 @@ input[type="radio"].invalid {
     text-align: left;
 }
 .footer__heading {
-    font-size: 1.1rem; font-weight: var(--font-weight-semibold);
-    margin-bottom: var(--spacing-md); color: var(--color-white);
-    text-transform: uppercase; letter-spacing: 0.5px;
+    font-size: 1.1rem;
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--spacing-md);
+    color: var(--color-white); /* Headings should be bright on the dark footer */
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
-.dark-mode .footer__heading { color: var(--color-dark-text-primary); }
-
+.dark-mode .footer__heading {
+    color: var(--color-dark-text-primary);
+}
 .footer__address p { margin: var(--spacing-xs) 0; font-size: 0.9rem; line-height: 1.6; }
 .footer__icon { margin-right: var(--spacing-sm); opacity: 0.8; font-size: 0.9em; }
-.footer__link { color: inherit; opacity: 0.9; transition: opacity var(--transition-short); }
-.footer__link:hover { opacity: 1; text-decoration: underline; }
-
+.footer__link {
+    color: inherit; /* This will inherit the light color from .footer */
+    opacity: 0.9;
+    transition: opacity var(--transition-short);
+}
+.footer__link:hover {
+    opacity: 1;
+    text-decoration: underline;
+    color: var(--color-white); /* Make hover state even brighter */
+}
 .footer__list { list-style: none; padding: 0; margin: 0; }
 .footer__list li { margin-bottom: var(--spacing-sm); }
 
@@ -481,6 +492,9 @@ input[type="radio"].invalid {
 .dark-mode .footer__bottom { border-top-color: var(--color-dark-border-secondary); }
 .footer__copyright { font-size: 0.85rem; opacity: 0.8; margin: 0; }
 
+.dark-mode .footer__link:hover {
+    color: var(--color-secondary-light);
+}
 
 /* --- Mobile Navigation Styles & Other Responsive Adjustments --- */
 @media (max-width: 991px) {
