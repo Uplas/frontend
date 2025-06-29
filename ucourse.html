@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en"> <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-translate-key="ucourses_list_page_title">Explore AI Courses | Uplas</title>
@@ -8,9 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" xintegrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/ucourse.css">
@@ -20,8 +19,7 @@
 </head>
 <body class="light-mode">
 
-    <div id="site-header-placeholder">
-    </div>
+    <div id="site-header-placeholder"></div>
 
     <main class="main-content">
         <section class="courses-container" aria-labelledby="courses-heading">
@@ -43,109 +41,22 @@
                         </div>
 
                         <div class="filter-controls">
-                            <div class="filter-group">
-                                <label for="category-filter" class="filter-label" data-translate-key="ucourses_list_filter_category">Category:</label>
-                                <select id="category-filter" class="filter-select" aria-label="Filter courses by category">
-                                    <option value="all" data-translate-key="ucourses_list_category_all">All Categories</option>
-                                    <option value="Foundations" data-translate-key="ucourses_list_category_foundations">AI Foundations</option>
-                                    <option value="Applications" data-translate-key="ucourses_list_category_applications">AI Applications</option>
-                                    <option value="Workplace" data-translate-key="ucourses_list_category_workplace">AI in the Workplace</option>
-                                    <option value="Development" data-translate-key="ucourses_list_category_development">AI Development</option>
-                                    <option value="Ethics" data-translate-key="ucourses_list_category_ethics">AI Ethics & Society</option>
-                                </select>
                             </div>
-                            <div class="filter-group">
-                                <label for="difficulty-filter" class="filter-label" data-translate-key="ucourses_list_filter_difficulty">Difficulty:</label>
-                                <select id="difficulty-filter" class="filter-select" aria-label="Filter courses by difficulty level">
-                                    <option value="all" data-translate-key="ucourses_list_difficulty_all">All Levels</option>
-                                    <option value="Beginner" data-translate-key="ucourses_list_difficulty_beginner">Beginner</option>
-                                    <option value="Intermediate" data-translate-key="ucourses_list_difficulty_intermediate">Intermediate</option>
-                                    <option value="Advanced" data-translate-key="ucourses_list_difficulty_advanced">Advanced</option>
-                                </select>
-                            </div>
-                        </div>
                     </div>
                 </header>
 
                 <div class="courses-grid" id="courses-grid">
-                    <article class="course-card course-card--available" data-category="Workplace" data-difficulty="Beginner" data-course-id="workplace-ai-essentials">
-                        <a href="mcourseD.html?courseId=workplace-ai-essentials" class="course-card__link" aria-label="View course details for AI in Workplace: Essentials">
-                            <div class="course-card__image-container">
-                                <img src="https://placehold.co/600x400/00b4d8/FFFFFF?text=Workplace+AI&font=poppins" alt="Illustration of people collaborating with AI tools in an office." class="course-card__image">
-                                <span class="course-card__difficulty-badge" data-translate-key="difficulty_beginner_badge">Beginner</span>
-                            </div>
-                            <div class="course-card__content">
-                                <h3 class="course-card__title" data-translate-key="course_title_workplace_ai">AI in Workplace: Essentials</h3>
-                                <p class="course-card__description" data-translate-key="course_desc_workplace_ai">Boost productivity and teamwork by integrating AI tools effectively into your daily workflow.</p>
-                                <div class="course-card__meta">
-                                    <span><i class="fas fa-clock" aria-hidden="true"></i> <span data-translate-key="duration_approx">Approx.</span> 4 <span data-translate-key="duration_hours">Hours</span></span>
-                                    <span><i class="fas fa-layer-group" aria-hidden="true"></i> <span data-translate-key="category_workplace">Workplace</span></span>
-                                </div>
-                                <span class="course-card__cta" data-translate-key="view_details_cta">View Details <i class="fas fa-arrow-right"></i></span>
-                            </div>
-                        </a>
-                    </article>
-
-                    {/* Example Card 2: Locked (Premium) */}
-                    <article class="course-card course-card--locked" data-category="Foundations" data-difficulty="Beginner" data-course-id="python-for-ai">
-                        <a href="mcourseD.html?courseId=python-for-ai" class="course-card__link" aria-label="View course details for Python Foundations for AI (Premium)">
-                            <div class="course-card__image-container">
-                                <img src="https://placehold.co/600x400/3d405b/FFFFFF?text=Python+AI&font=poppins" alt="Python logo intertwined with AI neural network graphic." class="course-card__image">
-                                <span class="course-card__difficulty-badge" data-translate-key="difficulty_beginner_badge">Beginner</span>
-                                <div class="course-card__locked-overlay">
-                                    <i class="fas fa-lock"></i>
-                                    <span data-translate-key="premium_access_badge">Premium Access</span>
-                                </div>
-                            </div>
-                            <div class="course-card__content">
-                                <h3 class="course-card__title" data-translate-key="course_title_python_ai">Python Foundations for AI</h3>
-                                <p class="course-card__description" data-translate-key="course_desc_python_ai">Master the essential Python programming skills needed to start your journey in AI and Machine Learning.</p>
-                                <div class="course-card__meta">
-                                    <span><i class="fas fa-clock" aria-hidden="true"></i> <span data-translate-key="duration_approx">Approx.</span> 10 <span data-translate-key="duration_hours">Hours</span></span>
-                                    <span><i class="fas fa-layer-group" aria-hidden="true"></i> <span data-translate-key="category_foundations">Foundations</span></span>
-                                </div>
-                                <span class="course-card__cta course-card__cta--locked" data-translate-key="view_details_cta">View Details <i class="fas fa-arrow-right"></i></span>
-                            </div>
-                        </a>
-                    </article>
-
-                    <article class="course-card course-card--available" data-category="Development" data-difficulty="Advanced" data-course-id="advanced-mlops">
-                        <a href="mcourseD.html?courseId=advanced-mlops" class="course-card__link" aria-label="View course details for Advanced MLOps Pipelines">
-                            <div class="course-card__image-container">
-                                <img src="https://placehold.co/600x400/f4a261/000000?text=Adv+MLOps&font=poppins" alt="Complex MLOps pipeline diagram." class="course-card__image">
-                                <span class="course-card__difficulty-badge" data-translate-key="difficulty_advanced_badge">Advanced</span>
-                            </div>
-                            <div class="course-card__content">
-                                <h3 class="course-card__title" data-translate-key="course_title_adv_mlops">Advanced MLOps Pipelines</h3>
-                                <p class="course-card__description" data-translate-key="course_desc_adv_mlops">Design, build, and manage scalable and robust MLOps pipelines for enterprise-grade AI solutions.</p>
-                                <div class="course-card__meta">
-                                    <span><i class="fas fa-clock" aria-hidden="true"></i> <span data-translate-key="duration_approx">Approx.</span> 25 <span data-translate-key="duration_hours">Hours</span></span>
-                                    <span><i class="fas fa-layer-group" aria-hidden="true"></i> <span data-translate-key="category_development">Development</span></span>
-                                </div>
-                                <span class="course-card__cta" data-translate-key="view_details_cta">View Details <i class="fas fa-arrow-right"></i></span>
-                            </div>
-                        </a>
-                    </article>
-                </div>
-                <p id="no-courses-message" class="no-results-message" style="display: none;" data-translate-key="ucourses_list_no_results">No courses found matching your criteria. Try adjusting your search or filters.</p>
+                    </div>
+                <p id="no-courses-message" class="no-results-message" style="display: none;" data-translate-key="ucourses_list_no_results">No courses found matching your criteria.</p>
             </div>
         </section>
     </main>
 
-    <div id="site-footer-placeholder">
-    </div>
-    
-    <div id="whatsapp-chat" class="whatsapp-fab">
-        <a href="https://wa.me/254708654984?text=Hello%20Uplas%20team!%20I%27m%20interested%20in%20your%20courses." target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
-            <i class="fab fa-whatsapp"></i>
-        </a>
-    </div>
+    <div id="site-footer-placeholder"></div>
 
-    <script src="js/global.js"></script>
-    <script src="js/componentLoader.js"></script> 
+    <script src="js/componentLoader.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/apiUtils.js"></script>
-    <script src="js/ucourse.js"></script>
-</body>
+    <script src="js/global.js"></script>
+    <script src="js/ucourse.js"></script> </body>
 </html>
-
