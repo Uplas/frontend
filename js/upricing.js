@@ -1,35 +1,67 @@
 // js/upricing.js
 /* ==========================================================================
    Uplas Pricing Page Specific JavaScript (upricing.js)
-   - Handles plan selection, payment modal triggering (Card via Stripe.js), contact form.
-   - Relies on global.js for theme, nav, language, currency.
-   - Assumes apiUtils.js (for fetchAuthenticated) and i18n.js (for uplasTranslate) are loaded.
+   - Handles plan selection via Paystack and the contact form.
+   - Relies on global.js, apiUtils.js, and i18n.js.
    ========================================================================== */
-// js/upricing.js
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Paystack Payment Logic ---
     const paystackButtons = document.querySelectorAll('.paystack-button');
-    const PAYSTACK_PUBLIC_KEY = 'pk_test_a75debe223b378631e5b583ddf431631562b781e'; // Replace with your actual Paystack Public Key
+    // IMPORTANT: Replace with your actual Paystack Public Key
+    const PAYSTACK_PUBLIC_KEY = 'pk_test_a75debe223b378631e5b583ddf431631562b781e';
+    const uplasTranslate = window.uplasTranslate || ((key, opts) => opts.fallback);
+    const uplasApi = window.uplasApi;
 
-    if (!paystackButtons.length) {
-        return;
-    }
+    const handlePaystackVerification = async (reference, planId) => {
+        // This is a placeholder for what should happen after a successful Paystack charge.
+        // Your backend needs to verify this transaction reference.
+        console.log(`Paystack transaction successful with reference: ${reference}. Plan ID: ${planId}`);
+        alert(uplasTranslate('payment_status_success_subscription', {fallback: 'Payment successful! Your plan is now active.'}));
+
+        // In a real implementation, you would make a call to your backend here:
+        /*
+        try {
+            const response = await uplasApi.fetchAuthenticated('/payments/verify-paystack/', {
+                method: 'POST',
+                body: JSON.stringify({ reference: reference })
+            });
+            const result = await response.json();
+            if (result.success) {
+                alert('Verification successful! Your plan is active.');
+                window.location.href = '/dashboard'; // Redirect to dashboard
+            } else {
+                throw new Error(result.message || 'Verification failed.');
+            }
+        } catch (error) {
+            console.error('Paystack verification error:', error);
+            alert('Your payment was successful, but we had trouble verifying it automatically. Please contact support.');
+        }
+        */
+
+        // For this demo, we'll just dispatch an event and redirect.
+        window.dispatchEvent(new CustomEvent('userSubscriptionChanged', { detail: { planId: planId } }));
+        window.location.href = 'dashboard.html'; // Simulate redirect to a dashboard
+    };
 
     const initiatePaystackPayment = (paymentDetails) => {
         const handler = PaystackPop.setup({
             key: paymentDetails.key,
             email: paymentDetails.email,
-            amount: paymentDetails.amount,
+            amount: paymentDetails.amount, // Amount in Kobo/cents
+            currency: 'NGN', // Or your preferred currency like 'USD'
             ref: paymentDetails.ref,
-            currency: 'NGN', // Or your preferred currency
+            metadata: {
+                user_id: paymentDetails.userId,
+                plan_id: paymentDetails.planId
+            },
             callback: function(response) {
-                // Handle successful payment
-                alert('Payment successful! Reference: ' + response.reference);
-                // Here you would typically verify the transaction on your backend
+                // This callback happens when Paystack confirms the charge is successful on the client.
+                handlePaystackVerification(response.reference, paymentDetails.planId);
             },
             onClose: function() {
-                alert('Transaction was not completed, window closed.');
+                alert(uplasTranslate('payment_cancelled', {fallback: 'Transaction was not completed, window closed.'}));
             },
         });
         handler.openIframe();
@@ -37,25 +69,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
     paystackButtons.forEach(button => {
         button.addEventListener('click', (event) => {
-            const planId = event.target.dataset.planId;
-            const price = event.target.dataset.price * 100; // Price in kobo/cents
-            const planName = event.target.dataset.name;
-            const email = "customer@example.com"; // Replace with dynamically fetched user email
+            if (!uplasApi || !uplasApi.isUserLoggedIn()) {
+                alert(uplasTranslate('auth_required_for_purchase', {fallback: 'You need to be logged in to subscribe.'}));
+                // Redirect to login, preserving the intended action
+                sessionStorage.setItem('uplas_post_auth_action', JSON.stringify({ type: 'subscribe', planId: button.dataset.planId }));
+                window.location.href = '/index.html#auth-section';
+                return;
+            }
+
+            const currentUser = uplasApi.getUserData();
+            if (!currentUser || !currentUser.email) {
+                alert(uplasTranslate('error_user_data_missing', {fallback: 'Your user information is incomplete. Please log in again.'}));
+                return;
+            }
+
+            const planId = button.dataset.planId;
+            const price = parseFloat(button.dataset.price); // Assumes price is in major currency unit (e.g., NGN, USD)
+            const planName = button.dataset.name;
+
+            if (isNaN(price)) {
+                 alert(uplasTranslate('err_price_info_missing', {fallback:"Error: Plan price information is invalid."}));
+                 return;
+            }
 
             initiatePaystackPayment({
                 key: PAYSTACK_PUBLIC_KEY,
-                email: email,
-                amount: price,
-                ref: '' + Math.floor((Math.random() * 1000000000) + 1), // Generate a random reference. You should probably use a better method for this.
-                // metadata for your own use
+                email: currentUser.email,
+                amount: Math.round(price * 100), // Convert to kobo/cents
+                ref: `uplas_${planId}_${new Date().getTime()}`,
+                userId: currentUser.id,
+                planId: planId,
+                planName: planName
             });
         });
     });
-});
-    // --- Local Utility Functions (using uplasTranslate if available) ---
+
+
+    // --- Preserved Contact Form Logic ---
+    const contactForm = document.getElementById('contact-form');
+    const contactStatusDiv = document.getElementById('contact-form-status');
+    const contactSalesButton = document.querySelector('a[href="#contact-section"]');
+
     const localDisplayFormStatus = (element, message, typeOrIsError, translateKey = null, variables = {}) => {
-        // This local version is kept for upricing.js specific needs if uplasApi.displayFormStatus is not sufficient
-        // or if this page has unique status display requirements.
         if (!element) return;
         const isError = typeof typeOrIsError === 'boolean' ? typeOrIsError : typeOrIsError === 'error';
         const statusType = typeof typeOrIsError === 'string' ? typeOrIsError : (isError ? 'error' : 'success');
@@ -65,17 +120,16 @@ document.addEventListener('DOMContentLoaded', () => {
             text = uplasTranslate(translateKey, { fallback: message, variables });
         }
 
-        element.innerHTML = text; // Use innerHTML for spinner if type is 'loading'
-        element.className = 'form__status payment-status-message'; // Reset classes
+        element.innerHTML = text;
+        element.className = 'form__status';
         if (statusType === 'loading' && !element.querySelector('.fa-spinner')) {
              element.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${text}`;
         }
-        element.classList.add(`form__status--${statusType}`); // e.g., form__status--error
+        element.classList.add(`form__status--${statusType}`);
         element.style.display = 'block';
         element.hidden = false;
         element.setAttribute('aria-live', isError ? 'assertive' : 'polite');
 
-        // Auto-hide for success messages, not for errors or loading
         if (statusType === 'success') {
             setTimeout(() => {
                 if (element) {
@@ -84,14 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }, 7000);
         }
-    };
-
-    const localClearFormStatus = (element) => {
-        if (!element) return;
-        element.textContent = '';
-        element.style.display = 'none';
-        element.hidden = true;
-        element.className = 'form__status payment-status-message';
     };
 
     const localValidateInput = (inputElement) => {
@@ -108,260 +154,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (inputElement.validity.valueMissing) defaultMessage = "This field is required.";
                 else if (inputElement.validity.patternMismatch) defaultMessage = inputElement.title || "Please match the requested format.";
                 else if (inputElement.validity.typeMismatch) defaultMessage = `Please enter a valid ${inputElement.type}.`;
-
-                const errorKey = inputElement.dataset.errorKeyRequired || inputElement.dataset.errorKeyPattern || inputElement.dataset.errorKeyType || (inputElement.name ? `error_${inputElement.name.toLowerCase()}_invalid` : 'input_error_generic');
-                errorSpan.textContent = (uplasTranslate && errorKey) ?
-                                        uplasTranslate(errorKey, { fallback: defaultMessage }) : defaultMessage;
+                errorSpan.textContent = defaultMessage;
             }
             return false;
         }
         return true;
     };
-    const localFocusFirstElement = (container) => {
-         if (!container) return;
-        const focusable = container.querySelector('input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled])');
-        focusable?.focus();
-    };
-
-
-    // --- Payment Modal Logic ---
-    function updatePaymentModalSummary() {
-        if (!currentSelectedPlan || !summaryPlanNameEl || !summaryPlanPriceEl || !summaryBillingCycleDiv || !summaryBillingCycleEl) return;
-
-        summaryPlanNameEl.textContent = currentSelectedPlan.name || 'Selected Plan';
-        const price = parseFloat(currentSelectedPlan.priceUsd);
-        const activeCurrency = window.currentGlobalCurrency || 'USD';
-        const formattedPrice = (formatPriceForDisplay)
-            ? formatPriceForDisplay(price, activeCurrency)
-            : `${activeCurrency} ${price.toFixed(2)}`;
-        summaryPlanPriceEl.textContent = formattedPrice;
-        summaryPlanPriceEl.dataset.priceUsd = price.toString();
-
-        if (currentSelectedPlan.billingCycle && currentSelectedPlan.billingCycle.toLowerCase() !== 'one-time') {
-            const billingCycleKey = `billing_cycle_${currentSelectedPlan.billingCycle.toLowerCase()}`;
-            summaryBillingCycleEl.textContent = (uplasTranslate) ? uplasTranslate(billingCycleKey, {fallback: currentSelectedPlan.billingCycle}) : currentSelectedPlan.billingCycle;
-            summaryBillingCycleDiv.hidden = false;
-        } else {
-            summaryBillingCycleDiv.hidden = true;
-        }
-    }
-
-    function openPaymentModal(planData) {
-        if (!paymentModal) {
-            alert(uplasTranslate ? uplasTranslate('error_payment_modal_missing', {fallback:"Payment modal not found."}) : "Payment modal not found."); return;
-        }
-        if (!stripeInitialized) { // Stripe key might be missing or Stripe.js failed to load
-            localDisplayFormStatus(paymentFormGlobalStatus || document.body, '', 'error', 'err_payment_system_unavailable_stripe');
-            return;
-        }
-        currentSelectedPlan = planData;
-        updatePaymentModalSummary();
-
-        if (paymentSubmitButton) {
-            const buttonText = (uplasTranslate) ? uplasTranslate('payment_modal_submit_pay_now', {fallback: 'Pay Now'}) : 'Pay Now';
-            paymentSubmitButton.innerHTML = `<i class="fas fa-shield-alt"></i> ${buttonText}`;
-            paymentSubmitButton.disabled = false;
-        }
-        if(paymentFormGlobalStatus) localClearFormStatus(paymentFormGlobalStatus);
-        if(stripeCardErrors) stripeCardErrors.textContent = '';
-
-        unifiedCardPaymentForm?.reset();
-        cardElement?.clear();
-        unifiedCardPaymentForm?.querySelectorAll('.invalid').forEach(el => el.classList.remove('invalid'));
-
-        if (uplasApi && uplasApi.getUserData && paymentEmailInput) {
-            const userData = uplasApi.getUserData();
-            if (userData && userData.email) {
-                paymentEmailInput.value = userData.email;
-            }
-        }
-
-        paymentModal.hidden = false;
-        document.body.classList.add('modal-open'); // Prevent background scroll
-        setTimeout(() => {
-            paymentModal.classList.add('active');
-            if (paymentCardholderNameInput) paymentCardholderNameInput.focus();
-            else localFocusFirstElement(paymentModal);
-        }, 10);
-        isModalOpen = true;
-    }
-
-    function closePaymentModal() {
-        if (!paymentModal) return;
-        paymentModal.classList.remove('active');
-        document.body.classList.remove('modal-open');
-        setTimeout(() => { paymentModal.hidden = true; }, 300);
-        isModalOpen = false;
-        currentSelectedPlan = null;
-    }
-
-    // --- Event Listeners ---
-    selectPlanButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            event.preventDefault();
-            if (!stripeInitialized) { // Double check if Stripe failed earlier
-                localDisplayFormStatus(paymentFormGlobalStatus || document.body, '', 'error', 'err_payment_system_unavailable_stripe');
-                return;
-            }
-            const planData = {
-                id: button.dataset.planId,
-                name: button.dataset.name,
-                priceUsd: button.dataset.priceUsd,
-                billingCycle: button.dataset.billingCycle,
-                // Add item_type if distinguishing between subscriptions and one-time course/module purchases
-                // item_type: button.dataset.itemType || (button.dataset.planId.startsWith('course_') ? 'course' : 'plan')
-            };
-            if (!planData.id || !planData.name || !planData.priceUsd || isNaN(parseFloat(planData.priceUsd))) {
-                alert(uplasTranslate ? uplasTranslate('err_price_info_missing', {fallback:"Error: Plan information is incomplete."}) : "Error: Plan information is incomplete.");
-                return;
-            }
-            openPaymentModal(planData);
-        });
-    });
-
-    if (contactSalesButton && uplasScrollToElement) {
+    
+    if (contactSalesButton && window.uplasScrollToElement) {
         contactSalesButton.addEventListener('click', (e) => {
             e.preventDefault();
-            uplasScrollToElement('#contact-section');
-        });
-    }
-    if (closeModalButton) closeModalButton.addEventListener('click', closePaymentModal);
-    document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && isModalOpen) closePaymentModal(); });
-    paymentModal?.addEventListener('click', (event) => { if (event.target === paymentModal) closePaymentModal(); });
-
-    if (unifiedCardPaymentForm && stripeInitialized) {
-        unifiedCardPaymentForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!currentSelectedPlan || !cardElement) {
-                localDisplayFormStatus(paymentFormGlobalStatus, '', 'error', 'err_payment_system_or_plan');
-                return;
-            }
-            if (!uplasApi || !uplasApi.fetchAuthenticated) {
-                localDisplayFormStatus(paymentFormGlobalStatus, '', 'error', 'error_service_unavailable');
-                return;
-            }
-
-            let isFormValid = true;
-            if (paymentCardholderNameInput && !localValidateInput(paymentCardholderNameInput)) isFormValid = false;
-            if (paymentEmailInput && !localValidateInput(paymentEmailInput)) isFormValid = false;
-
-            if (!isFormValid) {
-                localDisplayFormStatus(paymentFormGlobalStatus, '', 'error', 'err_correct_form_errors_basic');
-                return;
-            }
-
-            if (paymentSubmitButton) paymentSubmitButton.disabled = true;
-            localDisplayFormStatus(paymentFormGlobalStatus, '', 'loading', 'payment_status_processing');
-
-            const cardholderName = paymentCardholderNameInput.value;
-            const email = paymentEmailInput.value;
-
-            try {
-                const { paymentMethod, error: pmError } = await stripe.createPaymentMethod({
-                    type: 'card', card: cardElement, billing_details: { name: cardholderName, email: email },
-                });
-
-                if (pmError) {
-                    localDisplayFormStatus(paymentFormGlobalStatus, pmError.message, 'error'); // Stripe provides good messages
-                    if (stripeCardErrors) stripeCardErrors.textContent = pmError.message;
-                    if (paymentSubmitButton) paymentSubmitButton.disabled = false;
-                    return;
-                }
-                if (stripeCardErrors) stripeCardErrors.textContent = '';
-
-                const paymentDataForBackend = {
-                    plan_id: currentSelectedPlan.id,
-                    payment_method_id: paymentMethod.id,
-                    email: email,
-                    // Optionally include for verification by backend or specific logic:
-                    // item_name: currentSelectedPlan.name,
-                    // amount_usd: parseFloat(currentSelectedPlan.priceUsd),
-                    // currency: 'USD',
-                    // billing_cycle: currentSelectedPlan.billingCycle,
-                };
-
-                console.log("upricing.js: Sending Payment Data to Backend:", paymentDataForBackend);
-                // Backend endpoint for creating subscriptions
-                // This might vary if you have different types of purchases (one-time vs. subscription)
-                const paymentEndpoint = currentSelectedPlan.billingCycle && currentSelectedPlan.billingCycle.toLowerCase() !== 'one-time'
-                                      ? '/payments/create-subscription-stripe/'
-                                      : '/payments/charge-stripe/'; // Example for one-time
-
-                const response = await uplasApi.fetchAuthenticated(paymentEndpoint, {
-                    method: 'POST', body: JSON.stringify(paymentDataForBackend)
-                });
-                const backendResult = await response.json();
-
-                if (response.ok && backendResult.success) {
-                    localDisplayFormStatus(paymentFormGlobalStatus, backendResult.message || (uplasTranslate ? uplasTranslate('payment_status_success_subscription') : 'Payment successful!'), 'success');
-                    cardElement.clear();
-                    setTimeout(() => {
-                        closePaymentModal();
-                        window.dispatchEvent(new CustomEvent('userSubscriptionChanged', { detail: { planId: currentSelectedPlan.id } }));
-                        // Consider redirecting to a thank you page or dashboard
-                        // window.location.href = '/dashboard/billing?status=success';
-                    }, 3000);
-                } else if (backendResult.requires_action && backendResult.client_secret) { // Stripe SCA
-                    const { error: confirmError } = await stripe.confirmCardPayment(backendResult.client_secret);
-                    if (confirmError) {
-                        localDisplayFormStatus(paymentFormGlobalStatus, confirmError.message, 'error');
-                        if (paymentSubmitButton) paymentSubmitButton.disabled = false;
-                    } else {
-                        localDisplayFormStatus(paymentFormGlobalStatus, '', 'success', 'payment_status_success_authenticated');
-                        cardElement.clear();
-                        setTimeout(() => {
-                            closePaymentModal();
-                            window.dispatchEvent(new CustomEvent('userSubscriptionChanged', { detail: { planId: currentSelectedPlan.id } }));
-                        }, 3000);
-                    }
-                } else {
-                    throw new Error(backendResult.detail || backendResult.message || 'Payment processing failed.');
-                }
-            } catch (error) {
-                console.error('upricing.js: Payment Submission Error:', error);
-                localDisplayFormStatus(paymentFormGlobalStatus, error.message, 'error', 'payment_status_error_network');
-                if (paymentSubmitButton) paymentSubmitButton.disabled = false;
-            }
+            window.uplasScrollToElement('#contact-section');
         });
     }
 
-    // Contact Form Submission
     if (contactForm && contactStatusDiv) {
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            localClearFormStatus(contactStatusDiv);
             let isFormValid = true;
             contactForm.querySelectorAll('input[required], select[required], textarea[required]').forEach(input => {
                 if (!localValidateInput(input)) isFormValid = false;
             });
 
             if (!isFormValid) {
-                localDisplayFormStatus(contactStatusDiv, '', 'error', 'error_correct_form_errors');
+                localDisplayFormStatus(contactStatusDiv, 'Please correct the errors in the form.', 'error', 'error_correct_form_errors');
                 return;
             }
 
             const submitButton = contactForm.querySelector('button[type="submit"]');
             if (submitButton) submitButton.disabled = true;
-            localDisplayFormStatus(contactStatusDiv, '', 'loading', 'contact_status_sending');
+            localDisplayFormStatus(contactStatusDiv, 'Sending...', 'loading', 'contact_status_sending');
 
             const formData = new FormData(contactForm);
             const data = Object.fromEntries(formData.entries());
 
             if (!uplasApi || !uplasApi.fetchAuthenticated) {
-                localDisplayFormStatus(contactStatusDiv, '', 'error', 'error_service_unavailable');
+                localDisplayFormStatus(contactStatusDiv, 'Service is temporarily unavailable.', 'error', 'error_service_unavailable');
                 if (submitButton) submitButton.disabled = false;
                 return;
             }
 
             try {
-                // Contact form might be public, adjust `isPublic` as needed.
                 const response = await uplasApi.fetchAuthenticated('/core/contact/', {
                     method: 'POST', body: JSON.stringify(data), isPublic: true
                 });
                 const result = await response.json();
 
                 if (response.ok && result.success) {
-                    localDisplayFormStatus(contactStatusDiv, result.message || (uplasTranslate ? uplasTranslate('contact_status_success') : "Message sent!"), 'success');
+                    localDisplayFormStatus(contactStatusDiv, result.message || "Message sent!", 'success', 'contact_status_success');
                     contactForm.reset();
                 } else {
                     throw new Error(result.detail || result.message || 'Failed to send message.');
@@ -375,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         contactForm.querySelectorAll('input[required], select[required], textarea[required]').forEach(input => {
             input.addEventListener('input', () => localValidateInput(input));
-            input.addEventListener('blur', () => localValidateInput(input)); // Validate on blur too
+            input.addEventListener('blur', () => localValidateInput(input));
         });
     }
 
@@ -383,13 +223,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (typeof window.updateUserCurrencyDisplay === 'function') {
         window.updateUserCurrencyDisplay();
     }
-    // Listen for currency changes from global selector to update modal price display if open
     window.addEventListener('currencyChanged', () => {
-        if (isModalOpen && currentSelectedPlan) {
-            updatePaymentModalSummary();
-        }
+        // This is where you would update any open modals, but we removed the modal.
+        // This listener can be removed if no other currency-dependent UI is on this page besides the static prices.
     });
-
 
     console.log("upricing.js: Uplas Pricing Page initialized.");
 });
