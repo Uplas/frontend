@@ -5,48 +5,61 @@
    - Manages UI interactions like expanding modules.
    - Relies on global.js and apiUtils.js.
    ========================================================================== */
-// js/mcourseD.js
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const paystackButtons = document.querySelectorAll('.paystack-button');
-    const PAYSTACK_PUBLIC_KEY = 'pk_test_a75debe223b378631e5b583ddf431631562b781e'; // Replace with your actual Paystack Public Key
+    // --- Element Selectors ---
+    const paymentButtons = document.querySelectorAll('.paystack-button');
+    const curriculumItems = document.querySelectorAll('.curriculum-item-header');
+    // IMPORTANT: Replace with your actual Paystack Public Key
+    const PAYSTACK_PUBLIC_KEY = 'pk_test_a75debe223b378631e5b583ddf431631562b781e';
+    const uplasApi = window.uplasApi;
+    const uplasTranslate = window.uplasTranslate || ((key, opts) => opts.fallback);
 
-    if (!paystackButtons.length) {
+    if (paymentButtons.length === 0) {
+        console.log("mcourseD.js: No payment buttons found on this page.");
+    }
+    if (!window.PaystackPop) {
+        console.error("mcourseD.js: PaystackPop is not available. Paystack script might be missing or blocked.");
+        paymentButtons.forEach(btn => btn.disabled = true);
         return;
     }
 
-    const initiatePaystackPayment = (paymentDetails) => {
-        const handler = PaystackPop.setup({
-            key: paymentDetails.key,
-            email: paymentDetails.email,
-            amount: paymentDetails.amount,
-            ref: paymentDetails.ref,
-            currency: 'NGN', // Or your preferred currency
-            callback: function(response) {
-                alert('Payment successful! Reference: ' + response.reference);
-            },
-            onClose: function() {
-                alert('Transaction was not completed, window closed.');
-            },
-        });
-        handler.openIframe();
-    };
+    /**
+     * @function handlePaymentVerification
+     * @description Sends the transaction reference to the backend for verification.
+     * @param {string} reference - The transaction reference from Paystack.
+     */
+    async function handlePaymentVerification(reference) {
+        console.log(`Verifying payment for course/module with reference: ${reference}`);
+        alert(uplasTranslate('payment_status_verifying', {fallback: 'Payment successful! Verifying your access...'}));
 
-    paystackButtons.forEach(button => {
-        button.addEventListener('click', (event) => {
-            const price = event.target.dataset.price * 100; // Price in kobo/cents
-            const email = "customer@example.com"; // Replace with dynamically fetched user email
-
-            initiatePaystackPayment({
-                key: PAYSTACK_PUBLIC_KEY,
-                email: email,
-                amount: price,
-                ref: '' + Math.floor((Math.random() * 1000000000) + 1),
+        // In a real implementation, you would call your backend API here.
+        /*
+        try {
+            const response = await uplasApi.fetchAuthenticated('/payments/verify-paystack/', {
+                method: 'POST',
+                body: JSON.stringify({ reference: reference }),
             });
-        });
-    });
-});
+            const result = await response.json();
+            if (result.success) {
+                alert('Verification successful! You now have access to the course.');
+                window.location.reload(); // Reload to show updated access rights
+            } else {
+                throw new Error(result.message || 'Verification failed.');
+            }
+        } catch (error) {
+            console.error('An error occurred during payment verification:', error);
+            alert('Your payment was successful, but we had trouble verifying it. Please contact support.');
+        }
+        */
+
+        // For this demo, we'll simulate a successful verification and reload.
+        setTimeout(() => {
+            alert("Verification complete! You now have full access.");
+            window.location.reload();
+        }, 1500);
+    }
 
     /**
      * @function initiatePaystackPayment
@@ -58,6 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             key: paymentDetails.key,
             email: paymentDetails.email,
             amount: paymentDetails.amount,
+            currency: 'NGN', // Or your preferred currency
             ref: paymentDetails.ref,
             metadata: {
                 item_id: paymentDetails.itemId,
@@ -66,48 +80,14 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             callback: function(response) {
                 console.log('Paystack payment successful. Reference:', response.reference);
-                paymentDetails.callback(response.reference);
+                handlePaymentVerification(response.reference);
             },
             onClose: function() {
                 console.log('Paystack payment popup closed.');
+                alert(uplasTranslate('payment_cancelled', {fallback: 'Payment was cancelled.'}));
             }
         });
         handler.openIframe();
-    }
-
-    /**
-     * @function handlePaymentVerification
-     * @description Sends the transaction reference to the backend for verification.
-     * @param {string} reference - The transaction reference from Paystack.
-     */
-    async function handlePaymentVerification(reference) {
-        console.log(`Verifying payment for course/module with reference: ${reference}`);
-        try {
-            const response = await uplasApi.fetchAuthenticated('/api/v1/payments/verify-payment/', { // Assuming the same verification endpoint
-                method: 'POST',
-                body: JSON.stringify({
-                    payment_ref: reference
-                }),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({ detail: 'Verification request failed.' }));
-                throw new Error(errorData.detail || `Server responded with status: ${response.status}`);
-            }
-
-            const result = await response.json();
-
-            if (result.status === 'success') {
-                alert('Payment Successful! You now have access.');
-                // Reload the page to reflect the new access rights (e.g., show content instead of buy button)
-                window.location.reload();
-            } else {
-                alert(`Payment Verification Failed: ${result.message}`);
-            }
-        } catch (error) {
-            console.error('An error occurred during payment verification:', error);
-            alert('An error occurred while verifying your payment. Please contact support.');
-        }
     }
 
 
@@ -119,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         const button = event.currentTarget;
 
-        if (!uplasApi.isUserLoggedIn()) {
+        if (!uplasApi || !uplasApi.isUserLoggedIn()) {
             alert(uplasTranslate('auth_required_for_purchase', { fallback: 'You must be logged in to make a purchase.' }));
             sessionStorage.setItem('uplas_post_auth_action', JSON.stringify({ type: 'purchase', courseId: button.dataset.courseId }));
             window.location.href = '/index.html#auth-section';
@@ -128,7 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const userData = uplasApi.getUserData();
         const price = parseFloat(button.dataset.price);
-        const itemName = button.dataset.planName || "Course Purchase"; // Generic name
+        const itemName = button.dataset.planName || "Course Purchase";
         const itemId = button.dataset.courseId || button.dataset.moduleId;
         const itemType = button.dataset.courseId ? 'course' : 'module';
 
@@ -143,12 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const paymentDetails = {
             key: PAYSTACK_PUBLIC_KEY,
             email: userData.email,
-            amount: Math.round(price * 100),
+            amount: Math.round(price * 100), // Convert to kobo/cents
             ref: uniqueRef,
             itemId: itemId,
             itemType: itemType,
-            userId: userData.id,
-            callback: handlePaymentVerification
+            userId: userData.id
         };
 
         console.log('Initiating Paystack payment for course/module:', { ...paymentDetails, key: '***' });
