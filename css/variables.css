@@ -1,20 +1,20 @@
 /* css/variables.css */
 /* ================================================
-   Uplas Global CSS Variables (v2.0 - New Palette)
+   Uplas Global CSS Variables (v2.0 - CORRECTED)
    ================================================ */
 
 :root {
-    /* === NEW: Core Color Palette (Futuristic EdTech) === */
-    --color-primary: #4A90E2;         /* A professional, vibrant blue */
-    --color-primary-dark: #357ABD;    /* Darker shade for hovers/accents */
-    --color-primary-light: #8DB9ED;   /* Lighter shade for highlights */
+    /* === Core Color Palette (Futuristic EdTech) === */
+    --color-primary: #4A90E2;
+    --color-primary-dark: #357ABD;
+    --color-primary-light: #8DB9ED;
     --color-primary-ultralight: rgba(74, 144, 226, 0.1);
 
-    --color-secondary: #50E3C2;       /* A vibrant mint green for accents */
+    --color-secondary: #50E3C2;
     --color-secondary-dark: #3BAA90;
     --color-secondary-light: #88F1D6;
 
-    --color-accent: #F5A623;         /* A warm orange for attention-grabbing CTAs */
+    --color-accent: #F5A623;
     --color-accent-dark: #D4880B;
     --color-accent-light: #F8C56E;
 
@@ -31,19 +31,14 @@
     /* Neutral & Grayscale Palette (Light Mode) */
     --color-white: #ffffff;
     --color-black: #000000;
-    --color-light-bg: #f7f9fc;      /* A very light, cool gray background */
+    --color-light-bg: #f7f9fc;
     --color-light-card: #ffffff;
     --color-light-border: #dfe6f0;
-    --color-light-text-primary: #2c3e50; /* A softer, professional black */
+    --color-light-text-primary: #2c3e50;
     --color-light-text-secondary: #7f8c8d;
-   --current-header-bg: var(--color-white);
-    --current-footer-bg: var(--color-light-text-primary);
-    --current-footer-text-color: #bdc3c7;
-    --current-footer-heading-color: var(--color-black); /* Black for light mode */
-}
 
     /* Dark Mode Specific Base Colors */
-    --color-dark-bg-primary: #0d1117;  /* Luxury Black */
+    --color-dark-bg-primary: #0d1117;
     --color-dark-bg-secondary: #161b22;
     --color-dark-bg-panel: #21262d;
     --color-dark-bg-input: #0d1117;
@@ -51,7 +46,6 @@
     --color-dark-border-secondary: #21262d;
     --color-dark-text-primary: #c9d1d9;
     --color-dark-text-secondary: #8b949e;
-
 
     /* Typography */
     --font-primary: 'Poppins', sans-serif;
@@ -63,10 +57,8 @@
     --font-size-xl: 1.5rem;
     --font-size-xxl: 2rem;
     --font-size-hero: clamp(2.0rem, 5.5vw, 3.3rem);
-
     --line-height-base: 1.65;
     --line-height-heading: 1.3;
-
     --font-weight-light: 300;
     --font-weight-regular: 400;
     --font-weight-medium: 500;
@@ -74,13 +66,23 @@
     --font-weight-bold: 700;
 
     /* Spacing */
-    --spacing-xxs: 0.25rem; --spacing-xs: 0.5rem; --spacing-sm: 0.75rem; --spacing-md: 1rem;
-    --spacing-lg: 1.5rem; --spacing-xl: 2rem; --spacing-xxl: 3rem; --spacing-xxxl: 4rem;
+    --spacing-xxs: 0.25rem;
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 0.75rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-xxl: 3rem;
+    --spacing-xxxl: 4rem;
 
     /* Borders & Shadows */
-    --border-radius-sm: 4px; --border-radius-md: 8px; --border-radius-lg: 12px; --border-radius-xl: 16px;
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-xl: 16px;
     --border-radius-pill: 9999px;
-    --border-width: 1px; --border-width-bold: 2px;
+    --border-width: 1px;
+    --border-width-bold: 2px;
     --box-shadow-sm: 0 2px 5px rgba(44, 62, 80, 0.06);
     --box-shadow-md: 0 5px 12px -1px rgba(44, 62, 80, 0.08), 0 3px 7px -2px rgba(44, 62, 80, 0.05);
     --box-shadow-lg: 0 12px 20px -3px rgba(44, 62, 80, 0.1), 0 5px 8px -4px rgba(44, 62, 80, 0.06);
@@ -91,7 +93,8 @@
     --transition-base: 0.25s ease-out;
 
     /* Layout Specific */
-    --header-height: 70px; --header-height-mobile: 60px;
+    --header-height: 70px;
+    --header-height-mobile: 60px;
     --container-max-width: 1200px;
     --container-padding-x: var(--spacing-lg);
     --container-padding-x-mobile: var(--spacing-md);
@@ -106,8 +109,9 @@
     --current-link-color: var(--color-primary);
     --current-link-hover-color: var(--color-primary-dark);
     --current-header-bg: var(--color-white);
-    --current-footer-bg: var(--color-light-text-primary); /* Dark footer for contrast */
-    --current-footer-text-color: #bdc3c7; /* CORRECTED: Light text for dark footer */
+    --current-footer-bg: var(--color-light-text-primary);
+    --current-footer-text-color: #bdc3c7;
+    --current-footer-heading-color: var(--color-black); /* Set to Black for visibility in light mode */
 
     /* Button Theming */
     --current-button-primary-bg: var(--color-primary);
@@ -127,16 +131,12 @@
     --current-header-bg: var(--color-dark-bg-panel);
     --current-footer-bg: var(--color-dark-bg-primary);
     --current-footer-text-color: var(--color-dark-text-secondary);
+    --current-footer-heading-color: var(--color-white); /* Set to White for visibility in dark mode */
 
+    /* Button Theming - Dark Mode */
     --current-button-primary-bg: var(--color-secondary);
     --current-button-primary-text: var(--color-black);
     --current-button-primary-hover-bg: var(--color-secondary-light);
-
-    --current-header-bg: var(--color-dark-bg-panel);
-    --current-footer-bg: var(--color-dark-bg-primary);
-    --current-footer-text-color: var(--color-dark-text-secondary);
-    /* === NEW: Specific variable for footer headings === */
-    --current-footer-heading-color: var(--color-white); /* White for dark mode */
 }
 
 
