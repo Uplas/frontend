@@ -1,167 +1,168 @@
 // js/mcourseD.js
-/* ==========================================================================
-   Uplas Course Detail Page Specific JavaScript (mcourseD.js)
-   - Handles course/module enrollment via Paystack.
-   - Manages UI interactions like expanding modules.
-   - Relies on global.js and apiUtils.js.
-   ========================================================================== */
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Element Selectors ---
-    const paymentButtons = document.querySelectorAll('.paystack-button');
-    const curriculumItems = document.querySelectorAll('.curriculum-item-header');
-    // IMPORTANT: Replace with your actual Paystack Public Key
-    const PAYSTACK_PUBLIC_KEY = 'pk_test_a75debe223b378631e5b583ddf431631562b781e';
     const uplasApi = window.uplasApi;
-    const uplasTranslate = window.uplasTranslate || ((key, opts) => opts.fallback);
+    const PAYSTACK_PUBLIC_KEY = 'pk_test_a75debe223b378631e5b583ddf431631562b781e';
 
-    if (paymentButtons.length === 0) {
-        console.log("mcourseD.js: No payment buttons found on this page.");
-    }
-    if (!window.PaystackPop) {
-        console.error("mcourseD.js: PaystackPop is not available. Paystack script might be missing or blocked.");
-        paymentButtons.forEach(btn => btn.disabled = true);
+    // --- Element Selectors ---
+    const courseTitleEl = document.getElementById('course-title');
+    const courseSubtitleEl = document.getElementById('course-subtitle');
+    const courseMetaEl = document.getElementById('course-meta');
+    const courseDescriptionEl = document.getElementById('course-description');
+    const curriculumListEl = document.getElementById('curriculum-list');
+    const enrollmentBoxEl = document.getElementById('enrollment-box');
+    const loadingContainer = document.getElementById('course-content-loading');
+    const contentContainer = document.getElementById('course-content-container');
+
+    if (!uplasApi || !courseTitleEl) {
+        console.error("mcourseD.js: Critical elements or uplasApi not found.");
         return;
     }
 
-    /**
-     * @function handlePaymentVerification
-     * @description Sends the transaction reference to the backend for verification.
-     * @param {string} reference - The transaction reference from Paystack.
-     */
-    async function handlePaymentVerification(reference) {
-        console.log(`Verifying payment for course/module with reference: ${reference}`);
-        alert(uplasTranslate('payment_status_verifying', {fallback: 'Payment successful! Verifying your access...'}));
+    const getCourseIdFromUrl = () => {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('courseId');
+    };
 
-        // In a real implementation, you would call your backend API here.
-        /*
-        try {
-            const response = await uplasApi.fetchAuthenticated('/payments/verify-paystack/', {
-                method: 'POST',
-                body: JSON.stringify({ reference: reference }),
+    const renderCurriculum = (modules) => {
+        if (!curriculumListEl) return;
+        curriculumListEl.innerHTML = '';
+        if (!modules || modules.length === 0) {
+            curriculumListEl.innerHTML = '<p>No curriculum available for this course.</p>';
+            return;
+        }
+
+        modules.forEach(module => {
+            const isLocked = !module.is_unlocked;
+            let lessonsHtml = '<ul>';
+            module.lessons.forEach(lesson => {
+                lessonsHtml += `<li><i class="fas fa-play-circle"></i> <span>${lesson.title}</span></li>`;
             });
-            const result = await response.json();
-            if (result.success) {
-                alert('Verification successful! You now have access to the course.');
-                window.location.reload(); // Reload to show updated access rights
-            } else {
-                throw new Error(result.message || 'Verification failed.');
-            }
+            lessonsHtml += '</ul>';
+
+            const moduleHtml = `
+                <div class="curriculum-item ${isLocked ? 'locked' : ''}">
+                    <div class="curriculum-item-header">
+                        <span>${module.title}</span>
+                        <span class="curriculum-toggle-icon"><i class="fas ${isLocked ? 'fa-lock' : 'fa-plus'}"></i></span>
+                    </div>
+                    <div class="curriculum-item-content">
+                        ${isLocked ? '<p>This module is locked. Enroll to get access.</p>' : lessonsHtml}
+                    </div>
+                </div>
+            `;
+            curriculumListEl.insertAdjacentHTML('beforeend', moduleHtml);
+        });
+
+        // Add event listeners for the new curriculum items
+        document.querySelectorAll('.curriculum-item-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                if (item.classList.contains('locked')) return;
+                item.classList.toggle('active');
+            });
+        });
+    };
+
+    const renderEnrollmentBox = (course) => {
+        if (!enrollmentBoxEl) return;
+        const isEnrolled = course.is_enrolled;
+        let enrollButtonHtml = '';
+
+        if (isEnrolled) {
+            enrollButtonHtml = `<a href="mcourse_interactive.html?courseId=${course.slug}" class="button button--primary button--full-width">Go to Course</a>`;
+        } else {
+            enrollButtonHtml = `
+                <button class="button button--primary button--full-width paystack-button"
+                        data-price="${course.price}"
+                        data-plan-name="${course.title}"
+                        data-course-id="${course.slug}">
+                    <span>Enroll Now for $${course.price}</span>
+                </button>
+            `;
+        }
+
+        enrollmentBoxEl.innerHTML = `
+            <img src="${course.thumbnail_url || 'images/course_placeholder.png'}" alt="${course.title}" class="course-thumbnail">
+            <h3>${isEnrolled ? 'You are Enrolled' : 'Enroll in this Course'}</h3>
+            ${!isEnrolled ? `<div class="course-price">$${course.price}</div>` : ''}
+            <p class="enroll-pitch">Get full lifetime access to all modules, future updates, and our exclusive community channel.</p>
+            ${enrollButtonHtml}
+        `;
+
+        if (!isEnrolled) {
+            attachPaystackListener(enrollmentBoxEl.querySelector('.paystack-button'));
+        }
+    };
+
+    const fetchCourseDetails = async (courseId) => {
+        try {
+            const response = await uplasApi.fetchAuthenticated(`/courses/${courseId}/`, { isPublic: true });
+            if (!response.ok) throw new Error('Course not found.');
+            const course = await response.json();
+
+            // --- Populate the page ---
+            document.title = `${course.title} | Uplas`;
+            courseTitleEl.textContent = course.title;
+            courseSubtitleEl.textContent = course.short_description;
+            courseMetaEl.innerHTML = `
+                <span><i class="fas fa-user-shield"></i> Instructor: ${course.instructor_name}</span>
+                <span><i class="fas fa-clock"></i> Duration: ${course.duration_hours} Hours</span>
+                <span><i class="fas fa-layer-group"></i> Level: ${course.difficulty}</span>
+            `;
+            courseDescriptionEl.innerHTML = course.long_description; // Assuming this is safe HTML from backend
+            renderCurriculum(course.modules);
+            renderEnrollmentBox(course);
+
+            // Hide loading and show content
+            if(loadingContainer) loadingContainer.style.display = 'none';
+            if(contentContainer) contentContainer.style.display = 'block';
+
         } catch (error) {
-            console.error('An error occurred during payment verification:', error);
-            alert('Your payment was successful, but we had trouble verifying it. Please contact support.');
+            console.error("Error fetching course details:", error);
+            if(loadingContainer) loadingContainer.innerHTML = `<p class="error-message">Could not load course details. Please check the URL or try again.</p>`;
         }
-        */
+    };
 
-        // For this demo, we'll simulate a successful verification and reload.
-        setTimeout(() => {
-            alert("Verification complete! You now have full access.");
-            window.location.reload();
-        }, 1500);
-    }
+    const attachPaystackListener = (button) => {
+        if (!button) return;
+        button.addEventListener('click', (event) => {
+            const price = event.target.dataset.price * 100;
+            const courseId = event.target.dataset.courseId;
+            const planName = event.target.dataset.planName;
+            const currentUser = uplasApi.getUserData();
 
-    /**
-     * @function initiatePaystackPayment
-     * @description Reusable function to handle Paystack payment popups.
-     * @param {object} paymentDetails - The details for the payment.
-     */
-    function initiatePaystackPayment(paymentDetails) {
-        const handler = PaystackPop.setup({
-            key: paymentDetails.key,
-            email: paymentDetails.email,
-            amount: paymentDetails.amount,
-            currency: 'NGN', // Or your preferred currency
-            ref: paymentDetails.ref,
-            metadata: {
-                item_id: paymentDetails.itemId,
-                item_type: paymentDetails.itemType, // 'course' or 'module'
-                user_id: paymentDetails.userId
-            },
-            callback: function(response) {
-                console.log('Paystack payment successful. Reference:', response.reference);
-                handlePaymentVerification(response.reference);
-            },
-            onClose: function() {
-                console.log('Paystack payment popup closed.');
-                alert(uplasTranslate('payment_cancelled', {fallback: 'Payment was cancelled.'}));
+            if (!currentUser) {
+                alert("Please log in to enroll.");
+                // Optionally redirect to login
+                // window.location.href = `index.html#auth-section&returnUrl=${window.location.href}`;
+                return;
             }
+
+            const handler = PaystackPop.setup({
+                key: PAYSTACK_PUBLIC_KEY,
+                email: currentUser.email,
+                amount: price,
+                ref: `uplas_${courseId}_${new Date().getTime()}`,
+                callback: function(response) {
+                    alert('Payment successful! Reference: ' + response.reference);
+                    // TODO: Add backend verification call here
+                    window.location.reload(); // Reload to show enrolled state
+                },
+                onClose: function() {
+                    alert('Transaction was not completed.');
+                },
+            });
+            handler.openIframe();
         });
-        handler.openIframe();
+    };
+
+    // --- Initial Load ---
+    const courseId = getCourseIdFromUrl();
+    if (courseId) {
+        fetchCourseDetails(courseId);
+    } else {
+        if(loadingContainer) loadingContainer.innerHTML = `<p class="error-message">No course specified. Please select a course from the course list.</p>`;
     }
-
-
-    /**
-     * @function handlePurchaseClick
-     * @description Handles the click event for course/module purchase buttons.
-     */
-    function handlePurchaseClick(event) {
-        event.preventDefault();
-        const button = event.currentTarget;
-
-        if (!uplasApi || !uplasApi.isUserLoggedIn()) {
-            alert(uplasTranslate('auth_required_for_purchase', { fallback: 'You must be logged in to make a purchase.' }));
-            sessionStorage.setItem('uplas_post_auth_action', JSON.stringify({ type: 'purchase', courseId: button.dataset.courseId }));
-            window.location.href = '/index.html#auth-section';
-            return;
-        }
-
-        const userData = uplasApi.getUserData();
-        const price = parseFloat(button.dataset.price);
-        const itemName = button.dataset.planName || "Course Purchase";
-        const itemId = button.dataset.courseId || button.dataset.moduleId;
-        const itemType = button.dataset.courseId ? 'course' : 'module';
-
-        if (isNaN(price) || !itemId) {
-            console.error('Payment button missing required data attributes (data-price, data-course-id/data-module-id).', button);
-            alert('Cannot process payment. Item information is missing.');
-            return;
-        }
-
-        const uniqueRef = `uplas_${itemType}_${itemId}_${Date.now()}`;
-
-        const paymentDetails = {
-            key: PAYSTACK_PUBLIC_KEY,
-            email: userData.email,
-            amount: Math.round(price * 100), // Convert to kobo/cents
-            ref: uniqueRef,
-            itemId: itemId,
-            itemType: itemType,
-            userId: userData.id
-        };
-
-        console.log('Initiating Paystack payment for course/module:', { ...paymentDetails, key: '***' });
-        initiatePaystackPayment(paymentDetails);
-    }
-
-    // --- Attach Event Listeners ---
-    paymentButtons.forEach(button => {
-        button.addEventListener('click', handlePurchaseClick);
-    });
-
-    curriculumItems.forEach(header => {
-        header.addEventListener('click', () => {
-            const item = header.parentElement;
-            item.classList.toggle('active');
-
-            const content = item.querySelector('.curriculum-item-content');
-            const icon = header.querySelector('.curriculum-toggle-icon i');
-
-            if (item.classList.contains('active')) {
-                content.style.maxHeight = content.scrollHeight + "px";
-                content.style.paddingTop = "1rem";
-                content.style.paddingBottom = "1rem";
-                icon.classList.remove('fa-plus');
-                icon.classList.add('fa-minus');
-            } else {
-                content.style.maxHeight = null;
-                content.style.paddingTop = "0";
-                content.style.paddingBottom = "0";
-                icon.classList.remove('fa-minus');
-                icon.classList.add('fa-plus');
-            }
-        });
-    });
-
-    console.log("mcourseD.js: Uplas Course Detail Page initialized successfully.");
 });
