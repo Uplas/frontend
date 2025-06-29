@@ -429,12 +429,12 @@ input[type="radio"].invalid {
 .nav__toggle:hover { color: var(--current-link-hover-color); }
 
 
-/* --- Footer Styling --- */
+/* === CORRECTED: Footer Styling as per your request === */
 .main-content { flex-grow: 1; }
 
 .footer {
     background-color: var(--current-footer-bg);
-    color: var(--current-footer-text-color); /* CORRECTED: This now correctly uses the theme variable */
+    color: var(--current-footer-text-color);
     padding: var(--spacing-xxl) 0 var(--spacing-lg) 0;
     border-top: 1px solid var(--current-border-color);
 }
@@ -461,7 +461,7 @@ input[type="radio"].invalid {
 .footer__link {
     color: inherit; /* This will inherit the light color from .footer */
     opacity: 0.9;
-    transition: opacity var(--transition-short);
+    transition: opacity var(--transition-short), color var(--transition-short);
 }
 .footer__link:hover {
     opacity: 1;
@@ -487,7 +487,7 @@ input[type="radio"].invalid {
 .footer__bottom {
     text-align: center; margin-top: var(--spacing-xl);
     padding-top: var(--spacing-lg);
-    border-top: var(--border-width) solid var(--current-border-color);
+    border-top: var(--border-width) solid rgba(255, 255, 255, 0.1);
 }
 .dark-mode .footer__bottom { border-top-color: var(--color-dark-border-secondary); }
 .footer__copyright { font-size: 0.85rem; opacity: 0.8; margin: 0; }
