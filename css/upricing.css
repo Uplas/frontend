@@ -276,53 +276,65 @@
 .dark-mode .contact-section {
     background-color: var(--color-dark-bg-secondary);
 }
-.contact-content-wrapper {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--spacing-xl);
-    align-items: center;
+
+/* New wrapper to center the content */
+.contact-section .container {
+    max-width: 800px; /* Reduced horizontal size for the entire section */
+    margin: 0 auto;
+    text-align: center;
 }
-@media (min-width: 992px) {
-    .contact-content-wrapper {
-        grid-template-columns: 1fr 1fr;
-        gap: var(--spacing-xxxl);
-    }
+
+.contact-section .section-title {
+    margin-bottom: var(--spacing-sm);
 }
-.contact-text-content h2 {
-    color: var(--current-text-color);
-    margin-bottom: var(--spacing-md);
+
+.contact-section .section-subtitle {
+    margin-bottom: var(--spacing-xl);
+    max-w-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
-.contact-text-content p {
-    font-size: var(--font-size-md);
-    color: var(--current-text-color-secondary);
-    line-height: 1.7;
-}
+
+/* The form itself is now centered within the container */
 .contact-form {
     background: var(--current-card-bg);
     padding: var(--spacing-xl);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--box-shadow-lg);
+    text-align: left; /* Keep form content aligned left */
 }
+
 .contact-form .form__title--centered {
     text-align: center;
     margin-bottom: var(--spacing-lg);
     font-size: var(--font-size-xl);
 }
-/* Explicitly make the contact form visible if using this as a fallback */
-#contact-section #contact-form.form {
-    display: block; 
+
+/* Ensure inputs are visible and styled correctly */
+.contact-form .form__input,
+.contact-form .form__textarea {
+    background-color: var(--current-input-bg);
+    border: 1px solid var(--current-border-color);
+    color: var(--current-text-color);
+}
+.contact-form .form__input::placeholder,
+.contact-form .form__textarea::placeholder {
+    color: var(--current-text-color-secondary);
+    opacity: 0.7;
+}
+.contact-form .form__input:focus,
+.contact-form .form__textarea:focus {
+    border-color: var(--color-primary);
+    box-shadow: var(--box-shadow-focus);
 }
 
-@media (min-width: 768px) {
-    .contact-form-stacked .form__row {
-        display: flex;
-        gap: var(--spacing-lg);
-    }
-    .contact-form-stacked .form__row .form__group {
-        flex: 1;
-    }
-    .contact-form__submit-btn { width: auto; display: block; margin-left: auto; }
+/* The button styling is inherited from global.css, no changes needed unless you want it smaller */
+/* If you want a smaller button, you could add this:
+.contact-form .button {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-sm);
 }
+*/
 
 /* --- Payment Modal --- */
 #summary-plan-price-span {
