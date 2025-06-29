@@ -91,9 +91,6 @@
     padding: var(--spacing-xxl) 0;
     background-color: var(--current-card-bg);
 }
-.dark-mode .benefits-section {
-    background-color: var(--color-dark-bg-panel);
-}
 .benefits-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -107,34 +104,30 @@
     border-radius: var(--border-radius-lg);
     box-shadow: var(--box-shadow-sm);
     transition: transform var(--transition-base), box-shadow var(--transition-base);
-    display: flex;
-    flex-direction: column;
-}
-.dark-mode .benefit-item {
-    background-color: var(--color-dark-bg-secondary);
 }
 .benefit-item:hover {
     transform: translateY(-5px);
     box-shadow: var(--box-shadow-md);
 }
+
+/* === CORRECTED: Styling for the emoji icon container === */
 .benefit-item__icon {
     width: 70px;
     height: 70px;
-    border-radius: 50%;
     margin: 0 auto var(--spacing-md) auto;
-    object-fit: cover;
-    background-color: var(--color-primary-ultralight);
+    border-radius: 50%;
+    background: var(--color-primary-ultralight);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 2.5rem; /* Make emoji larger */
     color: var(--color-primary);
     border: 2px solid var(--color-primary-light);
 }
 .dark-mode .benefit-item__icon {
-    background-color: var(--color-secondary-light);
-    color: var(--color-primary-light);
-    border-color: var(--color-primary-dark);
+    background-color: var(--color-dark-bg-secondary);
+    color: var(--color-secondary-light);
+    border-color: var(--color-secondary);
 }
 
 .benefit-item__title {
@@ -143,15 +136,6 @@
     color: var(--current-text-color);
     margin-bottom: var(--spacing-sm);
 }
-.dark-mode .benefit-item__title { color: var(--color-primary-light); }
-.benefit-item p {
-    font-size: var(--font-size-sm);
-    color: var(--current-text-color-secondary);
-    line-height: 1.6;
-    margin-bottom: 0;
-    flex-grow: 1;
-}
-
 /* --- Feature Highlight Section (Course Description Image) --- */
 .feature-highlight-section {
     padding: var(--spacing-xxl) 0;
