@@ -55,7 +55,7 @@
                     <div class="pricing-card">
                         <h3 class="pricing-card__title">Monthly</h3>
                         <div class="pricing-card__price">
-                            <span class="price-value">$29</span>
+                            <span class="price-value" data-price-usd="29">$29</span>
                             <span class="price-term">/ month</span>
                         </div>
                         <p class="pricing-card__description">Ideal for flexible, short-term learning sprints.</p>
@@ -72,7 +72,7 @@
                         <span class="pricing-card__badge">Best Value</span>
                         <h3 class="pricing-card__title">Yearly</h3>
                         <div class="pricing-card__price">
-                            <span class="price-value">$299</span>
+                            <span class="price-value" data-price-usd="299">$299</span>
                             <span class="price-term">/ year</span>
                         </div>
                         <p class="pricing-card__description">Commit to your growth and save. Our most popular plan.</p>
@@ -103,8 +103,49 @@
             </div>
         </section>
 
-        <section class="faq-section">
-            </section>
+        <section class="faq-section section-padding">
+            <div class="container">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>What payment methods do you accept?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>We accept all major credit cards, debit cards, and bank transfers through our secure payment partner, Paystack.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Can I cancel my subscription at any time?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Yes, absolutely. You can cancel your Monthly or Yearly subscription at any time from your account dashboard. You will retain access until the end of your current billing period.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>What is the difference between the Monthly and Yearly plans?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Both plans offer full access to all our courses and features. The Yearly plan provides the best value, offering a significant discount compared to paying monthly.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            <span>Do you offer refunds?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>We offer a 7-day money-back guarantee on all our paid plans. If you're not satisfied, just contact support within the first 7 days for a full refund.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <section id="contact-section" class="contact-section">
             </section>
@@ -118,5 +159,23 @@
     <script src="js/global.js"></script>
     <script src="js/upricing.js"></script>
 
+    <script>
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const answer = button.nextElementSibling;
+                const item = button.closest('.faq-item');
+                item.classList.toggle('active');
+                if (item.classList.contains('active')) {
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                    answer.style.paddingTop = '1rem';
+                    answer.style.paddingBottom = '1.5rem';
+                } else {
+                    answer.style.maxHeight = 0;
+                    answer.style.paddingTop = '0';
+                    answer.style.paddingBottom = '0';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
