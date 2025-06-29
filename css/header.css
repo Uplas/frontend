@@ -7,7 +7,7 @@
 /* --- Logo Styling Overrides --- */
 .logo {
     /* Brings the logo and text closer by reducing the default gap */
-    gap: 1px; /* This is more than a 50% reduction from the previous gap */
+    gap: 0.5px; /* This is more than a 50% reduction from the previous gap */
     
     /* Ensures the logo group aligns to the very start of its container */
     justify-self: start;
