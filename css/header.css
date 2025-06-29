@@ -6,24 +6,28 @@
 
 /* --- Logo Styling Overrides --- */
 .logo {
-    /* Brings the logo and text closer by reducing the default gap */
-    gap: 0.5px; /* This is more than a 50% reduction from the previous gap */
+    /* Aligns the bottom of the image with the text for a seamless look */
+    align-items: baseline; 
     
-    /* Ensures the logo group aligns to the very start of its container */
-    justify-self: start;
+    /* Reduces the space between the image and the text by 50%+ */
+    gap: 1px; 
+    
+    /* The header's flexbox layout already pushes this to the far left. */
+    /* No extra code needed for left alignment. */
 }
 
 .logo__img {
-    /* Keeps the logo from stretching the header vertically by constraining its height */
+    /* Constrains the logo's height to prevent it from stretching the header vertically */
     height: 30px; 
     
-    /* Fine-tunes the vertical alignment to match the text baseline */
+    /* Fine-tunes the vertical position to perfectly align with the "plas" text */
     transform: translateY(5px);
 }
 
 .logo__text {
-    /* Adjusts the font size to ensure it aligns well with the new logo size */
+    /* Adjusts the font size to visually match the height of the logo image */
     font-size: 1.7rem; 
+    font-weight: 700; /* Makes the text bold to match a strong logo mark */
 }
 
 /* Specific adjustments for mobile view to maintain the look */
@@ -31,5 +35,8 @@
     .logo__img {
         height: 26px;
         transform: translateY(4px);
+    }
+    .logo__text {
+        font-size: 1.5rem;
     }
 }
