@@ -207,33 +207,107 @@
 }
 
 
-/* --- FAQ Section --- */
-.faq-section { padding: var(--spacing-xxl) 0; }
-.faq-section .section-title { text-align: center; display: block; }
-
-/* --- Contact Section --- */
-.contact-section {
+.faq-section {
     padding: var(--spacing-xxl) 0;
-    background-color: var(--color-gray-100); /* MODIFICATION: Changed for better contrast from body */
+    background-color: var(--current-bg-color);
 }
-.dark-mode .contact-section {
-    background-color: var(--color-dark-bg-primary); /* Ensure dark mode has contrast too */
-}
-
-.contact-section .section-title,
-.contact-section .section-subtitle {
+.faq-section .section-title {
     text-align: center;
 }
-.contact-form-container {
-    max-width: 700px;
-    margin: var(--spacing-xl) auto 0 auto;
-    background-color: var(--current-card-bg); /* This will be white in light mode */
-    padding: var(--spacing-xl);
-    border-radius: var(--border-radius-lg);
+.faq-container {
+    max-width: 800px;
+    margin: var(--spacing-xl) auto 0;
+}
+.faq-item {
+    border: 1px solid var(--current-border-color);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-md);
+    overflow: hidden;
+    transition: all var(--transition-base);
+}
+.faq-item.active {
+    border-color: var(--color-primary);
     box-shadow: var(--box-shadow-md);
 }
-.form__title--centered { text-align: center; }
+.faq-question {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: var(--spacing-md) var(--spacing-lg);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    text-align: left;
+    color: var(--current-text-color);
+    background-color: var(--current-card-bg);
+    cursor: pointer;
+    border: none;
+}
+.faq-question i {
+    transition: transform var(--transition-base);
+    color: var(--color-primary);
+}
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    background-color: transparent;
+    transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+}
+.faq-answer p {
+    padding: 0 var(--spacing-lg) 0;
+    margin: 0;
+    font-size: var(--font-size-sm);
+    color: var(--current-text-color-secondary);
+}
+.faq-item.active .faq-answer {
+    max-height: 200px; /* Adjust as needed */
+    padding-top: var(--spacing-md);
+    padding-bottom: var(--spacing-lg);
+}
 
+/* === CORRECTED: Contact Form Section Styling === */
+.contact-section {
+    background-color: var(--color-light-bg);
+    padding: var(--spacing-xxxl) 0;
+}
+.dark-mode .contact-section {
+    background-color: var(--color-dark-bg-secondary);
+}
+.contact-content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+    align-items: center;
+}
+@media (min-width: 992px) {
+    .contact-content-wrapper {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-xxxl);
+    }
+}
+.contact-text-content h2 {
+    color: var(--current-text-color);
+    margin-bottom: var(--spacing-md);
+}
+.contact-text-content p {
+    font-size: var(--font-size-md);
+    color: var(--current-text-color-secondary);
+    line-height: 1.7;
+}
+.contact-form {
+    background: var(--current-card-bg);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--box-shadow-lg);
+}
+.contact-form .form__title--centered {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--font-size-xl);
+}
 /* Explicitly make the contact form visible if using this as a fallback */
 #contact-section #contact-form.form {
     display: block; 
