@@ -1,4 +1,4 @@
-/ js/global.js
+// js/global.js
 // Initializes i18n, loads dynamic components (header/footer),
 // handles global UI (theme, language, currency, mobile nav), and user auth state.
 'use strict';
@@ -90,7 +90,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentUser = null;
     const uplasApiAvailable = typeof window.uplasApi !== 'undefined' && typeof window.uplasApi.initializeUserSession === 'function';
 
+    // MODIFICATION START: Integrate simulated user session
     if (uplasApiAvailable) {
+        // In a real application, initializeUserSession would check for a token and fetch from the backend.
+        // Here, we simulate it by setting a user in localStorage if one doesn't exist.
+        if (!window.uplasApi.getAccessToken()) {
+            console.log("Global.js: No real token found. Simulating user login for demonstration.");
+            const mockUser = {
+                id: 'user_sim_67890',
+                email: 'demo.user@uplas.me',
+                full_name: 'Demo User'
+            };
+            const mockToken = 'simulated_access_token_for_demo';
+
+            // Simulate the login process that auth.js would handle
+            localStorage.setItem(window.uplasApi.USER_DATA_KEY, JSON.stringify(mockUser));
+            localStorage.setItem(window.uplasApi.ACCESS_TOKEN_KEY, mockToken);
+        }
+
         try {
             console.log("Global.js: Initializing user session via uplasApi.");
             currentUser = await window.uplasApi.initializeUserSession();
@@ -106,10 +123,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     } else {
         console.warn("Global.js: window.uplasApi or initializeUserSession not available. Auth checks will be limited. Ensure apiUtils.js is loaded correctly and provides these.");
     }
+    // MODIFICATION END
 
     // --- 5. Setup Global UI Elements & Event Listeners ---
-    // These functions will internally check if their target elements exist.
-
+    // This section remains unchanged as it correctly handles UI updates based on the session.
     function setupThemeToggle() {
         const themeToggleButton = getElement('theme-toggle', 'Theme Toggle Button', false);
         if (!themeToggleButton) {
@@ -119,9 +136,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
 
-        // Define applyTheme within setupThemeToggle to ensure it's only used if the button exists
         function applyTheme(theme) {
-            const currentThemeBtn = getElement('theme-toggle', 'Theme Toggle Button in applyTheme', false); // Re-fetch in case of dynamic load
+            const currentThemeBtn = getElement('theme-toggle', 'Theme Toggle Button in applyTheme', false);
             const isDark = theme === 'dark';
             document.body.classList.toggle('dark-mode', isDark);
 
@@ -132,13 +148,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (sunIcon) sunIcon.style.display = isDark ? 'inline-block' : 'none';
 
                 const trans = window.uplasTranslate || ((key, opts) => opts.fallback);
-                const ariaKey = isDark ? 'toggle_theme_light' : 'toggle_theme_dark'; // Adjusted keys to reflect action
+                const ariaKey = isDark ? 'toggle_theme_light' : 'toggle_theme_dark';
                 const ariaDefault = isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode';
                 currentThemeBtn.setAttribute('aria-label', trans(ariaKey, { fallback: ariaDefault }));
                 currentThemeBtn.setAttribute('title', trans(ariaKey, { fallback: ariaDefault }));
             }
         }
-        window.applyGlobalTheme = applyTheme; // Expose for i18n updates
+        window.applyGlobalTheme = applyTheme;
 
         themeToggleButton.addEventListener('click', () => {
             const currentThemeIsDark = document.body.classList.contains('dark-mode');
@@ -162,17 +178,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (i18nInitialized && typeof i18nManager.getCurrentLocale === 'function' && typeof i18nManager.setLocale === 'function') {
             languageSelector.value = i18nManager.getCurrentLocale();
             languageSelector.addEventListener('change', (event) => {
-                i18nManager.setLocale(event.target.value); // setLocale should internally call applyTranslationsToPage
+                i18nManager.setLocale(event.target.value);
             });
 
-            // i18nManager.onLanguageChange handles applying translations and other callbacks
             i18nManager.onLanguageChange((newLocale) => {
                 if (languageSelector.value !== newLocale) {
                     languageSelector.value = newLocale;
                 }
                 if (window.applyGlobalTheme) window.applyGlobalTheme(document.body.classList.contains('dark-mode') ? 'dark' : 'light');
                 if (footerLoadedSuccessfully && typeof window.updateDynamicFooterYear === 'function') window.updateDynamicFooterYear();
-                 // Potentially re-translate other dynamic parts of header/footer if necessary
                 if (headerLoadedSuccessfully && typeof window.uplasApplyTranslations === 'function') {
                     const headerElement = getElement('page-header', 'Page Header for re-translation', false);
                     if(headerElement) window.uplasApplyTranslations(headerElement);
@@ -204,7 +218,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }).format(price);
             } catch (e) {
                 console.warn(`Currency formatting error for ${currencyCode} with locale ${locale}: ${e.message}. Falling back.`);
-                // Fallback formatting
                 const symbolMap = { USD: '$', EUR: '€', KES: 'KSh', GBP: '£', INR: '₹', JPY: '¥', AUD: 'A$', CAD: 'C$', CHF: 'Fr', CNY: '¥', BTC: '₿' };
                 return `${symbolMap[currencyCode] || currencyCode} ${Number(price).toFixed(2)}`;
             }
@@ -214,7 +227,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         function updateAllDisplayedPrices() {
             const activeCurrency = window.currentGlobalCurrency;
             const rate = globalSimulatedExchangeRates[activeCurrency] || 1;
-            const baseRateUSD = globalSimulatedExchangeRates['USD'] || 1; // Should always be 1
+            const baseRateUSD = globalSimulatedExchangeRates['USD'] || 1;
 
             document.querySelectorAll('[data-price-usd]').forEach(element => {
                 const priceUSD = parseFloat(element.getAttribute('data-price-usd'));
@@ -233,7 +246,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             window.currentGlobalCurrency = selectedCurrency;
             localStorage.setItem('uplas-currency', selectedCurrency);
             updateAllDisplayedPrices();
-            if (currencySelector.value !== selectedCurrency) { // Ensure consistent state
+            if (currencySelector.value !== selectedCurrency) {
                 currencySelector.value = selectedCurrency;
             }
             window.dispatchEvent(new CustomEvent('currencyChanged', { detail: { newCurrency: selectedCurrency } }));
@@ -243,7 +256,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         currencySelector.value = currentGlobalCurrency;
         currencySelector.addEventListener('change', (event) => changeGlobalCurrency(event.target.value));
 
-        updateAllDisplayedPrices(); // Initial call
+        updateAllDisplayedPrices();
         console.log("Global.js: Currency management setup complete.");
     }
 
@@ -282,7 +295,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log("Global.js: Attempting to update login state UI.");
         if (!uplasApiAvailable) {
             console.warn("Global.js: uplasApi not available for updateLoginStateUI.");
-            // Default to logged-out view if API utils not ready
             const userAvatarHeader = getElement('user-avatar-header', 'User Avatar in Header', false);
             const navLoggedIn = getElement('nav-logged-in', 'Logged In Navigation', false);
             const navLoggedOut = getElement('nav-logged-out', 'Logged Out Navigation', false);
@@ -297,12 +309,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         const accessToken = window.uplasApi.getAccessToken();
-        const userData = window.uplasApi.getUserData(); // This is from localStorage, updated by initializeUserSession or login
+        const userData = window.uplasApi.getUserData();
 
         const userAvatarHeader = getElement('user-avatar-header', 'User Avatar in Header', false);
         const navLoggedIn = getElement('nav-logged-in', 'Logged In Navigation', false);
         const navLoggedOut = getElement('nav-logged-out', 'Logged Out Navigation', false);
-        // Assuming these might be in a dropdown, not strictly required for basic state:
         const userFullNameDisplay = getElement('user-full-name-display', 'User Full Name Display in Dropdown', false);
         const userEmailDisplay = getElement('user-email-display', 'User Email Display in Dropdown', false);
 
@@ -331,7 +342,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         console.log("Global.js: Login state UI update finished.");
     }
-    window.updateLoginStateUI = updateLoginStateUIInternal; // Expose for external calls if needed
+    window.updateLoginStateUI = updateLoginStateUIInternal;
 
 
     // --- Smooth Scroll ---
@@ -343,20 +354,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     // --- Run UI Setup Functions ---
-    // Only run these if the header component has been successfully loaded and injected
     if (headerLoadedSuccessfully) {
         setupThemeToggle();
         setupLanguageSelector();
         setupCurrencyManagement();
         setupMobileNav();
-        // Initial call to updateLoginStateUIInternal will happen after user session initialization
-        // or if header is loaded and uplasApi is available but no session was found.
     } else {
         console.warn("Global.js: Header did NOT load successfully. Dependent global UI features setup skipped.");
     }
     
-    // This call ensures that even if the user session was initialized *before* the header was ready,
-    // the UI gets updated once the header *is* ready.
     if (headerLoadedSuccessfully && uplasApiAvailable) {
         updateLoginStateUIInternal();
     }
@@ -366,10 +372,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (uplasApiAvailable) {
         window.addEventListener('authChanged', (event) => {
             console.log("Global.js: 'authChanged' event received.", event.detail);
-            if (headerLoadedSuccessfully) { // Only update UI if header elements are present
+            if (headerLoadedSuccessfully) {
                 updateLoginStateUIInternal();
             }
-            currentUser = event.detail.user; // Update local currentUser state
+            currentUser = event.detail.user;
         });
     }
 
@@ -379,26 +385,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const authRedirectMsg = sessionStorage.getItem(window.uplasApi.AUTH_REDIRECT_MESSAGE_KEY);
         if (authRedirectMsg) {
-            // Try to display on auth-section if available, otherwise fallback to a general alert/log
             const authSection = getElement('auth-section', 'Auth Section for Message', false);
             if (authSection) {
-                window.uplasApi.displayFormStatus(authSection, authRedirectMsg, true); // Display as error
+                window.uplasApi.displayFormStatus(authSection, authRedirectMsg, true);
             } else {
-                // If no auth-section, maybe a global notification area, or alert for critical messages
                 console.warn("Auth Redirect Message:", authRedirectMsg, "(auth-section not found to display it prominently)");
-                // Example: alert(authRedirectMsg); // Use sparingly
             }
             sessionStorage.removeItem(window.uplasApi.AUTH_REDIRECT_MESSAGE_KEY);
             console.log("Global.js: Auth redirect message processed.");
         }
     }
-    // Display message after other initializations, so UI elements are more likely to be ready
-    // It's fine to call this even if the message display depends on elements loaded by componentLoader
-    // as getElement will handle cases where elements are not yet ready.
-    if(i18nInitialized && uplasApiAvailable) { //Ensure i18n is ready for potential translated messages by displayFormStatus
+
+    if(i18nInitialized && uplasApiAvailable) {
          displayAuthRedirectMessage();
     }
-
 
     console.log("Global.js: DOMContentLoaded processing complete.");
 });
