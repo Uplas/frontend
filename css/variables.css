@@ -1,43 +1,43 @@
 /* css/variables.css */
 /* ================================================
-   Uplas Global CSS Variables (variables.css)
+   Uplas Global CSS Variables (v2.0 - New Palette)
    ================================================ */
 
 :root {
-    /* Core Color Palette (NEW) */
-    --color-primary: #007BFF;         /* Professional Blue */
-    --color-primary-dark: #0056b3;
-    --color-primary-light: #66b2ff;
-    --color-primary-ultralight: rgba(0, 123, 255, 0.1);
+    /* === NEW: Core Color Palette (Futuristic EdTech) === */
+    --color-primary: #4A90E2;         /* A professional, vibrant blue */
+    --color-primary-dark: #357ABD;    /* Darker shade for hovers/accents */
+    --color-primary-light: #8DB9ED;   /* Lighter shade for highlights */
+    --color-primary-ultralight: rgba(74, 144, 226, 0.1);
 
-    --color-secondary: #495057;       /* Dark Grey for accents */
-    --color-secondary-dark: #343a40;
-    --color-secondary-light: #6c757d;
+    --color-secondary: #50E3C2;       /* A vibrant mint green for accents */
+    --color-secondary-dark: #3BAA90;
+    --color-secondary-light: #88F1D6;
 
-    --color-accent: #28a745;         /* Green for success/accent */
-    --color-accent-dark: #218838;
-    --color-accent-light: #73c888;
+    --color-accent: #F5A623;         /* A warm orange for attention-grabbing CTAs */
+    --color-accent-dark: #D4880B;
+    --color-accent-light: #F8C56E;
 
     /* Functional Colors */
     --color-success: #28a745;
     --color-success-light: rgba(40, 167, 69, 0.1);
-    --color-error: #dc3545;
-    --color-error-light: rgba(220, 53, 69, 0.1);
-    --color-warning: #ffc107;
-    --color-warning-light: rgba(255, 193, 7, 0.1);
+    --color-error: #D0021B;
+    --color-error-light: rgba(208, 2, 27, 0.1);
+    --color-warning: var(--color-accent);
+    --color-warning-light: rgba(245, 166, 35, 0.1);
     --color-info: var(--color-primary);
     --color-info-light: var(--color-primary-ultralight);
 
-    /* Neutral & Grayscale Palette (NEW Light Theme) */
+    /* Neutral & Grayscale Palette (Light Mode) */
     --color-white: #ffffff;
     --color-black: #000000;
-    --color-light-bg: #f8f9fa;      /* Light mode background */
+    --color-light-bg: #f7f9fc;      /* A very light, cool gray background */
     --color-light-card: #ffffff;
-    --color-light-border: #dee2e6;
-    --color-light-text-primary: #212529;
-    --color-light-text-secondary: #6c757d;
+    --color-light-border: #dfe6f0;
+    --color-light-text-primary: #2c3e50; /* A softer, professional black */
+    --color-light-text-secondary: #7f8c8d;
 
-    /* Dark Mode Specific Base Colors (NEW Dark Theme) */
+    /* Dark Mode Specific Base Colors */
     --color-dark-bg-primary: #0d1117;  /* Luxury Black */
     --color-dark-bg-secondary: #161b22;
     --color-dark-bg-panel: #21262d;
@@ -46,6 +46,7 @@
     --color-dark-border-secondary: #21262d;
     --color-dark-text-primary: #c9d1d9;
     --color-dark-text-secondary: #8b949e;
+
 
     /* Typography */
     --font-primary: 'Poppins', sans-serif;
@@ -68,40 +69,24 @@
     --font-weight-bold: 700;
 
     /* Spacing */
-    --spacing-xxs: 0.25rem;
-    --spacing-xs: 0.5rem;
-    --spacing-sm: 0.75rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
-    --spacing-xxl: 3rem;
-    --spacing-xxxl: 4rem;
+    --spacing-xxs: 0.25rem; --spacing-xs: 0.5rem; --spacing-sm: 0.75rem; --spacing-md: 1rem;
+    --spacing-lg: 1.5rem; --spacing-xl: 2rem; --spacing-xxl: 3rem; --spacing-xxxl: 4rem;
 
     /* Borders & Shadows */
-    --border-radius-sm: 4px;
-    --border-radius-md: 8px;
-    --border-radius-lg: 12px;
-    --border-radius-xl: 16px;
+    --border-radius-sm: 4px; --border-radius-md: 8px; --border-radius-lg: 12px; --border-radius-xl: 16px;
     --border-radius-pill: 9999px;
-    --border-width: 1px;
-    --border-width-bold: 2px;
-
-    --box-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
-    --box-shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.06);
-    --box-shadow-md: 0 5px 12px -1px rgba(0, 0, 0, 0.08), 0 3px 7px -2px rgba(0, 0, 0, 0.05);
-    --box-shadow-lg: 0 12px 20px -3px rgba(0, 0, 0, 0.1), 0 5px 8px -4px rgba(0, 0, 0, 0.06);
-    --box-shadow-xl: 0 20px 30px -5px rgba(0, 0, 0, 0.12), 0 10px 15px -6px rgba(0, 0, 0, 0.08);
+    --border-width: 1px; --border-width-bold: 2px;
+    --box-shadow-sm: 0 2px 5px rgba(44, 62, 80, 0.06);
+    --box-shadow-md: 0 5px 12px -1px rgba(44, 62, 80, 0.08), 0 3px 7px -2px rgba(44, 62, 80, 0.05);
+    --box-shadow-lg: 0 12px 20px -3px rgba(44, 62, 80, 0.1), 0 5px 8px -4px rgba(44, 62, 80, 0.06);
     --box-shadow-focus: 0 0 0 3px var(--color-primary-ultralight);
     --box-shadow-focus-error: 0 0 0 3px var(--color-error-light);
 
     /* Transitions */
-    --transition-short: 0.15s ease-out;
     --transition-base: 0.25s ease-out;
-    --transition-long: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 
     /* Layout Specific */
-    --header-height: 70px;
-    --header-height-mobile: 60px;
+    --header-height: 70px; --header-height-mobile: 60px;
     --container-max-width: 1200px;
     --container-padding-x: var(--spacing-lg);
     --container-padding-x-mobile: var(--spacing-md);
@@ -112,28 +97,17 @@
     --current-text-color-secondary: var(--color-light-text-secondary);
     --current-card-bg: var(--color-light-card);
     --current-border-color: var(--color-light-border);
-    --current-border-color-light: #e9ecef;
     --current-input-bg: var(--color-white);
-    --current-input-border-color: #ced4da;
-    --current-input-text-color: var(--color-light-text-primary);
-    --current-input-placeholder-color: #6c757d;
     --current-link-color: var(--color-primary);
     --current-link-hover-color: var(--color-primary-dark);
     --current-header-bg: var(--color-white);
-    --current-footer-bg: var(--color-secondary-dark);
-    --current-footer-text-color: #adb5bd;
+    --current-footer-bg: var(--color-light-text-primary); /* Dark footer for contrast */
+    --current-footer-text-color: #bdc3c7; /* CORRECTED: Light text for dark footer */
 
     /* Button Theming */
     --current-button-primary-bg: var(--color-primary);
     --current-button-primary-text: var(--color-white);
     --current-button-primary-hover-bg: var(--color-primary-dark);
-    --current-button-primary-border: var(--color-primary);
-
-    --current-button-secondary-bg: transparent;
-    --current-button-secondary-text: var(--color-primary);
-    --current-button-secondary-border: var(--color-primary);
-    --current-button-secondary-hover-bg: var(--color-primary);
-    --current-button-secondary-hover-text: var(--color-white);
 }
 
 .dark-mode {
@@ -142,27 +116,16 @@
     --current-text-color-secondary: var(--color-dark-text-secondary);
     --current-card-bg: var(--color-dark-bg-panel);
     --current-border-color: var(--color-dark-border-primary);
-    --current-border-color-light: var(--color-dark-border-secondary);
     --current-input-bg: var(--color-dark-bg-input);
-    --current-input-border-color: var(--color-dark-border-primary);
-    --current-input-text-color: var(--color-dark-text-primary);
-    --current-input-placeholder-color: var(--color-dark-text-secondary);
-    --current-link-color: var(--color-primary-light);
-    --current-link-hover-color: var(--color-white);
+    --current-link-color: var(--color-secondary);
+    --current-link-hover-color: var(--color-secondary-light);
     --current-header-bg: var(--color-dark-bg-panel);
     --current-footer-bg: var(--color-dark-bg-primary);
     --current-footer-text-color: var(--color-dark-text-secondary);
 
-    /* Button Theming - Dark Mode */
-    --current-button-primary-bg: var(--color-primary);
-    --current-button-primary-text: var(--color-white);
-    --current-button-primary-hover-bg: var(--color-primary-light);
-    --current-button-primary-border: var(--color-primary);
-
-    --current-button-secondary-text: var(--color-primary-light);
-    --current-button-secondary-border: var(--color-primary-light);
-    --current-button-secondary-hover-bg: var(--color-primary-light);
-    --current-button-secondary-hover-text: var(--color-dark-bg-primary);
+    --current-button-primary-bg: var(--color-secondary);
+    --current-button-primary-text: var(--color-black);
+    --current-button-primary-hover-bg: var(--color-secondary-light);
 }
 
 
