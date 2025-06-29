@@ -4,27 +4,28 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Advanced JavaScript: From ES6 to Beyond - Uplas</title>
+    <title>Course Detail | Uplas</title>
+
+    <link rel="icon" href="images/uni_plas_prev_ui.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/mcourseD.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="light-mode">
-
+    
     <div id="site-header-placeholder"></div>
 
-    <main class="main-content">
-        <section class="course-hero-section">
+    <main>
+        <section class="course-hero">
             <div class="container">
                 <div class="course-hero-content">
-                    <h1 class="course-title">Advanced JavaScript: From ES6 to Beyond</h1>
-                    <p class="course-subtitle">Master modern JavaScript features, asynchronous programming, and functional concepts to write clean, efficient, and powerful code.</p>
-                    <div class="course-meta">
-                        <span><i class="fas fa-user-shield"></i> Instructor: Dr. Evelyn Reed</span>
-                        <span><i class="fas fa-globe"></i> English</span>
-                        <span><i class="fas fa-certificate"></i> Includes Certificate</span>
-                    </div>
+                    <h1 class="course-title" id="course-title">Loading Course...</h1>
+                    <p class="course-subtitle" id="course-subtitle"></p>
+                    <div class="course-meta" id="course-meta"></div>
                 </div>
             </div>
         </section>
@@ -32,60 +33,22 @@
         <section class="course-main-content section-padding">
             <div class="container grid-container">
                 <div class="course-details-column">
-                   <h2>What you'll learn</h2>
-                    <ul class="learning-objectives">
-                        <li><i class="fas fa-check-circle"></i> Deeply understand Promises, async/await, and the event loop.</li>
-                        <li><i class="fas fa-check-circle"></i> Master ES6+ features like destructuring, modules, and classes.</li>
-                        <li><i class="fas fa-check-circle"></i> Apply functional programming patterns for cleaner, more predictable code.</li>
-                        <li><i class="fas fa-check-circle"></i> Implement advanced design patterns like the Module and Observer patterns.</li>
-                    </ul>
-
-                    <h2>Course curriculum</h2>
-                    <div class="curriculum-list">
-                        <div class="curriculum-item">
-                            <div class="curriculum-item-header">
-                                <span>Module 1: Modern JavaScript Fundamentals</span>
-                                <span class="curriculum-toggle-icon"><i class="fas fa-plus"></i></span>
+                    <div id="course-content-loading">
+                        <p class="loading-message">Loading course details...</p>
+                    </div>
+                    <div id="course-content-container" style="display: none;">
+                        <h2 data-translate-key="course_about_title">About This Course</h2>
+                        <div id="course-description"></div>
+                        
+                        <h3 class="curriculum-title" data-translate-key="course_curriculum_title">Curriculum</h3>
+                        <div class="curriculum-list" id="curriculum-list">
                             </div>
-                            <div class="curriculum-item-content">
-                                <p>A deep dive into ES6+ features including let/const, arrow functions, template literals, destructuring, and modules.</p>
-                            </div>
-                        </div>
-                        <div class="curriculum-item">
-                            <div class="curriculum-item-header">
-                                <span>Module 2: Asynchronous Programming</span>
-                                <span class="curriculum-toggle-icon"><i class="fas fa-plus"></i></span>
-                            </div>
-                            <div class="curriculum-item-content">
-                                <p>Explore callbacks, master Promises, and learn to write clean async code with async/await. Understand the event loop and task queue.</p>
-                            </div>
-                        </div>
-                        <div class="curriculum-item locked"> <div class="curriculum-item-header">
-                                <span>Module 3: Functional JavaScript</span>
-                                <span class="curriculum-toggle-icon"><i class="fas fa-lock"></i></span>
-                            </div>
-                            <div class="curriculum-item-content">
-                                <p>This content is locked. Enroll in the course to gain access.</p>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
                 <aside class="course-enroll-column">
-                    <div class="course-enroll-box">
-                        <img src="images/course-js-advanced-thumbnail.jpg" alt="Advanced JavaScript Course Thumbnail" class="course-thumbnail">
-                        <h3>Enroll in this Course</h3>
-                        <div class="course-price" data-price-usd="99">$99.00</div>
-                        <p class="enroll-pitch">Get full lifetime access to all modules, future updates, and our exclusive community channel.</p>
-                        <button class="button button--primary button--full-width paystack-button"
-                                data-price="99"
-                                data-plan-name="Advanced JavaScript Course"
-                                data-course-id="course_js_advanced_1">
-                            <i class="fas fa-lock"></i>
-                            <span>Enroll Now</span>
-                        </button>
-                        <div class="money-back-guarantee">30-Day Money-Back Guarantee</div>
-                    </div>
+                    <div class="course-enroll-box" id="enrollment-box">
+                        </div>
                 </aside>
             </div>
         </section>
@@ -94,11 +57,9 @@
     <div id="site-footer-placeholder"></div>
 
     <script src="https://js.paystack.co/v1/inline.js"></script>
-
     <script src="js/componentLoader.js"></script>
     <script src="js/i18n.js"></script>
     <script src="js/apiUtils.js"></script>
     <script src="js/global.js"></script>
-    <script src="js/mcourseD.js"></script>
-</body>
+    <script src="js/mcourseD.js"></script> </body>
 </html>
